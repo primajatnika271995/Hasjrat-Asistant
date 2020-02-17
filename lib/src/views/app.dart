@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:salles_tools/src/views/components/bottom_navigation.dart';
+import 'package:salles_tools/src/views/bottom_navigation.dart';
 
 class App extends StatelessWidget {
   @override

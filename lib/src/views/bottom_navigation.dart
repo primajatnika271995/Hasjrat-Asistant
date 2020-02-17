@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/home_page/home_screen.dart';
 
 class BottomNavigationDrawer extends StatefulWidget {
   @override
@@ -10,9 +11,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
   int _selectedIndex = 0;
 
   List<Widget> _widgetPages = [
-    Center(
-      child: Text("Home"),
-    ),
+    HomeScreen(),
     Center(
       child: Text("Notification"),
     ),
