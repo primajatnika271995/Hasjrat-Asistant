@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/app_theme.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
-import 'package:salles_tools/src/utils/screen_size.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,6 +11,28 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  List<String> _menuName = [
+    "Book Test Drive",
+    "Catalog",
+    "Calculator",
+    "Knowledge Base",
+    "Book Service",
+    "Costumer",
+    "Prospect Costumer",
+    "Reminder",
+  ];
+
+  List<String> _assetsMenu = [
+    "assets/icons/book_test_drive_icon.png",
+    "assets/icons/catalog_icon.png",
+    "assets/icons/calculator_icon.png",
+    "assets/icons/knowledge_base_icon.png",
+    "assets/icons/book_service_icon.png",
+    "assets/icons/costumer_icon.png",
+    "assets/icons/prospect_costumer_icon.png",
+    "assets/icons/reminder_icon.png",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +41,47 @@ class _HomeScreenState extends State<HomeScreen> {
       body: CustomScrollView(
         slivers: <Widget>[
           sliverAppBar(),
+          SliverPadding(
+            padding: EdgeInsets.only(top: 20),
+            sliver: SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return Material(
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Image.asset(
+                              _assetsMenu[index],
+                              height: 50,
+                            ),
+                            Flexible(
+                              child: Text(
+                                _menuName[index],
+                                style: TextStyle(
+                                  letterSpacing: 0.7,
+                                  fontSize: 13,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                childCount: 8,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -44,20 +106,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: <Widget>[
                         Text(
                           "Selamat Datang",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            letterSpacing: 1.5,
-                          ),
+                          style: AppTheme.selamatDatangStyle,
                         ),
                         Text(
                           "{Salles Hasjrat Name}",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            letterSpacing: 1.5,
-                          ),
+                          style: AppTheme.namaSalesStyle,
                         ),
                       ],
                     ),
