@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/views/components/bottom_navigation.dart';
 
 class App extends StatelessWidget {
   @override
@@ -8,7 +9,7 @@ class App extends StatelessWidget {
       theme: ThemeData(fontFamily: 'Open-Sans'),
       initialRoute: '/',
       routes: {
-
+        '/': (context) => BottomNavigationDrawer(),
       },
     );
   }
