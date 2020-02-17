@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/app_theme.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/home_page/list_promotion.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -41,46 +42,41 @@ class _HomeScreenState extends State<HomeScreen> {
       body: CustomScrollView(
         slivers: <Widget>[
           sliverAppBar(),
-          SliverPadding(
-            padding: EdgeInsets.only(top: 20),
-            sliver: SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return Material(
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Image.asset(
-                              _assetsMenu[index],
-                              height: 50,
-                            ),
-                            Flexible(
-                              child: Text(
-                                _menuName[index],
-                                style: TextStyle(
-                                  letterSpacing: 0.7,
-                                  fontSize: 13,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
+          sliverGridMenu(),
+          SliverToBoxAdapter(
+            child: Divider(),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              margin: EdgeInsets.only(top: 20, left: 8, right: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Promotions",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      letterSpacing: 0.7,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Text(
+                      'See All',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: HexColor('#E07B36'),
+                        letterSpacing: 0.7,
                       ),
                     ),
-                  );
-                },
-                childCount: 8,
+                  )
+                ],
               ),
             ),
+          ),
+          SliverToBoxAdapter(
+            child: PromotionListView(),
           ),
         ],
       ),
@@ -155,6 +151,50 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget sliverGridMenu() {
+    return SliverPadding(
+      padding: EdgeInsets.only(top: 20),
+      sliver: SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return Material(
+              color: Colors.white,
+              child: InkWell(
+                onTap: () {},
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Image.asset(
+                        _assetsMenu[index],
+                        height: 50,
+                      ),
+                      Flexible(
+                        child: Text(
+                          _menuName[index],
+                          style: TextStyle(
+                            letterSpacing: 0.7,
+                            fontSize: 13,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+          childCount: 8,
+        ),
       ),
     );
   }
