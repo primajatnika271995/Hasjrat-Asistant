@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PromotionListView extends StatefulWidget {
   final Function callback;
@@ -11,12 +14,16 @@ class PromotionListView extends StatefulWidget {
 class _PromotionListViewState extends State<PromotionListView> with TickerProviderStateMixin {
   AnimationController animationController;
 
+  bool loadImage = true;
+
   @override
   void initState() {
     // TODO: implement initState
     animationController = AnimationController(
         duration: Duration(milliseconds: 2000), vsync: this);
-
+    Timer(Duration(seconds: 3), () {
+      setState(() => loadImage = false);
+    });
     super.initState();
   }
 
@@ -34,7 +41,7 @@ class _PromotionListViewState extends State<PromotionListView> with TickerProvid
       child: Container(
         height: 160,
         width: double.infinity,
-        child: ListView.builder(
+        child: loadImage ? _loadingImageAnimation(context) : ListView.builder(
           padding:
           const EdgeInsets.only(top: 0, bottom: 0, right: 3, left: 3),
           itemCount: 4,
@@ -56,8 +63,16 @@ class _PromotionListViewState extends State<PromotionListView> with TickerProvid
         ),
       ),
     );
-
   }
+
+  Widget _loadingImageAnimation(BuildContext context) {
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (BuildContext context, int index) => PromotionViewShimmer(),
+      itemCount: 2,
+    );
+  }
+
 }
 
 class PromotionView extends StatelessWidget {
@@ -97,7 +112,7 @@ class PromotionView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                         image: DecorationImage(
                           image: NetworkImage(
-                              'http://gamh.org/wp-content/uploads/2019/02/news.png'),
+                              'https://dummyimage.com/hd1080'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -112,4 +127,34 @@ class PromotionView extends StatelessWidget {
     );
   }
 }
+
+class PromotionViewShimmer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      color: Colors.grey[50],
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5)),
+      child: Shimmer.fromColors(
+        baseColor: Colors.black38,
+        highlightColor: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: 250,
+              height: 148,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.black12,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
