@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/reminder_page/add_reminder.dart';
 
 class ReminderListView extends StatefulWidget {
   @override
@@ -28,6 +29,22 @@ class _ReminderListViewState extends State<ReminderListView> {
     setState(() {
       selectionData = val;
     });
+  }
+
+  void _onAddReminderNavigation() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => ReminderAddView(),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -111,6 +128,13 @@ class _ReminderListViewState extends State<ReminderListView> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _onAddReminderNavigation();
+        },
+        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: HexColor('#E07B36'),
       ),
     );
   }
