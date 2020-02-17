@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/app_theme.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/home_page/list_promotion.dart';
+import 'package:salles_tools/src/views/reminder_page/list_reminder.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -33,6 +34,14 @@ class _HomeScreenState extends State<HomeScreen> {
     "assets/icons/prospect_costumer_icon.png",
     "assets/icons/reminder_icon.png",
   ];
+
+  List _menuNavigation = [
+    ReminderListView(),
+  ];
+
+  @override
+  // TODO: implement context
+  BuildContext get context => super.context;
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +176,21 @@ class _HomeScreenState extends State<HomeScreen> {
             return Material(
               color: Colors.white,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => _menuNavigation[0],
+                      transitionDuration: Duration(milliseconds: 150),
+                      transitionsBuilder:
+                          (_, Animation<double> animation, __, Widget child) {
+                        return Opacity(
+                          opacity: animation.value,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 5),
                   child: Column(
