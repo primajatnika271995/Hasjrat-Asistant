@@ -118,7 +118,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
-              errorText: 'Task Type Wajib diisi',
+              errorText: 'Task Type harus diisi',
               contentPadding:
               EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
@@ -160,7 +160,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       child: TextField(
         decoration: InputDecoration(
           hintText: 'Task Description',
-          errorText: 'Task Description wajib diisi',
+          errorText: 'Task Description harus diisi',
           border: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -198,7 +198,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
             keyboardType: TextInputType.datetime,
             decoration: InputDecoration(
               hintText: 'Select Date',
-              errorText: 'Tanggal wajib diisi',
+              errorText: 'Tanggal harus diisi',
               prefixIcon: Icon(Icons.calendar_today),
               border: UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -238,7 +238,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
             keyboardType: TextInputType.datetime,
             decoration: InputDecoration(
               hintText: 'Select Time',
-              errorText: 'Waktu wajib diisi',
+              errorText: 'Waktu harus diisi',
               prefixIcon: Icon(Icons.access_time),
               border: UnderlineInputBorder(
                 borderSide: BorderSide(

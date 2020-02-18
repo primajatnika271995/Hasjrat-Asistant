@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Hasjrat Salles Tools"
+        android:label="Hasjrat Sales Tools"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
