@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/app_theme.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/home_page/list_promotion.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/list_prospect_customer.dart';
 import 'package:salles_tools/src/views/reminder_page/list_reminder.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -36,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List _menuNavigation = [
+    ProspectCustomerListView(),
     ReminderListView(),
   ];
 
