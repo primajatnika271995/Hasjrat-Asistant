@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_customer.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/details_prospect_customer.dart';
 
 class ProspectCustomerListView extends StatefulWidget {
   @override
@@ -14,6 +15,22 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProspectAddView(),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onViewDetailsProspectCustomer() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => ProspectDetailsView(),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -46,52 +63,11 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
       body: ListView.builder(
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return Slidable(
-            actionPane: SlidableDrawerActionPane(),
-            actionExtentRatio: 0.25,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Card(
-                elevation: 3,
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.indigoAccent,
-                    foregroundColor: Colors.white,
-                    backgroundImage: NetworkImage(ProspectCustomer.getProspect()[index].urlProfile),
-                  ),
-                  title: Text("Customer $index"),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.only(right: 230),
-                    child: Container(
-                      height: 18,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: ProspectCustomer.getProspect()[index].colors,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "${ProspectCustomer.getProspect()[index].contextType}",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 9,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            secondaryActions: <Widget>[
-              IconSlideAction(
-                caption: 'Delete',
-                color: Colors.red,
-                icon: Icons.delete,
-                onTap: () {},
-              ),
-            ],
+          return SlidableCustomerView(
+            index: index,
+            callback: () {
+              _onViewDetailsProspectCustomer();
+            },
           );
         },
         itemCount: ProspectCustomer.getProspect().length,
@@ -106,6 +82,67 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
     );
   }
 }
+
+class SlidableCustomerView extends StatelessWidget {
+  final Function callback;
+  final int index;
+  SlidableCustomerView({Key key, this.callback, this.index}): super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.25,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Card(
+          elevation: 3,
+          child: ListTile(
+            onTap: () {
+              this.callback();
+            },
+            leading: CircleAvatar(
+              backgroundColor: Colors.indigoAccent,
+              foregroundColor: Colors.white,
+              backgroundImage: NetworkImage(ProspectCustomer.getProspect()[index].urlProfile),
+            ),
+            title: Text("Customer $index"),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(right: 230),
+              child: Container(
+                height: 18,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: ProspectCustomer.getProspect()[index].colors,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Center(
+                  child: Text(
+                    "${ProspectCustomer.getProspect()[index].contextType}",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: 'Delete',
+          color: Colors.red,
+          icon: Icons.delete,
+          onTap: () {},
+        ),
+      ],
+    );
+  }
+}
+
 
 class ProspectCustomer {
   String urlProfile;
