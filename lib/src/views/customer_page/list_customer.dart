@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/views/customer_page/details_customer.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class CustomerListView extends StatefulWidget {
@@ -25,6 +26,22 @@ class _CustomerListViewState extends State<CustomerListView> {
     '0',
     'P',
   ];
+
+  void _onViewDetailsCustomer() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => CustomerDetailsView(),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,12 +138,17 @@ class _CustomerListViewState extends State<CustomerListView> {
                         var dataCustomer = Customer.getCustomer().where((f) => f.customerName.substring(0, 1).toUpperCase() == _alphabet[index]).toList();
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("${dataCustomer[indexChild].customerName}"),
-                              Text("●", style: TextStyle(color: dataCustomer[indexChild].contextColor),),
-                            ],
+                          child: InkWell(
+                            onTap: () {
+                              _onViewDetailsCustomer();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("${dataCustomer[indexChild].customerName}"),
+                                Text("●", style: TextStyle(color: dataCustomer[indexChild].contextColor),),
+                              ],
+                            ),
                           ),
                         );
                       },
