@@ -61,6 +61,10 @@ dependencies:
   # Customizable Icons for Flutter
   flutter_icons: ^1.0.0+1
 
+  # Lets you place headers on scrollable content that will stick to the top of the
+  # container whilst the content is scrolled.
+  sticky_headers: ^0.1.8+1
+
   # Flutter widgets that make it easy to implement the BLoC design pattern.
   flutter_bloc: ^3.0.0
 

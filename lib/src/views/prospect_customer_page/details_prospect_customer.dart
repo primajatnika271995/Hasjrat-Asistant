@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProspectDetailsView extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class ProspectDetailsView extends StatefulWidget {
 }
 
 class _ProspectDetailsViewState extends State<ProspectDetailsView> {
+  
   ContextType _currentSelectContext;
 
   @override
@@ -398,7 +400,9 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
       child: Container(
         width: screenWidth(context),
         child: RaisedButton(
-          onPressed: () {},
+          onPressed: () {
+//            launch("tel://1");
+          },
           child: Text("Call", style: TextStyle(color: Colors.white),),
           color: Colors.brown,
           shape: RoundedRectangleBorder(
