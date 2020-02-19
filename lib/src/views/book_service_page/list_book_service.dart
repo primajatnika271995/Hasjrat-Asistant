@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/book_service_page/add_book_service.dart';
 
 class BookServiceListView extends StatefulWidget {
   @override
@@ -8,6 +9,23 @@ class BookServiceListView extends StatefulWidget {
 }
 
 class _BookServiceListViewState extends State<BookServiceListView> {
+
+  void _onAddBookService() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BookServiceAddView(),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +55,7 @@ class _BookServiceListViewState extends State<BookServiceListView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          _onAddBookService();
         },
         child: Icon(Icons.add, color: Colors.white),
         backgroundColor: HexColor('#E07B36'),
