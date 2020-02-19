@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/home_page/home_screen.dart';
+import 'package:salles_tools/src/views/profile_page/profile_screen.dart';
 
 class BottomNavigationDrawer extends StatefulWidget {
   @override
@@ -18,9 +19,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
     Center(
       child: Text("Dashboard"),
     ),
-    Center(
-      child: Text("Profile"),
-    ),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -37,23 +36,23 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem> [
           BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/home_icon.png', height: 30, color: HexColor('#665C55'),),
-            activeIcon: Image.asset('assets/icons/home_icon.png', height: 30,),
+            icon: Image.asset('assets/icons/home_icon.png', height: 25, color: HexColor('#665C55'),),
+            activeIcon: Image.asset('assets/icons/home_icon.png', height: 25,),
             title: Text("Home"),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/notification_icon.png', height: 30, color: HexColor('#665C55'),),
-            activeIcon: Image.asset('assets/icons/notification_icon.png', height: 30,),
+            icon: Image.asset('assets/icons/notification_icon.png', height: 25, color: HexColor('#665C55'),),
+            activeIcon: Image.asset('assets/icons/notification_icon.png', height: 25,),
             title: Text("Notification"),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/dashboard_icon.png', height: 30, color: HexColor('#665C55'),),
-            activeIcon: Image.asset('assets/icons/dashboard_icon.png', height: 30,),
+            icon: Image.asset('assets/icons/dashboard_icon.png', height: 25, color: HexColor('#665C55'),),
+            activeIcon: Image.asset('assets/icons/dashboard_icon.png', height: 25,),
             title: Text("Dashboard"),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/profile_icon.png', height: 30, color: HexColor('#665C55'),),
-            activeIcon: Image.asset('assets/icons/profile_icon.png', height: 30,),
+            icon: Image.asset('assets/icons/profile_icon.png', height: 25, color: HexColor('#665C55'),),
+            activeIcon: Image.asset('assets/icons/profile_icon.png', height: 25,),
             title: Text("Profile"),
           ),
         ],

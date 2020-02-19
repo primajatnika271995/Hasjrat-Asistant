@@ -2,8 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/app_theme.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/book_service_page/list_book_service.dart';
+import 'package:salles_tools/src/views/book_test_drive_page/list_book_test_drive.dart';
+import 'package:salles_tools/src/views/calculator_page/calculator_screen.dart';
+import 'package:salles_tools/src/views/catalog_page/catalog_screen.dart';
 import 'package:salles_tools/src/views/customer_page/list_customer.dart';
 import 'package:salles_tools/src/views/home_page/list_promotion.dart';
+import 'package:salles_tools/src/views/knowledge_base_page/knowledge_base_screen.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/list_prospect_customer.dart';
 import 'package:salles_tools/src/views/reminder_page/list_reminder.dart';
 
@@ -38,6 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List _menuNavigation = [
+    BookTestDriveListView(),
+    CatalogScreen(),
+    CalculatorScreen(),
+    KnowledgeBaseScreen(),
+    BookServiceListView(),
     CustomerListView(),
     ProspectCustomerListView(),
     ReminderListView(),
@@ -183,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.of(context).push(
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => _menuNavigation[0],
+                      pageBuilder: (_, __, ___) => _menuNavigation[index],
                       transitionDuration: Duration(milliseconds: 150),
                       transitionsBuilder:
                           (_, Animation<double> animation, __, Widget child) {

@@ -65,6 +65,9 @@ dependencies:
   # container whilst the content is scrolled.
   sticky_headers: ^0.1.8+1
 
+  # Circular and Linear percent indicators
+  percent_indicator: ^2.1.1+1
+
   # Flutter widgets that make it easy to implement the BLoC design pattern.
   flutter_bloc: ^3.0.0
 
