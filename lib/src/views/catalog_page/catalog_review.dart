@@ -18,46 +18,6 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
           featureReview(),
         ],
       ),
-      bottomNavigationBar: Row(
-        children: <Widget>[
-          Expanded(
-            child: ButtonTheme(
-              height: 60,
-              child: RaisedButton(
-                onPressed: () {},
-                child: Text(
-                  'Booking Test Drive',
-                  style: TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 1.0,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                color: HexColor('#E07B36'),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ButtonTheme(
-              height: 60,
-              child: RaisedButton(
-                onPressed: () {},
-                child: Text(
-                  'Calculator',
-                  style: TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 1.0,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                color: HexColor('#665C55'),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 

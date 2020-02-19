@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/catalog_page/catalog_accessories.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_review.dart';
 import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
 
@@ -51,11 +52,49 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
               Center(
                 child: Text("C"),
               ),
-              Center(
-                child: Text("D"),
-              ),
+              CatalogAccessoriesView(),
             ],
           ),
+        ),
+        bottomNavigationBar: Row(
+          children: <Widget>[
+            Expanded(
+              child: ButtonTheme(
+                height: 60,
+                child: RaisedButton(
+                  onPressed: () {},
+                  child: Text(
+                    'Booking Test Drive',
+                    style: TextStyle(
+                      color: Colors.white,
+                      letterSpacing: 1.0,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  color: HexColor('#E07B36'),
+                ),
+              ),
+            ),
+            Expanded(
+              child: ButtonTheme(
+                height: 60,
+                child: RaisedButton(
+                  onPressed: () {},
+                  child: Text(
+                    'Calculator',
+                    style: TextStyle(
+                      color: Colors.white,
+                      letterSpacing: 1.0,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  color: HexColor('#665C55'),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
