@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/views/profile_page/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -9,6 +10,23 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  void _onEditProfile() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => ProfileEditView(),
+        transitionDuration: Duration(milliseconds: 750),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,16 +181,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.only(left: 20, right: 40),
       child: Column(
         children: <Widget>[
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 50,
-            backgroundImage: NetworkImage(
-                "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
+          Hero(
+            tag: "profile-image",
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 50,
+              backgroundImage: NetworkImage(
+                  "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
+            ),
           ),
           ButtonTheme(
             height: 20,
             child: OutlineButton(
-              onPressed: () {},
+              onPressed: () {
+                _onEditProfile();
+              },
               highlightElevation: 3,
               highlightedBorderColor: HexColor('#E07B36'),
               borderSide: BorderSide(
