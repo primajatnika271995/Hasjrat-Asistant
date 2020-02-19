@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/utils/hex_converter.dart';
 
 class TrustyHorizontalMenu extends StatefulWidget {
   final List<dynamic> list;
@@ -41,7 +42,7 @@ class _TrustyHorizontalMenuState extends State<TrustyHorizontalMenu> {
                   height: 3,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.cyan
+                      color: HexColor('#E07B36'),
                   ),
                 ) : Container(),
               ],

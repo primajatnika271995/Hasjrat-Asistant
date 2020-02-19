@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/catalog_page/details_selection_catalog.dart';
 import 'package:salles_tools/src/views/components/trusty_horizontal_menu.dart';
 
 class CatalogScreen extends StatefulWidget {
@@ -8,6 +9,25 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
+
+  void _onSeeDetails(String heroName) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => DetailsCatalogView(
+          heroName: heroName,
+        ),
+        transitionDuration: Duration(milliseconds: 750),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,16 +100,19 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(9.0),
-                                topRight: Radius.circular(9.0),
+                          child: Hero(
+                            tag: "catalog-image$i",
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(9.0),
+                                  topRight: Radius.circular(9.0),
+                                ),
+                                color: Color(0xffe5e6ea),
                               ),
-                              color: Color(0xffe5e6ea),
+                              child: Image.network(
+                                  "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png"),
                             ),
-                            child: Image.network(
-                                "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png"),
                           ),
                         ),
                         Padding(
@@ -99,14 +122,18 @@ class _CatalogScreenState extends State<CatalogScreen> {
                             children: <Widget>[
                               Text(
                                 "Toyota Camry",
-                                style: Theme.of(context).textTheme.title,
+                                style: TextStyle(
+                                  letterSpacing: 0.8,
+                                  fontSize: 18,
+                                ),
                               ),
                               Text(
-                                "2019 Auto",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subhead
-                                    .apply(color: Colors.grey[500]),
+                                "LE Auto",
+                                style: TextStyle(
+                                  letterSpacing: 0.8,
+                                  fontSize: 13,
+                                  color: Colors.grey
+                                ),
                               ),
                               SizedBox(
                                 height: 5.0,
@@ -115,7 +142,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      _onSeeDetails("catalog-image$i");
+                                    },
                                     child: Container(
                                       padding: EdgeInsets.all(5.0),
                                       decoration: BoxDecoration(
