@@ -64,6 +64,9 @@ dependencies:
   # A carousel slider widget, support infinite scroll and custom child widget
   carousel_slider: ^1.4.1
 
+  # Syncfusion Flutter Charts is a data visualization library written natively in Dart
+  syncfusion_flutter_charts: ^17.4.50
+
   # Lets you place headers on scrollable content that will stick to the top of the
   # container whilst the content is scrolled.
   sticky_headers: ^0.1.8+1

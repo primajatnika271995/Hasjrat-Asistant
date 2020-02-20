@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/dashboard_page/dashboard_screen.dart';
 import 'package:salles_tools/src/views/home_page/home_screen.dart';
 import 'package:salles_tools/src/views/profile_page/profile_screen.dart';
 
@@ -16,9 +17,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
     Center(
       child: Text("Notification"),
     ),
-    Center(
-      child: Text("Dashboard"),
-    ),
+    DashboardScreen(),
     ProfileScreen(),
   ];
 
@@ -31,7 +30,10 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _widgetPages.elementAt(_selectedIndex),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _widgetPages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem> [
