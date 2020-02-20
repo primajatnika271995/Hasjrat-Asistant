@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/book_service_page/add_book_service.dart';
+import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -7,6 +9,39 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  void _onBookTestDrive() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BookTestDriveAddView(),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onBookService() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BookServiceAddView(),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +69,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: ButtonTheme(
               height: 60,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  _onBookTestDrive();
+                },
                 child: Text(
                   'Booking Test Drive',
                   style: TextStyle(
@@ -52,7 +89,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: ButtonTheme(
               height: 60,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  _onBookService();
+                },
                 child: Text(
                   'Booking Service',
                   style: TextStyle(

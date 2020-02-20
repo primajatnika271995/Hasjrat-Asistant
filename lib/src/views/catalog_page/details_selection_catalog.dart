@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
+import 'package:salles_tools/src/views/calculator_page/calculator_screen.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_accessories.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_gallery.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_review.dart';
@@ -16,6 +18,38 @@ class DetailsCatalogView extends StatefulWidget {
 
 class _DetailsCatalogViewState extends State<DetailsCatalogView> {
   int _tabLength = 4;
+
+  void _onBookTestDrive() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BookTestDriveAddView(),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onCalculate() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => CalculatorScreen(),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +94,9 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
               child: ButtonTheme(
                 height: 60,
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _onBookTestDrive();
+                  },
                   child: Text(
                     'Booking Test Drive',
                     style: TextStyle(
@@ -78,7 +114,9 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
               child: ButtonTheme(
                 height: 60,
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _onCalculate();
+                  },
                   child: Text(
                     'Calculator',
                     style: TextStyle(
