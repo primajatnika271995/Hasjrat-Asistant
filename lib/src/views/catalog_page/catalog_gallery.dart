@@ -9,19 +9,41 @@ class CatalogGalleryView extends StatefulWidget {
 class _CatalogGalleryViewState extends State<CatalogGalleryView> {
   int _currentImage = 0;
 
-  static List<String> imgList = [
+  List<String> _imgInterior = [
     'https://www.wardsauto.com/sites/wardsauto.com/files/styles/article_featured_retina/public/uploads/2018/04/cockpit1214.jpg?itok=hEG-1vUM',
     'https://www.peruzzi.com/assets/stock/expanded/white/640/2020toc02_640/2020toc020065_640_28.jpg?height=400',
     'https://static.tcimg.net/vehicles/oem/56cdc6d21886d2c3/2020-Toyota-Camry.jpg',
   ];
 
-  static List<T> map<T>(List list, Function handler) {
-    List<T> result = [];
-    for (var i = 0; i < list.length; i++) {
-      result.add(handler(i, list[i]));
-    }
-
-    return result;
+  void _onShowFullImage(String tag, String img) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (context, _, __) {
+          return Material(
+            color: Colors.black54,
+            child: Container(
+              padding: EdgeInsets.all(30),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Hero(
+                  tag: tag,
+                  child: Image.network(
+                    img,
+                    width: 300.0,
+                    height: 300.0,
+                    alignment: Alignment.center,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -56,7 +78,68 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
 
   Widget sliderContent() {
     final slider = CarouselSlider(
-      items: child,
+      items: _imgInterior
+          .asMap()
+          .map(
+            (i, element) {
+              return MapEntry(
+                i,
+                Container(
+                  margin: EdgeInsets.all(5.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    child: Stack(children: <Widget>[
+                      Hero(
+                        tag: "catalog-gallery-$i",
+                        child: Material(
+                          child: InkWell(
+                            onTap: () {
+                              _onShowFullImage("catalog-gallery-$i", element);
+                            },
+                            child: Image.network(
+                              element,
+                              fit: BoxFit.cover,
+                              width: 1000.0,
+                              height: 10000.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0.0,
+                        left: 0.0,
+                        right: 0.0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromARGB(200, 0, 0, 0),
+                                Color.fromARGB(0, 0, 0, 0)
+                              ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                            ),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                          child: Text(
+                            'Interior $i',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
+                  ),
+                ),
+              );
+            },
+          )
+          .values
+          .toList(),
       autoPlay: false,
       enlargeCenterPage: true,
       viewportFraction: 0.5,
@@ -83,7 +166,7 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                 icon: Icon(Icons.navigate_before),
               ),
             ),
-            Text("${_currentImage + 1} / ${imgList.length}"),
+            Text("${_currentImage + 1} / ${_imgInterior.length}"),
             Flexible(
               child: IconButton(
                 onPressed: () => slider.nextPage(
@@ -98,45 +181,4 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
       ],
     );
   }
-
-  final List child = map<Widget>(
-    imgList,
-    (index, i) {
-      return Container(
-        margin: EdgeInsets.all(5.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          child: Stack(children: <Widget>[
-            Image.network(i, fit: BoxFit.cover, width: 1000.0),
-            Positioned(
-              bottom: 0.0,
-              left: 0.0,
-              right: 0.0,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(200, 0, 0, 0),
-                      Color.fromARGB(0, 0, 0, 0)
-                    ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                child: Text(
-                  'Interior ${index + 1}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ]),
-        ),
-      );
-    },
-  ).toList();
 }
