@@ -74,6 +74,9 @@ dependencies:
   # A Flutter plugin for Android and iOS supports cropping images.
   image_cropper: ^1.2.1
 
+  # Masked text input for flutter.
+  flutter_masked_text: ^0.8.0
+
   # Flutter widgets that make it easy to implement the BLoC design pattern.
   flutter_bloc: ^3.0.0
 
