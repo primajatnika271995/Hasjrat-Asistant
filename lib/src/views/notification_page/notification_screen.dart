@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/notification_page/notification_birthday.dart';
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -7,6 +8,23 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+
+  void _onCheckCustomerBirthday() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => NotificationBirthdayView(),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +85,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
               trailing: IconButton(
                 icon: Icon(Icons.navigate_next),
-                onPressed: () {},
+                onPressed: () {
+                  _onCheckCustomerBirthday();
+                },
               ),
             ),
             ListTile(
