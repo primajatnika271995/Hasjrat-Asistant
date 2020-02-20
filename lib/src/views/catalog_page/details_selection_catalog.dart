@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_accessories.dart';
+import 'package:salles_tools/src/views/catalog_page/catalog_gallery.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_review.dart';
 import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
 
@@ -46,9 +47,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           body: TabBarView(
             children: <Widget>[
               CatalogReviewView(),
-              Center(
-                child: Text("B"),
-              ),
+              CatalogGalleryView(),
               Center(
                 child: Text("C"),
               ),
