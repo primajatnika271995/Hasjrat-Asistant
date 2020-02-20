@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/views/dashboard_page/bar_chart.dart';
 import 'package:salles_tools/src/views/dashboard_page/radial_chart.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -39,7 +40,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15, top: 10),
+                  padding: const EdgeInsets.only(left: 15, top: 20),
                   child: Text(
                     "Your Target",
                     style: TextStyle(
@@ -50,7 +51,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 15, top: 5, bottom: 5),
                   child: Container(
                     width: screenWidth(context),
                     decoration: BoxDecoration(
@@ -84,6 +86,95 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(blurRadius: 13.0, color: Colors.black26),
+                ],
+              ),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20, bottom: 15),
+                    child: BarChartView(),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Card(
+                        elevation: 7,
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10,
+                                  right: 10,
+                                  top: 15,
+                                  bottom: 2,
+                                ),
+                                child: Text(
+                                  "Penjualan Terendah",
+                                  style: TextStyle(
+                                    letterSpacing: 1.0,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10,
+                                  bottom: 15,
+                                ),
+                                child: Text(
+                                  "3 orang",
+                                  style: TextStyle(
+                                    letterSpacing: 0.8,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        elevation: 7,
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10,
+                                  right: 10,
+                                  top: 15,
+                                  bottom: 2,
+                                ),
+                                child: Text(
+                                  "Penjualan Tertinggi",
+                                  style: TextStyle(
+                                    letterSpacing: 1.0,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10,
+                                  bottom: 15,
+                                ),
+                                child: Text(
+                                  "102 orang",
+                                  style: TextStyle(
+                                    letterSpacing: 0.8,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

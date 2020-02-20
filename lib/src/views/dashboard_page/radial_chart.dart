@@ -51,7 +51,7 @@ class _RadialChartViewState extends State<RadialChartView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: 170,
       child: SfCircularChart(
         annotations: <CircularChartAnnotation>[
           CircularChartAnnotation(
