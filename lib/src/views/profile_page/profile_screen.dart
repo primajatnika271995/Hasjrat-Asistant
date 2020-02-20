@@ -45,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           flexibleSpace: Padding(
-            padding: const EdgeInsets.only(top: 80),
+            padding: const EdgeInsets.only(top: 70),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,76 +102,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          ListTile(
-            onTap: null,
-            title: Text("Change Password"),
-            leading: Icon(Icons.lock_outline),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.navigate_next),
-            ),
-          ),
-          Divider(),
-          ListTile(
-            onTap: null,
-            title: Text("Term of Service"),
-            leading: Icon(Icons.info_outline),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.navigate_next),
-            ),
-          ),
-          Divider(),
-          ListTile(
-            onTap: null,
-            title: Text("Privacy Police"),
-            leading: Icon(Icons.security),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.navigate_next),
-            ),
-          ),
-          Divider(),
-          ListTile(
-            onTap: null,
-            title: Text("About"),
-            leading: Icon(Icons.format_color_text),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.navigate_next),
-            ),
-          ),
-          Divider(),
-          ListTile(
-            onTap: null,
-            title: Text("Rate App"),
-            leading: Icon(Icons.star_border),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.navigate_next),
-            ),
-          ),
-          Divider(),
-          ListTile(
-            onTap: null,
-            title: Text(
-              "Logout",
-              style: TextStyle(
-                color: Colors.red,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              onTap: null,
+              title: Text("Change Password"),
+              leading: Icon(Icons.lock_outline),
+              trailing: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.navigate_next),
               ),
             ),
-            leading: Icon(
-              Icons.exit_to_app,
-              color: Colors.red,
+            Divider(),
+            ListTile(
+              onTap: null,
+              title: Text("Term of Service"),
+              leading: Icon(Icons.info_outline),
+              trailing: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.navigate_next),
+              ),
             ),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.navigate_next),
+            Divider(),
+            ListTile(
+              onTap: null,
+              title: Text("Privacy Police"),
+              leading: Icon(Icons.security),
+              trailing: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.navigate_next),
+              ),
             ),
-          ),
-        ],
+            Divider(),
+            ListTile(
+              onTap: null,
+              title: Text("About"),
+              leading: Icon(Icons.format_color_text),
+              trailing: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.navigate_next),
+              ),
+            ),
+            Divider(),
+            ListTile(
+              onTap: null,
+              title: Text("Rate App"),
+              leading: Icon(Icons.star_border),
+              trailing: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.navigate_next),
+              ),
+            ),
+            Divider(),
+            ListTile(
+              onTap: null,
+              title: Text(
+                "Logout",
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+              leading: Icon(
+                Icons.exit_to_app,
+                color: Colors.red,
+              ),
+              trailing: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.navigate_next),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
