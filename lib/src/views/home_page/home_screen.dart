@@ -124,6 +124,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Image.asset(
+                          "assets/icons/logo_header_icon.png",
+                          height: 50,
+                        ),
                         Text(
                           "Selamat Datang",
                           style: AppTheme.selamatDatangStyle,
