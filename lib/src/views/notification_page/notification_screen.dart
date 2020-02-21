@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/notification_page/notification_birthday.dart';
@@ -14,8 +16,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => NotificationBirthdayView(),
         transitionDuration: Duration(milliseconds: 150),
-        transitionsBuilder:
-            (_, Animation<double> animation, __, Widget child) {
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
             opacity: animation.value,
             child: child,
@@ -23,6 +24,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -64,7 +71,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ),
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 2, horizontal: 5),
                         child: Text(
                           "1",
                           style: TextStyle(
