@@ -29,10 +29,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _widgetPages,
-      ),
+      body: _widgetPages.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem> [

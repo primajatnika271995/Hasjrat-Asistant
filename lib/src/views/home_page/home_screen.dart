@@ -110,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SliverAppBar(
       expandedHeight: 200,
       backgroundColor: AppTheme.white,
+      automaticallyImplyLeading: false,
       flexibleSpace: Stack(
         children: <Widget>[
           Center(

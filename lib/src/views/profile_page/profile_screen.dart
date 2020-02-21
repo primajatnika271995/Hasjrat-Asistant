@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/views/login_page/login_screen.dart';
 import 'package:salles_tools/src/views/profile_page/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -15,6 +16,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProfileEditView(),
+        transitionDuration: Duration(milliseconds: 750),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onLogin() {
+    Navigator.of(context).pushReplacement(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => LoginScreen(),
         transitionDuration: Duration(milliseconds: 750),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -168,7 +185,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: Colors.red,
               ),
               trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  _onLogin();
+                },
                 icon: Icon(Icons.navigate_next),
               ),
             ),
