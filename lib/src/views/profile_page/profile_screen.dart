@@ -52,6 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         preferredSize: Size.fromHeight(200),
         child: AppBar(
           backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
           elevation: 5,
           title: Text(
             "My Profile",
