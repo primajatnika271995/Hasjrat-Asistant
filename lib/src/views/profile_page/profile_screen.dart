@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
+import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/login_page/login_screen.dart';
 import 'package:salles_tools/src/views/profile_page/edit_profile.dart';
 
@@ -31,7 +35,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _onLogin() {
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => LoginScreen(),
+        pageBuilder: (_, __, ___) => BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(LoginService()),
+          child: LoginScreen(),
+        ),
         transitionDuration: Duration(milliseconds: 750),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {

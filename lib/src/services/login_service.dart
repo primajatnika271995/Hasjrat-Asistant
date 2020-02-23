@@ -39,7 +39,6 @@ class LoginService {
       return compute(authenticationModelFromJson, json.encode(response.data));
     } catch (error) {
       log.warning(error.toString());
-      _dio.close();
     }
     return null;
   }
