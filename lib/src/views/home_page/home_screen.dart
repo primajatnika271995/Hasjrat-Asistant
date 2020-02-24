@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/app_theme.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/book_service_page/list_book_service.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/list_book_test_drive.dart';
 import 'package:salles_tools/src/views/calculator_page/calculator_screen.dart';
@@ -19,6 +21,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  var _salesName;
 
   List<String> _menuName = [
     "Book Test Drive",
@@ -52,6 +56,18 @@ class _HomeScreenState extends State<HomeScreen> {
     ProspectCustomerListView(),
     ReminderListView(),
   ];
+
+  void _getPreferences() async {
+    _salesName = await SharedPreferencesHelper.getSalesName();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _getPreferences();
+    super.initState();
+  }
 
   @override
   // TODO: implement context
@@ -113,35 +129,56 @@ class _HomeScreenState extends State<HomeScreen> {
       automaticallyImplyLeading: false,
       flexibleSpace: Stack(
         children: <Widget>[
+          Positioned(
+            top: paddingTop(context),
+            left: 0,
+            child: Image.asset(
+              "assets/icons/logo_header_icon.png",
+              height: 50,
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            child: Container(
+              height: 85,
+              width: 85,
+              decoration: BoxDecoration(
+                color: HexColor('#E07B36'),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(100),
+                ),
+              ),
+            ),
+          ),
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 30),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Image.asset(
-                          "assets/icons/logo_header_icon.png",
-                          height: 50,
-                        ),
-                        Text(
+                Padding(
+                  padding: EdgeInsets.only(top: paddingTop(context), left: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 60),
+                        child: Text(
                           "Selamat Datang",
                           style: AppTheme.selamatDatangStyle,
                         ),
-                        Text(
-                          "{Salles Hasjrat Name}",
+                      ),
+                      Expanded(
+                        child: Text(
+                          "$_salesName",
                           style: AppTheme.namaSalesStyle,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 20),
+                  padding: const EdgeInsets.only(right: 40),
                   child: Image.asset(
                     "assets/icons/header_icon.png",
                     height: 170,
@@ -152,28 +189,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Positioned(
             top: 0,
-            left: 0,
+            right: 0,
             child: Container(
               height: 85,
               width: 85,
               decoration: BoxDecoration(
                 color: HexColor('#665C55'),
                 borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(100),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                color: HexColor('#E07B36'),
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(100),
+                  bottomLeft: Radius.circular(100),
                 ),
               ),
             ),
