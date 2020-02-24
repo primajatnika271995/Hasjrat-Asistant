@@ -28,5 +28,24 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         yield CheckNIKFailed();
       }
     }
+
+    if (event is PostRegister) {
+      yield RegisterLoading();
+
+      try {
+        EmployeeModel value = await loginService.register(event.value);
+
+        if (value.email != null || value.email.isNotEmpty) {
+          yield RegisterSuccess(value);
+        } else {
+          log.warning("err coy");
+          yield RegisterFailed();
+        }
+
+      } catch(err) {
+        log.warning("err coy :${err.toString()}");
+        yield RegisterFailed();
+      }
+    }
   }
 }

@@ -46,7 +46,7 @@ class LoginService {
 
   Future<EmployeeModel> checkNIK(String nik) async {
     try {
-      final response = await _dio.get(UriApi.checkEmployee + '/$nik/findEmployeeMutationById',
+      final response = await _dio.get(UriApi.checkEmployeeUri + '/$nik/findEmployeeMutationById',
         queryParameters: {
         'isMutation': false,
         },
@@ -58,4 +58,36 @@ class LoginService {
     }
     return null;
   }
+
+  Future<EmployeeModel> register(RegisterPost value) async {
+    try {
+      final response = await _dio.post(UriApi.registerUri,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        ),
+        data: {
+          "username": value.username,
+          "password": value.password,
+          "email": value.email
+        },
+      );
+
+      log.info(response.statusCode);
+      return compute(employeeModelFromJson, json.encode(response.data));
+
+    } catch (error) {
+      log.warning("Err : ${error.toString()}");
+    }
+    return null;
+  }
+}
+
+class RegisterPost {
+  String username;
+  String password;
+  String email;
+
+  RegisterPost({this.username, this.password, this.email});
 }

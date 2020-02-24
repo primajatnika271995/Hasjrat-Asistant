@@ -10,16 +10,15 @@ String employeeModelToJson(EmployeeModel data) => json.encode(data.toJson());
 
 class EmployeeModel {
   String id;
-  String name;
+  String username;
+  String email;
+  bool active;
+  String jenisKelamin;
   String type;
   String educationLevel;
   String eductionMajor;
-  bool resign;
   String joinDate;
-  String mutationDate;
   DateTime birthDate;
-  bool bdeleted;
-  String jenisKelamin;
   Branch branch;
   Branch outlet;
   Branch location;
@@ -29,16 +28,15 @@ class EmployeeModel {
 
   EmployeeModel({
     this.id,
-    this.name,
+    this.username,
+    this.email,
+    this.active,
+    this.jenisKelamin,
     this.type,
     this.educationLevel,
     this.eductionMajor,
-    this.resign,
     this.joinDate,
-    this.mutationDate,
     this.birthDate,
-    this.bdeleted,
-    this.jenisKelamin,
     this.branch,
     this.outlet,
     this.location,
@@ -49,16 +47,15 @@ class EmployeeModel {
 
   factory EmployeeModel.fromJson(Map<String, dynamic> json) => EmployeeModel(
     id: json["id"] == null ? null : json["id"],
-    name: json["name"] == null ? null : json["name"],
+    username: json["username"] == null ? null : json["username"],
+    email: json["email"] == null ? null : json["email"],
+    active: json["active"] == null ? null : json["active"],
+    jenisKelamin: json["jenisKelamin"] == null ? null : json["jenisKelamin"],
     type: json["type"] == null ? null : json["type"],
     educationLevel: json["educationLevel"] == null ? null : json["educationLevel"],
     eductionMajor: json["eductionMajor"] == null ? null : json["eductionMajor"],
-    resign: json["resign"] == null ? null : json["resign"],
     joinDate: json["joinDate"] == null ? null : json["joinDate"],
-    mutationDate: json["mutationDate"] == null ? null : json["mutationDate"],
     birthDate: json["birthDate"] == null ? null : DateTime.parse(json["birthDate"]),
-    bdeleted: json["bdeleted"] == null ? null : json["bdeleted"],
-    jenisKelamin: json["jenisKelamin"] == null ? null : json["jenisKelamin"],
     branch: json["branch"] == null ? null : Branch.fromJson(json["branch"]),
     outlet: json["outlet"] == null ? null : Branch.fromJson(json["outlet"]),
     location: json["location"] == null ? null : Branch.fromJson(json["location"]),
@@ -69,16 +66,15 @@ class EmployeeModel {
 
   Map<String, dynamic> toJson() => {
     "id": id == null ? null : id,
-    "name": name == null ? null : name,
+    "username": username == null ? null : username,
+    "email": email == null ? null : email,
+    "active": active == null ? null : active,
+    "jenisKelamin": jenisKelamin == null ? null : jenisKelamin,
     "type": type == null ? null : type,
     "educationLevel": educationLevel == null ? null : educationLevel,
     "eductionMajor": eductionMajor == null ? null : eductionMajor,
-    "resign": resign == null ? null : resign,
     "joinDate": joinDate == null ? null : joinDate,
-    "mutationDate": mutationDate == null ? null : mutationDate,
     "birthDate": birthDate == null ? null : "${birthDate.year.toString().padLeft(4, '0')}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}",
-    "bdeleted": bdeleted == null ? null : bdeleted,
-    "jenisKelamin": jenisKelamin == null ? null : jenisKelamin,
     "branch": branch == null ? null : branch.toJson(),
     "outlet": outlet == null ? null : outlet.toJson(),
     "location": location == null ? null : location.toJson(),
@@ -111,7 +107,7 @@ class Branch {
 class Section {
   String id;
   String name;
-  String newName;
+  dynamic newName;
 
   Section({
     this.id,
@@ -122,12 +118,12 @@ class Section {
   factory Section.fromJson(Map<String, dynamic> json) => Section(
     id: json["id"] == null ? null : json["id"],
     name: json["name"] == null ? null : json["name"],
-    newName: json["newName"] == null ? null : json["newName"],
+    newName: json["newName"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id == null ? null : id,
     "name": name == null ? null : name,
-    "newName": newName == null ? null : newName,
+    "newName": newName,
   };
 }

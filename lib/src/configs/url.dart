@@ -5,5 +5,7 @@ class UriApi {
 
   static const String loginUri = "/sales-tools-auth-service/oauth/token";
 
-  static const String checkEmployee = "/sales-tools-employees-service/api/v2/employees";
+  static const String checkEmployeeUri = "/sales-tools-employees-service/api/v2/employees";
+
+  static const String registerUri = "/sales-tools-auth-service/api/v2/account/sales/register";
 }
