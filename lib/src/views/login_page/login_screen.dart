@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_event.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_state.dart';
+import 'package:salles_tools/src/bloc/register_bloc/register_bloc.dart';
+import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/bottom_navigation.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
+import 'package:salles_tools/src/views/register_page/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -23,6 +26,25 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => BottomNavigationDrawer(),
+        transitionDuration: Duration(milliseconds: 750),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onRegister() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BlocProvider<RegisterBloc>(
+          create: (context) => RegisterBloc(LoginService()),
+          child: RegisterScreen(),
+        ),
         transitionDuration: Duration(milliseconds: 750),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -228,7 +250,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _onRegister();
+                      },
                       child: Text(
                         "Registration",
                         style: TextStyle(
