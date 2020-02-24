@@ -11,6 +11,7 @@ String employeeModelToJson(EmployeeModel data) => json.encode(data.toJson());
 class EmployeeModel {
   String id;
   String username;
+  String name;
   String email;
   bool active;
   String jenisKelamin;
@@ -29,6 +30,7 @@ class EmployeeModel {
   EmployeeModel({
     this.id,
     this.username,
+    this.name,
     this.email,
     this.active,
     this.jenisKelamin,
@@ -48,6 +50,7 @@ class EmployeeModel {
   factory EmployeeModel.fromJson(Map<String, dynamic> json) => EmployeeModel(
     id: json["id"] == null ? null : json["id"],
     username: json["username"] == null ? null : json["username"],
+    name: json["name"] == null ? null : json["name"],
     email: json["email"] == null ? null : json["email"],
     active: json["active"] == null ? null : json["active"],
     jenisKelamin: json["jenisKelamin"] == null ? null : json["jenisKelamin"],
@@ -67,6 +70,7 @@ class EmployeeModel {
   Map<String, dynamic> toJson() => {
     "id": id == null ? null : id,
     "username": username == null ? null : username,
+    "name": name == null ? null : name,
     "email": email == null ? null : email,
     "active": active == null ? null : active,
     "jenisKelamin": jenisKelamin == null ? null : jenisKelamin,

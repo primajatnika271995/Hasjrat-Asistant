@@ -6,6 +6,7 @@ import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
 import 'package:salles_tools/src/models/employee_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
 class LoginService {
@@ -19,6 +20,8 @@ class LoginService {
   }
 
   Future<AuthenticationModel> login(String username, String password) async {
+    await SharedPreferencesHelper.setAccessToken(null);
+
     var params = {
       "username": username,
       "password": password,

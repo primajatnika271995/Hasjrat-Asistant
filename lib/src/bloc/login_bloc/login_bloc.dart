@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_event.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_state.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
+import 'package:salles_tools/src/models/employee_model.dart';
 import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -21,8 +22,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       try {
         AuthenticationModel value = await loginService.login(event.username, event.password);
-
         await SharedPreferencesHelper.setAccessToken(value.accessToken);
+
+        EmployeeModel employee = await loginService.checkNIK(event.username);
+        await SharedPreferencesHelper.setSalesName(employee.name);
 
         yield LoginSuccess(value);
       } catch(err) {
