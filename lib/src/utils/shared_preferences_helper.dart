@@ -5,7 +5,8 @@ class SharedPreferencesHelper {
   static SharedPreferences _sharedPreferences;
 
   static const String kAccessToken = "accessToken";
-  static const String kSalesName = "accessToken";
+  static const String kSalesName = "salesName";
+  static const String kSalesNIK = "salesNIK";
 
   static Future<SharedPreferencesHelper> getInstance() async {
     if (_instance == null) {
@@ -41,7 +42,7 @@ class SharedPreferencesHelper {
   static Future<String> getSalesName() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    return prefs.getString(kAccessToken) ?? null;
+    return prefs.getString(kSalesName) ?? null;
   }
 
   /// ----------------------------------------------------------
@@ -50,7 +51,25 @@ class SharedPreferencesHelper {
   static Future<bool> setSalesName(String value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    return prefs.setString(kAccessToken, value);
+    return prefs.setString(kSalesName, value);
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the sales NIK, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getSalesNIK() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kSalesNIK) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the sales NIK
+  /// ----------------------------------------------------------
+  static Future<bool> setSalesNIK(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kSalesNIK, value);
   }
 
 

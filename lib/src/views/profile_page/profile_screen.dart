@@ -16,6 +16,9 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
+  var _salesName;
+  var _salesNIK;
+
   void _onEditProfile() {
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -51,6 +54,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  void _getPreferences() async {
+    _salesName = await SharedPreferencesHelper.getSalesName();
+    _salesNIK = await SharedPreferencesHelper.getSalesNIK();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _getPreferences();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "{Sales Username}",
+                          "$_salesName",
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 18,
@@ -90,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         Text(
-                          "{sales@example.com}",
+                          "$_salesNIK",
                           style: TextStyle(
                             fontSize: 13,
                             letterSpacing: 0.8,
