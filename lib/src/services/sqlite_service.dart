@@ -53,17 +53,11 @@ class SqliteService {
     return result;
   }
 
-  Future<int> delete(ReminderSqlite reminder) async {
+  Future<int> delete(int id) async {
     Database db = await _dbHelper.initDB();
-    final sql = '''
-      DELETE FROM ${SqliteService.todoTable}
-      WHERE ${SqliteService.id} = ?
-    ''';
 
-    List<dynamic> params = [reminder.id];
-    final result = await db.rawDelete(sql, params);
-
-    return result;
+    int count = await db.delete(SqliteService.todoTable, where: 'id=?', whereArgs: [id]);
+    return count;
   }
 
   Future<List<ReminderSqlite>> getReminderToday() async {
