@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:salles_tools/src/models/reminder_sqlite_model.dart';
+import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 
@@ -9,7 +11,8 @@ class ReminderAddView extends StatefulWidget {
 }
 
 class _ReminderAddViewState extends State<ReminderAddView> {
-  TaskType _currentSelectTask;
+
+  SqliteService _dbHelper = SqliteService();
 
   final dateFormat = DateFormat("dd MMMM yyyy");
   final timeFormat = DateFormat("h:mm a");
@@ -19,6 +22,12 @@ class _ReminderAddViewState extends State<ReminderAddView> {
 
   var dateSelected = new TextEditingController();
   var timeSelected = new TextEditingController();
+  var taskTypeCtrl = new TextEditingController();
+  var taskDescriptionCtrl = new TextEditingController();
+  var customerNameCtrl = new TextEditingController();
+  var notesCtrl = new TextEditingController();
+
+  TaskType _currentSelectTask;
 
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -46,6 +55,17 @@ class _ReminderAddViewState extends State<ReminderAddView> {
         timeOfDay = picked;
         timeSelected.value = TextEditingValue(text: timeOfDay.format(context));
       });
+  }
+
+  void _onCreateReminder() async {
+    await _dbHelper.insert(ReminderSqlite(
+      'Call',
+      taskDescriptionCtrl.text,
+      'Prima Jatnika',
+      dateSelected.text,
+      timeSelected.text,
+      notesCtrl.text,
+    ));
   }
 
   @override
@@ -92,7 +112,9 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               child: Container(
                 width: screenWidth(context),
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _onCreateReminder();
+                  },
                   child: Text("Create", style: TextStyle(color: Colors.white),),
                   color: HexColor('#E07B36'),
                   shape: RoundedRectangleBorder(
@@ -180,6 +202,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
             ),
           ),
         ),
+        controller: taskDescriptionCtrl,
         maxLines: null,
       ),
     );
@@ -275,6 +298,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
           enabledBorder: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(),
         ),
+        controller: notesCtrl,
         maxLines: 4,
       ),
     );

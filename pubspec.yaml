@@ -95,6 +95,12 @@ dependencies:
   # Logging Data
   simple_logger: ^1.5.1+1
 
+  # SQLite plugin for Flutter.
+  sqflite: ^1.2.1
+
+  # A Flutter plugin for finding commonly used locations on the filesystem.
+  path_provider: ^1.6.1
+
   # RxDart adds additional capabilities to Dart Streams and StreamControllers.
   rxdart: ^0.23.1
 

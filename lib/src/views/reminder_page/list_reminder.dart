@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/reminder_sqlite_model.dart';
+import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/reminder_page/add_reminder.dart';
 
@@ -13,21 +15,38 @@ class _ReminderListViewState extends State<ReminderListView> {
   bool tomorrowIsExpanded = false;
   bool upcomingIsExpanded = false;
 
-  int selectionData;
+  SqliteService _dbHelper = SqliteService();
+  Future<List<ReminderSqlite>> today;
+  Future<List<ReminderSqlite>> tomorrow;
+  Future<List<ReminderSqlite>> upcoming;
 
-  List<String> _todayJob = [
-    "Telfon customer untuk menawarkan mobil Cammry",
-    "Mendatangi bazar mobil di Jakarta Selatan",
-  ];
+  int selectionDataToday;
+  int selectionDataTomorrow;
+  int selectionDataUpcoming;
 
-  List<IconData> _todayIcon = [
-    Icons.phone,
-    Icons.person,
-  ];
-
-  void _setSelectedData(int val) {
+  void _updateListView() {
     setState(() {
-      selectionData = val;
+      today = _dbHelper.getReminderToday();
+      tomorrow = _dbHelper.getReminderTomorrow();
+      upcoming = _dbHelper.getReminderUpcoming();
+    });
+  }
+
+  void _setSelectedToday(int val) {
+    setState(() {
+      selectionDataToday = val;
+    });
+  }
+
+  void _setSelectedTomorrow(int val) {
+    setState(() {
+      selectionDataTomorrow = val;
+    });
+  }
+
+  void _setSelectedUpcoming(int val) {
+    setState(() {
+      selectionDataUpcoming = val;
     });
   }
 
@@ -36,8 +55,7 @@ class _ReminderListViewState extends State<ReminderListView> {
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ReminderAddView(),
         transitionDuration: Duration(milliseconds: 150),
-        transitionsBuilder:
-            (_, Animation<double> animation, __, Widget child) {
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
             opacity: animation.value,
             child: child,
@@ -45,6 +63,13 @@ class _ReminderListViewState extends State<ReminderListView> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _updateListView();
+    super.initState();
   }
 
   @override
@@ -91,12 +116,27 @@ class _ReminderListViewState extends State<ReminderListView> {
               },
               initiallyExpanded: todayIsExpanded,
               children: <Widget>[
-                ListView.builder(
-                  itemCount: 2,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, index) {
-                    return listData(index);
+                FutureBuilder<List<ReminderSqlite>>(
+                  future: today,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return listDataToday(snapshot.data[index], index);
+                        },
+                      );
+                    } else {
+                      return Center(
+                        child: Image.asset(
+                          "assets/icons/empty_icon.png",
+                          height: 100,
+                          color: HexColor('#E07B36'),
+                        ),
+                      );
+                    }
                   },
                 ),
               ],
@@ -112,7 +152,31 @@ class _ReminderListViewState extends State<ReminderListView> {
               onExpansionChanged: (bool val) {
                 setState(() => this.tomorrowIsExpanded = val);
               },
-              children: <Widget>[],
+              children: <Widget>[
+                FutureBuilder<List<ReminderSqlite>>(
+                  future: tomorrow,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return listDataTomorrow(snapshot.data[index], index);
+                        },
+                      );
+                    } else {
+                      return Center(
+                        child: Image.asset(
+                          "assets/icons/empty_icon.png",
+                          height: 100,
+                          color: HexColor('#E07B36'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
             ExpansionTile(
               title: Text(
@@ -125,7 +189,31 @@ class _ReminderListViewState extends State<ReminderListView> {
               onExpansionChanged: (bool val) {
                 setState(() => this.upcomingIsExpanded = val);
               },
-              children: <Widget>[],
+              children: <Widget>[
+                FutureBuilder<List<ReminderSqlite>>(
+                  future: upcoming,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return listDataUpcoming(snapshot.data[index], index);
+                        },
+                      );
+                    } else {
+                      return Center(
+                        child: Image.asset(
+                          "assets/icons/empty_icon.png",
+                          height: 100,
+                          color: HexColor('#E07B36'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -140,62 +228,189 @@ class _ReminderListViewState extends State<ReminderListView> {
     );
   }
 
-  Widget listData(int index) {
+  Widget listDataToday(ReminderSqlite value, int index) {
     return RadioListTile(
       value: index,
-      groupValue: selectionData,
+      groupValue: selectionDataToday,
       title: Text(
-        _todayJob[index],
+        '${value.taskDescription}',
         style: TextStyle(
           fontSize: 13,
           color: Colors.black,
         ),
       ),
-      subtitle: Row(
-        children: <Widget>[
-          Container(
-            height: 18,
-            width: 50,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(
-              child: Text(
-                "13:54",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: 3),
+        child: Row(
+          children: <Widget>[
+            Container(
+              height: 18,
+              width: 55,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Text(
+                  "${value.timeReminder}",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          Container(
-            height: 18,
-            width: 50,
-            decoration: BoxDecoration(
-              color: Colors.redAccent,
-              borderRadius: BorderRadius.circular(20),
+            SizedBox(
+              width: 5,
             ),
-            child: Center(
-              child: Icon(
-                _todayIcon[index],
-                size: 11,
-                color: Colors.white,
+            Container(
+              height: 18,
+              width: 50,
+              decoration: BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.call,
+                  size: 11,
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       onChanged: (val) {
-        _setSelectedData(val);
+        _setSelectedToday(val);
       },
       activeColor: HexColor('#E07B36'),
-      selected: selectionData == index,
+      selected: selectionDataToday == index,
+    );
+  }
+
+  Widget listDataTomorrow(ReminderSqlite value, int index) {
+    return RadioListTile(
+      value: index,
+      groupValue: selectionDataTomorrow,
+      title: Text(
+        '${value.taskDescription}',
+        style: TextStyle(
+          fontSize: 13,
+          color: Colors.black,
+        ),
+      ),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: 3),
+        child: Row(
+          children: <Widget>[
+            Container(
+              height: 18,
+              width: 55,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Text(
+                  "${value.timeReminder}",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Container(
+              height: 18,
+              width: 50,
+              decoration: BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.call,
+                  size: 11,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      onChanged: (val) {
+        _setSelectedTomorrow(val);
+      },
+      activeColor: HexColor('#E07B36'),
+      selected: selectionDataTomorrow == index,
+    );
+  }
+
+  Widget listDataUpcoming(ReminderSqlite value, int index) {
+    return RadioListTile(
+      value: index,
+      groupValue: selectionDataUpcoming,
+      title: Text(
+        '${value.taskDescription}',
+        style: TextStyle(
+          fontSize: 13,
+          color: Colors.black,
+        ),
+      ),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: 3),
+        child: Row(
+          children: <Widget>[
+            Container(
+              height: 18,
+              width: 55,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Text(
+                  "${value.timeReminder}",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Container(
+              height: 18,
+              width: 50,
+              decoration: BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.call,
+                  size: 11,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      onChanged: (val) {
+        _setSelectedUpcoming(val);
+      },
+      activeColor: HexColor('#E07B36'),
+      selected: selectionDataUpcoming == index,
     );
   }
 }
