@@ -35,6 +35,37 @@ class SqliteService {
     return result;
   }
 
+  Future<int> update(ReminderSqlite reminder) async {
+    Database db = await _dbHelper.initDB();
+    final sql = '''
+      UPDATE ${SqliteService.todoTable}
+      SET ${SqliteService.taskType} = ?,
+          ${SqliteService.taskDescription} = ?,
+          ${SqliteService.dateReminder} = ?,
+          ${SqliteService.timeReminder} = ?,
+          ${SqliteService.notes} = ?
+      WHERE ${SqliteService.id} = ?    
+    ''';
+
+    List<dynamic> params = [reminder.taskType, reminder.taskDescription, reminder.dateReminder, reminder.timeReminder, reminder.notes, reminder.id];
+    final result = await db.rawUpdate(sql, params);
+
+    return result;
+  }
+
+  Future<int> delete(ReminderSqlite reminder) async {
+    Database db = await _dbHelper.initDB();
+    final sql = '''
+      DELETE FROM ${SqliteService.todoTable}
+      WHERE ${SqliteService.id} = ?
+    ''';
+
+    List<dynamic> params = [reminder.id];
+    final result = await db.rawDelete(sql, params);
+
+    return result;
+  }
+
   Future<List<ReminderSqlite>> getReminderToday() async {
     Database db = await _dbHelper.initDB();
 
