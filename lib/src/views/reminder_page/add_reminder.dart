@@ -27,7 +27,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   var customerNameCtrl = new TextEditingController();
   var notesCtrl = new TextEditingController();
 
-  TaskType _currentSelectTask;
+  String _currentSelectTask;
 
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -59,13 +59,14 @@ class _ReminderAddViewState extends State<ReminderAddView> {
 
   void _onCreateReminder() async {
     await _dbHelper.insert(ReminderSqlite(
-      'Call',
+      _currentSelectTask,
       taskDescriptionCtrl.text,
       'Prima Jatnika',
       dateSelected.text,
       timeSelected.text,
       notesCtrl.text,
     ));
+    Navigator.of(context).pop();
   }
 
   @override
@@ -145,25 +146,24 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton<TaskType>(
-//                        value: _currentSelectTask,
+              child: DropdownButton<String>(
+                value: _currentSelectTask,
                 hint: Text('Task Type'),
                 isDense: true,
-                onChanged: (TaskType newVal) {
+                onChanged: (String newVal) {
                   setState(() {
                     _currentSelectTask = newVal;
-                    state.didChange(newVal.taskName);
-                    print(_currentSelectTask.taskName);
+                    state.didChange(newVal);
                   });
                 },
-                items: TaskType.getTask().map((TaskType val) {
-                  return DropdownMenuItem<TaskType>(
+                items: ['Call', 'Meet Up'].map((String val) {
+                  return DropdownMenuItem<String>(
                     value: val,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(val.taskName),
-                        Icon(val.taskIcon, color: HexColor('#E07B36'),),
+                        Text(val),
+                        Icon(val == 'Call' ? Icons.call : Icons.person, color: HexColor('#E07B36'),),
                       ],
                     ),
                   );

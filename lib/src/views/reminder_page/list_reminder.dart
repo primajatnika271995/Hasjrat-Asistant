@@ -102,7 +102,15 @@ class _ReminderListViewState extends State<ReminderListView> {
               onExpansionChanged: (bool val) {
                 setState(() => this.pendingIsExpanded = val);
               },
-              children: <Widget>[],
+              children: <Widget>[
+                Center(
+                  child: Image.asset(
+                    "assets/icons/empty_icon.png",
+                    height: 100,
+                    color: HexColor('#E07B36'),
+                  ),
+                ),
+              ],
             ),
             ExpansionTile(
               title: Text(
