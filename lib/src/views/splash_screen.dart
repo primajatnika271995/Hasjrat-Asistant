@@ -1,13 +1,18 @@
 import 'dart:io';
 
+import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
+import 'package:salles_tools/src/models/reminder_sqlite_model.dart';
 import 'package:salles_tools/src/services/login_service.dart';
+import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/bottom_navigation.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/login_page/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -33,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    startServiceInPlatform();
+
     checkIfAuthenticated().then((_) async {
       var token = await SharedPreferencesHelper.getAccessToken();
       print(token);
