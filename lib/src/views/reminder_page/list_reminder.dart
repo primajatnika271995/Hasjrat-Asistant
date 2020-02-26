@@ -327,6 +327,34 @@ class _ReminderListViewState extends State<ReminderListView> {
         activeColor: HexColor('#E07B36'),
         selected: selectionDataPending == index,
       ),
+      actions: <Widget>[
+        IconSlideAction(
+          caption: 'Edit',
+          color: Colors.blueAccent,
+          icon: Icons.edit,
+          onTap: () async {
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => ReminderAddView(
+                  id: value.id,
+                  taskType: value.taskType,
+                  taskDescription: value.taskDescription,
+                  dateReminder: value.dateReminder,
+                  timeReminder: value.timeReminder,
+                  notes: value.notes,
+                ),
+                transitionDuration: Duration(milliseconds: 150),
+                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                  return Opacity(
+                    opacity: animation.value,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ],
       secondaryActions: <Widget>[
         IconSlideAction(
           caption: 'Delete',
@@ -532,6 +560,32 @@ class _ReminderListViewState extends State<ReminderListView> {
       ),
       actions: <Widget>[
         IconSlideAction(
+          caption: 'Edit',
+          color: Colors.blueAccent,
+          icon: Icons.edit,
+          onTap: () async {
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => ReminderAddView(
+                  id: value.id,
+                  taskType: value.taskType,
+                  taskDescription: value.taskDescription,
+                  dateReminder: value.dateReminder,
+                  timeReminder: value.timeReminder,
+                  notes: value.notes,
+                ),
+                transitionDuration: Duration(milliseconds: 150),
+                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                  return Opacity(
+                    opacity: animation.value,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
+        ),
+        IconSlideAction(
           caption: 'Pending',
           color: HexColor('#E07B36'),
           icon: Icons.archive,
@@ -630,6 +684,32 @@ class _ReminderListViewState extends State<ReminderListView> {
         selected: selectionDataUpcoming == index,
       ),
       actions: <Widget>[
+        IconSlideAction(
+          caption: 'Edit',
+          color: Colors.blueAccent,
+          icon: Icons.edit,
+          onTap: () async {
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => ReminderAddView(
+                  id: value.id,
+                  taskType: value.taskType,
+                  taskDescription: value.taskDescription,
+                  dateReminder: value.dateReminder,
+                  timeReminder: value.timeReminder,
+                  notes: value.notes,
+                ),
+                transitionDuration: Duration(milliseconds: 150),
+                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                  return Opacity(
+                    opacity: animation.value,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
+        ),
         IconSlideAction(
           caption: 'Pending',
           color: HexColor('#E07B36'),

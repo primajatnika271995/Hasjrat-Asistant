@@ -4,6 +4,7 @@ import 'package:salles_tools/src/models/reminder_sqlite_model.dart';
 import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 
 class ReminderAddView extends StatefulWidget {
   final int id;
@@ -13,14 +14,19 @@ class ReminderAddView extends StatefulWidget {
   final String timeReminder;
   final String notes;
 
-  ReminderAddView({this.id, this.taskType, this.taskDescription, this.dateReminder, this.timeReminder, this.notes});
+  ReminderAddView(
+      {this.id,
+      this.taskType,
+      this.taskDescription,
+      this.dateReminder,
+      this.timeReminder,
+      this.notes});
 
   @override
   _ReminderAddViewState createState() => _ReminderAddViewState();
 }
 
 class _ReminderAddViewState extends State<ReminderAddView> {
-
   SqliteService _dbHelper = SqliteService();
 
   final dateFormat = DateFormat("dd MMMM yyyy");
@@ -40,16 +46,17 @@ class _ReminderAddViewState extends State<ReminderAddView> {
 
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: _dateTime,
-        firstDate: DateTime(1900, 1),
-        lastDate: DateTime(2100),
+      context: context,
+      initialDate: _dateTime,
+      firstDate: DateTime(1900, 1),
+      lastDate: DateTime(2100),
     );
 
     if (picked != null && picked != _dateTime)
       setState(() {
         _dateTime = picked;
-        dateSelected.value = TextEditingValue(text: dateFormat.format(picked).toString());
+        dateSelected.value =
+            TextEditingValue(text: dateFormat.format(picked).toString());
       });
   }
 
@@ -67,16 +74,32 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   }
 
   void _onCreateReminder() async {
-    await _dbHelper.insert(ReminderSqlite(
-      _currentSelectTask,
-      taskDescriptionCtrl.text,
-      'Prima Jatnika',
-      dateSelected.text,
-      timeSelected.text,
-      notesCtrl.text,
-      'Now',
-    ));
-    Navigator.of(context).pop();
+    DateTime _now = DateTime.now();
+
+    log.info(_now.difference(_dateTime).inDays);
+    if (_now.difference(_dateTime).inDays <= -1) {
+      await _dbHelper.insert(ReminderSqlite(
+        _currentSelectTask,
+        taskDescriptionCtrl.text,
+        'Prima Jatnika',
+        dateSelected.text,
+        timeSelected.text,
+        notesCtrl.text,
+        'Upcoming',
+      ));
+      Navigator.of(context).pop();
+    } else {
+      await _dbHelper.insert(ReminderSqlite(
+        _currentSelectTask,
+        taskDescriptionCtrl.text,
+        'Prima Jatnika',
+        dateSelected.text,
+        timeSelected.text,
+        notesCtrl.text,
+        'Now',
+      ));
+      Navigator.of(context).pop();
+    }
   }
 
   void _onUpdateReminder() async {
@@ -151,9 +174,14 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                 width: screenWidth(context),
                 child: RaisedButton(
                   onPressed: () {
-                    widget.id == null ? _onCreateReminder() : _onUpdateReminder();
+                    widget.id == null
+                        ? _onCreateReminder()
+                        : _onUpdateReminder();
                   },
-                  child: Text(widget.id == null ? "Create" : "Update", style: TextStyle(color: Colors.white),),
+                  child: Text(
+                    widget.id == null ? "Create" : "Update",
+                    style: TextStyle(color: Colors.white),
+                  ),
                   color: HexColor('#E07B36'),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -180,7 +208,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               ),
               errorText: 'Task Type harus diisi',
               contentPadding:
-              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
@@ -200,7 +228,10 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(val),
-                        Icon(val == 'Call' ? Icons.call : Icons.person, color: HexColor('#E07B36'),),
+                        Icon(
+                          val == 'Call' ? Icons.call : Icons.person,
+                          color: HexColor('#E07B36'),
+                        ),
                       ],
                     ),
                   );

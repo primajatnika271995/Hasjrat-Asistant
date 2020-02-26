@@ -137,13 +137,13 @@ class SqliteService {
     Database db = await _dbHelper.initDB();
 
     DateTime now = DateTime.now();
-    var nextDay = DateTime(now.year, now.month, now.day + 3);
+    var nextDay = DateTime(now.year, now.month, now.day + 2);
     final dateFormat = DateFormat("dd MMMM yyyy");
 
     final sql = '''
       SELECT * 
       FROM ${SqliteService.todoTable}
-      WHERE ${SqliteService.dateReminder} = "${dateFormat.format(nextDay)}" and ${SqliteService.status} = "Now"
+      WHERE ${SqliteService.status} = "Upcoming"
     ''';
 
     final data = await db.rawQuery(sql);
