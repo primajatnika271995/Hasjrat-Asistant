@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
 import 'package:salles_tools/src/services/login_service.dart';
@@ -18,9 +21,19 @@ class _SplashScreenState extends State<SplashScreen> {
     return true;
   }
 
+  void startServiceInPlatform() async {
+    if (Platform.isAndroid) {
+      var methodeChannel = MethodChannel("com.hasjrat.messages");
+      String data = await methodeChannel.invokeMethod("startService");
+
+      debugPrint(data);
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
+    startServiceInPlatform();
     checkIfAuthenticated().then((_) async {
       var token = await SharedPreferencesHelper.getAccessToken();
       print(token);

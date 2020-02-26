@@ -107,6 +107,9 @@ dependencies:
   # A package provides an easy way to add shimmer effect in Flutter project
   shimmer: ^1.0.1
 
+  # A Flutter plugin for accessing the Android AlarmManager service
+  android_alarm_manager: ^0.4.5+4
+
   # A Flutter plugin to use the Firebase Core API,
   # which enables connecting to multiple Firebase apps.
   firebase_core: ^0.4.3+1
