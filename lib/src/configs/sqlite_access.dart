@@ -22,7 +22,8 @@ class SqliteAcces {
         customer_name TEXT,
         date_reminder TEXT,
         time_reminder TEXT,
-        notes TEXT
+        notes TEXT,
+        status TEXT
       )
     ''');
   }

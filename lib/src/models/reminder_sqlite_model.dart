@@ -6,8 +6,9 @@ class ReminderSqlite {
   String _dateReminder;
   String _timeReminder;
   String _notes;
+  String _status;
 
-  ReminderSqlite(this._taskType, this._taskDescription, this._customerName, this._dateReminder, this._timeReminder, this._notes);
+  ReminderSqlite(this._taskType, this._taskDescription, this._customerName, this._dateReminder, this._timeReminder, this._notes, this._status);
 
   ReminderSqlite.fromMap(Map<String, dynamic> map) {
     this._id = map['id'];
@@ -17,6 +18,7 @@ class ReminderSqlite {
     this._dateReminder = map['date_reminder'];
     this._timeReminder = map['time_reminder'];
     this._notes = map['notes'];
+    this._status = map['status'];
   }
 
   int get id => _id;
@@ -26,6 +28,7 @@ class ReminderSqlite {
   String get dateReminder => _dateReminder;
   String get timeReminder => _timeReminder;
   String get notes => _notes;
+  String get status => _status;
 
   set taskType(String value) {
     _taskType = value;
@@ -51,6 +54,10 @@ class ReminderSqlite {
     _notes = value;
   }
 
+  set status(String value) {
+    _status = value;
+  }
+
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = Map<String, dynamic>();
     map['id'] = this._id;
@@ -60,6 +67,7 @@ class ReminderSqlite {
     map['date_reminder'] = this._dateReminder;
     map['time_reminder'] = this._timeReminder;
     map['notes'] = this._notes;
+    map['status'] = this._status;
     return map;
   }
 }

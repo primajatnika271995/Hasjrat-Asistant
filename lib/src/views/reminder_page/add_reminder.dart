@@ -6,6 +6,15 @@ import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 
 class ReminderAddView extends StatefulWidget {
+  final int id;
+  final String taskType;
+  final String taskDescription;
+  final String dateReminder;
+  final String timeReminder;
+  final String notes;
+
+  ReminderAddView({this.id, this.taskType, this.taskDescription, this.dateReminder, this.timeReminder, this.notes});
+
   @override
   _ReminderAddViewState createState() => _ReminderAddViewState();
 }
@@ -65,8 +74,36 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       dateSelected.text,
       timeSelected.text,
       notesCtrl.text,
+      'Now',
     ));
     Navigator.of(context).pop();
+  }
+
+  void _onUpdateReminder() async {
+    await _dbHelper.update(
+      ReminderSqlite(
+        _currentSelectTask,
+        taskDescriptionCtrl.text,
+        'Prima Jatnika',
+        dateSelected.text,
+        timeSelected.text,
+        notesCtrl.text,
+        'Now',
+      ),
+      widget.id,
+    );
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _currentSelectTask = widget.taskType;
+    taskDescriptionCtrl.text = widget.taskDescription;
+    dateSelected.text = widget.dateReminder;
+    timeSelected.text = widget.timeReminder;
+    notesCtrl.text = widget.notes;
+    super.initState();
   }
 
   @override
@@ -114,9 +151,9 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                 width: screenWidth(context),
                 child: RaisedButton(
                   onPressed: () {
-                    _onCreateReminder();
+                    widget.id == null ? _onCreateReminder() : _onUpdateReminder();
                   },
-                  child: Text("Create", style: TextStyle(color: Colors.white),),
+                  child: Text(widget.id == null ? "Create" : "Update", style: TextStyle(color: Colors.white),),
                   color: HexColor('#E07B36'),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

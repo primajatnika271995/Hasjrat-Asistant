@@ -12,6 +12,7 @@ class SqliteService {
   static const customerName = 'customer_name';
   static const dateReminder = 'date_reminder';
   static const timeReminder = 'time_reminder';
+  static const status = 'status';
   static const notes = 'notes';
   SqliteAcces _dbHelper = new SqliteAcces();
 
@@ -24,18 +25,19 @@ class SqliteService {
         ${SqliteService.customerName},
         ${SqliteService.dateReminder},
         ${SqliteService.timeReminder},
-        ${SqliteService.notes}
+        ${SqliteService.notes},
+        ${SqliteService.status}
       ) VALUES (
-        ?, ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?, ?
       )
     ''';
 
-    List<dynamic> params = [reminder.taskType, reminder.taskDescription, reminder.customerName, reminder.dateReminder, reminder.timeReminder, reminder.notes];
+    List<dynamic> params = [reminder.taskType, reminder.taskDescription, reminder.customerName, reminder.dateReminder, reminder.timeReminder, reminder.notes, reminder.status];
     final result = await db.rawInsert(sql, params);
     return result;
   }
 
-  Future<int> update(ReminderSqlite reminder) async {
+  Future<int> update(ReminderSqlite reminder, int id) async {
     Database db = await _dbHelper.initDB();
     final sql = '''
       UPDATE ${SqliteService.todoTable}
@@ -43,11 +45,12 @@ class SqliteService {
           ${SqliteService.taskDescription} = ?,
           ${SqliteService.dateReminder} = ?,
           ${SqliteService.timeReminder} = ?,
-          ${SqliteService.notes} = ?
+          ${SqliteService.notes} = ?,
+          ${SqliteService.status} = ?
       WHERE ${SqliteService.id} = ?    
     ''';
 
-    List<dynamic> params = [reminder.taskType, reminder.taskDescription, reminder.dateReminder, reminder.timeReminder, reminder.notes, reminder.id];
+    List<dynamic> params = [reminder.taskType, reminder.taskDescription, reminder.dateReminder, reminder.timeReminder, reminder.notes, reminder.status, id];
     final result = await db.rawUpdate(sql, params);
 
     return result;
@@ -60,6 +63,29 @@ class SqliteService {
     return count;
   }
 
+  Future<List<ReminderSqlite>> getReminderPending() async {
+    Database db = await _dbHelper.initDB();
+
+    DateTime now = DateTime.now();
+    final dateFormat = DateFormat("dd MMMM yyyy");
+
+    final sql = '''
+      SELECT * 
+      FROM ${SqliteService.todoTable}
+      WHERE ${SqliteService.status} = "Pending"
+    ''';
+
+    final data = await db.rawQuery(sql);
+    List<ReminderSqlite> reminder = List();
+
+    for(final node in data) {
+      final todo = ReminderSqlite.fromMap(node);
+      reminder.add(todo);
+    }
+
+    return reminder;
+  }
+
   Future<List<ReminderSqlite>> getReminderToday() async {
     Database db = await _dbHelper.initDB();
 
@@ -69,7 +95,7 @@ class SqliteService {
     final sql = '''
       SELECT * 
       FROM ${SqliteService.todoTable}
-      WHERE ${SqliteService.dateReminder} = "${dateFormat.format(now)}"
+      WHERE ${SqliteService.dateReminder} = "${dateFormat.format(now)}" AND ${SqliteService.status} = "Now"
     ''';
 
     final data = await db.rawQuery(sql);
@@ -93,7 +119,7 @@ class SqliteService {
     final sql = '''
       SELECT * 
       FROM ${SqliteService.todoTable}
-      WHERE ${SqliteService.dateReminder} = "${dateFormat.format(nextDay)}"
+      WHERE ${SqliteService.dateReminder} = "${dateFormat.format(nextDay)}" and ${SqliteService.status} = "Now"
     ''';
 
     final data = await db.rawQuery(sql);
@@ -117,7 +143,7 @@ class SqliteService {
     final sql = '''
       SELECT * 
       FROM ${SqliteService.todoTable}
-      WHERE ${SqliteService.dateReminder} = "${dateFormat.format(nextDay)}"
+      WHERE ${SqliteService.dateReminder} = "${dateFormat.format(nextDay)}" and ${SqliteService.status} = "Now"
     ''';
 
     final data = await db.rawQuery(sql);
