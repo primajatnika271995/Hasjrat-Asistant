@@ -8,24 +8,7 @@ class CustomerListView extends StatefulWidget {
 }
 
 class _CustomerListViewState extends State<CustomerListView> {
-  List<String> _alphabet = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    '0',
-    'P',
-  ];
+  List<String> _alphabet = [];
 
   void _onViewDetailsCustomer() {
     Navigator.of(context).push(
@@ -41,6 +24,26 @@ class _CustomerListViewState extends State<CustomerListView> {
         },
       ),
     );
+  }
+
+  void getCustomer() {
+    Customer.getCustomer().forEach((value) {
+      print(value.customerName);
+      setState(() {
+        _alphabet.add(value.customerName.substring(0, 1).toUpperCase());
+      });
+    });
+    _alphabet.sort((a, b) {
+      return a.compareTo(b);
+    });
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getCustomer();
+    super.initState();
   }
 
   @override
@@ -108,8 +111,9 @@ class _CustomerListViewState extends State<CustomerListView> {
             ),
             ListView.builder(
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                var dataAlphabet = _alphabet.where((f) => f == Customer.getCustomer()[index].customerName.substring(0,1)).toList();
+                print(_alphabet.toSet().toList());
                 return StickyHeader(
                   header: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +121,7 @@ class _CustomerListViewState extends State<CustomerListView> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                         child: Text(
-                          "${dataAlphabet[0]}",
+                          "${_alphabet.toSet().toList()[index]}",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
@@ -133,9 +137,9 @@ class _CustomerListViewState extends State<CustomerListView> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: 1,
+                      itemCount: Customer.getCustomer().where((f) => f.customerName.substring(0, 1).toUpperCase() == _alphabet.toSet().toList()[index]).toList().length,
                       itemBuilder: (context, indexChild) {
-                        var dataCustomer = Customer.getCustomer().where((f) => f.customerName.substring(0, 1).toUpperCase() == _alphabet[index]).toList();
+                        var dataCustomer = Customer.getCustomer().where((f) => f.customerName.substring(0, 1).toUpperCase() == _alphabet.toSet().toList()[index]).toList();
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: InkWell(
@@ -156,7 +160,7 @@ class _CustomerListViewState extends State<CustomerListView> {
                   ),
                 );
               },
-              itemCount: 2,
+              itemCount: _alphabet.toSet().toList().length,
             ),
           ],
         ),
@@ -175,6 +179,11 @@ class Customer {
   static List<Customer> getCustomer() {
     return <Customer>[
       Customer(
+        customerName: "Akil Ramdani",
+        contextName: "Context",
+        contextColor: Colors.orangeAccent,
+      ),
+      Customer(
         customerName: "Abdul",
         contextName: "Context",
         contextColor: Colors.orangeAccent,
@@ -183,6 +192,11 @@ class Customer {
         customerName: "Budi Setiawan",
         contextName: "Prospect",
         contextColor: Colors.green,
+      ),
+      Customer(
+        customerName: "Rio Kurniawan",
+        contextName: "Context",
+        contextColor: Colors.orangeAccent,
       ),
       Customer(
         customerName: "Prima Jatnika",

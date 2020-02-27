@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(top: 60),
+                        padding: const EdgeInsets.only(top: 80),
                         child: Text(
                           "Selamat Datang",
                           style: AppTheme.selamatDatangStyle,

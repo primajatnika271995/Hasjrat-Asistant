@@ -373,16 +373,3 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   }
 }
 
-class TaskType {
-  String taskName;
-  IconData taskIcon;
-
-  TaskType({this.taskName, this.taskIcon});
-
-  static List<TaskType> getTask() {
-    return <TaskType>[
-      TaskType(taskName: 'Call', taskIcon: Icons.phone),
-      TaskType(taskName: 'Meet Up', taskIcon: Icons.person),
-    ];
-  }
-}

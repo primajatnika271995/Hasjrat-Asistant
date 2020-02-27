@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var passwordCtrl = new TextEditingController();
 
   void _onNavDashboard() {
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).pushAndRemoveUntil(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => BottomNavigationDrawer(),
         transitionDuration: Duration(milliseconds: 750),
@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: child,
           );
         },
-      ),
+      ), (Route<dynamic> route) => false
     );
   }
 
@@ -250,7 +250,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     FlatButton(
                       onPressed: () {
-                        _onRegister();
+//                        _onRegister();
                       },
                       child: Text(
                         "Registration",

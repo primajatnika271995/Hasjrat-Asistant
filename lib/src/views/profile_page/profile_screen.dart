@@ -35,8 +35,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _onLogin() {
-    Navigator.of(context).pushReplacement(
+  void _onLogin() async {
+    await SharedPreferencesHelper.setAccessToken(null);
+    Navigator.of(context).pushAndRemoveUntil(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(LoginService()),
@@ -50,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: child,
           );
         },
-      ),
+      ), (Route<dynamic> route) => false
     );
   }
 
