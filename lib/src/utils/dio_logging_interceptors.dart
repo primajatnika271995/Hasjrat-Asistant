@@ -26,9 +26,9 @@ class DioLoggingInterceptors extends InterceptorsWrapper {
 
     String accessToken = await SharedPreferencesHelper.getAccessToken();
 
-//    if (accessToken != null) {
-//      options.headers.addAll({'Authorization': 'Bearer $accessToken'});
-//    }
+    if (accessToken != null) {
+      options.headers.addAll({'Authorization': 'Bearer $accessToken'});
+    }
 
     // TODO: implement onRequest
     return options;

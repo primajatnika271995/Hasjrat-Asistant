@@ -58,12 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onSubmit() {
-//    if (_formKey.currentState.validate()) {
-//      // ignore: close_sinks
-//      final loginBloc = BlocProvider.of<LoginBloc>(context);
-//      loginBloc.add(FetchLogin(usernameCtrl.text, passwordCtrl.text));
-//    }
-    _onNavDashboard();
+    if (_formKey.currentState.validate()) {
+      // ignore: close_sinks
+      final loginBloc = BlocProvider.of<LoginBloc>(context);
+      loginBloc.add(FetchLogin(usernameCtrl.text, passwordCtrl.text));
+    }
   }
 
   @override
