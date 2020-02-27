@@ -27,6 +27,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         EmployeeModel employee = await loginService.checkNIK(event.username);
         await SharedPreferencesHelper.setSalesName(employee.name);
         await SharedPreferencesHelper.setSalesNIK(employee.id);
+        await SharedPreferencesHelper.setSalesBirthday(employee.birthDate.toString());
+        await SharedPreferencesHelper.setSalesGender(employee.jenisKelamin);
+        await SharedPreferencesHelper.setSalesBrach(employee.branch.name);
+        await SharedPreferencesHelper.setSalesOutlet(employee.outlet.name);
+        await SharedPreferencesHelper.setSalesJob(employee.section.newName);
 
         yield LoginSuccess(value);
       } catch(err) {

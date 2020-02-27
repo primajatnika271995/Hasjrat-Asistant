@@ -5,6 +5,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 
 class ProfileEditView extends StatefulWidget {
   @override
@@ -18,12 +19,11 @@ class _ProfileEditViewState extends State<ProfileEditView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var namaCtrl = new TextEditingController();
-  var tmptTglLahirCtrl = new TextEditingController();
+  var tglLahirCtrl = new TextEditingController();
   var jenisKelaminCtrl = new TextEditingController();
-  var contactCtrl = new TextEditingController();
-  var emailCtrl = new TextEditingController();
-  var alamatCtrl = new TextEditingController();
-  var dealerCtrl = new TextEditingController();
+  var branchCtrl = new TextEditingController();
+  var outletCtrl = new TextEditingController();
+  var sectionCtrl = new TextEditingController();
 
   File _imageSelect;
 
@@ -74,16 +74,20 @@ class _ProfileEditViewState extends State<ProfileEditView> {
     }
   }
 
+  void getPreferences() async {
+      namaCtrl.text = await SharedPreferencesHelper.getSalesName();
+      tglLahirCtrl.text = await SharedPreferencesHelper.getSalesBirthday();
+      jenisKelaminCtrl.text = await SharedPreferencesHelper.getSalesGender();
+      branchCtrl.text = await SharedPreferencesHelper.getSalesBrach();
+      outletCtrl.text = await SharedPreferencesHelper.getSalesOutlet();
+      sectionCtrl.text = await SharedPreferencesHelper.getSalesJob();
+      setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    namaCtrl.text = 'Sales Name Example';
-    tmptTglLahirCtrl.text = 'Bandung, 27 Desember 1995';
-    jenisKelaminCtrl.text = 'Laki-Laki';
-    contactCtrl.text = '085875074351';
-    emailCtrl.text = 'sales@example.com';
-    alamatCtrl.text = 'Jalan Cicalengka Raya 11, Antapani Bandung, Jawa Barat';
-    dealerCtrl.text = 'Hasjrat Abadi Tandean';
+    getPreferences();
     super.initState();
   }
 
@@ -115,7 +119,6 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             contactField(),
             emailField(),
             alamatField(),
-            dealerField(),
             Padding(
               padding: const EdgeInsets.only(
                   left: 20, right: 20, top: 50, bottom: 10),
@@ -209,7 +212,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         ),
         cursorColor: HexColor('#E07B36'),
         decoration: InputDecoration(
-          labelText: 'Tempat Tanggal Lahir',
+          labelText: 'Tanggal Lahir',
           labelStyle: TextStyle(
             color: HexColor('#E07B36'),
           ),
@@ -219,7 +222,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             ),
           ),
         ),
-        controller: tmptTglLahirCtrl,
+        controller: tglLahirCtrl,
       ),
     );
   }
@@ -257,7 +260,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         ),
         cursorColor: HexColor('#E07B36'),
         decoration: InputDecoration(
-          labelText: 'No. Telp',
+          labelText: 'Nama Branch',
           labelStyle: TextStyle(
             color: HexColor('#E07B36'),
           ),
@@ -267,7 +270,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             ),
           ),
         ),
-        controller: contactCtrl,
+        controller: branchCtrl,
       ),
     );
   }
@@ -281,7 +284,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         ),
         cursorColor: HexColor('#E07B36'),
         decoration: InputDecoration(
-          labelText: 'Email',
+          labelText: 'Lokasi Penempatan',
           labelStyle: TextStyle(
             color: HexColor('#E07B36'),
           ),
@@ -291,7 +294,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             ),
           ),
         ),
-        controller: emailCtrl,
+        controller: outletCtrl,
       ),
     );
   }
@@ -305,7 +308,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         ),
         cursorColor: HexColor('#E07B36'),
         decoration: InputDecoration(
-          labelText: 'Alamat',
+          labelText: 'Posisi',
           labelStyle: TextStyle(
             color: HexColor('#E07B36'),
           ),
@@ -315,32 +318,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             ),
           ),
         ),
-        controller: alamatCtrl,
-        maxLines: null,
-      ),
-    );
-  }
-
-  Widget dealerField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TextField(
-        style: TextStyle(
-          fontWeight: FontWeight.w700,
-        ),
-        cursorColor: HexColor('#E07B36'),
-        decoration: InputDecoration(
-          labelText: 'Dealer',
-          labelStyle: TextStyle(
-            color: HexColor('#E07B36'),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: HexColor('#E07B36'),
-            ),
-          ),
-        ),
-        controller: dealerCtrl,
+        controller: sectionCtrl,
       ),
     );
   }

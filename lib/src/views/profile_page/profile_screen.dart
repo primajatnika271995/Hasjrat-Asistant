@@ -146,16 +146,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            ListTile(
-              onTap: null,
-              title: Text("Change Password"),
-              leading: Icon(Icons.lock_outline),
-              trailing: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.navigate_next),
-              ),
-            ),
-            Divider(),
+//            ListTile(
+//              onTap: null,
+//              title: Text("Change Password"),
+//              leading: Icon(Icons.lock_outline),
+//              trailing: IconButton(
+//                onPressed: () {},
+//                icon: Icon(Icons.navigate_next),
+//              ),
+//            ),
+//            Divider(),
             ListTile(
               onTap: null,
               title: Text("Term of Service"),

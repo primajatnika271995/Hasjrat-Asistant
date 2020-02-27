@@ -19,8 +19,8 @@ class _PromotionListViewState extends State<PromotionListView>
   static List<String> imgList = [
     'https://www.mistercarz.com.my/images/promo/2017/toyota.jpg',
     'https://www.toyota.com.sg/-/media/b51f3f2474df4c529590a83159de81e1.png',
-    'https://img2.sm360.ca/ir/w580h435/images/promo/spinelli/63096//t-12342-363_theme_510x381-en1530797530473.jpg',
-    'https://www.toyota.co.nz/globalassets/promotions/used-vehicle-promotions/2019/q4/tc-highlander/toyota_certified_-highlander_webtiles_1140x488.jpg',
+    'https://www.toyota.com.sg/-/media/b51f3f2474df4c529590a83159de81e1.png',
+    'https://www.mistercarz.com.my/images/promo/2017/toyota.jpg',
   ];
 
   static List<T> map<T>(List list, Function handler) {

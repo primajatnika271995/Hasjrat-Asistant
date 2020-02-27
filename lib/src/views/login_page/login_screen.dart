@@ -158,9 +158,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           TextFormField(
-                            keyboardType: TextInputType.numberWithOptions(),
                             decoration: InputDecoration(
-                              hintText: 'NIK',
+                              hintText: 'Username',
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: HexColor('#E07B36'),
