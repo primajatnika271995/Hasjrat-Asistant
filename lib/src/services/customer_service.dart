@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
+import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 
 class CustomerService {
   final Dio _dio = new Dio();
@@ -10,5 +15,32 @@ class CustomerService {
     _dio.interceptors.add(DioLoggingInterceptors(_dio));
   }
 
+  Future<CustomerModel> customerDMS(CustomerPost value) async {
+    try {
+      final response = await _dio.post(UriApi.checkCustomerDMSUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        data: json.encode(value),
+      );
 
+      log.info(response.statusCode);
+      return compute(customerModelFromJson, json.encode(response.data));
+
+    } catch(error) {
+      log.warning("Err : ${error.toString()}");
+    }
+
+    return null;
+  }
+}
+
+class CustomerPost {
+  String cardCode;
+  String cardName;
+  String custgroup;
+
+  CustomerPost({this.cardCode, this.cardName, this.custgroup});
 }
