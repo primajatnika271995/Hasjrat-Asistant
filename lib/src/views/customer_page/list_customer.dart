@@ -28,7 +28,6 @@ class _CustomerListViewState extends State<CustomerListView> {
 
   void getCustomer() {
     Customer.getCustomer().forEach((value) {
-      print(value.customerName);
       setState(() {
         _alphabet.add(value.customerName.substring(0, 1).toUpperCase());
       });
@@ -113,7 +112,6 @@ class _CustomerListViewState extends State<CustomerListView> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                print(_alphabet.toSet().toList());
                 return StickyHeader(
                   header: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
