@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
+import 'package:salles_tools/src/services/customer_service.dart';
+import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/customer_page/details_customer.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
@@ -26,22 +34,18 @@ class _CustomerListViewState extends State<CustomerListView> {
     );
   }
 
-  void getCustomer() {
-    Customer.getCustomer().forEach((value) {
-      setState(() {
-        _alphabet.add(value.customerName.substring(0, 1).toUpperCase());
-      });
-    });
-    _alphabet.sort((a, b) {
-      return a.compareTo(b);
-    });
-    setState(() {});
-  }
-
   @override
   void initState() {
     // TODO: implement initState
-    getCustomer();
+//    getCustomer();
+    // ignore: close_sinks
+    final customerBloc = BlocProvider.of<CustomerBloc>(context);
+    customerBloc.add(FetchCustomer(CustomerPost(
+      cardCode: "",
+      cardName: "",
+      custgroup: "",
+    )));
+
     super.initState();
   }
 
@@ -108,99 +112,87 @@ class _CustomerListViewState extends State<CustomerListView> {
                 ),
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return StickyHeader(
-                  header: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                        child: Text(
-                          "${_alphabet.toSet().toList()[index]}",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
+            BlocBuilder<CustomerBloc, CustomerState>(
+              builder: (context, state) {
+                if (state is CustomerLoading) {
+                  _alphabet = [];
+                  log.info("onLoading");
+                  onLoading(context);
+                }
+
+                if (state is CustomerSuccess) {
+                  Navigator.of(context).pop();
+                  state.value.data.forEach((val) {
+                    _alphabet.add(val.cardName.substring(0, 1).toUpperCase());
+                  });
+                  _alphabet.sort((a, b) {
+                    return a.compareTo(b);
+                  });
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return StickyHeader(
+                        header: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                              child: Text(
+                                "${_alphabet.toSet().toList()[index]}",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            Divider(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                        content: Container(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: state.value.data.where((f) => f.cardName.substring(0, 1).toUpperCase() == _alphabet.toSet().toList()[index]).toList().length,
+                            itemBuilder: (context, indexChild) {
+                              var dataCustomer = state.value.data.where((f) => f.cardName.substring(0, 1).toUpperCase() == _alphabet.toSet().toList()[index]).toList();
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                child: InkWell(
+                                  onTap: () {
+                                    _onViewDetailsCustomer();
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text("${dataCustomer[indexChild].cardName}"),
+                                      Text("●", style: TextStyle(color: Colors.orangeAccent),),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
-                      ),
-                      Divider(
-                        height: 10,
-                      ),
-                    ],
-                  ),
-                  content: Container(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: Customer.getCustomer().where((f) => f.customerName.substring(0, 1).toUpperCase() == _alphabet.toSet().toList()[index]).toList().length,
-                      itemBuilder: (context, indexChild) {
-                        var dataCustomer = Customer.getCustomer().where((f) => f.customerName.substring(0, 1).toUpperCase() == _alphabet.toSet().toList()[index]).toList();
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: InkWell(
-                            onTap: () {
-                              _onViewDetailsCustomer();
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text("${dataCustomer[indexChild].customerName}"),
-                                Text("●", style: TextStyle(color: dataCustomer[indexChild].contextColor),),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                      );
+                    },
+                    itemCount: _alphabet.toSet().toList().length,
+                  );
+                }
+                return Center(
+                  child: Image.asset(
+                    "assets/icons/empty_icon.png",
+                    height: 100,
+                    color: HexColor('#E07B36'),
                   ),
                 );
               },
-              itemCount: _alphabet.toSet().toList().length,
             ),
           ],
         ),
       ),
     );
-  }
-}
-
-class Customer {
-  String customerName;
-  String contextName;
-  Color contextColor;
-
-  Customer({this.customerName, this.contextName, this.contextColor});
-
-  static List<Customer> getCustomer() {
-    return <Customer>[
-      Customer(
-        customerName: "Akil Ramdani",
-        contextName: "Context",
-        contextColor: Colors.orangeAccent,
-      ),
-      Customer(
-        customerName: "Abdul",
-        contextName: "Context",
-        contextColor: Colors.orangeAccent,
-      ),
-      Customer(
-        customerName: "Budi Setiawan",
-        contextName: "Prospect",
-        contextColor: Colors.green,
-      ),
-      Customer(
-        customerName: "Rio Kurniawan",
-        contextName: "Context",
-        contextColor: Colors.orangeAccent,
-      ),
-      Customer(
-        customerName: "Prima Jatnika",
-        contextName: "Prospect",
-        contextColor: Colors.green,
-      ),
-    ];
   }
 }

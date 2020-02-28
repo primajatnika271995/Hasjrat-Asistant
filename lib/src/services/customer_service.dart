@@ -23,7 +23,11 @@ class CustomerService {
               'Content-Type': 'application/json',
             }
         ),
-        data: json.encode(value),
+        data: {
+          "cardcode": value.cardCode,
+          "cardname": value.cardName,
+          "custgroup": value.custgroup,
+        },
       );
 
       log.info(response.statusCode);

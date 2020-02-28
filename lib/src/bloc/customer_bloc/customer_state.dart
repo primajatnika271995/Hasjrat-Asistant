@@ -17,7 +17,7 @@ class CustomerSuccess extends CustomerState {
   final _data;
 
   CustomerSuccess(this._data);
-  CustomerModel get _customerModel => _data;
+  CustomerModel get value => _data;
 
   @override
   // TODO: implement props
