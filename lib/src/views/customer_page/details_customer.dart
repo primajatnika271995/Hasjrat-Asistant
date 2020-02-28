@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/customer_page/list_vehicle_customer_details.dart';
 import 'package:salles_tools/src/views/customer_page/profile_page.dart';
 
 class CustomerDetailsView extends StatefulWidget {
+  final Datum datum;
+  CustomerDetailsView({this.datum});
+
   @override
   _CustomerDetailsViewState createState() => _CustomerDetailsViewState();
 }
@@ -65,7 +69,9 @@ class _CustomerDetailsViewState extends State<CustomerDetailsView> {
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
-            ProfileScreen(),
+            ProfileScreen(
+              datum: widget.datum,
+            ),
             VehicleCustomerDetailsListView(),
           ],
         ),
@@ -85,7 +91,7 @@ class _CustomerDetailsViewState extends State<CustomerDetailsView> {
                 "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
           ),
           Text(
-            "Bayu Harsono",
+            "${widget.datum.cardName}",
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w400,

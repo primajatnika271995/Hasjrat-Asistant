@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_service_page/add_book_service.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
 
 class ProfileScreen extends StatefulWidget {
+  final Datum datum;
+  ProfileScreen({Key key, this.datum});
+
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState(this.datum);
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final Datum datum;
+  _ProfileScreenState(this.datum);
 
   void _onBookTestDrive() {
     Navigator.of(context).push(
@@ -50,9 +56,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: Column(
           children: <Widget>[
+            cardCode(),
+            Divider(),
             emailCustomer(),
             Divider(),
             nikCustomer(),
+            Divider(),
+            genderCustomer(),
             Divider(),
             contactCustomer(),
             Divider(),
@@ -110,6 +120,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget cardCode() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Kode Kartu",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${datum.cardCode}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget genderCustomer() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Jenis Kelamin",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${datum.gender}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget emailCustomer() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
@@ -130,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             flex: 6,
             child: Text(
-              "bayuharsono@gmail.com",
+              "${datum.email}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -162,7 +236,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             flex: 6,
             child: Text(
-              "3190018751021953",
+              "${datum.noKtp}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -194,7 +268,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             flex: 6,
             child: Text(
-              "+62 85875074351",
+              "${datum.phone1}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -226,7 +300,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             flex: 6,
             child: Text(
-              "Jl. Cicalengka Raya No 11, Antapani Bandung",
+              "${datum.location}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -258,7 +332,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             flex: 6,
             child: Text(
-              "1995-12-27",
+              "${datum.dob}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,

@@ -3,6 +3,7 @@ import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
 import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 
 class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   CustomerService _customerService;
@@ -25,8 +26,11 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         } else {
           yield CustomerSuccess(value);
         }
+
       } catch(error) {
-        yield CustomerFailed();
+        log.warning("Error : ${error.toString()}");
+        CustomerError valError = await _customerService.customerDMS(event.value);
+        CustomerError(valError);
       }
     }
   }
