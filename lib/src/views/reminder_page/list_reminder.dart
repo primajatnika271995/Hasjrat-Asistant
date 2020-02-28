@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/models/reminder_sqlite_model.dart';
+import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/reminder_page/add_reminder.dart';
@@ -63,7 +66,10 @@ class _ReminderListViewState extends State<ReminderListView> {
   void _onAddReminderNavigation() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => ReminderAddView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => CustomerBloc(CustomerService()),
+          child: ReminderAddView(),
+        ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(

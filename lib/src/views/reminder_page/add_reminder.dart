@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
 import 'package:salles_tools/src/models/reminder_sqlite_model.dart';
+import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/log.dart';
+import 'package:select_dialog/select_dialog.dart';
 
 class ReminderAddView extends StatefulWidget {
   final int id;
@@ -43,6 +49,8 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   var notesCtrl = new TextEditingController();
 
   String _currentSelectTask;
+  String _currentSelectCustomer;
+  List<String> _customerList;
 
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -71,6 +79,20 @@ class _ReminderAddViewState extends State<ReminderAddView> {
         timeOfDay = picked;
         timeSelected.value = TextEditingValue(text: timeOfDay.format(context));
       });
+  }
+
+  void _showListCustomer() {
+    SelectDialog.showModal<String>(
+      context,
+      label: "Data Customer",
+      selectedValue: _currentSelectCustomer,
+      items: _customerList,
+      onChange: (String selected) {
+        setState(() {
+          _currentSelectCustomer = selected;
+        });
+      },
+    );
   }
 
   void _onCreateReminder() async {
@@ -126,6 +148,15 @@ class _ReminderAddViewState extends State<ReminderAddView> {
     dateSelected.text = widget.dateReminder;
     timeSelected.text = widget.timeReminder;
     notesCtrl.text = widget.notes;
+
+    // ignore: close_sinks
+    final customerBloc = BlocProvider.of<CustomerBloc>(context);
+    customerBloc.add(FetchCustomer(CustomerPost(
+      cardCode: "",
+      cardName: "",
+      custgroup: "",
+    )));
+
     super.initState();
   }
 
@@ -146,50 +177,62 @@ class _ReminderAddViewState extends State<ReminderAddView> {
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            dropdownMenu(),
-            formTaskDescription(),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, left: 10),
-              child: Row(
-                children: <Widget>[
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.add),
-                    color: HexColor('#E07B36'),
-                  ),
-                  Text("Add Customer"),
-                ],
+      body: BlocListener<CustomerBloc, CustomerState>(
+        listener: (context, state) {
+          if (state is CustomerSuccess) {
+            _customerList.add(state.value.data[3].cardName);
+            state.value.data.forEach((val) {
+              log.info(val.cardName);
+            });
+          }
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              dropdownMenu(),
+              formTaskDescription(),
+              Padding(
+                padding: const EdgeInsets.only(top: 20, left: 10),
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        _showListCustomer();
+                      },
+                      icon: Icon(Icons.add),
+                      color: HexColor('#E07B36'),
+                    ),
+                    Text("Add Customer"),
+                  ],
+                ),
               ),
-            ),
-            formDatePicker(),
-            formTimePicker(),
-            formNote(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Container(
-                width: screenWidth(context),
-                child: RaisedButton(
-                  onPressed: () {
-                    widget.id == null
-                        ? _onCreateReminder()
-                        : _onUpdateReminder();
-                  },
-                  child: Text(
-                    widget.id == null ? "Create" : "Update",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  color: HexColor('#E07B36'),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+              formDatePicker(),
+              formTimePicker(),
+              formNote(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Container(
+                  width: screenWidth(context),
+                  child: RaisedButton(
+                    onPressed: () {
+                      widget.id == null
+                          ? _onCreateReminder()
+                          : _onUpdateReminder();
+                    },
+                    child: Text(
+                      widget.id == null ? "Create" : "Update",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    color: HexColor('#E07B36'),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
