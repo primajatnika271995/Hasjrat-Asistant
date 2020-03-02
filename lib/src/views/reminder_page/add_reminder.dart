@@ -16,6 +16,7 @@ class ReminderAddView extends StatefulWidget {
   final int id;
   final String taskType;
   final String taskDescription;
+  final String customerName;
   final String dateReminder;
   final String timeReminder;
   final String notes;
@@ -24,6 +25,7 @@ class ReminderAddView extends StatefulWidget {
       {this.id,
       this.taskType,
       this.taskDescription,
+      this.customerName,
       this.dateReminder,
       this.timeReminder,
       this.notes});
@@ -148,6 +150,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   void initState() {
     // TODO: implement initState
     _currentSelectTask = widget.taskType;
+    _currentSelectCustomer = widget.customerName;
     taskDescriptionCtrl.text = widget.taskDescription;
     dateSelected.text = widget.dateReminder;
     timeSelected.text = widget.timeReminder;

@@ -341,13 +341,17 @@ class _ReminderListViewState extends State<ReminderListView> {
           onTap: () async {
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => ReminderAddView(
-                  id: value.id,
-                  taskType: value.taskType,
-                  taskDescription: value.taskDescription,
-                  dateReminder: value.dateReminder,
-                  timeReminder: value.timeReminder,
-                  notes: value.notes,
+                pageBuilder: (_, __, ___) => BlocProvider(
+                  create: (context) => CustomerBloc(CustomerService()),
+                  child: ReminderAddView(
+                    id: value.id,
+                    taskType: value.taskType,
+                    taskDescription: value.taskDescription,
+                    dateReminder: value.dateReminder,
+                    timeReminder: value.timeReminder,
+                    customerName: value.customerName,
+                    notes: value.notes,
+                  ),
                 ),
                 transitionDuration: Duration(milliseconds: 150),
                 transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
@@ -446,13 +450,17 @@ class _ReminderListViewState extends State<ReminderListView> {
           onTap: () async {
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => ReminderAddView(
-                  id: value.id,
-                  taskType: value.taskType,
-                  taskDescription: value.taskDescription,
-                  dateReminder: value.dateReminder,
-                  timeReminder: value.timeReminder,
-                  notes: value.notes,
+                pageBuilder: (_, __, ___) => BlocProvider(
+                  create: (context) => CustomerBloc(CustomerService()),
+                  child: ReminderAddView(
+                    id: value.id,
+                    taskType: value.taskType,
+                    taskDescription: value.taskDescription,
+                    dateReminder: value.dateReminder,
+                    timeReminder: value.timeReminder,
+                    customerName: value.customerName,
+                    notes: value.notes,
+                  ),
                 ),
                 transitionDuration: Duration(milliseconds: 150),
                 transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
@@ -474,7 +482,7 @@ class _ReminderListViewState extends State<ReminderListView> {
               ReminderSqlite(
                 value.taskType,
                 value.taskDescription,
-                'Prima Jatnika',
+                value.customerName,
                 value.dateReminder,
                 value.timeReminder,
                 value.notes,
@@ -572,13 +580,17 @@ class _ReminderListViewState extends State<ReminderListView> {
           onTap: () async {
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => ReminderAddView(
-                  id: value.id,
-                  taskType: value.taskType,
-                  taskDescription: value.taskDescription,
-                  dateReminder: value.dateReminder,
-                  timeReminder: value.timeReminder,
-                  notes: value.notes,
+                pageBuilder: (_, __, ___) => BlocProvider(
+                  create: (context) => CustomerBloc(CustomerService()),
+                  child: ReminderAddView(
+                    id: value.id,
+                    taskType: value.taskType,
+                    taskDescription: value.taskDescription,
+                    dateReminder: value.dateReminder,
+                    timeReminder: value.timeReminder,
+                    customerName: value.customerName,
+                    notes: value.notes,
+                  ),
                 ),
                 transitionDuration: Duration(milliseconds: 150),
                 transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
@@ -600,7 +612,7 @@ class _ReminderListViewState extends State<ReminderListView> {
               ReminderSqlite(
                 value.taskType,
                 value.taskDescription,
-                'Prima Jatnika',
+                value.customerName,
                 value.dateReminder,
                 value.timeReminder,
                 value.notes,
@@ -697,13 +709,17 @@ class _ReminderListViewState extends State<ReminderListView> {
           onTap: () async {
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => ReminderAddView(
-                  id: value.id,
-                  taskType: value.taskType,
-                  taskDescription: value.taskDescription,
-                  dateReminder: value.dateReminder,
-                  timeReminder: value.timeReminder,
-                  notes: value.notes,
+                pageBuilder: (_, __, ___) => BlocProvider(
+                  create: (context) => CustomerBloc(CustomerService()),
+                  child: ReminderAddView(
+                    id: value.id,
+                    taskType: value.taskType,
+                    taskDescription: value.taskDescription,
+                    dateReminder: value.dateReminder,
+                    timeReminder: value.timeReminder,
+                    customerName: value.customerName,
+                    notes: value.notes,
+                  ),
                 ),
                 transitionDuration: Duration(milliseconds: 150),
                 transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
@@ -725,7 +741,7 @@ class _ReminderListViewState extends State<ReminderListView> {
               ReminderSqlite(
                 value.taskType,
                 value.taskDescription,
-                'Prima Jatnika',
+                value.customerName,
                 value.dateReminder,
                 value.timeReminder,
                 value.notes,
