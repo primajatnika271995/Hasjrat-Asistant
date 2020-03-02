@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "74743823035",
+    "firebase_url": "https://cam-card.firebaseio.com",
+    "project_id": "cam-card",
+    "storage_bucket": "cam-card.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74743823035:android:64c29873b2a262dd49879e",
+        "android_client_info": {
+          "package_name": "com.hasjrat.salles_tools"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74743823035-f1cs6c20jt7tfv44mf8b9ld4uhr01j16.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe2YGUBABe4FUQoGitf3gvFlTAuj3unlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74743823035-f1cs6c20jt7tfv44mf8b9ld4uhr01j16.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74743823035:android:1c1118b40f99175249879e",
+        "android_client_info": {
+          "package_name": "com.tabeldata.card_scanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74743823035-f1cs6c20jt7tfv44mf8b9ld4uhr01j16.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe2YGUBABe4FUQoGitf3gvFlTAuj3unlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74743823035-f1cs6c20jt7tfv44mf8b9ld4uhr01j16.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
