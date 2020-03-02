@@ -37,12 +37,9 @@ class CustomerService {
       } else {
         return compute(errorModelFromJson, json.encode(response.data));
       }
-
-    } catch(error) {
+    } catch (error) {
       log.warning("Err : ${error.toString()}");
     }
-
-    return null;
   }
 }
 

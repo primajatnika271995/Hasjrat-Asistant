@@ -50,7 +50,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
 
   String _currentSelectTask;
   String _currentSelectCustomer;
-  List<String> _customerList;
+  List<String> _customerList = [];
 
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -98,29 +98,33 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   void _onCreateReminder() async {
     DateTime _now = DateTime.now();
 
-    log.info(_now.difference(_dateTime).inDays);
-    if (_now.difference(_dateTime).inDays <= -1) {
-      await _dbHelper.insert(ReminderSqlite(
-        _currentSelectTask,
-        taskDescriptionCtrl.text,
-        'Prima Jatnika',
-        dateSelected.text,
-        timeSelected.text,
-        notesCtrl.text,
-        'Upcoming',
-      ));
-      Navigator.of(context).pop();
+    if (_currentSelectCustomer != null) {
+      log.info(_now.difference(_dateTime).inDays);
+      if (_now.difference(_dateTime).inDays <= -1) {
+        await _dbHelper.insert(ReminderSqlite(
+          _currentSelectTask,
+          taskDescriptionCtrl.text,
+          _currentSelectCustomer,
+          dateSelected.text,
+          timeSelected.text,
+          notesCtrl.text,
+          'Upcoming',
+        ));
+        Navigator.of(context).pop();
+      } else {
+        await _dbHelper.insert(ReminderSqlite(
+          _currentSelectTask,
+          taskDescriptionCtrl.text,
+          _currentSelectCustomer,
+          dateSelected.text,
+          timeSelected.text,
+          notesCtrl.text,
+          'Now',
+        ));
+        Navigator.of(context).pop();
+      }
     } else {
-      await _dbHelper.insert(ReminderSqlite(
-        _currentSelectTask,
-        taskDescriptionCtrl.text,
-        'Prima Jatnika',
-        dateSelected.text,
-        timeSelected.text,
-        notesCtrl.text,
-        'Now',
-      ));
-      Navigator.of(context).pop();
+      log.warning("Customer Tidak Boleh Kosong");
     }
   }
 
@@ -129,7 +133,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       ReminderSqlite(
         _currentSelectTask,
         taskDescriptionCtrl.text,
-        'Prima Jatnika',
+        _currentSelectCustomer,
         dateSelected.text,
         timeSelected.text,
         notesCtrl.text,
@@ -166,7 +170,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 1,
+        elevation: 0,
         titleSpacing: 0,
         title: Text(
           "Add Reminder",
@@ -180,9 +184,8 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       body: BlocListener<CustomerBloc, CustomerState>(
         listener: (context, state) {
           if (state is CustomerSuccess) {
-            _customerList.add(state.value.data[3].cardName);
             state.value.data.forEach((val) {
-              log.info(val.cardName);
+              _customerList.add(val.cardName);
             });
           }
         },
@@ -190,6 +193,34 @@ class _ReminderAddViewState extends State<ReminderAddView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              _currentSelectCustomer == null ? SizedBox() :
+              Container(
+                height: 50,
+                color: HexColor('#E07B36'),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        "Customer Name : ",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        "$_currentSelectCustomer",
+                        style: TextStyle(
+                          fontSize: 16,
+                          letterSpacing: 0.8,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               dropdownMenu(),
               formTaskDescription(),
               Padding(
@@ -415,4 +446,3 @@ class _ReminderAddViewState extends State<ReminderAddView> {
     );
   }
 }
-
