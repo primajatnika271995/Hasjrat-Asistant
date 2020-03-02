@@ -1,6 +1,13 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/utils/regex_file.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 
 class ProspectAddView extends StatefulWidget {
@@ -9,8 +16,87 @@ class ProspectAddView extends StatefulWidget {
 }
 
 class _ProspectAddViewState extends State<ProspectAddView> {
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
+
   String _currentSelectContext;
-  ColorData _currentSelectColor;
+  String _currentSelectColor;
+
+  var customerNameCtrl = new TextEditingController();
+  var customerNIKCtrl = new TextEditingController();
+
+  File imageFile;
+  final TextRecognizer textRecognizer =
+      FirebaseVision.instance.textRecognizer();
+
+  void _onPickImage() async {
+    final scaffold = _scaffoldKey.currentState;
+
+    try {
+      final file = await ImagePicker.pickImage(source: ImageSource.camera);
+      if (file == null) {
+        throw Exception('File is not available');
+      }
+
+      var fileCropper = await ImageCropper.cropImage(
+        sourcePath: file.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'KTP Cropper',
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.ratio4x3,
+          showCropGrid: true,
+          toolbarColor: HexColor('#E07B36'),
+          lockAspectRatio: false,
+        ),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ),
+      );
+
+      setState(() {
+        imageFile = fileCropper;
+      });
+
+      final FirebaseVisionImage visionImage =
+          FirebaseVisionImage.fromFile(fileCropper);
+      final VisionText visionText =
+          await textRecognizer.processImage(visionImage);
+
+      String text = visionText.text;
+
+      setState(() {
+        customerNameCtrl.text = visionText.blocks[3].text;
+      });
+
+      for (TextBlock block in visionText.blocks) {
+
+        for (TextLine line in block.lines) {
+          for (TextElement element in line.elements) {
+            setState(() {
+              customerNIKCtrl.text = Regex.isValidationNIK(block.text);
+            });
+          }
+        }
+      }
+    } catch (e) {
+      scaffold.showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    textRecognizer.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,30 +121,29 @@ class _ProspectAddViewState extends State<ProspectAddView> {
           children: <Widget>[
             dropdownMenu(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Text("Upload KTP", style: TextStyle(
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.7,
-                fontSize: 14,
-              ),),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
               child: Container(
                 height: 180,
                 width: screenWidth(context),
-                child: DottedBorder(
-                  strokeWidth: 1,
-                  color: Colors.grey,
-                  child: Center(
-                    child: IconButton(
-                      icon: Icon(Icons.add),
-                      iconSize: 45,
-                      color: HexColor('#E07B36'),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
+                child: imageFile == null
+                    ? DottedBorder(
+                        strokeWidth: 1,
+                        color: Colors.grey,
+                        child: Center(
+                          child: IconButton(
+                            icon: Icon(Icons.add),
+                            iconSize: 45,
+                            color: HexColor('#E07B36'),
+                            onPressed: () {
+                              _onPickImage();
+                            },
+                          ),
+                        ),
+                      )
+                    : Image.file(
+                        imageFile,
+                        fit: BoxFit.contain,
+                      ),
               ),
             ),
             formNamaCusotmer(),
@@ -70,12 +155,16 @@ class _ProspectAddViewState extends State<ProspectAddView> {
             formSelectVehicleType(),
             dropdownMenuColor(),
             Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
+              padding: const EdgeInsets.only(
+                  left: 30, right: 30, top: 30, bottom: 10),
               child: Container(
                 width: screenWidth(context),
                 child: RaisedButton(
                   onPressed: () {},
-                  child: Text("Create", style: TextStyle(color: Colors.white),),
+                  child: Text(
+                    "Create",
+                    style: TextStyle(color: Colors.white),
+                  ),
                   color: HexColor('#E07B36'),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -102,7 +191,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
               ),
               errorText: 'Context Type harus diisi',
               contentPadding:
-              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
@@ -122,7 +211,10 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(val),
-                        Text(" ● ", style: TextStyle(color: val == "Context" ? Colors.orangeAccent : val == "Prospect" ? Colors.green : Colors.red),),
+                        Text(
+                          " ● ",
+                          style: TextStyle(color: val == "Context" ? Colors.orangeAccent : val == "Prospect" ? Colors.green : Colors.red),
+                        ),
                       ],
                     ),
                   );
@@ -148,24 +240,23 @@ class _ProspectAddViewState extends State<ProspectAddView> {
               ),
               errorText: 'Warna harus diisi',
               contentPadding:
-              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton<ColorData>(
-//                        value: _currentSelectTask,
+              child: DropdownButton<String>(
+                value: _currentSelectColor,
                 hint: Text('Warna'),
                 isDense: true,
-                onChanged: (ColorData newVal) {
+                onChanged: (String newVal) {
                   setState(() {
                     _currentSelectColor = newVal;
-                    state.didChange(newVal.colorName);
-                    print(_currentSelectColor.colorName);
+                    state.didChange(newVal);
                   });
                 },
-                items: ColorData.getColor().map((ColorData val) {
-                  return DropdownMenuItem<ColorData>(
+                items: ["Merah", "Hitam", "Putih"].map((String val) {
+                  return DropdownMenuItem<String>(
                     value: val,
-                    child: Text(val.colorName),
+                    child: Text(val),
                   );
                 }).toList(),
               ),
@@ -180,6 +271,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: TextField(
+        maxLines: null,
         decoration: InputDecoration(
           hintText: 'Nama Customer',
           errorText: 'Nama customer harus diisi',
@@ -202,6 +294,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
             ),
           ),
         ),
+        controller: customerNameCtrl,
       ),
     );
   }
@@ -233,6 +326,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
             ),
           ),
         ),
+        controller: customerNIKCtrl,
       ),
     );
   }
@@ -389,34 +483,5 @@ class _ProspectAddViewState extends State<ProspectAddView> {
         maxLines: null,
       ),
     );
-  }
-}
-
-class ContextType {
-  String contextName;
-  Color contextColor;
-
-  ContextType({this.contextName, this.contextColor});
-
-  static List<ContextType> getTask() {
-    return <ContextType>[
-      ContextType(contextName: 'Context', contextColor: Colors.orangeAccent),
-      ContextType(contextName: 'Prospect', contextColor: Colors.green),
-      ContextType(contextName: 'Hot Prospect', contextColor: Colors.red),
-    ];
-  }
-}
-
-class ColorData {
-  String colorName;
-
-  ColorData({this.colorName});
-
-  static List<ColorData> getColor() {
-    return<ColorData>[
-      ColorData(colorName: 'Merah'),
-      ColorData(colorName: 'Hitam'),
-      ColorData(colorName: 'Putih'),
-    ];
   }
 }
