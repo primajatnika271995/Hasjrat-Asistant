@@ -324,6 +324,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
+  mlkit:
+    dependency: "direct main"
+    description:
+      name: mlkit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.15.0"
   nested:
     dependency: transitive
     description:

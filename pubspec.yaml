@@ -105,6 +105,9 @@ dependencies:
   # A Flutter plugin for finding commonly used locations on the filesystem.
   path_provider: ^1.6.1
 
+  # A Flutter plugin to use the Firebase ML Kit.
+  mlkit: ^0.15.0
+
   # RxDart adds additional capabilities to Dart Streams and StreamControllers.
   rxdart: ^0.23.1
 
