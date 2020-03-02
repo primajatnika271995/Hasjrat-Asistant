@@ -9,7 +9,7 @@ class ProspectAddView extends StatefulWidget {
 }
 
 class _ProspectAddViewState extends State<ProspectAddView> {
-  ContextType _currentSelectContext;
+  String _currentSelectContext;
   ColorData _currentSelectColor;
 
   @override
@@ -34,13 +34,16 @@ class _ProspectAddViewState extends State<ProspectAddView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             dropdownMenu(),
-            formNamaCusotmer(),
-            formNIK(),
-            formContact(),
-            formEmail(),
-            formAlamat(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Text("Upload KTP", style: TextStyle(
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.7,
+                fontSize: 14,
+              ),),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
               child: Container(
                 height: 180,
                 width: screenWidth(context),
@@ -49,15 +52,20 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                   color: Colors.grey,
                   child: Center(
                     child: IconButton(
-                        icon: Icon(Icons.add),
-                        iconSize: 45,
-                        color: HexColor('#E07B36'),
-                        onPressed: () {},
+                      icon: Icon(Icons.add),
+                      iconSize: 45,
+                      color: HexColor('#E07B36'),
+                      onPressed: () {},
                     ),
                   ),
                 ),
               ),
             ),
+            formNamaCusotmer(),
+            formNIK(),
+            formContact(),
+            formEmail(),
+            formAlamat(),
             formSelectVehicle(),
             formSelectVehicleType(),
             dropdownMenuColor(),
@@ -97,25 +105,24 @@ class _ProspectAddViewState extends State<ProspectAddView> {
               EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton<ContextType>(
-//                        value: _currentSelectTask,
+              child: DropdownButton<String>(
+                value: _currentSelectContext,
                 hint: Text('Context Type'),
                 isDense: true,
-                onChanged: (ContextType newVal) {
+                onChanged: (String newVal) {
                   setState(() {
                     _currentSelectContext = newVal;
-                    state.didChange(newVal.contextName);
-                    print(_currentSelectContext.contextName);
+                    state.didChange(newVal);
                   });
                 },
-                items: ContextType.getTask().map((ContextType val) {
-                  return DropdownMenuItem<ContextType>(
+                items: ["Context", "Prospect", "Hot Prospect"].map((String val) {
+                  return DropdownMenuItem<String>(
                     value: val,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(val.contextName),
-                        Text("●", style: TextStyle(color: val.contextColor),),
+                        Text(val),
+                        Text(" ● ", style: TextStyle(color: val == "Context" ? Colors.orangeAccent : val == "Prospect" ? Colors.green : Colors.red),),
                       ],
                     ),
                   );
