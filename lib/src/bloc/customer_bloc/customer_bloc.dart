@@ -24,6 +24,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         if (value.data.isEmpty || value.data == null) {
           yield CustomerFailed();
         } else {
+          yield CustomerDisposeLoading();
           yield CustomerSuccess(value);
         }
 

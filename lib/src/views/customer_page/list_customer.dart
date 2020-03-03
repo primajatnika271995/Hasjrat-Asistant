@@ -86,7 +86,13 @@ class _CustomerListViewState extends State<CustomerListView> {
           if (state is CustomerLoading) {
             _alphabet = [];
             log.info("onLoading");
-//            onLoading(context);
+            onLoading(context);
+          }
+
+          if (state is CustomerDisposeLoading) {
+            Future.delayed(Duration(seconds: 3), () {
+              Navigator.of(context, rootNavigator: false).pop();
+            });
           }
         },
         child: SingleChildScrollView(
@@ -142,7 +148,9 @@ class _CustomerListViewState extends State<CustomerListView> {
               BlocBuilder<CustomerBloc, CustomerState>(
                 builder: (context, state) {
                   if (state is CustomerFailed) {
-//                    Navigator.of(context, rootNavigator: true).pop();
+                    Future.delayed(Duration(seconds: 3), () {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    });
                     return Center(
                       child: Image.asset(
                         "assets/icons/empty_icon.png",
@@ -153,14 +161,16 @@ class _CustomerListViewState extends State<CustomerListView> {
                   }
 
                   if (state is CustomerError) {
-//                    Navigator.of(context, rootNavigator: true).pop();
+                    Future.delayed(Duration(seconds: 3), () {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    });
                     return Center(
                       child: Text("${state.error.message}"),
                     );
                   }
 
                   if (state is CustomerSuccess) {
-//                    Navigator.of(context, rootNavigator: true).pop();
+                    print("Its OK");
                     state.value.data.forEach((val) {
                       _alphabet.add(val.cardName.substring(0, 1).toUpperCase());
                     });
@@ -220,16 +230,7 @@ class _CustomerListViewState extends State<CustomerListView> {
                       itemCount: _alphabet.toSet().toList().length,
                     );
                   }
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: SizedBox(
-                      height: 25,
-                      width: 25,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(HexColor('#E07B36')),
-                      ),
-                    ),
-                  );
+                  return SizedBox();
                 },
               ),
             ],

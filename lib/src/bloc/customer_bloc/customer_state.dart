@@ -12,7 +12,10 @@ class CustomerInitial extends CustomerState {}
 
 class CustomerLoading extends CustomerState {}
 
+class CustomerDisposeLoading extends CustomerState {}
+
 class CustomerFailed extends CustomerState {}
+
 
 class CustomerSuccess extends CustomerState {
   final _data;
