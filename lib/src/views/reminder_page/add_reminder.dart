@@ -9,6 +9,7 @@ import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
 
@@ -189,6 +190,16 @@ class _ReminderAddViewState extends State<ReminderAddView> {
           if (state is CustomerSuccess) {
             state.value.data.forEach((val) {
               _customerList.add(val.cardName);
+            });
+          }
+
+          if (state is CustomerLoading) {
+            onLoading(context);
+          }
+
+          if (state is CustomerDisposeLoading) {
+            Future.delayed(Duration(seconds: 3), () {
+              Navigator.of(context, rootNavigator: false).pop();
             });
           }
         },
