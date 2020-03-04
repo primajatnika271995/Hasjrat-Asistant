@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:salles_tools/src/injectors/injector.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -49,6 +50,8 @@ class DioLoggingInterceptors extends InterceptorsWrapper {
 
   @override
   Future onError(DioError err) async {
+    final navigatorKey = GlobalKey<NavigatorState>();
+
     log.info("<-- ${err.message} ${(err.response?.request != null ? (err.response.request.baseUrl + err.response.request.path) : 'URL')}");
     log.info("${err.response != null ? err.response.data : 'Unknown Error'}");
     log.info("<-- End Error");
@@ -60,7 +63,7 @@ class DioLoggingInterceptors extends InterceptorsWrapper {
       _dio.interceptors.responseLock.lock();
 
       RequestOptions options = err.response.request;
-      options.headers.addAll({'requiresToken': true});
+      options.headers.remove({'Authorization': 'Bearer $oldAccessToken'});
       _dio.interceptors.requestLock.unlock();
       _dio.interceptors.responseLock.unlock();
       return _dio.request(options.path, options: options);

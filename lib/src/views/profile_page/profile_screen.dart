@@ -15,7 +15,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   var _salesName;
   var _salesNIK;
 
@@ -24,8 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProfileEditView(),
         transitionDuration: Duration(milliseconds: 750),
-        transitionsBuilder:
-            (_, Animation<double> animation, __, Widget child) {
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
             opacity: animation.value,
             child: child,
@@ -38,27 +36,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _onLogin() async {
     await SharedPreferencesHelper.setAccessToken(null);
     Navigator.of(context).pushAndRemoveUntil(
-      PageRouteBuilder(
-        pageBuilder: (_, __, ___) => BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(LoginService()),
-          child: LoginScreen(),
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => BlocProvider<LoginBloc>(
+            create: (context) => LoginBloc(LoginService()),
+            child: LoginScreen(),
+          ),
+          transitionDuration: Duration(milliseconds: 750),
+          transitionsBuilder:
+              (_, Animation<double> animation, __, Widget child) {
+            return Opacity(
+              opacity: animation.value,
+              child: child,
+            );
+          },
         ),
-        transitionDuration: Duration(milliseconds: 750),
-        transitionsBuilder:
-            (_, Animation<double> animation, __, Widget child) {
-          return Opacity(
-            opacity: animation.value,
-            child: child,
-          );
-        },
-      ), (Route<dynamic> route) => false
-    );
+        (Route<dynamic> route) => false);
   }
 
   void _getPreferences() async {
     _salesName = await SharedPreferencesHelper.getSalesName();
     _salesNIK = await SharedPreferencesHelper.getSalesNIK();
     setState(() {});
+  }
+
+  void _onShowDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Do you want to exit?',
+              style: TextStyle(
+                fontSize: 14,
+                letterSpacing: 0.7,
+              ),
+            ),
+            actions: <Widget>[
+              OutlineButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                borderSide: BorderSide(
+                    color: Colors.transparent
+                ),
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              OutlineButton(
+                onPressed: () {
+                  _onLogin();
+                },
+                borderSide: BorderSide(
+                  color: Colors.transparent
+                ),
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -211,7 +257,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               trailing: IconButton(
                 onPressed: () {
-                  _onLogin();
+//                  _onLogin();
+                  _onShowDialog();
                 },
                 icon: Icon(Icons.navigate_next),
               ),

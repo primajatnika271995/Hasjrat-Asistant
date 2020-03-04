@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
+import 'package:salles_tools/src/models/error_token_expire_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -33,6 +34,8 @@ class CustomerService {
     log.info(response.statusCode);
     if (response.statusCode == 200) {
       return compute(customerModelFromJson, json.encode(response.data));
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
     } else {
       return compute(errorModelFromJson, json.encode(response.data));
     }
