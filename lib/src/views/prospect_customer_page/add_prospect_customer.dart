@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';

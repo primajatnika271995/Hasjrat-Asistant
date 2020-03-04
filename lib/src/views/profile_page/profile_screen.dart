@@ -298,7 +298,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Text(
-                "Edit Profile",
+                "Detail Profile",
                 style: TextStyle(
                   fontSize: 12,
                   color: HexColor('#665C55'),
