@@ -8,6 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/regex_file.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:scanbot_sdk/common_data.dart';
+import 'package:scanbot_sdk/document_scan_data.dart';
+import 'package:scanbot_sdk/scanbot_sdk_ui.dart';
 
 class ProspectAddView extends StatefulWidget {
   @override
@@ -23,47 +26,29 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   var customerNameCtrl = new TextEditingController();
   var customerNIKCtrl = new TextEditingController();
 
-  File imageFile;
+  Image currentPreviewImage;
   final TextRecognizer textRecognizer =
       FirebaseVision.instance.textRecognizer();
 
   void _onPickImage() async {
     final scaffold = _scaffoldKey.currentState;
 
-    try {
-      final file = await ImagePicker.pickImage(source: ImageSource.camera);
-      if (file == null) {
-        throw Exception('File is not available');
-      }
+    var config = DocumentScannerConfiguration(
+      multiPageEnabled: false,
+      bottomBarBackgroundColor: HexColor('#E07B36'),
+      multiPageButtonHidden: true,
+      cameraPreviewMode: CameraPreviewMode.FILL_IN,
+      cancelButtonTitle: "Cancel",
+    );
+    var result = await ScanbotSdkUi.startDocumentScanner(config);
 
-      var fileCropper = await ImageCropper.cropImage(
-        sourcePath: file.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
-        ],
-        androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'KTP Cropper',
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.ratio4x3,
-          showCropGrid: true,
-          toolbarColor: HexColor('#E07B36'),
-          lockAspectRatio: false,
-        ),
-        iosUiSettings: IOSUiSettings(
-          minimumAspectRatio: 1.0,
-        ),
-      );
-
+    if (result.operationResult == OperationResult.SUCCESS) {
       setState(() {
-        imageFile = fileCropper;
+        currentPreviewImage = Image.file(File.fromUri(result.pages[0].documentImageFileUri));
       });
 
       final FirebaseVisionImage visionImage =
-          FirebaseVisionImage.fromFile(fileCropper);
+          FirebaseVisionImage.fromFilePath(result.pages[0].documentImageFileUri.path);
       final VisionText visionText =
           await textRecognizer.processImage(visionImage);
 
@@ -83,11 +68,66 @@ class _ProspectAddViewState extends State<ProspectAddView> {
           }
         }
       }
-    } catch (e) {
-      scaffold.showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
     }
+
+//    try {
+//      final file = await ImagePicker.pickImage(source: ImageSource.camera);
+//      if (file == null) {
+//        throw Exception('File is not available');
+//      }
+//
+//      var fileCropper = await ImageCropper.cropImage(
+//        sourcePath: file.path,
+//        aspectRatioPresets: [
+//          CropAspectRatioPreset.square,
+//          CropAspectRatioPreset.ratio3x2,
+//          CropAspectRatioPreset.original,
+//          CropAspectRatioPreset.ratio4x3,
+//          CropAspectRatioPreset.ratio16x9
+//        ],
+//        androidUiSettings: AndroidUiSettings(
+//          toolbarTitle: 'KTP Cropper',
+//          toolbarWidgetColor: Colors.white,
+//          initAspectRatio: CropAspectRatioPreset.ratio4x3,
+//          showCropGrid: true,
+//          toolbarColor: HexColor('#E07B36'),
+//          lockAspectRatio: false,
+//        ),
+//        iosUiSettings: IOSUiSettings(
+//          minimumAspectRatio: 1.0,
+//        ),
+//      );
+//
+//      setState(() {
+//        imageFile = fileCropper;
+//      });
+//
+//      final FirebaseVisionImage visionImage =
+//          FirebaseVisionImage.fromFile(fileCropper);
+//      final VisionText visionText =
+//          await textRecognizer.processImage(visionImage);
+//
+//      String text = visionText.text;
+//
+//      setState(() {
+//        customerNameCtrl.text = visionText.blocks[3].text;
+//      });
+//
+//      for (TextBlock block in visionText.blocks) {
+//
+//        for (TextLine line in block.lines) {
+//          for (TextElement element in line.elements) {
+//            setState(() {
+//              customerNIKCtrl.text = Regex.isValidationNIK(block.text);
+//            });
+//          }
+//        }
+//      }
+//    } catch (e) {
+//      scaffold.showSnackBar(SnackBar(
+//        content: Text(e.toString()),
+//      ));
+//    }
   }
 
   @override
@@ -124,7 +164,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
               child: Container(
                 height: 180,
                 width: screenWidth(context),
-                child: imageFile == null
+                child: currentPreviewImage == null
                     ? DottedBorder(
                         strokeWidth: 1,
                         color: Colors.grey,
@@ -139,10 +179,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                         ),
                       )
-                    : Image.file(
-                        imageFile,
-                        fit: BoxFit.contain,
-                      ),
+                    : currentPreviewImage,
               ),
             ),
             formNamaCusotmer(),

@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
 import 'package:salles_tools/src/services/login_service.dart';
@@ -9,6 +6,8 @@ import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/bottom_navigation.dart';
 import 'package:salles_tools/src/views/login_page/login_screen.dart';
+import 'package:scanbot_sdk/scanbot_sdk.dart';
+import 'package:scanbot_sdk/scanbot_sdk_models.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -16,18 +15,26 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  final String licenseKey =
+      "PCceuanUfA+OLv12Cjg1gnmrQ69raf" +
+          "u8FCLU5sVAK7vZFR7ocl8VK+Aln1qL" +
+          "T5vngyJ6f2CCJXbiGEssRusq+Fm+pC" +
+          "pwmRFqp5d7nVH0DHBZVdx6JsCxZjcH" +
+          "+LAIhHvvHqx9ToQ964mBzRI5wSlGrC" +
+          "S7rNhL+fmh4AAyPCX3HsWlK0B/xItu" +
+          "ivwvipXaSsXbhanlLrJLEJCk5KAh/n" +
+          "rQDat4XJPPV00XI+/Ngl3ZmS7ucxlA" +
+          "pnoJSlePm5sRlGn2gqhoYkZ5BTJ/3y" +
+          "o3Mj3mubzs8+OehrM3J0D2tylzyn0P" +
+          "OosXqJcRmcfwXSLO/woMnORf7hJe9r" +
+          "0eey4pFQ4EVA==\nU2NhbmJvdFNESw" +
+          "pjb20uaGFzanJhdC5zYWxsZXNfdG9v" +
+          "bHMKMTU4NjA0NDc5OQo1OTAKMw==\n";
+
   checkIfAuthenticated() async {
     await Future.delayed(Duration(seconds: 3));
     return true;
-  }
-
-  void startServiceInPlatform() async {
-    if (Platform.isAndroid) {
-      var methodeChannel = MethodChannel("com.hasjrat.messages");
-      String data = await methodeChannel.invokeMethod("startService");
-
-      debugPrint(data);
-    }
   }
 
   @override
@@ -75,6 +82,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    ScanbotSdk.initScanbotSdk(ScanbotSdkConfig(
+      loggingEnabled: true,
+      licenseKey: licenseKey, // see the license key notes below!
+    ));
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
