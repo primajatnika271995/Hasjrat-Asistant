@@ -2,11 +2,15 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/regex_file.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/log.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_customer.dart';
 import 'package:scanbot_sdk/common_data.dart';
 import 'package:scanbot_sdk/document_scan_data.dart';
 import 'package:scanbot_sdk/scanbot_sdk_ui.dart';
@@ -17,12 +21,149 @@ class UploadKTPCustomerView extends StatefulWidget {
 }
 
 class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
+
   Image currentPreviewImage;
   String namaScan, nikScan, ttlScan, genderScan, alamatScan, agamaScan;
 
+  int loopIndex = 0;
+
   final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
 
-  void _onPickImage() async {
+  void _onAddProspectCustomer() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => ProspectAddView(
+          nameScan: namaScan,
+          nikScan: nikScan,
+        ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onSelectCamera() {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          title: Text('Pilih Kamera'),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _onManual();
+              },
+              child: Text('Manual Kamera'),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _onScanner();
+              },
+              child: Text('Scaner Camera'),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Cancel'),
+          ),
+        );
+      },
+    );
+  }
+
+  void _onManual() async {
+    final scaffold = _scaffoldKey.currentState;
+    setState(() {
+      nikScan = null;
+      namaScan = null;
+      loopIndex = 0;
+    });
+
+    try {
+      final file = await ImagePicker.pickImage(source: ImageSource.camera);
+      if (file == null) {
+        throw Exception('File is not available');
+      }
+
+      var fileCropper = await ImageCropper.cropImage(
+        sourcePath: file.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'KTP Cropper',
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.ratio4x3,
+          showCropGrid: true,
+          toolbarColor: HexColor('#E07B36'),
+          lockAspectRatio: false,
+        ),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ),
+      );
+
+      setState(() {
+        currentPreviewImage = Image.file(File(fileCropper.path));
+      });
+
+      final FirebaseVisionImage visionImage =
+      FirebaseVisionImage.fromFile(fileCropper);
+      final VisionText visionText =
+      await textRecognizer.processImage(visionImage);
+
+      String text = visionText.text;
+      for (TextBlock block in visionText.blocks) {
+        log.info("Block Data : ${block.text}");
+        if (nikScan == null) {
+          setState(() {
+            nikScan = Regex.isValidationNIK(block.text);
+          });
+        }
+
+        if (loopIndex <= 4) {
+          log.info(loopIndex);
+          setState(() {
+            loopIndex = loopIndex + 1;
+            namaScan = block.text;
+          });
+        }
+        print("NIK : $nikScan");
+        print("Nama : $namaScan");
+        for (TextLine line in block.lines) {
+          for (TextElement element in line.elements) {}
+        }
+      }
+    } catch (e) {
+      scaffold.showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
+
+  }
+
+  void _onScanner() async {
+    setState(() {
+      nikScan = null;
+      namaScan = null;
+      loopIndex = 0;
+    });
+
     var config = DocumentScannerConfiguration(
       multiPageEnabled: false,
       bottomBarBackgroundColor: HexColor('#E07B36'),
@@ -42,21 +183,25 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
       await textRecognizer.processImage(visionImage);
 
       String text = visionText.text;
-      setState(() {
-        namaScan = visionText.blocks[3].text;
-        ttlScan = visionText.blocks[4].text;
-        genderScan = visionText.blocks[5].text;
-        agamaScan = visionText.blocks[6].text;
-        alamatScan = visionText.blocks[7].text;
-      });
-
       for (TextBlock block in visionText.blocks) {
-        log.info(block.text);
+        log.info("Block Data : ${block.text}");
+        if (nikScan == null) {
+          setState(() {
+            nikScan = Regex.isValidationNIK(block.text);
+          });
+        }
+
+        if (loopIndex <= 4) {
+          log.info(loopIndex);
+          setState(() {
+            loopIndex = loopIndex + 1;
+            namaScan = block.text;
+          });
+        }
+        print("NIK : $nikScan");
+        print("Nama : $namaScan");
         for (TextLine line in block.lines) {
           for (TextElement element in line.elements) {
-            setState(() {
-              nikScan = Regex.isValidationNIK(block.text);
-            });
           }
         }
       }
@@ -107,7 +252,8 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
                           iconSize: 45,
                           color: HexColor('#E07B36'),
                           onPressed: () {
-                            _onPickImage();
+                            _onSelectCamera();
+//                            _onPickImage();
                           },
                         ),
                       ),
@@ -119,7 +265,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
                     right: 0,
                     child: FloatingActionButton(
                       onPressed: () {
-                        _onPickImage();
+                        _onSelectCamera();
                       },
                       mini: true,
                       child: Icon(Icons.add),
@@ -132,7 +278,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
             SizedBox(
               height: 15,
             ),
-            currentPreviewImage == null ? SizedBox() : Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +307,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
                 ],
               ),
             ),
-            currentPreviewImage == null ? SizedBox() : Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,7 +336,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
                 ],
               ),
             ),
-            currentPreviewImage == null ? SizedBox() : Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,7 +365,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
                 ],
               ),
             ),
-            currentPreviewImage == null ? SizedBox() : Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +394,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
                 ],
               ),
             ),
-            currentPreviewImage == null ? SizedBox() : Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,7 +423,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
                 ],
               ),
             ),
-            currentPreviewImage == null ? SizedBox() : Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,7 +458,9 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
               child: Container(
                 width: screenWidth(context),
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _onAddProspectCustomer();
+                  },
                   child: Text(
                     "NEXT",
                     style: TextStyle(color: Colors.white),

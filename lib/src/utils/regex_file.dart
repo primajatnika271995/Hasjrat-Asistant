@@ -6,7 +6,7 @@ class Regex {
   );
 
   static final RegExp _nameRegex = RegExp(
-    r'([a-z]([a-z]+|\.)(?:\s+[a-z]([a-z]+|\.))*(?:\s+[a-z][a-z\-]+){0,2}\s+[a-z]([a-z]+|\.))',
+    r'([A-Z]([A-Z]+|\.)(?:\s+[A-Z]([A-Z]+|\.))*(?:\s+[A-Z][A-Z\-]+){0,2}\s+[A-Z]([A-Z]+|\.))',
   );
 
   static String isValidationNIK(String nik) {

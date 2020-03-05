@@ -1,16 +1,12 @@
-import 'dart:io';
-
-import 'package:dotted_border/dotted_border.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
-import 'package:salles_tools/src/utils/regex_file.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
-import 'package:scanbot_sdk/common_data.dart';
-import 'package:scanbot_sdk/document_scan_data.dart';
-import 'package:scanbot_sdk/scanbot_sdk_ui.dart';
 
 class ProspectAddView extends StatefulWidget {
+  final String nameScan;
+  final String nikScan;
+  ProspectAddView({this.nameScan, this.nikScan});
+
   @override
   _ProspectAddViewState createState() => _ProspectAddViewState();
 }
@@ -21,6 +17,16 @@ class _ProspectAddViewState extends State<ProspectAddView> {
 
   var customerNameCtrl = new TextEditingController();
   var customerNIKCtrl = new TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    setState(() {
+      customerNameCtrl.text = widget.nameScan;
+      customerNIKCtrl.text = widget.nikScan;
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
