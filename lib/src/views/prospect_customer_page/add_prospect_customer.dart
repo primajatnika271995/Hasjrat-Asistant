@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/regex_file.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
@@ -18,122 +16,15 @@ class ProspectAddView extends StatefulWidget {
 }
 
 class _ProspectAddViewState extends State<ProspectAddView> {
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
-
   String _currentSelectContext;
   String _currentSelectColor;
 
   var customerNameCtrl = new TextEditingController();
   var customerNIKCtrl = new TextEditingController();
 
-  Image currentPreviewImage;
-  final TextRecognizer textRecognizer =
-      FirebaseVision.instance.textRecognizer();
-
-  void _onPickImage() async {
-    final scaffold = _scaffoldKey.currentState;
-
-    var config = DocumentScannerConfiguration(
-      multiPageEnabled: false,
-      bottomBarBackgroundColor: HexColor('#E07B36'),
-      multiPageButtonHidden: true,
-      cameraPreviewMode: CameraPreviewMode.FILL_IN,
-      cancelButtonTitle: "Cancel",
-    );
-    var result = await ScanbotSdkUi.startDocumentScanner(config);
-
-    if (result.operationResult == OperationResult.SUCCESS) {
-      setState(() {
-        currentPreviewImage = Image.file(File.fromUri(result.pages[0].documentImageFileUri));
-      });
-
-      final FirebaseVisionImage visionImage =
-          FirebaseVisionImage.fromFilePath(result.pages[0].documentImageFileUri.path);
-      final VisionText visionText =
-          await textRecognizer.processImage(visionImage);
-
-      String text = visionText.text;
-
-      setState(() {
-        customerNameCtrl.text = visionText.blocks[3].text;
-      });
-
-      for (TextBlock block in visionText.blocks) {
-
-        for (TextLine line in block.lines) {
-          for (TextElement element in line.elements) {
-            setState(() {
-              customerNIKCtrl.text = Regex.isValidationNIK(block.text);
-            });
-          }
-        }
-      }
-    }
-
-//    try {
-//      final file = await ImagePicker.pickImage(source: ImageSource.camera);
-//      if (file == null) {
-//        throw Exception('File is not available');
-//      }
-//
-//      var fileCropper = await ImageCropper.cropImage(
-//        sourcePath: file.path,
-//        aspectRatioPresets: [
-//          CropAspectRatioPreset.square,
-//          CropAspectRatioPreset.ratio3x2,
-//          CropAspectRatioPreset.original,
-//          CropAspectRatioPreset.ratio4x3,
-//          CropAspectRatioPreset.ratio16x9
-//        ],
-//        androidUiSettings: AndroidUiSettings(
-//          toolbarTitle: 'KTP Cropper',
-//          toolbarWidgetColor: Colors.white,
-//          initAspectRatio: CropAspectRatioPreset.ratio4x3,
-//          showCropGrid: true,
-//          toolbarColor: HexColor('#E07B36'),
-//          lockAspectRatio: false,
-//        ),
-//        iosUiSettings: IOSUiSettings(
-//          minimumAspectRatio: 1.0,
-//        ),
-//      );
-//
-//      setState(() {
-//        imageFile = fileCropper;
-//      });
-//
-//      final FirebaseVisionImage visionImage =
-//          FirebaseVisionImage.fromFile(fileCropper);
-//      final VisionText visionText =
-//          await textRecognizer.processImage(visionImage);
-//
-//      String text = visionText.text;
-//
-//      setState(() {
-//        customerNameCtrl.text = visionText.blocks[3].text;
-//      });
-//
-//      for (TextBlock block in visionText.blocks) {
-//
-//        for (TextLine line in block.lines) {
-//          for (TextElement element in line.elements) {
-//            setState(() {
-//              customerNIKCtrl.text = Regex.isValidationNIK(block.text);
-//            });
-//          }
-//        }
-//      }
-//    } catch (e) {
-//      scaffold.showSnackBar(SnackBar(
-//        content: Text(e.toString()),
-//      ));
-//    }
-  }
-
   @override
   void dispose() {
     // TODO: implement dispose
-    textRecognizer.close();
     super.dispose();
   }
 
@@ -159,29 +50,6 @@ class _ProspectAddViewState extends State<ProspectAddView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             dropdownMenu(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-              child: Container(
-                height: 180,
-                width: screenWidth(context),
-                child: currentPreviewImage == null
-                    ? DottedBorder(
-                        strokeWidth: 1,
-                        color: Colors.grey,
-                        child: Center(
-                          child: IconButton(
-                            icon: Icon(Icons.add),
-                            iconSize: 45,
-                            color: HexColor('#E07B36'),
-                            onPressed: () {
-                              _onPickImage();
-                            },
-                          ),
-                        ),
-                      )
-                    : currentPreviewImage,
-              ),
-            ),
             formNamaCusotmer(),
             formNIK(),
             formContact(),

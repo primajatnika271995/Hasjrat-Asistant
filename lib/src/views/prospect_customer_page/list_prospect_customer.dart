@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_customer.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/details_prospect_customer.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/upload_ktp_customer.dart';
 
 class ProspectCustomerListView extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
   void _onAddProspectCustomer() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => ProspectAddView(),
+        pageBuilder: (_, __, ___) => UploadKTPCustomerView(),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
