@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_event.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_state.dart';
+import 'package:salles_tools/src/models/asset_group_model.dart';
 import 'package:salles_tools/src/models/asset_kind_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/insurance_type_model.dart';
@@ -50,6 +51,19 @@ class FinanceBloc extends Bloc<FinanceEvent, FinanceState> {
         InsuranceModel value = await _financeService.insuranceType(event.branchCode, event.assetKindCode);
         yield FinanceDisposeLoading();
         yield InsuranceTypeSuccess(value);
+
+      } catch (error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
+    if (event is FetchAssetGroup) {
+      yield FinanceLoading();
+
+      try {
+        AssetGroupModel value = await _financeService.assetGroup(event.branchCode, event.assetKindCode, event.insuranceAssetCode);
+        yield FinanceDisposeLoading();
+        yield AssetGroupSuccess(value);
 
       } catch (error) {
         log.warning("Error : ${error.toString()}");

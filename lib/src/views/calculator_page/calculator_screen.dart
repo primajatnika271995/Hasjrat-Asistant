@@ -33,6 +33,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   var insuranceTypeCode;
   List<SelectorInsuranceTypeModel> insuranceTypeList = [];
 
+  var assetGroupCtrl = new TextEditingController();
+  var currentSelectAssetGroup;
+  var assetGroupCode;
+  List<SelectorAssetGroupModel> assetGroupList = [];
+
 
   void _showListBranch() {
     SelectDialog.showModal<SelectorBranchModel>(
@@ -85,6 +90,26 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           currentSelectInsuranceType = selected.insuranceTypeName;
           insuranceTypeCtrl.text = selected.insuranceTypeName;
           insuranceTypeCode = selected.id;
+
+          // ignore: close_sinks
+          final assetGroupBloc = BlocProvider.of<FinanceBloc>(context);
+          assetGroupBloc.add(FetchAssetGroup(branchCode, assetKindCode, insuranceTypeCode));
+        });
+      },
+    );
+  }
+
+  void _showListAssetGroup() {
+    SelectDialog.showModal<SelectorAssetGroupModel>(
+      context,
+      label: "Asset Group",
+      selectedValue: currentSelectAssetGroup,
+      items: assetGroupList,
+      onChange: (SelectorAssetGroupModel selected) {
+        setState(() {
+          currentSelectAssetGroup = selected.assetGroupName;
+          assetGroupCtrl.text = selected.assetGroupCode;
+          assetGroupCode = selected.assetGroupCode;
         });
       },
     );
@@ -387,6 +412,46 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
+  Widget formSelectAssetGroup() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
+      child: TextField(
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: 'Asset Group',
+          suffixIcon: IconButton(
+            onPressed: () {
+              _showListAssetGroup();
+            },
+            icon: Icon(Icons.navigate_next),
+            color: Colors.red,
+          ),
+          prefixIcon: Icon(Icons.group_work, color: HexColor('#E07B36')),
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+        ),
+        controller: assetGroupCtrl,
+        maxLines: null,
+      ),
+    );
+  }
+
   Widget formAddVehicle() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
@@ -543,4 +608,22 @@ class SelectorInsuranceTypeModel {
   @override
   // TODO: implement hashCode
   int get hashCode => id.hashCode^insuranceTypeName.hashCode;
+}
+
+class SelectorAssetGroupModel {
+  String assetGroupCode;
+  String assetGroupName;
+
+  SelectorAssetGroupModel({this.assetGroupCode, this.assetGroupName});
+
+  @override
+  String toString() => assetGroupName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorAssetGroupModel && other.assetGroupCode == assetGroupCode;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => assetGroupCode.hashCode^assetGroupName.hashCode;
 }

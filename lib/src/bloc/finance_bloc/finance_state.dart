@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:salles_tools/src/models/asset_group_model.dart';
 import 'package:salles_tools/src/models/asset_kind_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/insurance_type_model.dart';
@@ -48,6 +49,19 @@ class InsuranceTypeSuccess extends FinanceState {
 
   InsuranceTypeSuccess(this._data);
   InsuranceModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
+class AssetGroupFailed extends FinanceState {}
+
+class AssetGroupSuccess extends FinanceState {
+  final _data;
+
+  AssetGroupSuccess(this._data);
+  AssetGroupModel get value => _data;
 
   @override
   // TODO: implement props

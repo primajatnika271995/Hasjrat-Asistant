@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
+import 'package:salles_tools/src/models/asset_group_model.dart';
 import 'package:salles_tools/src/models/asset_kind_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/insurance_type_model.dart';
@@ -66,6 +67,26 @@ class FinanceService {
     log.info(response.statusCode);
     if (response.statusCode == 200) {
       return compute(insuranceModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future assetGroup(String branchCode, String assetKindCode, String insuranceAssetCode) async {
+    final response = await _dio.get(UriApi.assetGroupUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        queryParameters: {
+          "branchCode": branchCode,
+          "assetKind": assetKindCode,
+          "insuranceAssetType": insuranceAssetCode,
+        }
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(assetGroupModelFromJson, json.encode(response.data));
     }
   }
 }

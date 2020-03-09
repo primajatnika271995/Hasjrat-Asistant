@@ -18,4 +18,6 @@ class UriApi {
   static const String assetKindUri = "/sales-tools-finance-service/api/v2/asset/kind/list";
 
   static const String insuranceTypeUri = "/sales-tools-finance-service/api/v2/asset/insurance-type/list";
+
+  static const String assetGroupUri = "/sales-tools-finance-service/api/v2/asset/group/list";
 }
