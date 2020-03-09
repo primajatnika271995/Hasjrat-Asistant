@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
 import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
 class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
@@ -17,21 +20,36 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   Stream<CustomerState> mapEventToState(CustomerEvent event) async* {
     if (event is FetchCustomer) {
       yield CustomerLoading();
+      var cache = await SharedPreferencesHelper.getListCustomer();
 
-      try {
-        CustomerModel value = await _customerService.customerDMS(event.value);
+      if (cache == null) {
+        log.info("Customer Cache Null Data");
 
-        if (value.data.isEmpty || value.data == null) {
-          yield CustomerFailed();
-        } else {
-          yield CustomerDisposeLoading();
-          yield CustomerSuccess(value);
+        try {
+          CustomerModel value = await _customerService.customerDMS(event.value);
+
+          if (value.data.isEmpty || value.data == null) {
+            yield CustomerFailed();
+          } else {
+            await SharedPreferencesHelper.setListCustomer(json.encode(value));
+
+            yield CustomerDisposeLoading();
+            yield CustomerSuccess(value);
+          }
+
+        } catch(error) {
+          log.warning("Error : ${error.toString()}");
+          CustomerError valError = await _customerService.customerDMS(event.value);
+          CustomerError(valError);
         }
+      } else {
+        log.info("Customer Cache on Data");
+        var cacheData = await SharedPreferencesHelper.getListCustomer();
+        log.info(cacheData);
 
-      } catch(error) {
-        log.warning("Error : ${error.toString()}");
-        CustomerError valError = await _customerService.customerDMS(event.value);
-        CustomerError(valError);
+        CustomerModel value = customerModelFromJson(cacheData);
+        yield CustomerDisposeLoading();
+        yield CustomerSuccess(value);
       }
     }
   }
