@@ -7,6 +7,7 @@ import 'package:salles_tools/src/bloc/finance_bloc/finance_state.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
 
 class CalculatorScreen extends StatefulWidget {
@@ -52,7 +53,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       items: branchList,
       onChange: (SelectorBranchModel selected) {
         setState(() {
-          currentSelectBranch = selected.branchName;
+          assetKindList = [];
+          currentSelectBranch = selected;
           branchNameCtrl.text = selected.branchName;
           branchCode = selected.id;
 
@@ -72,7 +74,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       items: assetKindList,
       onChange: (SelectorAssetKindModel selected) {
         setState(() {
-          currentSelectAssetKind = selected.assetKindName;
+          insuranceTypeList = [];
+          currentSelectAssetKind = selected;
           assetKindCtrl.text = selected.assetKindName;
           assetKindCode = selected.id;
 
@@ -92,7 +95,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       items: insuranceTypeList,
       onChange: (SelectorInsuranceTypeModel selected) {
         setState(() {
-          currentSelectInsuranceType = selected.insuranceTypeName;
+          assetGroupList = [];
+          currentSelectInsuranceType = selected;
           insuranceTypeCtrl.text = selected.insuranceTypeName;
           insuranceTypeCode = selected.id;
 
@@ -112,7 +116,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       items: assetGroupList,
       onChange: (SelectorAssetGroupModel selected) {
         setState(() {
-          currentSelectAssetGroup = selected.assetGroupName;
+          assetTypeList = [];
+          currentSelectAssetGroup = selected;
           assetGroupCtrl.text = selected.assetGroupCode;
           assetGroupCode = selected.assetGroupCode;
 
@@ -132,9 +137,13 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       items: assetTypeList,
       onChange: (SelectorAssetTypeModel selected) {
         setState(() {
-          currentSelectAssetType = selected.assetTypeName;
+          currentSelectAssetType = selected;
           assetTypeCtrl.text = selected.assetTypeName;
           assetTypeCode = selected.assetTypeCode;
+
+          // ignore: close_sinks
+          final assetPriceBloc = BlocProvider.of<FinanceBloc>(context);
+          assetPriceBloc.add(FetchAssetPrice(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode));
         });
       },
     );
@@ -223,6 +232,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             });
           }
 
+          if (state is AssetPriceSuccess) {
+            log.info(state);
+          }
+
           if (state is FinanceLoading) {
             onLoading(context);
           }
@@ -243,19 +256,105 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               formSelectAssetKind(),
               formSelectInsuranceType(),
               formSelectAssetGroup(),
+              formSelectAssetType(),
               Padding(
-                padding: const EdgeInsets.only(top: 25),
-                child: Center(
-                  child: Text(
-                    "Rp {?}",
-                    style: TextStyle(
-                      letterSpacing: 1.0,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 19,
-                    ),
-                  ),
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                child: BlocBuilder<FinanceBloc, FinanceState>(
+                  builder: (context, state) {
+                    if (state is AssetPriceSuccess) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          var value = state.value.result[index];
+                          return ExpansionTile(
+                            title: Text("${value.priListTitle}"),
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Start Date"),
+                                    Text("${value.startDate}"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("End Date"),
+                                    Text("${value.endDate}"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Minimum DP"),
+                                    Text("Rp ${value.dpBottomLimit}"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Maximum DP"),
+                                    Text("Rp ${value.dpTopLimit}"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                child: Center(
+                                  child: Text("Rp ${value.price}", style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.0,
+                                    fontSize: 16,
+                                  ),),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                        itemCount: state.value.result.length,
+                      );
+                    }
+                    
+                    if (state is AssetPriceFailed) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Text("Data tidak berhasil ditemukan!", style: TextStyle(
+                            letterSpacing: 1.0,
+                            fontWeight: FontWeight.w700,
+                          ),),
+                        ),
+                      );
+                    }
+                    return SizedBox();
+                  },
                 ),
               ),
+//              Padding(
+//                padding: const EdgeInsets.only(top: 15),
+//                child: Center(
+//                  child: Text(
+//                    "Rp {?}",
+//                    style: TextStyle(
+//                      letterSpacing: 1.0,
+//                      fontWeight: FontWeight.w700,
+//                      fontSize: 19,
+//                    ),
+//                  ),
+//                ),
+//              ),
               formDP(),
               Padding(
                 padding: const EdgeInsets.only(left: 30, top: 20),
@@ -324,7 +423,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30, top: 5),
+                padding: const EdgeInsets.only(left: 30, top: 5, bottom: 5),
                 child: Text(
                   "Rp {no data} / Bulan",
                   style: TextStyle(

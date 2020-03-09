@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/asset_group_model.dart';
 import 'package:salles_tools/src/models/asset_kind_model.dart';
+import 'package:salles_tools/src/models/asset_price_model.dart';
 import 'package:salles_tools/src/models/asset_type_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/insurance_type_model.dart';
@@ -111,4 +112,27 @@ class FinanceService {
       return compute(assetTypeModelFromJson, json.encode(response.data));
     }
   }
+
+  Future assetPrice(String branchCode, String assetKindCode, String insuranceAssetCode, String assetGroupCode, String assetTypeCode) async {
+    final response = await _dio.get(UriApi.assetPriceUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        queryParameters: {
+          "branchCode": branchCode,
+          "assetKind": assetKindCode,
+          "insuranceAssetType": insuranceAssetCode,
+          "assetGroupCode": assetGroupCode,
+          "assetTypeCode": assetTypeCode,
+        }
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(assetPriceModelFromJson, json.encode(response.data));
+    }
+  }
+
 }
