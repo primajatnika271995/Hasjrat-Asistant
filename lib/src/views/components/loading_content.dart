@@ -7,7 +7,7 @@ void onLoading(BuildContext context) {
         barrierColor: Colors.grey.withOpacity(0.3),
         context: context,
         barrierLabel: '',
-        barrierDismissible: true,
+        barrierDismissible: false,
         transitionDuration: Duration(milliseconds: 1000),
         transitionBuilder: (context, a1, a2, widget) {
           final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
