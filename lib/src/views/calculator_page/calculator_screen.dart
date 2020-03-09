@@ -9,7 +9,7 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
-  var dpVehicleCtrl = MoneyMaskedTextController(leftSymbol: 'Rp ');
+  var dpVehicleCtrl = MoneyMaskedTextController(leftSymbol: 'Rp ', precision: 0, decimalSeparator: '');
 
   double _lamaCicilan = 1.0;
 
@@ -204,8 +204,30 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       child: TextFormField(
         decoration: InputDecoration(
           hintText: 'Rp',
-          labelText: 'Uang DP)',
+          labelText: 'Uang (DP)',
+          labelStyle: TextStyle(
+            color: HexColor('#E07B36'),
+            fontWeight: FontWeight.w400,
+          ),
           hasFloatingPlaceholder: true,
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: HexColor('#E07B36'),
+              width: 1,
+            ),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: HexColor('#E07B36'),
+              width: 1,
+            ),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: HexColor('#E07B36'),
+              width: 2,
+            ),
+          ),
         ),
         controller: dpVehicleCtrl,
         keyboardType: TextInputType.number,
