@@ -28,6 +28,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   var assetKindCode;
   List<SelectorAssetKindModel> assetKindList = [];
 
+  var insuranceTypeCtrl = new TextEditingController();
+  var currentSelectInsuranceType;
+  var insuranceTypeCode;
+  List<SelectorInsuranceTypeModel> insuranceTypeList = [];
+
 
   void _showListBranch() {
     SelectDialog.showModal<SelectorBranchModel>(
@@ -60,6 +65,26 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           currentSelectAssetKind = selected.assetKindName;
           assetKindCtrl.text = selected.assetKindName;
           assetKindCode = selected.id;
+
+          // ignore: close_sinks
+          final insuranceBloc = BlocProvider.of<FinanceBloc>(context);
+          insuranceBloc.add(FetchInsuranceType(branchCode, assetKindCode));
+        });
+      },
+    );
+  }
+
+  void _showListInsuranceType() {
+    SelectDialog.showModal<SelectorInsuranceTypeModel>(
+      context,
+      label: "Asset Kind",
+      selectedValue: currentSelectInsuranceType,
+      items: insuranceTypeList,
+      onChange: (SelectorInsuranceTypeModel selected) {
+        setState(() {
+          currentSelectInsuranceType = selected.insuranceTypeName;
+          insuranceTypeCtrl.text = selected.insuranceTypeName;
+          insuranceTypeCode = selected.id;
         });
       },
     );
@@ -115,6 +140,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             });
           }
 
+          if (state is InsuranceTypeSuccess) {
+            state.value.result.forEach((f) {
+              insuranceTypeList.add(
+                SelectorInsuranceTypeModel(
+                  id: f.insuranceTypeCode,
+                  insuranceTypeName: f.insuranceTypeName,
+                ),
+              );
+            });
+          }
+
           if (state is FinanceLoading) {
             onLoading(context);
           }
@@ -133,6 +169,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 //            formAddVehicleType(),
               formSelectBranch(),
               formSelectAssetKind(),
+              formSelectInsuranceType(),
               Padding(
                 padding: const EdgeInsets.only(top: 25),
                 child: Center(
@@ -310,6 +347,46 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
+  Widget formSelectInsuranceType() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
+      child: TextField(
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: 'Insurance Type',
+          suffixIcon: IconButton(
+            onPressed: () {
+              _showListInsuranceType();
+            },
+            icon: Icon(Icons.navigate_next),
+            color: Colors.red,
+          ),
+          prefixIcon: Icon(Icons.assignment_ind, color: HexColor('#E07B36')),
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+        ),
+        controller: insuranceTypeCtrl,
+        maxLines: null,
+      ),
+    );
+  }
+
   Widget formAddVehicle() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
@@ -448,4 +525,22 @@ class SelectorAssetKindModel {
   @override
   // TODO: implement hashCode
   int get hashCode => id.hashCode^assetKindName.hashCode;
+}
+
+class SelectorInsuranceTypeModel {
+  String id;
+  String insuranceTypeName;
+
+  SelectorInsuranceTypeModel({this.id, this.insuranceTypeName});
+
+  @override
+  String toString() => insuranceTypeName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorInsuranceTypeModel && other.id == id;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => id.hashCode^insuranceTypeName.hashCode;
 }

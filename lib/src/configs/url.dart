@@ -16,4 +16,6 @@ class UriApi {
   static const String branchCodeUri = "/sales-tools-finance-service/api/v2/branch/list";
 
   static const String assetKindUri = "/sales-tools-finance-service/api/v2/asset/kind/list";
+
+  static const String insuranceTypeUri = "/sales-tools-finance-service/api/v2/asset/insurance-type/list";
 }
