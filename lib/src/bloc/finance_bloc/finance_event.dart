@@ -41,3 +41,15 @@ class FetchAssetGroup extends FinanceEvent {
   // TODO: implement props
   List<Object> get props => [branchCode, assetKindCode, insuranceAssetCode];
 }
+
+class FetchAssetType extends FinanceEvent {
+  final String branchCode;
+  final String assetKindCode;
+  final String insuranceAssetCode;
+  final String assetGroupCode;
+  FetchAssetType(this.branchCode, this.assetKindCode, this.insuranceAssetCode, this.assetGroupCode);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [branchCode, assetKindCode, insuranceAssetCode, assetGroupCode];
+}

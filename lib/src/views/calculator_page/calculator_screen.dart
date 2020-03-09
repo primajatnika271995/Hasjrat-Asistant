@@ -38,6 +38,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   var assetGroupCode;
   List<SelectorAssetGroupModel> assetGroupList = [];
 
+  var assetTypeCtrl = new TextEditingController();
+  var currentSelectAssetType;
+  var assetTypeCode;
+  List<SelectorAssetTypeModel> assetTypeList = [];
+
 
   void _showListBranch() {
     SelectDialog.showModal<SelectorBranchModel>(
@@ -110,6 +115,26 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           currentSelectAssetGroup = selected.assetGroupName;
           assetGroupCtrl.text = selected.assetGroupCode;
           assetGroupCode = selected.assetGroupCode;
+
+          // ignore: close_sinks
+          final assetTypeBloc = BlocProvider.of<FinanceBloc>(context);
+          assetTypeBloc.add(FetchAssetType(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode));
+        });
+      },
+    );
+  }
+
+  void _showListAssetType() {
+    SelectDialog.showModal<SelectorAssetTypeModel>(
+      context,
+      label: "Asset Group",
+      selectedValue: currentSelectAssetType,
+      items: assetTypeList,
+      onChange: (SelectorAssetTypeModel selected) {
+        setState(() {
+          currentSelectAssetType = selected.assetTypeName;
+          assetTypeCtrl.text = selected.assetTypeName;
+          assetTypeCode = selected.assetTypeCode;
         });
       },
     );
@@ -176,6 +201,28 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             });
           }
 
+          if (state is AssetGroupSuccess) {
+            state.value.result.forEach((f) {
+              assetGroupList.add(
+                SelectorAssetGroupModel(
+                  assetGroupCode: f.assetGroupCode,
+                  assetGroupName: f.assetGroupName,
+                ),
+              );
+            });
+          }
+
+          if (state is AssetTypeSuccess) {
+            state.value.result.forEach((f) {
+              assetTypeList.add(
+                SelectorAssetTypeModel(
+                  assetTypeCode: f.assetTypeCode,
+                  assetTypeName: f.assetTypeName,
+                ),
+              );
+            });
+          }
+
           if (state is FinanceLoading) {
             onLoading(context);
           }
@@ -195,6 +242,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               formSelectBranch(),
               formSelectAssetKind(),
               formSelectInsuranceType(),
+              formSelectAssetGroup(),
               Padding(
                 padding: const EdgeInsets.only(top: 25),
                 child: Center(
@@ -452,6 +500,46 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
+  Widget formSelectAssetType() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
+      child: TextField(
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: 'Asset Type',
+          suffixIcon: IconButton(
+            onPressed: () {
+              _showListAssetType();
+            },
+            icon: Icon(Icons.navigate_next),
+            color: Colors.red,
+          ),
+          prefixIcon: Icon(Icons.directions_car, color: HexColor('#E07B36')),
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+        ),
+        controller: assetTypeCtrl,
+        maxLines: null,
+      ),
+    );
+  }
+
   Widget formAddVehicle() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
@@ -626,4 +714,22 @@ class SelectorAssetGroupModel {
   @override
   // TODO: implement hashCode
   int get hashCode => assetGroupCode.hashCode^assetGroupName.hashCode;
+}
+
+class SelectorAssetTypeModel {
+  String assetTypeCode;
+  String assetTypeName;
+
+  SelectorAssetTypeModel({this.assetTypeCode, this.assetTypeName});
+
+  @override
+  String toString() => assetTypeName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorAssetTypeModel && other.assetTypeCode == assetTypeCode;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => assetTypeCode.hashCode^assetTypeName.hashCode;
 }

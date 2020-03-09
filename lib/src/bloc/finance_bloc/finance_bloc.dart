@@ -3,6 +3,7 @@ import 'package:salles_tools/src/bloc/finance_bloc/finance_event.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_state.dart';
 import 'package:salles_tools/src/models/asset_group_model.dart';
 import 'package:salles_tools/src/models/asset_kind_model.dart';
+import 'package:salles_tools/src/models/asset_type_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/insurance_type_model.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
@@ -64,6 +65,19 @@ class FinanceBloc extends Bloc<FinanceEvent, FinanceState> {
         AssetGroupModel value = await _financeService.assetGroup(event.branchCode, event.assetKindCode, event.insuranceAssetCode);
         yield FinanceDisposeLoading();
         yield AssetGroupSuccess(value);
+
+      } catch (error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
+    if (event is FetchAssetType) {
+      yield FinanceLoading();
+
+      try {
+        AssetTypeModel value = await _financeService.assetType(event.branchCode, event.assetKindCode, event.insuranceAssetCode, event.assetGroupCode);
+        yield FinanceDisposeLoading();
+        yield AssetTypeSuccess(value);
 
       } catch (error) {
         log.warning("Error : ${error.toString()}");
