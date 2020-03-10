@@ -5,6 +5,7 @@ import 'package:salles_tools/src/models/asset_price_model.dart';
 import 'package:salles_tools/src/models/asset_type_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/insurance_type_model.dart';
+import 'package:salles_tools/src/models/outlet_model.dart';
 
 class FinanceState extends Equatable {
   @override
@@ -25,6 +26,19 @@ class BranchSuccess extends FinanceState {
 
   BranchSuccess(this._data);
   BranchModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
+class OutletFailed extends FinanceState {}
+
+class OutletSuccess extends FinanceState {
+  final _data;
+
+  OutletSuccess(this._data);
+  OutletModel get value => _data;
 
   @override
   // TODO: implement props

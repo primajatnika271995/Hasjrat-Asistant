@@ -33,6 +33,19 @@ class FinanceBloc extends Bloc<FinanceEvent, FinanceState> {
       }
     }
 
+    if (event is FetchOutlet) {
+      yield FinanceLoading();
+
+      try {
+        BranchModel value = await _financeService.outletCode(event.branchCode);
+        yield FinanceDisposeLoading();
+        yield OutletSuccess(value);
+
+      } catch (error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
     if (event is FetchAssetKind) {
       yield FinanceLoading();
 

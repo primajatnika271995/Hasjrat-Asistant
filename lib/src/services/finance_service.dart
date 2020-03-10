@@ -9,6 +9,7 @@ import 'package:salles_tools/src/models/asset_price_model.dart';
 import 'package:salles_tools/src/models/asset_type_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/insurance_type_model.dart';
+import 'package:salles_tools/src/models/outlet_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -32,6 +33,24 @@ class FinanceService {
     log.info(response.statusCode);
     if (response.statusCode == 200) {
       return compute(branchModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future outletCode(String branchCode) async {
+    final response = await _dio.get(UriApi.outletCodeUri,
+      options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      ),
+      queryParameters: {
+        "branchCode": branchCode,
+      }
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(outletModelFromJson, json.encode(response.data));
     }
   }
   

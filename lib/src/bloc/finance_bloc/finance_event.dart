@@ -12,6 +12,15 @@ class FetchBranch extends FinanceEvent {
   List<Object> get props => [];
 }
 
+class FetchOutlet extends FinanceEvent {
+  final String branchCode;
+  FetchOutlet(this.branchCode);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [branchCode];
+}
+
 class FetchAssetKind extends FinanceEvent {
   final String branchCode;
   FetchAssetKind(this.branchCode);

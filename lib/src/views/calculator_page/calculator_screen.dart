@@ -24,6 +24,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   var branchCode;
   List<SelectorBranchModel> branchList = [];
 
+  var outletNameCtrl = new TextEditingController();
+  var currentSelectOutlet;
+  var outletCode;
+  List<SelectorOutletModel> outletList = [];
+
   var assetKindCtrl = new TextEditingController();
   var currentSelectAssetKind;
   var assetKindCode;
@@ -53,10 +58,31 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       items: branchList,
       onChange: (SelectorBranchModel selected) {
         setState(() {
-          assetKindList = [];
+          outletList = [];
           currentSelectBranch = selected;
           branchNameCtrl.text = selected.branchName;
           branchCode = selected.id;
+
+          // ignore: close_sinks
+          final outletBloc = BlocProvider.of<FinanceBloc>(context);
+          outletBloc.add(FetchOutlet(branchCode));
+        });
+      },
+    );
+  }
+
+  void _showListOutlet() {
+    SelectDialog.showModal<SelectorOutletModel>(
+      context,
+      label: "Outlet Name",
+      selectedValue: currentSelectOutlet,
+      items: outletList,
+      onChange: (SelectorOutletModel selected) {
+        setState(() {
+          assetKindList = [];
+          currentSelectOutlet = selected;
+          outletNameCtrl.text = selected.outletName;
+          outletCode = selected.id;
 
           // ignore: close_sinks
           final assetKindBloc = BlocProvider.of<FinanceBloc>(context);
@@ -188,6 +214,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             });
           }
 
+          if (state is OutletSuccess) {
+            state.value.result.forEach((f) {
+              outletList.add(
+                SelectorOutletModel(
+                  id: f.id,
+                  outletName: f.text,
+                ),
+              );
+            });
+          }
+
           if (state is AssetKindSuccess) {
             state.value.result.forEach((f) {
               assetKindList.add(
@@ -232,10 +269,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             });
           }
 
-          if (state is AssetPriceSuccess) {
-            log.info(state);
-          }
-
           if (state is FinanceLoading) {
             onLoading(context);
           }
@@ -253,6 +286,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 //            formAddVehicle(),
 //            formAddVehicleType(),
               formSelectBranch(),
+              formSelectOutlet(),
               formSelectAssetKind(),
               formSelectInsuranceType(),
               formSelectAssetGroup(),
@@ -474,6 +508,46 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           ),
         ),
         controller: branchNameCtrl,
+        maxLines: null,
+      ),
+    );
+  }
+
+  Widget formSelectOutlet() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
+      child: TextField(
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: 'Outlet Name',
+          suffixIcon: IconButton(
+            onPressed: () {
+              _showListOutlet();
+            },
+            icon: Icon(Icons.navigate_next),
+            color: Colors.red,
+          ),
+          prefixIcon: Icon(Icons.location_on, color: HexColor('#E07B36')),
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+        ),
+        controller: outletNameCtrl,
         maxLines: null,
       ),
     );
@@ -759,6 +833,24 @@ class SelectorBranchModel {
   @override
   // TODO: implement hashCode
   int get hashCode => id.hashCode^branchName.hashCode;
+}
+
+class SelectorOutletModel {
+  String id;
+  String outletName;
+
+  SelectorOutletModel({this.id, this.outletName});
+
+  @override
+  String toString() => outletName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorOutletModel && other.id == id;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => id.hashCode^outletName.hashCode;
 }
 
 class SelectorAssetKindModel {
