@@ -11,9 +11,9 @@ import 'package:salles_tools/src/utils/regex_file.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_customer.dart';
-import 'package:scanbot_sdk/common_data.dart';
-import 'package:scanbot_sdk/document_scan_data.dart';
-import 'package:scanbot_sdk/scanbot_sdk_ui.dart';
+//import 'package:scanbot_sdk/common_data.dart';
+//import 'package:scanbot_sdk/document_scan_data.dart';
+//import 'package:scanbot_sdk/scanbot_sdk_ui.dart';
 
 class UploadKTPCustomerView extends StatefulWidget {
   @override
@@ -66,7 +66,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.of(context).pop();
-                _onScanner();
+//                _onScanner();
               },
               child: Text('Scaner Camera'),
             ),
@@ -157,56 +157,56 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
 
   }
 
-  void _onScanner() async {
-    setState(() {
-      nikScan = null;
-      namaScan = null;
-      loopIndex = 0;
-    });
-
-    var config = DocumentScannerConfiguration(
-      multiPageEnabled: false,
-      bottomBarBackgroundColor: HexColor('#E07B36'),
-      multiPageButtonHidden: true,
-      cancelButtonTitle: "Cancel",
-    );
-    var result = await ScanbotSdkUi.startDocumentScanner(config);
-
-    if (result.operationResult == OperationResult.SUCCESS) {
-      setState(() {
-        currentPreviewImage = Image.file(File.fromUri(result.pages[0].documentImageFileUri));
-      });
-
-      final FirebaseVisionImage visionImage =
-      FirebaseVisionImage.fromFilePath(result.pages[0].documentImageFileUri.path);
-      final VisionText visionText =
-      await textRecognizer.processImage(visionImage);
-
-      String text = visionText.text;
-      for (TextBlock block in visionText.blocks) {
-        log.info("Block Data : ${block.text}");
-        if (nikScan == null) {
-          setState(() {
-            nikScan = Regex.isValidationNIK(block.text);
-          });
-        }
-
-        if (loopIndex <= 4) {
-          log.info(loopIndex);
-          setState(() {
-            loopIndex = loopIndex + 1;
-            namaScan = block.text;
-          });
-        }
-        print("NIK : $nikScan");
-        print("Nama : $namaScan");
-        for (TextLine line in block.lines) {
-          for (TextElement element in line.elements) {
-          }
-        }
-      }
-    }
-  }
+//  void _onScanner() async {
+//    setState(() {
+//      nikScan = null;
+//      namaScan = null;
+//      loopIndex = 0;
+//    });
+//
+//    var config = DocumentScannerConfiguration(
+//      multiPageEnabled: false,
+//      bottomBarBackgroundColor: HexColor('#E07B36'),
+//      multiPageButtonHidden: true,
+//      cancelButtonTitle: "Cancel",
+//    );
+//    var result = await ScanbotSdkUi.startDocumentScanner(config);
+//
+//    if (result.operationResult == OperationResult.SUCCESS) {
+//      setState(() {
+//        currentPreviewImage = Image.file(File.fromUri(result.pages[0].documentImageFileUri));
+//      });
+//
+//      final FirebaseVisionImage visionImage =
+//      FirebaseVisionImage.fromFilePath(result.pages[0].documentImageFileUri.path);
+//      final VisionText visionText =
+//      await textRecognizer.processImage(visionImage);
+//
+//      String text = visionText.text;
+//      for (TextBlock block in visionText.blocks) {
+//        log.info("Block Data : ${block.text}");
+//        if (nikScan == null) {
+//          setState(() {
+//            nikScan = Regex.isValidationNIK(block.text);
+//          });
+//        }
+//
+//        if (loopIndex <= 4) {
+//          log.info(loopIndex);
+//          setState(() {
+//            loopIndex = loopIndex + 1;
+//            namaScan = block.text;
+//          });
+//        }
+//        print("NIK : $nikScan");
+//        print("Nama : $namaScan");
+//        for (TextLine line in block.lines) {
+//          for (TextElement element in line.elements) {
+//          }
+//        }
+//      }
+//    }
+//  }
 
   @override
   void dispose() {
@@ -252,8 +252,9 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
                           iconSize: 45,
                           color: HexColor('#E07B36'),
                           onPressed: () {
-                            _onSelectCamera();
+//                            _onSelectCamera();
 //                            _onPickImage();
+                            _onManual();
                           },
                         ),
                       ),

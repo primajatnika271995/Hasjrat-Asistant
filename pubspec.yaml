@@ -25,7 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   # Trial Plugin For Scan Card or Ducoment
-  scanbot_sdk: ^1.1.0
+#  scanbot_sdk: ^1.1.0
 
   # Intl Package
   intl: ^0.16.0

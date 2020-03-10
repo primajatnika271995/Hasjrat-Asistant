@@ -9,7 +9,6 @@ import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/views/app.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
-Future<List<ReminderSqlite>> dataReminder;
 SqliteService _dbHelper = SqliteService();
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =  FlutterLocalNotificationsPlugin();
@@ -17,11 +16,10 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =  FlutterLocalN
 final timeFormat = DateFormat("h:mm a");
 
 void checkTime() {
-  dataReminder = _dbHelper.getReminderToday();
+  Future<List<ReminderSqlite>> today = _dbHelper.getReminderToday();
   final DateTime now = DateTime.now();
   log.info("Time Now : ${timeFormat.format(now).toString()}");
-
-    dataReminder.then((val) {
+    today.then((val) {
       val.forEach((f) {
         log.info("Waktu Pemberitahuan : ${f.timeReminder}");
         if (f.timeReminder == timeFormat.format(now).toString()) {

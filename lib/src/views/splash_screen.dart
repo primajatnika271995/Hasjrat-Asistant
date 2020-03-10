@@ -6,8 +6,8 @@ import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/bottom_navigation.dart';
 import 'package:salles_tools/src/views/login_page/login_screen.dart';
-import 'package:scanbot_sdk/scanbot_sdk.dart';
-import 'package:scanbot_sdk/scanbot_sdk_models.dart';
+//import 'package:scanbot_sdk/scanbot_sdk.dart';
+//import 'package:scanbot_sdk/scanbot_sdk_models.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -83,10 +83,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
 
-    ScanbotSdk.initScanbotSdk(ScanbotSdkConfig(
-      loggingEnabled: true,
-      licenseKey: licenseKey, // see the license key notes below!
-    ));
+//    ScanbotSdk.initScanbotSdk(ScanbotSdkConfig(
+//      loggingEnabled: true,
+//      licenseKey: licenseKey, // see the license key notes below!
+//    ));
 
     return Scaffold(
       backgroundColor: Colors.white,

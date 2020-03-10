@@ -72,36 +72,37 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   void _onCalculateSimulator() {
-    if (dpVehicleCtrl.numberValue < double.parse(dpMinimum.replaceAll(".", "")) || dpVehicleCtrl.numberValue > double.parse(dpMaximum.replaceAll(".", ""))) {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          content: Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(right: 5),
-                child: Icon(Icons.info_outline),
+    switch (currentSelectMethode) {
+      case "Down Payment":
+        if (dpVehicleCtrl.numberValue < double.parse(dpMinimum.replaceAll(".", "")) || dpVehicleCtrl.numberValue > double.parse(dpMaximum.replaceAll(".", ""))) {
+          _scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: Icon(Icons.info_outline),
+                  ),
+                  Expanded(
+                    child: Text(
+                        " Down Price Minimum : Rp $dpMinimum \n Down Price Maximum : Rp $dpMaximum"),
+                  ),
+                ],
               ),
-              Expanded(
-                child: Text(" Down Price Minimum : Rp $dpMinimum \n Down Price Maximum : Rp $dpMaximum"),
-              ),
-            ],
-          ),
-          backgroundColor: Colors.red,
-        ),
-      );
-    } else {
-      switch (currentSelectMethode) {
-        case "Down Payment":
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else {
           // ignore: close_sinks
           final simulationBloc = BlocProvider.of<FinanceBloc>(context);
           simulationBloc.add(FetchSimulationDownPayment(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal, (dpVehicleCtrl.numberValue / 10).toString()));
-          break;
-        case "Price List":
-          // ignore: close_sinks
-          final simulationBloc = BlocProvider.of<FinanceBloc>(context);
-          simulationBloc.add(FetchSimulationPriceList(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal));
-          break;
-      }
+        }
+        break;
+      case "Price List":
+        // ignore: close_sinks
+        final simulationBloc = BlocProvider.of<FinanceBloc>(context);
+        simulationBloc.add(FetchSimulationPriceList(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal));
+        break;
     }
   }
 
