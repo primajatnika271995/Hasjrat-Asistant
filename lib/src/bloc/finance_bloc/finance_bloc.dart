@@ -7,6 +7,7 @@ import 'package:salles_tools/src/models/asset_price_model.dart';
 import 'package:salles_tools/src/models/asset_type_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/insurance_type_model.dart';
+import 'package:salles_tools/src/models/outlet_model.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -37,7 +38,7 @@ class FinanceBloc extends Bloc<FinanceEvent, FinanceState> {
       yield FinanceLoading();
 
       try {
-        BranchModel value = await _financeService.outletCode(event.branchCode);
+        OutletModel value = await _financeService.outletCode(event.branchCode);
         yield FinanceDisposeLoading();
         yield OutletSuccess(value);
 
