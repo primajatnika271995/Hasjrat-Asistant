@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
 import 'package:salles_tools/src/models/employee_model.dart';
+import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -19,7 +20,7 @@ class LoginService {
     _dio.interceptors.add(DioLoggingInterceptors(_dio));
   }
 
-  Future<AuthenticationModel> login(String username, String password) async {
+  Future login(String username, String password) async {
     await SharedPreferencesHelper.setAccessToken(null);
 
     var params = {
@@ -40,11 +41,13 @@ class LoginService {
         ),
       );
       log.info(response.statusCode);
-      return compute(authenticationModelFromJson, json.encode(response.data));
-    } catch (error) {
-      log.warning(error.toString());
+      if (response.statusCode == 200) {
+        return compute(authenticationModelFromJson, json.encode(response.data));
+      }
+    } on DioError catch (error) {
+      log.warning("Login Error : ${error.toString()}");
+      return compute(errorModelFromJson, json.encode(error.response.data));
     }
-    return null;
   }
 
   Future<EmployeeModel> checkNIK(String nik) async {

@@ -85,6 +85,16 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
 
+          if (state is LoginError) {
+            Navigator.of(context).pop();
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text("${state.error.status}"),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+
           if (state is LoginLoading) {
             onLoading(context);
           }
