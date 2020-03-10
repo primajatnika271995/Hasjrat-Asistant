@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_event.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_state.dart';
@@ -8,6 +10,7 @@ import 'package:salles_tools/src/models/asset_type_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/insurance_type_model.dart';
 import 'package:salles_tools/src/models/outlet_model.dart';
+import 'package:salles_tools/src/models/simulation_model.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -112,6 +115,45 @@ class FinanceBloc extends Bloc<FinanceEvent, FinanceState> {
         } else {
           yield FinanceDisposeLoading();
           yield AssetPriceFailed();
+        }
+      } catch (error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
+    if (event is FetchSimulationDownPayment) {
+      yield FinanceLoading();
+
+      try {
+        SimulationModel value = await _financeService.simulationDownPayment(event.branchCode, event.assetKindCode, event.insuranceAssetCode, event.assetGroupCode, event.assetTypeCode, event.priceListId, event.price, event.downPayment);
+        log.info(value);
+
+        if (value.result != null) {
+          yield FinanceDisposeLoading();
+          yield SimulationSuccess(value);
+        } else {
+          log.warning("Simulation Failed");
+          yield FinanceDisposeLoading();
+          yield SimulationFailed();
+        }
+      } catch (error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
+    if (event is FetchSimulationPriceList) {
+      yield FinanceLoading();
+
+      try {
+        SimulationModel value = await _financeService.simulationPriceList(event.branchCode, event.assetKindCode, event.insuranceAssetCode, event.assetGroupCode, event.assetTypeCode, event.priceListId, event.price);
+        log.info(value);
+
+        if (value.status || value.result != null) {
+          yield FinanceDisposeLoading();
+          yield SimulationSuccess(value);
+        } else {
+          yield FinanceDisposeLoading();
+          yield SimulationFailed();
         }
       } catch (error) {
         log.warning("Error : ${error.toString()}");

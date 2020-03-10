@@ -10,6 +10,7 @@ import 'package:salles_tools/src/models/asset_type_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/insurance_type_model.dart';
 import 'package:salles_tools/src/models/outlet_model.dart';
+import 'package:salles_tools/src/models/simulation_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -151,6 +152,55 @@ class FinanceService {
     log.info(response.statusCode);
     if (response.statusCode == 200) {
       return compute(assetPriceModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future simulationDownPayment(String branchCode, String assetKindCode, String insuranceAssetCode, String assetGroupCode, String assetTypeCode, String priceListId, String price, String downPayment) async {
+    final response = await _dio.get(UriApi.simulationDownPaymentUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        queryParameters: {
+          "branchCode": branchCode,
+          "assetKind": assetKindCode,
+          "insuranceAssetType": insuranceAssetCode,
+          "assetGroupCode": assetGroupCode,
+          "assetTypeCode": assetTypeCode,
+          "priceListId": priceListId,
+          "price": price.replaceAll(".", ""),
+          "downPayment": downPayment.replaceAll(".", ""),
+        }
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(simulationModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future simulationPriceList(String branchCode, String assetKindCode, String insuranceAssetCode, String assetGroupCode, String assetTypeCode, String priceListId, String price) async {
+    final response = await _dio.get(UriApi.simulationPriceListUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        queryParameters: {
+          "branchCode": branchCode,
+          "assetKind": assetKindCode,
+          "insuranceAssetType": insuranceAssetCode,
+          "assetGroupCode": assetGroupCode,
+          "assetTypeCode": assetTypeCode,
+          "priceListId": priceListId,
+          "price": price.replaceAll(".", ""),
+        }
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(simulationModelFromJson, json.encode(response.data));
     }
   }
 

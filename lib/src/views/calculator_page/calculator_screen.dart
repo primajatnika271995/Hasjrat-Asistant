@@ -4,6 +4,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_event.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_state.dart';
+import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
@@ -18,6 +19,8 @@ class CalculatorScreen extends StatefulWidget {
 class _CalculatorScreenState extends State<CalculatorScreen> {
   var dpVehicleCtrl = MoneyMaskedTextController(leftSymbol: 'Rp ', precision: 0, decimalSeparator: '');
   double _lamaCicilan = 1.0;
+  int priceSelection = -1;
+  String currentSelectMethode;
 
   var branchNameCtrl = new TextEditingController();
   var currentSelectBranch;
@@ -49,6 +52,30 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   var assetTypeCode;
   List<SelectorAssetTypeModel> assetTypeList = [];
 
+  String dpMinimum= "0";
+  var priceListId;
+  var priceOriginal;
+
+  void _onSelectionPrice(int index) {
+    setState(() {
+      priceSelection = index;
+    });
+  }
+
+  void _onCalculateSimulator() {
+    switch (currentSelectMethode) {
+      case "Down Payment":
+        // ignore: close_sinks
+        final simulationBloc = BlocProvider.of<FinanceBloc>(context);
+        simulationBloc.add(FetchSimulationDownPayment(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal, (dpVehicleCtrl.numberValue / 10).toString()));
+        break;
+      case "Price List":
+        // ignore: close_sinks
+        final simulationBloc = BlocProvider.of<FinanceBloc>(context);
+        simulationBloc.add(FetchSimulationPriceList(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal));
+        break;
+    }
+  }
 
   void _showListBranch() {
     SelectDialog.showModal<SelectorBranchModel>(
@@ -283,8 +310,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-//            formAddVehicle(),
-//            formAddVehicleType(),
               formSelectBranch(),
               formSelectOutlet(),
               formSelectAssetKind(),
@@ -346,12 +371,30 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 15),
-                                child: Center(
-                                  child: Text("Rp ${value.price}", style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 1.0,
-                                    fontSize: 16,
-                                  ),),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Rp ${value.price}", style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.0,
+                                      fontSize: 16,
+                                    ),),
+                                    RaisedButton(
+                                      onPressed: () {
+                                        _onSelectionPrice(index);
+                                        setState(() {
+                                          priceListId = value.priceListId;
+                                          dpMinimum = value.dpBottomLimit;
+                                          priceOriginal = value.price;
+                                        });
+                                      },
+                                      elevation: 1,
+                                      child: Text(priceSelection == index ? "Selected" : "Take it", style: TextStyle(
+                                        color: Colors.white,
+                                      ),),
+                                      color: priceSelection == index ? Colors.green : Colors.grey,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -376,64 +419,66 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   },
                 ),
               ),
+              selectedMethode(),
+              currentSelectMethode == "Down Payment" ? formDP() : SizedBox(),
+              currentSelectMethode == "Down Payment" ? Padding(
+                padding: const EdgeInsets.only(left: 30, right: 30),
+                child: Row(
+                  children: <Widget>[
+                    Text("* Minimum DP : "),
+                    Text("$dpMinimum", style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.0,
+                    ),),
+                  ],
+                ),
+              ) : SizedBox(),
 //              Padding(
-//                padding: const EdgeInsets.only(top: 15),
-//                child: Center(
-//                  child: Text(
-//                    "Rp {?}",
-//                    style: TextStyle(
-//                      letterSpacing: 1.0,
-//                      fontWeight: FontWeight.w700,
-//                      fontSize: 19,
-//                    ),
+//                padding: const EdgeInsets.only(left: 30, top: 20),
+//                child: Text(
+//                  "Isi simulasi lama Cicilan",
+//                  style: TextStyle(
+//                    letterSpacing: 1.0,
+//                    fontSize: 15,
+//                    fontWeight: FontWeight.w700,
 //                  ),
 //                ),
 //              ),
-              formDP(),
-              Padding(
-                padding: const EdgeInsets.only(left: 30, top: 20),
-                child: Text(
-                  "Isi simulasi lama Cicilan",
-                  style: TextStyle(
-                    letterSpacing: 1.0,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Slider(
-                  onChanged: (val) {
-                    setState(() {
-                      _lamaCicilan = val;
-                    });
-                  },
-                  activeColor: HexColor('#E07B36'),
-                  inactiveColor: Colors.grey,
-                  max: 36.0,
-                  min: 1.0,
-                  divisions: 36,
-                  value: _lamaCicilan,
-                  label: _lamaCicilan.round().toString(),
-                ),
-              ),
-              Center(
-                child: Text(
-                  "${_lamaCicilan.round().toString()} bulan",
-                  style: TextStyle(
-                    fontSize: 16,
-                    letterSpacing: 1.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
+//              Padding(
+//                padding: const EdgeInsets.symmetric(horizontal: 10),
+//                child: Slider(
+//                  onChanged: (val) {
+//                    setState(() {
+//                      _lamaCicilan = val;
+//                    });
+//                  },
+//                  activeColor: HexColor('#E07B36'),
+//                  inactiveColor: Colors.grey,
+//                  max: 36.0,
+//                  min: 1.0,
+//                  divisions: 36,
+//                  value: _lamaCicilan,
+//                  label: _lamaCicilan.round().toString(),
+//                ),
+//              ),
+//              Center(
+//                child: Text(
+//                  "${_lamaCicilan.round().toString()} bulan",
+//                  style: TextStyle(
+//                    fontSize: 16,
+//                    letterSpacing: 1.0,
+//                    fontWeight: FontWeight.w700,
+//                  ),
+//                ),
+//              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                 child: Container(
                   width: screenWidth(context),
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _onCalculateSimulator();
+                    },
                     child: Text(
                       "Calculate",
                       style: TextStyle(color: Colors.white),
@@ -446,25 +491,84 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 ),
               ),
               Divider(),
-              Padding(
-                padding: const EdgeInsets.only(left: 30, top: 5),
-                child: Text(
-                  "Cicilan Bulan",
-                  style: TextStyle(
-                    letterSpacing: 0.8,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 30, top: 5, bottom: 5),
-                child: Text(
-                  "Rp {no data} / Bulan",
-                  style: TextStyle(
-                    letterSpacing: 0.8,
-                    fontSize: 14,
-                  ),
-                ),
+              BlocBuilder<FinanceBloc, FinanceState>(
+                builder: (context, state) {
+                  if (state is SimulationFailed) {
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Text("Data tidak berhasil ditemukan!", style: TextStyle(
+                          letterSpacing: 1.0,
+                          fontWeight: FontWeight.w700,
+                        ),),
+                      ),
+                    );
+                  }
+
+                  if (state is SimulationSuccess) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          child: Text("List Tenor", style: TextStyle(
+                            letterSpacing: 1.0,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 17,
+                          ),),
+                        ),
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          separatorBuilder: (context, index) {
+                            return Divider();
+                          },
+                          itemBuilder: (context, index) {
+                            var data = state.value.result[index];
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20, top: 5),
+                                  child: Text(
+                                    "Tenor ${data.tenorName}",
+                                    style: TextStyle(
+                                      letterSpacing: 0.8,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20, top: 5, bottom: 5),
+                                  child: Text(
+                                    "Rp ${data.installment} / Bulan",
+                                    style: TextStyle(
+                                      letterSpacing: 0.8,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20, top: 5, bottom: 5),
+                                  child: Text(
+                                    "Lama Tenor ${data.tenorVale} Bulan",
+                                    style: TextStyle(
+                                      letterSpacing: 0.8,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                          itemCount: state.value.result.length,
+                        ),
+                      ],
+                    );
+                   }
+                    return SizedBox();
+                  },
               ),
             ],
           ),
@@ -713,68 +817,41 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
-  Widget formAddVehicle() {
+  Widget selectedMethode() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
-      child: TextField(
-        enabled: false,
-        decoration: InputDecoration(
-          hintText: 'Vehicle Name',
-          suffixIcon: Icon(Icons.navigate_next, color: Colors.red),
-          prefixIcon: Icon(Icons.time_to_leave),
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      child: FormField(
+        builder: (FormFieldState state) {
+          return InputDecorator(
+            decoration: InputDecoration(
+              hintText: 'Select Methode',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              contentPadding:
+              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: currentSelectMethode,
+                hint: Text('Simulation Methode'),
+                isDense: true,
+                onChanged: (String newVal) {
+                  setState(() {
+                    currentSelectMethode = newVal;
+                    state.didChange(newVal);
+                  });
+                },
+                items: ['Down Payment', 'Price List'].map((String val) {
+                  return DropdownMenuItem<String>(
+                    value: val,
+                    child: Text(val),
+                  );
+                }).toList(),
+              ),
             ),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-        ),
-        maxLines: null,
-      ),
-    );
-  }
-
-  Widget formAddVehicleType() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
-      child: TextField(
-        enabled: false,
-        decoration: InputDecoration(
-          hintText: 'Vehicle Type',
-          suffixIcon: Icon(Icons.navigate_next, color: Colors.red),
-          prefixIcon: Icon(Icons.time_to_leave),
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-        ),
-        maxLines: null,
+          );
+        },
       ),
     );
   }
@@ -815,112 +892,4 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       ),
     );
   }
-}
-
-class SelectorBranchModel {
-  String id;
-  String branchName;
-
-  SelectorBranchModel({this.id, this.branchName});
-
-  @override
-  String toString() => branchName;
-
-  @override
-  // ignore: hash_and_equals
-  bool operator ==(other) => other is SelectorBranchModel && other.id == id;
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => id.hashCode^branchName.hashCode;
-}
-
-class SelectorOutletModel {
-  String id;
-  String outletName;
-
-  SelectorOutletModel({this.id, this.outletName});
-
-  @override
-  String toString() => outletName;
-
-  @override
-  // ignore: hash_and_equals
-  bool operator ==(other) => other is SelectorOutletModel && other.id == id;
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => id.hashCode^outletName.hashCode;
-}
-
-class SelectorAssetKindModel {
-  String id;
-  String assetKindName;
-
-  SelectorAssetKindModel({this.id, this.assetKindName});
-
-  @override
-  String toString() => assetKindName;
-
-  @override
-  // ignore: hash_and_equals
-  bool operator ==(other) => other is SelectorAssetKindModel && other.id == id;
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => id.hashCode^assetKindName.hashCode;
-}
-
-class SelectorInsuranceTypeModel {
-  String id;
-  String insuranceTypeName;
-
-  SelectorInsuranceTypeModel({this.id, this.insuranceTypeName});
-
-  @override
-  String toString() => insuranceTypeName;
-
-  @override
-  // ignore: hash_and_equals
-  bool operator ==(other) => other is SelectorInsuranceTypeModel && other.id == id;
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => id.hashCode^insuranceTypeName.hashCode;
-}
-
-class SelectorAssetGroupModel {
-  String assetGroupCode;
-  String assetGroupName;
-
-  SelectorAssetGroupModel({this.assetGroupCode, this.assetGroupName});
-
-  @override
-  String toString() => assetGroupName;
-
-  @override
-  // ignore: hash_and_equals
-  bool operator ==(other) => other is SelectorAssetGroupModel && other.assetGroupCode == assetGroupCode;
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => assetGroupCode.hashCode^assetGroupName.hashCode;
-}
-
-class SelectorAssetTypeModel {
-  String assetTypeCode;
-  String assetTypeName;
-
-  SelectorAssetTypeModel({this.assetTypeCode, this.assetTypeName});
-
-  @override
-  String toString() => assetTypeName;
-
-  @override
-  // ignore: hash_and_equals
-  bool operator ==(other) => other is SelectorAssetTypeModel && other.assetTypeCode == assetTypeCode;
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => assetTypeCode.hashCode^assetTypeName.hashCode;
 }

@@ -75,3 +75,34 @@ class FetchAssetPrice extends FinanceEvent {
   // TODO: implement props
   List<Object> get props => [branchCode, assetKindCode, insuranceAssetCode, assetGroupCode, assetTypeCode];
 }
+
+class FetchSimulationDownPayment extends FinanceEvent {
+  final String branchCode;
+  final String assetKindCode;
+  final String insuranceAssetCode;
+  final String assetGroupCode;
+  final String assetTypeCode;
+  final String priceListId;
+  final String price;
+  final String downPayment;
+  FetchSimulationDownPayment(this.branchCode, this.assetKindCode, this.insuranceAssetCode, this.assetGroupCode, this.assetTypeCode, this.priceListId, this.price, this.downPayment);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [branchCode, assetKindCode, insuranceAssetCode, assetGroupCode, assetTypeCode, priceListId, price, downPayment];
+}
+
+class FetchSimulationPriceList extends FinanceEvent {
+  final String branchCode;
+  final String assetKindCode;
+  final String insuranceAssetCode;
+  final String assetGroupCode;
+  final String assetTypeCode;
+  final String priceListId;
+  final String price;
+  FetchSimulationPriceList(this.branchCode, this.assetKindCode, this.insuranceAssetCode, this.assetGroupCode, this.assetTypeCode, this.priceListId, this.price);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [branchCode, assetKindCode, insuranceAssetCode, assetGroupCode, assetTypeCode, priceListId, price];
+}

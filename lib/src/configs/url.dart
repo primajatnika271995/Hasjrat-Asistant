@@ -26,4 +26,9 @@ class UriApi {
   static const String assetTypeUri = "/sales-tools-finance-service/api/v2/asset/type/list";
 
   static const String assetPriceUri = "/sales-tools-finance-service/api/v2/asset/price/list";
+
+  static const String simulationDownPaymentUri = "/sales-tools-finance-service/api/v2/simulation/select-down-payment";
+
+  static const String simulationPriceListUri = "/sales-tools-finance-service/api/v2/simulation/select-price-list";
+
 }
