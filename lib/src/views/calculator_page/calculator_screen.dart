@@ -330,9 +330,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           }
 
           if (state is FinanceDisposeLoading) {
-            Future.delayed(Duration(seconds: 3), () {
-              Navigator.of(context, rootNavigator: false).pop();
-            });
+            Navigator.of(context, rootNavigator: false).pop();
           }
         },
         child: SingleChildScrollView(

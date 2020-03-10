@@ -141,11 +141,11 @@ class _HomeScreenState extends State<HomeScreen> {
       flexibleSpace: Stack(
         children: <Widget>[
           Positioned(
-            top: paddingTop(context),
-            left: 0,
+            top: paddingTop(context) + 10,
+            left: 20,
             child: Image.asset(
-              "assets/icons/logo_header_icon.png",
-              height: 50,
+              "assets/icons/hasjrat_logo_apps.png",
+              height: 40,
             ),
           ),
           Positioned(
