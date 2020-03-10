@@ -109,7 +109,7 @@ class FinanceBloc extends Bloc<FinanceEvent, FinanceState> {
         AssetPriceModel value = await _financeService.assetPrice(event.branchCode, event.assetKindCode, event.insuranceAssetCode, event.assetGroupCode, event.assetTypeCode);
         log.info(value);
 
-        if (value.status || value.result != null) {
+        if (value.result != null) {
           yield FinanceDisposeLoading();
           yield AssetPriceSuccess(value);
         } else {
@@ -148,7 +148,7 @@ class FinanceBloc extends Bloc<FinanceEvent, FinanceState> {
         SimulationModel value = await _financeService.simulationPriceList(event.branchCode, event.assetKindCode, event.insuranceAssetCode, event.assetGroupCode, event.assetTypeCode, event.priceListId, event.price);
         log.info(value);
 
-        if (value.status || value.result != null) {
+        if (value.result != null) {
           yield FinanceDisposeLoading();
           yield SimulationSuccess(value);
         } else {

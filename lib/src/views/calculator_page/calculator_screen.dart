@@ -17,6 +17,8 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   var dpVehicleCtrl = MoneyMaskedTextController(leftSymbol: 'Rp ', precision: 0, decimalSeparator: '');
   double _lamaCicilan = 1.0;
   int priceSelection = -1;
@@ -52,7 +54,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   var assetTypeCode;
   List<SelectorAssetTypeModel> assetTypeList = [];
 
-  String dpMinimum= "0";
+  String dpMinimum = "0";
+  String dpMaximum = "0";
   var priceListId;
   var priceOriginal;
 
@@ -62,18 +65,43 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     });
   }
 
+  void _onRecheckType() {
+    // ignore: close_sinks
+    final assetPriceBloc = BlocProvider.of<FinanceBloc>(context);
+    assetPriceBloc.add(FetchAssetPrice(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode));
+  }
+
   void _onCalculateSimulator() {
-    switch (currentSelectMethode) {
-      case "Down Payment":
-        // ignore: close_sinks
-        final simulationBloc = BlocProvider.of<FinanceBloc>(context);
-        simulationBloc.add(FetchSimulationDownPayment(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal, (dpVehicleCtrl.numberValue / 10).toString()));
-        break;
-      case "Price List":
-        // ignore: close_sinks
-        final simulationBloc = BlocProvider.of<FinanceBloc>(context);
-        simulationBloc.add(FetchSimulationPriceList(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal));
-        break;
+    if (dpVehicleCtrl.numberValue < double.parse(dpMinimum.replaceAll(".", "")) || dpVehicleCtrl.numberValue > double.parse(dpMaximum.replaceAll(".", ""))) {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: 5),
+                child: Icon(Icons.info_outline),
+              ),
+              Expanded(
+                child: Text(" Down Price Minimum : Rp $dpMinimum \n Down Price Maximum : Rp $dpMaximum"),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else {
+      switch (currentSelectMethode) {
+        case "Down Payment":
+          // ignore: close_sinks
+          final simulationBloc = BlocProvider.of<FinanceBloc>(context);
+          simulationBloc.add(FetchSimulationDownPayment(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal, (dpVehicleCtrl.numberValue / 10).toString()));
+          break;
+        case "Price List":
+          // ignore: close_sinks
+          final simulationBloc = BlocProvider.of<FinanceBloc>(context);
+          simulationBloc.add(FetchSimulationPriceList(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal));
+          break;
+      }
     }
   }
 
@@ -214,6 +242,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -317,101 +346,145 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               formSelectAssetGroup(),
               formSelectAssetType(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
                 child: BlocBuilder<FinanceBloc, FinanceState>(
                   builder: (context, state) {
                     if (state is AssetPriceSuccess) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          var value = state.value.result[index];
-                          return ExpansionTile(
-                            title: Text("${value.priListTitle}"),
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text("Start Date"),
-                                    Text("${value.startDate}"),
-                                  ],
-                                ),
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Text(
+                              "Price List",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text("End Date"),
-                                    Text("${value.endDate}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text("Minimum DP"),
-                                    Text("Rp ${value.dpBottomLimit} (${value.dpBottomLimitPercentage} %)"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text("Maximum DP"),
-                                    Text("Rp ${value.dpTopLimit} (${value.dpTopLimitPercentage} %)"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text("Rp ${value.price}", style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 1.0,
-                                      fontSize: 16,
-                                    ),),
-                                    RaisedButton(
-                                      onPressed: () {
-                                        _onSelectionPrice(index);
-                                        setState(() {
-                                          priceListId = value.priceListId;
-                                          dpMinimum = value.dpBottomLimit;
-                                          priceOriginal = value.price;
-                                        });
-                                      },
-                                      elevation: 1,
-                                      child: Text(priceSelection == index ? "Selected" : "Take it", style: TextStyle(
-                                        color: Colors.white,
-                                      ),),
-                                      color: priceSelection == index ? Colors.green : Colors.grey,
+                            ),
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              var value = state.value.result[index];
+                              return ExpansionTile(
+                                title: Text("${value.priListTitle}"),
+                                initiallyExpanded: priceSelection == index ? true : false,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text("Type"),
+                                        Text(
+                                          "${value.assetTypeName}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                        itemCount: state.value.result.length,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text("Start Date"),
+                                        Text("${value.startDate}"),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text("End Date"),
+                                        Text("${value.endDate}"),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text("Minimum DP"),
+                                        Text("Rp ${value.dpBottomLimit} (${value.dpBottomLimitPercentage} %)"),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text("Maximum DP"),
+                                        Text("Rp ${value.dpTopLimit} (${value.dpTopLimitPercentage} %)"),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          "Rp ${value.price}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 1.0,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        RaisedButton(
+                                          onPressed: () {
+                                            _onSelectionPrice(index);
+                                            setState(() {
+                                              priceListId = value.priceListId;
+                                              dpMinimum = value.dpBottomLimit;
+                                              dpMaximum = value.dpTopLimit;
+                                              priceOriginal = value.price;
+                                            });
+                                          },
+                                          elevation: 1,
+                                          child: Text(
+                                            priceSelection == index
+                                                ? "Selected"
+                                                : "Take it",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          color: priceSelection == index
+                                              ? Colors.green
+                                              : Colors.grey,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                            itemCount: state.value.result.length,
+                          ),
+                        ],
                       );
                     }
-                    
+
                     if (state is AssetPriceFailed) {
                       return Center(
                         child: Padding(
                           padding: EdgeInsets.only(top: 20),
-                          child: Text("Data tidak berhasil ditemukan!", style: TextStyle(
-                            letterSpacing: 1.0,
-                            fontWeight: FontWeight.w700,
-                          ),),
+                          child: Text(
+                            "Data tidak berhasil ditemukan!",
+                            style: TextStyle(
+                              letterSpacing: 1.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                         ),
                       );
                     }
@@ -419,20 +492,36 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   },
                 ),
               ),
+              Divider(),
+              Padding(
+                padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
+                child: Text(
+                  "Simulation Type",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
               selectedMethode(),
               currentSelectMethode == "Down Payment" ? formDP() : SizedBox(),
-              currentSelectMethode == "Down Payment" ? Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30),
-                child: Row(
-                  children: <Widget>[
-                    Text("* Minimum DP : "),
-                    Text("$dpMinimum", style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),),
-                  ],
-                ),
-              ) : SizedBox(),
+              currentSelectMethode == "Down Payment"
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 30),
+                      child: Row(
+                        children: <Widget>[
+                          Text("* Minimum DP : "),
+                          Text(
+                            "$dpMinimum",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox(),
 //              Padding(
 //                padding: const EdgeInsets.only(left: 30, top: 20),
 //                child: Text(
@@ -473,21 +562,44 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 //              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                child: Container(
-                  width: screenWidth(context),
-                  child: RaisedButton(
-                    onPressed: () {
-                      _onCalculateSimulator();
-                    },
-                    child: Text(
-                      "Calculate",
-                      style: TextStyle(color: Colors.white),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      child: Expanded(
+                        child: RaisedButton(
+                          onPressed: () {
+                            _onRecheckType();
+                          },
+                          child: Text(
+                            "Re-check Type",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                      ),
                     ),
-                    color: HexColor('#E07B36'),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                    SizedBox(width: 20),
+                    Container(
+                      child: Expanded(
+                        child: RaisedButton(
+                          onPressed: () {
+                            _onCalculateSimulator();
+                          },
+                          child: Text(
+                            "Calculate",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: HexColor('#E07B36'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
               Divider(),
@@ -497,10 +609,13 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     return Center(
                       child: Padding(
                         padding: EdgeInsets.only(top: 20),
-                        child: Text("Data tidak berhasil ditemukan!", style: TextStyle(
-                          letterSpacing: 1.0,
-                          fontWeight: FontWeight.w700,
-                        ),),
+                        child: Text(
+                          "Data tidak berhasil ditemukan!",
+                          style: TextStyle(
+                            letterSpacing: 1.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
                     );
                   }
@@ -511,11 +626,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          child: Text("List Tenor", style: TextStyle(
-                            letterSpacing: 1.0,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 17,
-                          ),),
+                          child: Text(
+                            "List Tenor",
+                            style: TextStyle(
+                              letterSpacing: 1.0,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 17,
+                            ),
+                          ),
                         ),
                         ListView.separated(
                           shrinkWrap: true,
@@ -566,9 +684,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         ),
                       ],
                     );
-                   }
-                    return SizedBox();
-                  },
+                  }
+                  return SizedBox();
+                },
               ),
             ],
           ),
@@ -829,12 +947,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 borderRadius: BorderRadius.circular(5),
               ),
               contentPadding:
-              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: currentSelectMethode,
-                hint: Text('Simulation Methode'),
+                hint: Text('Select Simulation Type'),
                 isDense: true,
                 onChanged: (String newVal) {
                   setState(() {
