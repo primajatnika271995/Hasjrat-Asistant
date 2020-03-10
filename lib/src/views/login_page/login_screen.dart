@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.of(context).pop();
             Scaffold.of(context).showSnackBar(
               SnackBar(
-                content: Text("${state.error.status}"),
+                content: Text("${state.error.error}"),
                 backgroundColor: Colors.red,
               ),
             );

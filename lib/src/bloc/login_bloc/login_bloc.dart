@@ -3,6 +3,7 @@ import 'package:salles_tools/src/bloc/login_bloc/login_event.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_state.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
 import 'package:salles_tools/src/models/employee_model.dart';
+import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';

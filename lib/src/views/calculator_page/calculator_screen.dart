@@ -296,7 +296,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Text("Minimum DP"),
-                                    Text("Rp ${value.dpBottomLimit}"),
+                                    Text("Rp ${value.dpBottomLimit} (${value.dpBottomLimitPercentage} %)"),
                                   ],
                                 ),
                               ),
@@ -306,7 +306,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Text("Maximum DP"),
-                                    Text("Rp ${value.dpTopLimit}"),
+                                    Text("Rp ${value.dpTopLimit} (${value.dpTopLimitPercentage} %)"),
                                   ],
                                 ),
                               ),

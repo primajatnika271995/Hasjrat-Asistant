@@ -6,6 +6,7 @@ import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
 import 'package:salles_tools/src/models/employee_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
+import 'package:salles_tools/src/models/error_token_expire_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -45,8 +46,13 @@ class LoginService {
         return compute(authenticationModelFromJson, json.encode(response.data));
       }
     } on DioError catch (error) {
-      log.warning("Login Error : ${error.toString()}");
-      return compute(errorModelFromJson, json.encode(error.response.data));
+      log.warning("Login Error Status: ${error.response.statusCode}");
+
+      if (error.response.statusCode == 401) {
+        return compute(errorModelFromJson, json.encode(error.response.data));
+      } else if (error.response.statusCode == 502) {
+        return compute(errorModelFromJson, json.encode(error.response.data));
+      }
     }
   }
 
