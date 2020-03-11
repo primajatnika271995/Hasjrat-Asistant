@@ -69,8 +69,8 @@ class DioLoggingInterceptors extends InterceptorsWrapper {
       _dio.interceptors.requestLock.lock();
       _dio.interceptors.responseLock.lock();
 
-      var username = await SharedPreferencesHelper.getAccessToken();
-      var password = await SharedPreferencesHelper.getAccessToken();
+      var username = await SharedPreferencesHelper.getUsername();
+      var password = await SharedPreferencesHelper.getPassword();
 
       LoginService service = new LoginService();
       await service.login(username, password).then((resp) async {
