@@ -51,6 +51,10 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   var customerNameCtrl = new TextEditingController();
   var notesCtrl = new TextEditingController();
 
+  var dateSelectedFocus = new FocusNode();
+  var timeSelectedFocus = new FocusNode();
+  var noteFocus = new FocusNode();
+
   String _currentSelectTask;
   String _currentSelectCustomer;
   List<String> _customerList = [];
@@ -63,7 +67,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       lastDate: DateTime(2100),
     );
 
-    if (picked != null && picked != _dateTime)
+    if (picked != null)
       setState(() {
         _dateTime = picked;
         dateSelected.value =
@@ -77,7 +81,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       initialTime: timeOfDay,
     );
 
-    if (picked != null && picked != timeOfDay)
+    if (picked != null)
       setState(() {
         timeOfDay = picked;
         timeSelected.value = TextEditingValue(text: timeOfDay.format(context));
@@ -236,9 +240,8 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                 ),
               ),
               dropdownMenu(),
-              formTaskDescription(),
               Padding(
-                padding: const EdgeInsets.only(top: 20, left: 10),
+                padding: const EdgeInsets.only(left: 10),
                 child: Row(
                   children: <Widget>[
                     IconButton(
@@ -252,6 +255,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                   ],
                 ),
               ),
+              formTaskDescription(),
               formDatePicker(),
               formTimePicker(),
               formNote(),
@@ -336,6 +340,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: TextField(
+        textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           hintText: 'Task Description',
           errorText: 'Task Description harus diisi',
@@ -398,6 +403,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                 ),
               ),
             ),
+            focusNode: dateSelectedFocus,
           ),
         ),
       ),
@@ -410,6 +416,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       child: GestureDetector(
         onTap: () {
           _selectedTime(context);
+          FocusScope.of(context).requestFocus(noteFocus);
         },
         child: AbsorbPointer(
           child: TextField(
@@ -438,6 +445,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                 ),
               ),
             ),
+            focusNode: timeSelectedFocus,
           ),
         ),
       ),
@@ -448,6 +456,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
       child: TextField(
+        textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           hintText: 'Note',
           border: OutlineInputBorder(),
@@ -456,6 +465,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
         ),
         controller: notesCtrl,
         maxLines: 4,
+        focusNode: noteFocus,
       ),
     );
   }
