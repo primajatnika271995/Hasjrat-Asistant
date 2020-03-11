@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
+import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
 import 'package:salles_tools/src/views/calculator_page/calculator_screen.dart';
@@ -38,7 +43,10 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
   void _onCalculate() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => CalculatorScreen(),
+        pageBuilder: (_, __, ___) => BlocProvider<FinanceBloc>(
+          create: (context) => FinanceBloc(FinanceService()),
+          child: CalculatorScreen(),
+        ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -91,6 +99,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
         bottomNavigationBar: Row(
           children: <Widget>[
             Expanded(
+              flex: 6,
               child: ButtonTheme(
                 height: 60,
                 child: RaisedButton(
@@ -111,21 +120,25 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
               ),
             ),
             Expanded(
+              flex: 2,
               child: ButtonTheme(
                 height: 60,
                 child: RaisedButton(
                   onPressed: () {
                     _onCalculate();
                   },
-                  child: Text(
-                    'Calculator',
-                    style: TextStyle(
-                      color: Colors.white,
-                      letterSpacing: 1.0,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  child: Icon(FontAwesome.calculator, color: Colors.white, size: 30),
+                  color: HexColor('#665C55'),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: ButtonTheme(
+                height: 60,
+                child: RaisedButton(
+                  onPressed: () {},
+                  child: Icon(FontAwesome5.money_bill_alt, color: Colors.white, size: 30),
                   color: HexColor('#665C55'),
                 ),
               ),
