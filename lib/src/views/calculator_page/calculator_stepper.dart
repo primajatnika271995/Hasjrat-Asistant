@@ -4,6 +4,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_event.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_state.dart';
+import 'package:salles_tools/src/models/asset_price_model.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
@@ -23,7 +24,6 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   VoidCallback _onStepCancel;
 
   var dpVehicleCtrl = MoneyMaskedTextController(leftSymbol: 'Rp ', precision: 0, decimalSeparator: '');
-  double _lamaCicilan = 1.0;
   int priceSelection = -1;
   String currentSelectMethode;
 
@@ -57,6 +57,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   var assetTypeCode;
   List<SelectorAssetTypeModel> assetTypeList = [];
 
+  AssetPriceModel _assetPriceModel;
+
   String dpMinimum = "0";
   String dpMaximum = "0";
   var priceListId;
@@ -66,12 +68,6 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     setState(() {
       priceSelection = index;
     });
-  }
-
-  void _onRecheckType() {
-    // ignore: close_sinks
-    final assetPriceBloc = BlocProvider.of<FinanceBloc>(context);
-    assetPriceBloc.add(FetchAssetPrice(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode));
   }
 
   void _onCalculateSimulator() {
@@ -87,7 +83,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                     child: Icon(Icons.info_outline),
                   ),
                   Expanded(
-                    child: Text(" Down Price Minimum : Rp $dpMinimum \n Down Price Maximum : Rp $dpMaximum"),
+                    child: Text(
+                        " Down Price Minimum : Rp $dpMinimum \n Down Price Maximum : Rp $dpMaximum"),
                   ),
                 ],
               ),
@@ -186,8 +183,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
           // ignore: close_sinks
           final assetGroupBloc = BlocProvider.of<FinanceBloc>(context);
-          assetGroupBloc.add(
-              FetchAssetGroup(branchCode, assetKindCode, insuranceTypeCode));
+          assetGroupBloc.add(FetchAssetGroup(branchCode, assetKindCode, insuranceTypeCode));
         });
       },
     );
@@ -222,6 +218,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       items: assetTypeList,
       onChange: (SelectorAssetTypeModel selected) {
         setState(() {
+          _assetPriceModel = null;
           currentSelectAssetType = selected;
           assetTypeCtrl.text = selected.assetTypeName;
           assetTypeCode = selected.assetTypeCode;
@@ -335,6 +332,10 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
             });
           }
 
+          if (state is AssetPriceSuccess) {
+            _assetPriceModel = state.value;
+          }
+
           if (state is FinanceLoading) {
             onLoading(context);
           }
@@ -370,13 +371,39 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 Step(
                   isActive: _currentStep == 0 ? true : false,
                   title: Text("Vehicle"),
+                  state: StepState.editing,
                   content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Text("Branch", style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      )),
                       formSelectBranch(),
+                      Text("Outlet", style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      )),
                       formSelectOutlet(),
+                      Text("Asset Kind", style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      )),
                       formSelectAssetKind(),
+                      Text("Insurance", style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      )),
                       formSelectInsuranceType(),
+                      Text("Asset Group", style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      )),
                       formSelectAssetGroup(),
+                      Text("Asset Type", style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      )),
                       formSelectAssetType(),
                     ],
                   ),
@@ -384,355 +411,49 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 Step(
                   isActive: _currentStep == 1 ? true : false,
                   title: Text("Category"),
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3),
-                        child: BlocBuilder<FinanceBloc, FinanceState>(
-                          builder: (context, state) {
-                            if (state is AssetPriceSuccess) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "Price List",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 1.0,
-                                    ),
-                                  ),
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      var value = state.value.result[index];
-                                      return ExpansionTile(
-                                        title: Text("${value.priListTitle}"),
-                                        initiallyExpanded:
-                                            priceSelection == index
-                                                ? true
-                                                : false,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text("Type"),
-                                                Text(
-                                                  "${value.assetTypeName}",
-                                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text("Start Date"),
-                                                Text("${value.startDate}"),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text("End Date"),
-                                                Text("${value.endDate}"),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text("Minimum DP"),
-                                                Text("Rp ${value.dpBottomLimit} (${value.dpBottomLimitPercentage} %)"),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text("Maximum DP"),
-                                                Text("Rp ${value.dpTopLimit} (${value.dpTopLimitPercentage} %)"),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 15),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text(
-                                                  "Rp ${value.price}",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    letterSpacing: 1.0,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                                RaisedButton(
-                                                  onPressed: () {
-                                                    _onSelectionPrice(index);
-                                                    setState(() {
-                                                      priceListId = value.priceListId;
-                                                      dpMinimum = value.dpBottomLimit;
-                                                      dpMaximum = value.dpTopLimit;
-                                                      priceOriginal = value.price;
-                                                    });
-                                                  },
-                                                  elevation: 1,
-                                                  child: Text(
-                                                    priceSelection == index
-                                                        ? "Selected"
-                                                        : "Take it",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  color: priceSelection == index
-                                                      ? Colors.green
-                                                      : Colors.grey,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                    itemCount: state.value.result.length,
-                                  ),
-                                ],
-                              );
-                            }
-
-                            if (state is AssetPriceFailed) {
-                              return Center(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 20),
-                                  child: Text(
-                                    "Data tidak berhasil ditemukan!",
-                                    style: TextStyle(
-                                      letterSpacing: 1.0,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }
-                            return SizedBox();
-                          },
-                        ),
-                      ),
-                      Divider(),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 25, top: 10),
-                        child: Text(
-                          "Simulation Type",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 1.0,
-                          ),
-                        ),
-                      ),
-                      selectedMethode(),
-                      currentSelectMethode == "Down Payment"
-                          ? formDP()
-                          : SizedBox(),
-                      currentSelectMethode == "Down Payment"
-                          ? Row(
-                              children: <Widget>[
-                                Text("* Minimum DP : "),
-                                Text(
-                                  "$dpMinimum",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 1.0,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : SizedBox(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              child: Expanded(
-                                child: RaisedButton(
-                                  onPressed: () {
-                                    _onRecheckType();
-                                  },
-                                  child: Text(
-                                    "Re-check Type",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  color: Colors.grey,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 20),
-                            Container(
-                              child: Expanded(
-                                child: RaisedButton(
-                                  onPressed: () {
-                                    _onCalculateSimulator();
-                                  },
-                                  child: Text(
-                                    "Calculate",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  color: HexColor('#E07B36'),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  state: StepState.editing,
+                  content: stepCategory(),
                 ),
                 Step(
                   isActive: _currentStep == 2 ? true : false,
                   title: Text("Tenor"),
-                  content: Column(
-                    children: <Widget>[
-                      BlocBuilder<FinanceBloc, FinanceState>(
-                        builder: (context, state) {
-                          if (state is SimulationFailed) {
-                            return Center(
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 20),
-                                child: Text(
-                                  "Data tidak berhasil ditemukan!",
-                                  style: TextStyle(
-                                    letterSpacing: 1.0,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-
-                          if (state is SimulationSuccess) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "List Tenor",
-                                  style: TextStyle(
-                                    letterSpacing: 1.0,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                                ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  separatorBuilder: (context, index) {
-                                    return Divider();
-                                  },
-                                  itemBuilder: (context, index) {
-                                    var data = state.value.result[index];
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 5),
-                                          child: Text(
-                                            "Tenor ${data.tenorName}",
-                                            style: TextStyle(
-                                              letterSpacing: 0.8,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 5, bottom: 5),
-                                          child: Text(
-                                            "Rp ${data.installment} / Bulan",
-                                            style: TextStyle(
-                                              letterSpacing: 0.8,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 5, bottom: 5),
-                                          child: Text(
-                                            "Lama Tenor ${data.tenorVale} Bulan",
-                                            style: TextStyle(
-                                              letterSpacing: 0.8,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                  itemCount: state.value.result.length,
-                                ),
-                              ],
-                            );
-                          }
-                          return SizedBox();
-                        },
-                      ),
-                    ],
-                  ),
+                  state: StepState.complete,
+                  content: stepTenor(),
                 ),
               ],
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  _currentStep == 0
-                      ? SizedBox()
-                      : FlatButton(
-                          onPressed: () => _onStepCancel(),
-                          child: Text(
-                            'BACK',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.blueAccent,
+              child: BottomAppBar(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    _currentStep == 0
+                        ? SizedBox()
+                        : FlatButton(
+                            onPressed: () => _onStepCancel(),
+                            child: Text(
+                              'BACK',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.blueAccent,
+                              ),
                             ),
                           ),
-                        ),
-                  _currentStep == 2
-                      ? SizedBox()
-                      : FlatButton(
-                          onPressed: () => _onStepContinue(),
-                          child: Text(
-                            'NEXT',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.blueAccent,
+                    _currentStep == 2
+                        ? SizedBox()
+                        : FlatButton(
+                            onPressed: () => _onStepContinue(),
+                            child: Text(
+                              'NEXT',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.blueAccent,
+                              ),
                             ),
                           ),
-                        ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -1081,6 +802,299 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       ),
       controller: dpVehicleCtrl,
       keyboardType: TextInputType.number,
+    );
+  }
+
+  Widget stepCategory() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _assetPriceModel != null
+            ? Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Price List",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.0,
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                var value = _assetPriceModel.result[index];
+                return ExpansionTile(
+                  title: Text("${value.priListTitle}"),
+                  initiallyExpanded: priceSelection == index
+                      ? true
+                      : false,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("Type"),
+                          Text(
+                            "${value.assetTypeName}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("Start Date"),
+                          Text("${value.startDate}"),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("End Date"),
+                          Text("${value.endDate}"),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("Minimum DP"),
+                          Text("Rp ${value.dpBottomLimit} (${value.dpBottomLimitPercentage} %)"),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("Maximum DP"),
+                          Text("Rp ${value.dpTopLimit} (${value.dpTopLimitPercentage} %)"),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "Rp ${value.price}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                              fontSize: 16,
+                            ),
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              _onSelectionPrice(index);
+                              setState(() {
+                                priceListId = value.priceListId;
+                                dpMinimum = value.dpBottomLimit;
+                                dpMaximum = value.dpTopLimit;
+                                priceOriginal = value.price;
+                              });
+                            },
+                            elevation: 1,
+                            child: Text(
+                              priceSelection == index
+                                  ? "Selected"
+                                  : "Take it",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            color: priceSelection == index
+                                ? Colors.green
+                                : Colors.grey,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+              itemCount: _assetPriceModel.result.length,
+            ),
+          ],
+        )
+            : Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Text(
+              "Data tidak berhasil ditemukan!",
+              style: TextStyle(
+                letterSpacing: 1.0,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+        _assetPriceModel == null
+            ? SizedBox()
+            : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Divider(),
+            Padding(
+              padding:
+              const EdgeInsets.only(right: 25, top: 10),
+              child: Text(
+                "Simulation Type",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ),
+            selectedMethode(),
+            currentSelectMethode == "Down Payment"
+                ? formDP()
+                : SizedBox(),
+            currentSelectMethode == "Down Payment"
+                ? Row(
+              children: <Widget>[
+                Text("* Minimum DP : "),
+                Text(
+                  "$dpMinimum",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ],
+            ) : SizedBox(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    child: Expanded(
+                      child: RaisedButton(
+                        onPressed: () {
+                          _onCalculateSimulator();
+                        },
+                        child: Text(
+                          "Calculate",
+                          style: TextStyle(
+                              color: Colors.white),
+                        ),
+                        color: HexColor('#E07B36'),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget stepTenor() {
+    return Column(
+      children: <Widget>[
+        BlocBuilder<FinanceBloc, FinanceState>(
+          builder: (context, state) {
+            if (state is SimulationFailed) {
+              return Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text(
+                    "Data tidak berhasil ditemukan!",
+                    style: TextStyle(
+                      letterSpacing: 1.0,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            if (state is SimulationSuccess) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "List Tenor",
+                    style: TextStyle(
+                      letterSpacing: 1.0,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 17,
+                    ),
+                  ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, index) {
+                      return Divider();
+                    },
+                    itemBuilder: (context, index) {
+                      var data = state.value.result[index];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Text(
+                              "Tenor ${data.tenorName}",
+                              style: TextStyle(
+                                letterSpacing: 0.8,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5, bottom: 5),
+                            child: Text(
+                              "Rp ${data.installment} / Bulan",
+                              style: TextStyle(
+                                letterSpacing: 0.8,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5, bottom: 5),
+                            child: Text(
+                              "Lama Tenor ${data.tenorVale} Bulan",
+                              style: TextStyle(
+                                letterSpacing: 0.8,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                    itemCount: state.value.result.length,
+                  ),
+                ],
+              );
+            }
+            return SizedBox();
+          },
+        ),
+      ],
     );
   }
 }
