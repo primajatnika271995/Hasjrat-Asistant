@@ -4,6 +4,9 @@ class SharedPreferencesHelper {
   static SharedPreferencesHelper _instance;
   static SharedPreferences _sharedPreferences;
 
+  static const String kUsername = "username";
+  static const String kPassword = "password";
+
   static const String kAccessToken = "accessToken";
   static const String kSalesName = "salesName";
   static const String kSalesNIK = "salesNIK";
@@ -23,6 +26,42 @@ class SharedPreferencesHelper {
       _sharedPreferences = await SharedPreferences.getInstance();
     }
     return _instance;
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the username, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getUsername() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kUsername) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the username
+  /// ----------------------------------------------------------
+  static Future<bool> setUsername(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kUsername, value);
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the password, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getPassword() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kPassword) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the password
+  /// ----------------------------------------------------------
+  static Future<bool> setPassword(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kPassword, value);
   }
 
   /// ------------------------------------------------------------

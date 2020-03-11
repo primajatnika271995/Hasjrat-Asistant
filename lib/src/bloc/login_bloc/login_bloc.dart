@@ -25,6 +25,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         AuthenticationModel value = await loginService.login(event.username, event.password);
 
         await SharedPreferencesHelper.setAccessToken(value.accessToken);
+        await SharedPreferencesHelper.setUsername(event.username);
+        await SharedPreferencesHelper.setPassword(event.password);
 
         EmployeeModel employee = await loginService.checkNIK(event.username);
         await SharedPreferencesHelper.setSalesName(employee.name);

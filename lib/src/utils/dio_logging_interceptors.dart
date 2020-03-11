@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
 import 'package:salles_tools/src/injectors/injector.dart';
+import 'package:salles_tools/src/models/authentication_model.dart';
+import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
+import 'package:salles_tools/src/views/login_page/login_screen.dart';
 
 class DioLoggingInterceptors extends InterceptorsWrapper {
   final Dio _dio;
@@ -62,8 +69,20 @@ class DioLoggingInterceptors extends InterceptorsWrapper {
       _dio.interceptors.requestLock.lock();
       _dio.interceptors.responseLock.lock();
 
+      var username = await SharedPreferencesHelper.getAccessToken();
+      var password = await SharedPreferencesHelper.getAccessToken();
+
+      LoginService service = new LoginService();
+      await service.login(username, password).then((resp) async {
+        AuthenticationModel val = authenticationModelFromJson(json.encode(resp));
+        await SharedPreferencesHelper.setAccessToken(val.accessToken);
+      });
+
       RequestOptions options = err.response.request;
-      options.headers.remove({'Authorization': 'Bearer $oldAccessToken'});
+//      options.headers.remove({'Authorization': 'Bearer $oldAccessToken'});
+      var token = await SharedPreferencesHelper.getAccessToken();
+
+      options.headers["Authorization"] = "Bearer " + token;
       _dio.interceptors.requestLock.unlock();
       _dio.interceptors.responseLock.unlock();
       return _dio.request(options.path, options: options);
