@@ -26,12 +26,14 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
     });
   }
 
-  void _onBack() {
+  Future<bool> _onBack() async {
     if (_selectedIndex != 0) {
       setState(() {
         _selectedIndex = 0;
       });
+      return false;
     }
+    return true;
   }
 
   @override
