@@ -26,39 +26,50 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
     });
   }
 
+  void _onBack() {
+    if (_selectedIndex != 0) {
+      setState(() {
+        _selectedIndex = 0;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _widgetPages.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem> [
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/home_icon.png', height: 25, color: HexColor('#665C55'),),
-            activeIcon: Image.asset('assets/icons/home_icon.png', height: 25,),
-            title: Text("Home"),
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/notification_icon.png', height: 25, color: HexColor('#665C55'),),
-            activeIcon: Image.asset('assets/icons/notification_icon.png', height: 25,),
-            title: Text("Notification"),
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/dashboard_icon.png', height: 25, color: HexColor('#665C55'),),
-            activeIcon: Image.asset('assets/icons/dashboard_icon.png', height: 25,),
-            title: Text("Dashboard"),
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/profile_icon.png', height: 25, color: HexColor('#665C55'),),
-            activeIcon: Image.asset('assets/icons/profile_icon.png', height: 25,),
-            title: Text("Profile"),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: HexColor('#E07B36'),
-        unselectedItemColor: HexColor('#665C55'),
-        elevation: 15,
-        onTap: _onItemTapped,
+    return WillPopScope(
+      onWillPop: _onBack,
+      child: Scaffold(
+        body: _widgetPages.elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          items: <BottomNavigationBarItem> [
+            BottomNavigationBarItem(
+              icon: Image.asset('assets/icons/home_icon.png', height: 25, color: HexColor('#665C55'),),
+              activeIcon: Image.asset('assets/icons/home_icon.png', height: 25,),
+              title: Text("Home"),
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset('assets/icons/notification_icon.png', height: 25, color: HexColor('#665C55'),),
+              activeIcon: Image.asset('assets/icons/notification_icon.png', height: 25,),
+              title: Text("Notification"),
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset('assets/icons/dashboard_icon.png', height: 25, color: HexColor('#665C55'),),
+              activeIcon: Image.asset('assets/icons/dashboard_icon.png', height: 25,),
+              title: Text("Dashboard"),
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset('assets/icons/profile_icon.png', height: 25, color: HexColor('#665C55'),),
+              activeIcon: Image.asset('assets/icons/profile_icon.png', height: 25,),
+              title: Text("Profile"),
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: HexColor('#E07B36'),
+          unselectedItemColor: HexColor('#665C55'),
+          elevation: 15,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
