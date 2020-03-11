@@ -11,7 +11,8 @@ import 'package:select_dialog/select_dialog.dart';
 
 class CalculatorStepperScreen extends StatefulWidget {
   @override
-  _CalculatorStepperScreenState createState() => _CalculatorStepperScreenState();
+  _CalculatorStepperScreenState createState() =>
+      _CalculatorStepperScreenState();
 }
 
 class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
@@ -86,8 +87,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                     child: Icon(Icons.info_outline),
                   ),
                   Expanded(
-                    child: Text(
-                        " Down Price Minimum : Rp $dpMinimum \n Down Price Maximum : Rp $dpMaximum"),
+                    child: Text(" Down Price Minimum : Rp $dpMinimum \n Down Price Maximum : Rp $dpMaximum"),
                   ),
                 ],
               ),
@@ -101,7 +101,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         }
         break;
       case "Price List":
-      // ignore: close_sinks
+        // ignore: close_sinks
         final simulationBloc = BlocProvider.of<FinanceBloc>(context);
         simulationBloc.add(FetchSimulationPriceList(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal));
         break;
@@ -186,7 +186,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
           // ignore: close_sinks
           final assetGroupBloc = BlocProvider.of<FinanceBloc>(context);
-          assetGroupBloc.add(FetchAssetGroup(branchCode, assetKindCode, insuranceTypeCode));
+          assetGroupBloc.add(
+              FetchAssetGroup(branchCode, assetKindCode, insuranceTypeCode));
         });
       },
     );
@@ -233,8 +234,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     );
   }
 
-  Widget _createEventControlBuilder(BuildContext context,
-      {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
+  Widget _createEventControlBuilder(BuildContext context, {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
     _onStepContinue = onStepContinue;
     _onStepCancel = onStepCancel;
     return SizedBox.shrink();
@@ -409,7 +409,10 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                                       var value = state.value.result[index];
                                       return ExpansionTile(
                                         title: Text("${value.priListTitle}"),
-                                        initiallyExpanded: priceSelection == index ? true : false,
+                                        initiallyExpanded:
+                                            priceSelection == index
+                                                ? true
+                                                : false,
                                         children: <Widget>[
                                           Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
@@ -419,16 +422,15 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                                                 Text("Type"),
                                                 Text(
                                                   "${value.assetTypeName}",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
+                                                  style: TextStyle(fontWeight: FontWeight.w700),
                                                 ),
                                               ],
                                             ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: <Widget>[
                                                 Text("Start Date"),
                                                 Text("${value.startDate}"),
@@ -543,20 +545,23 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                         ),
                       ),
                       selectedMethode(),
-                      currentSelectMethode == "Down Payment" ? formDP() : SizedBox(),
+                      currentSelectMethode == "Down Payment"
+                          ? formDP()
+                          : SizedBox(),
                       currentSelectMethode == "Down Payment"
                           ? Row(
-                        children: <Widget>[
-                          Text("* Minimum DP : "),
-                          Text(
-                            "$dpMinimum",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ],
-                      ) : SizedBox(),
+                              children: <Widget>[
+                                Text("* Minimum DP : "),
+                                Text(
+                                  "$dpMinimum",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : SizedBox(),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                         child: Row(
@@ -645,10 +650,12 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                                   itemBuilder: (context, index) {
                                     var data = state.value.result[index];
                                     return Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Padding(
-                                          padding: const EdgeInsets.only(top: 5),
+                                          padding:
+                                              const EdgeInsets.only(top: 5),
                                           child: Text(
                                             "Tenor ${data.tenorName}",
                                             style: TextStyle(
@@ -658,7 +665,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                                          padding: const EdgeInsets.only(
+                                              top: 5, bottom: 5),
                                           child: Text(
                                             "Rp ${data.installment} / Bulan",
                                             style: TextStyle(
@@ -669,7 +677,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                                          padding: const EdgeInsets.only(
+                                              top: 5, bottom: 5),
                                           child: Text(
                                             "Lama Tenor ${data.tenorVale} Bulan",
                                             style: TextStyle(
@@ -699,20 +708,30 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  _currentStep == 0 ? SizedBox() : FlatButton(
-                    onPressed: () => _onStepCancel(),
-                    child: Text('BACK', style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.blueAccent,
-                    ),),
-                  ),
-                  _currentStep == 2 ? SizedBox() : FlatButton(
-                    onPressed: () => _onStepContinue(),
-                    child: Text('NEXT', style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.blueAccent,
-                    ),),
-                  ),
+                  _currentStep == 0
+                      ? SizedBox()
+                      : FlatButton(
+                          onPressed: () => _onStepCancel(),
+                          child: Text(
+                            'BACK',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                        ),
+                  _currentStep == 2
+                      ? SizedBox()
+                      : FlatButton(
+                          onPressed: () => _onStepContinue(),
+                          child: Text(
+                            'NEXT',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
@@ -1004,7 +1023,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 borderRadius: BorderRadius.circular(5),
               ),
               contentPadding:
-              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
