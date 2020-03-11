@@ -12,6 +12,7 @@ import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/book_service_page/list_book_service.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/list_book_test_drive.dart';
 import 'package:salles_tools/src/views/calculator_page/calculator_screen.dart';
+import 'package:salles_tools/src/views/calculator_page/calculator_stepper.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_screen.dart';
 import 'package:salles_tools/src/views/customer_page/list_customer.dart';
 import 'package:salles_tools/src/views/home_page/list_promotion.dart';
@@ -54,9 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
   List _menuNavigation = [
     BookTestDriveListView(),
     CatalogScreen(),
+//    BlocProvider(
+//      create: (context) => FinanceBloc(FinanceService()),
+//      child: CalculatorScreen(),
+//    ),
     BlocProvider(
       create: (context) => FinanceBloc(FinanceService()),
-      child: CalculatorScreen(),
+      child: CalculatorStepperScreen(),
     ),
     KnowledgeBaseScreen(),
     BookServiceListView(),
