@@ -73,7 +73,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   void _onCalculateSimulator() {
     switch (currentSelectMethode) {
       case "Down Payment":
-        if (dpVehicleCtrl.numberValue < double.parse(dpMinimum.replaceAll(".", "")) || dpVehicleCtrl.numberValue > double.parse(dpMaximum.replaceAll(".", ""))) {
+        if (dpVehicleCtrl.numberValue < 1 || dpVehicleCtrl.numberValue < double.parse(dpMinimum.replaceAll(".", "")) || dpVehicleCtrl.numberValue > double.parse(dpMaximum.replaceAll(".", ""))) {
           _scaffoldKey.currentState.showSnackBar(
             SnackBar(
               content: Row(
@@ -98,10 +98,29 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         }
         break;
       case "Price List":
-        // ignore: close_sinks
-        final simulationBloc = BlocProvider.of<FinanceBloc>(context);
-        simulationBloc.add(FetchSimulationPriceList(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal));
-        break;
+        if (priceListId == null || priceOriginal == null) {
+          _scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: Icon(Icons.info_outline),
+                  ),
+                  Expanded(
+                    child: Text("Select Price List before Calculate!"),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else {
+          // ignore: close_sinks
+          final simulationBloc = BlocProvider.of<FinanceBloc>(context);
+          simulationBloc.add(FetchSimulationPriceList(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal));
+          break;
+        }
     }
   }
 
