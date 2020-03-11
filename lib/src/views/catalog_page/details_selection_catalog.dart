@@ -9,6 +9,7 @@ import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.
 import 'package:salles_tools/src/views/calculator_page/calculator_screen.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_accessories.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_gallery.dart';
+import 'package:salles_tools/src/views/catalog_page/catalog_price_list.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_review.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_specifications.dart';
 import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
@@ -47,6 +48,22 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           create: (context) => FinanceBloc(FinanceService()),
           child: CalculatorScreen(),
         ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onCheckPriceList() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => PriceListCatalogView(),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -137,7 +154,9 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
               child: ButtonTheme(
                 height: 60,
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _onCheckPriceList();
+                  },
                   child: Icon(FontAwesome5.money_bill_alt, color: Colors.white, size: 30),
                   color: HexColor('#665C55'),
                 ),
