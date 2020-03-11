@@ -38,9 +38,9 @@ class Result {
   String assetTypeCode;
   String assetTypeName;
   String price;
-  int dpBottomLimitPercentage;
+  dynamic dpBottomLimitPercentage;
   String dpBottomLimit;
-  int dpTopLimitPercentage;
+  dynamic dpTopLimitPercentage;
   String dpTopLimit;
   String assetKind;
   dynamic assetKindName;
