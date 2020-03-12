@@ -366,81 +366,87 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         },
         child: Stack(
           children: <Widget>[
-            Stepper(
-              type: StepperType.horizontal,
-              currentStep: _currentStep,
-              onStepContinue: () {
-                if (_currentStep >= 2) return;
-                setState(() {
-                  _currentStep += 1;
-                });
-              },
-              onStepCancel: () {
-                if (_currentStep <= 0) return;
-                setState(() {
-                  _currentStep -= 1;
-                });
-              },
-              onStepTapped: (int index) {
-                setState(() {
-                  _currentStep = index;
-                });
-              },
-              controlsBuilder: _createEventControlBuilder,
-              steps: [
-                Step(
-                  isActive: _currentStep == 0 ? true : false,
-                  title: Text("Vehicle"),
-                  state: StepState.editing,
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Branch", style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      )),
-                      formSelectBranch(),
-                      Text("Outlet", style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      )),
-                      formSelectOutlet(),
-                      Text("Asset Kind", style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      )),
-                      formSelectAssetKind(),
-                      Text("Insurance", style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      )),
-                      formSelectInsuranceType(),
-                      Text("Asset Group", style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      )),
-                      formSelectAssetGroup(),
-                      Text("Asset Type", style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      )),
-                      formSelectAssetType(),
-                    ],
+            Theme(
+              data: ThemeData(
+                primarySwatch: Colors.orange,
+                canvasColor: Colors.white,
+              ),
+              child: Stepper(
+                type: StepperType.horizontal,
+                currentStep: _currentStep,
+                onStepContinue: () {
+                  if (_currentStep >= 2) return;
+                  setState(() {
+                    _currentStep += 1;
+                  });
+                },
+                onStepCancel: () {
+                  if (_currentStep <= 0) return;
+                  setState(() {
+                    _currentStep -= 1;
+                  });
+                },
+                onStepTapped: (int index) {
+                  setState(() {
+                    _currentStep = index;
+                  });
+                },
+                controlsBuilder: _createEventControlBuilder,
+                steps: [
+                  Step(
+                    isActive: _currentStep == 0 ? true : false,
+                    title: Text("Vehicle"),
+                    state: StepState.editing,
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text("Branch", style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.0,
+                        )),
+                        formSelectBranch(),
+                        Text("Outlet", style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.0,
+                        )),
+                        formSelectOutlet(),
+                        Text("Asset Kind", style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.0,
+                        )),
+                        formSelectAssetKind(),
+                        Text("Insurance", style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.0,
+                        )),
+                        formSelectInsuranceType(),
+                        Text("Asset Group", style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.0,
+                        )),
+                        formSelectAssetGroup(),
+                        Text("Asset Type", style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.0,
+                        )),
+                        formSelectAssetType(),
+                      ],
+                    ),
                   ),
-                ),
-                Step(
-                  isActive: _currentStep == 1 ? true : false,
-                  title: Text("Category"),
-                  state: StepState.editing,
-                  content: stepCategory(),
-                ),
-                Step(
-                  isActive: _currentStep == 2 ? true : false,
-                  title: Text("Tenor"),
-                  state: StepState.complete,
-                  content: stepTenor(),
-                ),
-              ],
+                  Step(
+                    isActive: _currentStep == 1 ? true : false,
+                    title: Text("Category"),
+                    state: StepState.editing,
+                    content: stepCategory(),
+                  ),
+                  Step(
+                    isActive: _currentStep == 2 ? true : false,
+                    title: Text("Tenor"),
+                    state: StepState.complete,
+                    content: stepTenor(),
+                  ),
+                ],
+              ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
