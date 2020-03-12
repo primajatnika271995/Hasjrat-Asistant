@@ -49,12 +49,12 @@ class _CustomerDetailsViewState extends State<CustomerDetailsView> {
                   text: "Vehicle",
                 ),
               ],
-              indicatorColor: HexColor('#E07B36'),
-              labelColor: HexColor('#E07B36'),
+              indicatorColor: HexColor('#891F1F'),
+              labelColor: HexColor('#891F1F'),
               labelStyle: TextStyle(
                 letterSpacing: 1.0,
                 fontSize: 15,
-                color: HexColor('#E07B36'),
+                color: HexColor('#891F1F'),
               ),
               unselectedLabelColor: HexColor('#665C55'),
               unselectedLabelStyle: TextStyle(

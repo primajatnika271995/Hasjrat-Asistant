@@ -42,7 +42,7 @@ class _TrustyHorizontalMenuState extends State<TrustyHorizontalMenu> {
                   height: 3,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: HexColor('#E07B36'),
+                      color: HexColor('#891F1F'),
                   ),
                 ) : Container(),
               ],

@@ -543,7 +543,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 //                      _lamaCicilan = val;
 //                    });
 //                  },
-//                  activeColor: HexColor('#E07B36'),
+//                  activeColor: HexColor('#891F1F'),
 //                  inactiveColor: Colors.grey,
 //                  max: 36.0,
 //                  min: 1.0,
@@ -594,7 +594,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             "Calculate",
                             style: TextStyle(color: Colors.white),
                           ),
-                          color: HexColor('#E07B36'),
+                          color: HexColor('#891F1F'),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -711,7 +711,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             icon: Icon(Icons.navigate_next),
             color: Colors.red,
           ),
-          prefixIcon: Icon(Icons.location_on, color: HexColor('#E07B36')),
+          prefixIcon: Icon(Icons.location_on, color: HexColor('#891F1F')),
           border: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -751,7 +751,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             icon: Icon(Icons.navigate_next),
             color: Colors.red,
           ),
-          prefixIcon: Icon(Icons.location_on, color: HexColor('#E07B36')),
+          prefixIcon: Icon(Icons.location_on, color: HexColor('#891F1F')),
           border: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -791,7 +791,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             icon: Icon(Icons.navigate_next),
             color: Colors.red,
           ),
-          prefixIcon: Icon(Icons.web_asset, color: HexColor('#E07B36')),
+          prefixIcon: Icon(Icons.web_asset, color: HexColor('#891F1F')),
           border: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -831,7 +831,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             icon: Icon(Icons.navigate_next),
             color: Colors.red,
           ),
-          prefixIcon: Icon(Icons.assignment_ind, color: HexColor('#E07B36')),
+          prefixIcon: Icon(Icons.assignment_ind, color: HexColor('#891F1F')),
           border: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -871,7 +871,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             icon: Icon(Icons.navigate_next),
             color: Colors.red,
           ),
-          prefixIcon: Icon(Icons.group_work, color: HexColor('#E07B36')),
+          prefixIcon: Icon(Icons.group_work, color: HexColor('#891F1F')),
           border: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -911,7 +911,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             icon: Icon(Icons.navigate_next),
             color: Colors.red,
           ),
-          prefixIcon: Icon(Icons.directions_car, color: HexColor('#E07B36')),
+          prefixIcon: Icon(Icons.directions_car, color: HexColor('#891F1F')),
           border: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -984,25 +984,25 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           hintText: 'Rp',
           labelText: 'Uang (DP)',
           labelStyle: TextStyle(
-            color: HexColor('#E07B36'),
+            color: HexColor('#891F1F'),
             fontWeight: FontWeight.w400,
           ),
           hasFloatingPlaceholder: true,
           border: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: HexColor('#E07B36'),
+              color: HexColor('#891F1F'),
               width: 1,
             ),
           ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: HexColor('#E07B36'),
+              color: HexColor('#891F1F'),
               width: 1,
             ),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: HexColor('#E07B36'),
+              color: HexColor('#891F1F'),
               width: 2,
             ),
           ),

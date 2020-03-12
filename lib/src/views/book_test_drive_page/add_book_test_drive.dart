@@ -87,7 +87,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                     "Next",
                     style: TextStyle(color: Colors.white),
                   ),
-                  color: HexColor('#E07B36'),
+                  color: HexColor('#891F1F'),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -136,11 +136,11 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
       child: TextField(
-        cursorColor: HexColor('#E07B36'),
+        cursorColor: HexColor('#891F1F'),
         decoration: InputDecoration(
           labelText: 'Email',
           labelStyle: TextStyle(
-            color: HexColor('#E07B36')
+            color: HexColor('#891F1F')
           ),
           errorText: 'Email harus diisi',
           hasFloatingPlaceholder: true,
@@ -172,11 +172,11 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
       child: TextField(
-        cursorColor: HexColor('#E07B36'),
+        cursorColor: HexColor('#891F1F'),
         decoration: InputDecoration(
           labelText: 'No. Telp',
           labelStyle: TextStyle(
-              color: HexColor('#E07B36')
+              color: HexColor('#891F1F')
           ),
           errorText: 'No. Telp harus diisi',
           hasFloatingPlaceholder: true,

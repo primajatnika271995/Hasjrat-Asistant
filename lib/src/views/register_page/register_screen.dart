@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Scaffold.of(context).showSnackBar(
               SnackBar(
                 content: Text("NIK yang anda gunakan sudah didaftarkan!"),
-                backgroundColor: HexColor('#E07B36'),
+                backgroundColor: HexColor('#891F1F'),
               ),
             );
           }
@@ -127,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 150,
                       width: 150,
                       decoration: BoxDecoration(
-                        color: HexColor('#E07B36'),
+                        color: HexColor('#891F1F'),
                         borderRadius: BorderRadius.circular(200),
                       ),
                     ),
@@ -164,7 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               hintText: 'NIK',
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: HexColor('#E07B36'),
+                                  color: HexColor('#891F1F'),
                                 ),
                               ),
                               suffixIcon:
@@ -244,7 +244,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         hintText: 'Email',
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: HexColor('#E07B36'),
+                                            color: HexColor('#891F1F'),
                                           ),
                                         ),
                                       ),
@@ -262,7 +262,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         hintText: 'Password',
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: HexColor('#E07B36'),
+                                            color: HexColor('#891F1F'),
                                           ),
                                         ),
                                       ),
@@ -299,7 +299,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () {
                         _onRegister();
                       },
-                      color: HexColor('#E07B36'),
+                      color: HexColor('#891F1F'),
                       child: Text(
                         "Create",
                         style: TextStyle(

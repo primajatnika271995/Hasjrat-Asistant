@@ -22,7 +22,7 @@ void onLoading(BuildContext context) {
                       height: 25,
                       width: 25,
                       child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(HexColor('#E07B36')),
+                        valueColor: AlwaysStoppedAnimation(HexColor('#891F1F')),
                       ),
                     ),
                     Padding(

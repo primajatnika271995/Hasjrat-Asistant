@@ -81,7 +81,7 @@ class _BarChartViewState extends State<BarChartView> {
         dataLabelSettings: DataLabelSettings(
             isVisible: false, labelAlignment: ChartDataLabelAlignment.top),
         dataSource: chartData,
-        color: HexColor('#E07B36'),
+        color: HexColor('#891F1F'),
         borderRadius: BorderRadius.circular(5),
         xValueMapper: (ChartSampleData sales, _) => sales.x,
         yValueMapper: (ChartSampleData sales, _) => sales.y,

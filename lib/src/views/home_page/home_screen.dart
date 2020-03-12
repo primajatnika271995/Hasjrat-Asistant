@@ -121,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       'See All',
                       style: TextStyle(
                         fontSize: 13,
-                        color: HexColor('#E07B36'),
+                        color: HexColor('#891F1F'),
                         letterSpacing: 0.7,
                       ),
                     ),
@@ -160,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 55,
               width: 55,
               decoration: BoxDecoration(
-                color: HexColor('#E07B36'),
+                color: HexColor('#891F1F'),
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(100),
                 ),

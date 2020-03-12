@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Scaffold.of(context).showSnackBar(
               SnackBar(
                 content: Text("Username or Password Incorect!"),
-                backgroundColor: HexColor('#E07B36'),
+                backgroundColor: HexColor('#891F1F'),
               ),
             );
           }
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 150,
                       width: 150,
                       decoration: BoxDecoration(
-                        color: HexColor('#E07B36'),
+                        color: HexColor('#891F1F'),
                         borderRadius: BorderRadius.circular(200),
                       ),
                     ),
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               hintText: 'Username',
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: HexColor('#E07B36'),
+                                  color: HexColor('#891F1F'),
                                 ),
                               ),
                             ),
@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               hintText: 'Password',
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: HexColor('#E07B36'),
+                                  color: HexColor('#891F1F'),
                                 ),
                               ),
                             ),
@@ -232,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         _onSubmit();
                       },
-                      color: HexColor('#E07B36'),
+                      color: HexColor('#891F1F'),
                       child: Text(
                         "Login",
                         style: TextStyle(
@@ -267,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.0,
-                          color: HexColor('#E07B36'),
+                          color: HexColor('#891F1F'),
                           decoration: TextDecoration.underline,
                         ),
                       ),

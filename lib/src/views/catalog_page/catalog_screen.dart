@@ -148,7 +148,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                     child: Container(
                                       padding: EdgeInsets.all(5.0),
                                       decoration: BoxDecoration(
-                                        color: HexColor('#E07B36'),
+                                        color: HexColor('#891F1F'),
                                         shape: BoxShape.circle,
                                         boxShadow: [
                                           BoxShadow(

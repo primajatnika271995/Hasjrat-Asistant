@@ -91,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                color: HexColor('#E07B36'),
+                color: HexColor('#891F1F'),
               ),
             ),
           ),

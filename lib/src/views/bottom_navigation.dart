@@ -67,7 +67,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: HexColor('#E07B36'),
+          selectedItemColor: HexColor('#891F1F'),
           unselectedItemColor: HexColor('#665C55'),
           elevation: 15,
           onTap: _onItemTapped,

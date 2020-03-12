@@ -81,7 +81,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: HexColor('#E07B36'),
+                          color: HexColor('#891F1F'),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Center(
