@@ -238,6 +238,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       onChange: (SelectorAssetTypeModel selected) {
         setState(() {
           _assetPriceModel = null;
+          priceSelection = -1;
           currentSelectAssetType = selected;
           assetTypeCtrl.text = selected.assetTypeName;
           assetTypeCode = selected.assetTypeCode;
