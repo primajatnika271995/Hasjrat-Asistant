@@ -491,7 +491,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           readOnly: true,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(bottom: 18),
-            labelText: 'Branch Name',
+            hintText: 'Select Branch',
             hasFloatingPlaceholder: false,
             suffixIcon: IconButton(
               onPressed: () {
@@ -537,7 +537,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(bottom: 18),
             hasFloatingPlaceholder: false,
-            labelText: 'Outlet Name',
+            hintText: 'Select Outlet',
             suffixIcon: IconButton(
               onPressed: () {
                 _showListOutlet();
@@ -582,7 +582,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(bottom: 18),
             hasFloatingPlaceholder: false,
-            labelText: 'Asset Kind',
+            hintText: 'Select Asset Kind',
             suffixIcon: IconButton(
               onPressed: () {
                 _showListAssetKind();
@@ -627,7 +627,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(bottom: 18),
             hasFloatingPlaceholder: false,
-            labelText: 'Insurance Type',
+            hintText: 'Select Insurance',
             suffixIcon: IconButton(
               onPressed: () {
                 _showListInsuranceType();
@@ -672,7 +672,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(bottom: 18),
             hasFloatingPlaceholder: false,
-            labelText: 'Asset Group',
+            hintText: 'Select Asset Group',
             suffixIcon: IconButton(
               onPressed: () {
                 _showListAssetGroup();
@@ -717,7 +717,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(bottom: 18),
             hasFloatingPlaceholder: false,
-            labelText: 'Asset Type',
+            hintText: 'Select Asset Type',
             suffixIcon: IconButton(
               onPressed: () {
                 _showListAssetType();
@@ -759,7 +759,6 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         builder: (FormFieldState state) {
           return InputDecorator(
             decoration: InputDecoration(
-              hintText: 'Select Methode',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
