@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Scaffold.of(context).showSnackBar(
               SnackBar(
                 content: Text("NIK yang anda gunakan sudah didaftarkan!"),
-                backgroundColor: HexColor('#891F1F'),
+                backgroundColor: HexColor('#C61818'),
               ),
             );
           }
@@ -115,7 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 200,
                       width: 200,
                       decoration: BoxDecoration(
-                        color: HexColor('#665C55'),
+                        color: HexColor('#212120'),
                         borderRadius: BorderRadius.circular(200),
                       ),
                     ),
@@ -127,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 150,
                       width: 150,
                       decoration: BoxDecoration(
-                        color: HexColor('#891F1F'),
+                        color: HexColor('#C61818'),
                         borderRadius: BorderRadius.circular(200),
                       ),
                     ),
@@ -164,7 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               hintText: 'NIK',
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: HexColor('#891F1F'),
+                                  color: HexColor('#C61818'),
                                 ),
                               ),
                               suffixIcon:
@@ -244,7 +244,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         hintText: 'Email',
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: HexColor('#891F1F'),
+                                            color: HexColor('#C61818'),
                                           ),
                                         ),
                                       ),
@@ -262,7 +262,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         hintText: 'Password',
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: HexColor('#891F1F'),
+                                            color: HexColor('#C61818'),
                                           ),
                                         ),
                                       ),
@@ -299,7 +299,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () {
                         _onRegister();
                       },
-                      color: HexColor('#891F1F'),
+                      color: HexColor('#C61818'),
                       child: Text(
                         "Create",
                         style: TextStyle(

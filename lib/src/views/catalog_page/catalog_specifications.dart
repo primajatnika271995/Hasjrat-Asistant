@@ -27,7 +27,7 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                 "Dimension and Weight",
                 style: TextStyle(
                   letterSpacing: 1.0,
-                  color: dimensionIsExpanded ? HexColor('#891F1F') : Colors.black,
+                  color: dimensionIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
               onExpansionChanged: (bool val) {
@@ -39,7 +39,7 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                 "Engine",
                 style: TextStyle(
                   letterSpacing: 1.0,
-                  color: engineIsExpanded ? HexColor('#891F1F') : Colors.black,
+                  color: engineIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
               onExpansionChanged: (bool val) {
@@ -51,7 +51,7 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                 "Performance",
                 style: TextStyle(
                   letterSpacing: 1.0,
-                  color: performanceIsExpanded ? HexColor('#891F1F') : Colors.black,
+                  color: performanceIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
               onExpansionChanged: (bool val) {
@@ -63,7 +63,7 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                 "Safety",
                 style: TextStyle(
                   letterSpacing: 1.0,
-                  color: safetyIsExpanded ? HexColor('#891F1F') : Colors.black,
+                  color: safetyIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
               onExpansionChanged: (bool val) {
@@ -75,7 +75,7 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                 "Capacity",
                 style: TextStyle(
                   letterSpacing: 1.0,
-                  color: capacityIsExpanded ? HexColor('#891F1F') : Colors.black,
+                  color: capacityIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
               onExpansionChanged: (bool val) {

@@ -1,17 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProspectDetailsView extends StatefulWidget {
+class ProspectContactDetailsView extends StatefulWidget {
   @override
-  _ProspectDetailsViewState createState() => _ProspectDetailsViewState();
+  _ProspectContactDetailsViewState createState() => _ProspectContactDetailsViewState();
 }
 
-class _ProspectDetailsViewState extends State<ProspectDetailsView> {
-  
-  ContextType _currentSelectContext;
+class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView> {
+  String _currentContextType = "Hot Prospect";
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Customer",
+          "Contact Details",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -33,39 +31,20 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            profileImage(),
+            SizedBox(
+              height: 30,
+            ),
             namaCustomer(),
             Divider(),
             nikCustomer(),
             Divider(),
             contactCustomer(),
             Divider(),
-            emailCustomer(),
-            Divider(),
             alamatCustomer(),
             dropdownContext(),
-            vehicleCustomer(),
-            Divider(),
-            colorVehicleCustomer(),
-            ktpImage(),
             spkButton(),
-            saveButton(),
             callButton(),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget profileImage() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 25),
-      child: Center(
-        child: CircleAvatar(
-          backgroundColor: Colors.white,
-          radius: 50,
-          backgroundImage: NetworkImage(
-              "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
         ),
       ),
     );
@@ -262,27 +241,26 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
               EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton<ContextType>(
-//                        value: _currentSelectTask,
+              child: DropdownButton<String>(
+                value: _currentContextType,
                 hint: Text('Context Type'),
                 isDense: true,
-                onChanged: (ContextType newVal) {
+                onChanged: (String newVal) {
                   setState(() {
-                    _currentSelectContext = newVal;
-                    state.didChange(newVal.contextName);
-                    print(_currentSelectContext.contextName);
+                    _currentContextType = newVal;
+                    state.didChange(newVal);
                   });
                 },
-                items: ContextType.getTask().map((ContextType val) {
-                  return DropdownMenuItem<ContextType>(
+                items: ["Prospect", "Hot Prospect", "Context"].map((String val) {
+                  return DropdownMenuItem<String>(
                     value: val,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(val.contextName),
+                        Text(val),
                         Text(
                           "●",
-                          style: TextStyle(color: val.contextColor),
+                          style: TextStyle(color: val == "Prospect" ? Colors.green : val == "Hot Prospect" ? Colors.red : Colors.orange),
                         ),
                       ],
                     ),
@@ -362,12 +340,12 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget spkButton() {
     return Padding(
-      padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
+      padding: const EdgeInsets.only(left: 30, right: 30),
       child: Container(
         width: screenWidth(context),
         child: RaisedButton(
           onPressed: () {},
-          child: Text("SPK", style: TextStyle(color: Colors.white),),
+          child: Text("Copy to SPK", style: TextStyle(color: Colors.white),),
           color: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
@@ -411,20 +389,5 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
         ),
       ),
     );
-  }
-}
-
-class ContextType {
-  String contextName;
-  Color contextColor;
-
-  ContextType({this.contextName, this.contextColor});
-
-  static List<ContextType> getTask() {
-    return <ContextType>[
-      ContextType(contextName: 'Context', contextColor: Colors.orangeAccent),
-      ContextType(contextName: 'Prospect', contextColor: Colors.green),
-      ContextType(contextName: 'Hot Prospect', contextColor: Colors.red),
-    ];
   }
 }

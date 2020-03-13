@@ -113,7 +113,7 @@ class _ReminderListViewState extends State<ReminderListView> {
               title: Text(
                 "Pending",
                 style: TextStyle(
-                  color: pendingIsExpanded ? HexColor('#891F1F') : Colors.black,
+                  color: pendingIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
               onExpansionChanged: (bool val) {
@@ -137,7 +137,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                         child: Image.asset(
                           "assets/icons/empty_icon.png",
                           height: 100,
-                          color: HexColor('#891F1F'),
+                          color: HexColor('#C61818'),
                         ),
                       );
                     }
@@ -149,7 +149,7 @@ class _ReminderListViewState extends State<ReminderListView> {
               title: Text(
                 "Today",
                 style: TextStyle(
-                  color: todayIsExpanded ? HexColor('#891F1F') : Colors.black,
+                  color: todayIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
               onExpansionChanged: (bool val) {
@@ -174,7 +174,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                         child: Image.asset(
                           "assets/icons/empty_icon.png",
                           height: 100,
-                          color: HexColor('#891F1F'),
+                          color: HexColor('#C61818'),
                         ),
                       );
                     }
@@ -187,7 +187,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                 "Tomorrow",
                 style: TextStyle(
                   color:
-                      tomorrowIsExpanded ? HexColor('#891F1F') : Colors.black,
+                      tomorrowIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
               onExpansionChanged: (bool val) {
@@ -211,7 +211,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                         child: Image.asset(
                           "assets/icons/empty_icon.png",
                           height: 100,
-                          color: HexColor('#891F1F'),
+                          color: HexColor('#C61818'),
                         ),
                       );
                     }
@@ -224,7 +224,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                 "Upcoming",
                 style: TextStyle(
                   color:
-                      upcomingIsExpanded ? HexColor('#891F1F') : Colors.black,
+                      upcomingIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
               onExpansionChanged: (bool val) {
@@ -248,7 +248,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                         child: Image.asset(
                           "assets/icons/empty_icon.png",
                           height: 100,
-                          color: HexColor('#891F1F'),
+                          color: HexColor('#C61818'),
                         ),
                       );
                     }
@@ -264,7 +264,7 @@ class _ReminderListViewState extends State<ReminderListView> {
           _onAddReminderNavigation();
         },
         child: Icon(Icons.add, color: Colors.white),
-        backgroundColor: HexColor('#891F1F'),
+        backgroundColor: HexColor('#C61818'),
       ),
     );
   }
@@ -330,7 +330,7 @@ class _ReminderListViewState extends State<ReminderListView> {
           _setSelectedTomorrow(val);
           print(value.id);
         },
-        activeColor: HexColor('#891F1F'),
+        activeColor: HexColor('#C61818'),
         selected: selectionDataPending == index,
       ),
       actions: <Widget>[
@@ -439,7 +439,7 @@ class _ReminderListViewState extends State<ReminderListView> {
         onChanged: (val) {
           _setSelectedToday(val);
         },
-        activeColor: HexColor('#891F1F'),
+        activeColor: HexColor('#C61818'),
         selected: selectionDataToday == index,
       ),
       actions: <Widget>[
@@ -475,7 +475,7 @@ class _ReminderListViewState extends State<ReminderListView> {
         ),
         IconSlideAction(
           caption: 'Pending',
-          color: HexColor('#891F1F'),
+          color: HexColor('#C61818'),
           icon: Icons.archive,
           onTap: () async {
             await _dbHelper.update(
@@ -569,7 +569,7 @@ class _ReminderListViewState extends State<ReminderListView> {
           _setSelectedTomorrow(val);
           print(value.id);
         },
-        activeColor: HexColor('#891F1F'),
+        activeColor: HexColor('#C61818'),
         selected: selectionDataTomorrow == index,
       ),
       actions: <Widget>[
@@ -605,7 +605,7 @@ class _ReminderListViewState extends State<ReminderListView> {
         ),
         IconSlideAction(
           caption: 'Pending',
-          color: HexColor('#891F1F'),
+          color: HexColor('#C61818'),
           icon: Icons.archive,
           onTap: () async {
             await _dbHelper.update(
@@ -698,7 +698,7 @@ class _ReminderListViewState extends State<ReminderListView> {
         onChanged: (val) {
           _setSelectedUpcoming(val);
         },
-        activeColor: HexColor('#891F1F'),
+        activeColor: HexColor('#C61818'),
         selected: selectionDataUpcoming == index,
       ),
       actions: <Widget>[
@@ -734,7 +734,7 @@ class _ReminderListViewState extends State<ReminderListView> {
         ),
         IconSlideAction(
           caption: 'Pending',
-          color: HexColor('#891F1F'),
+          color: HexColor('#C61818'),
           icon: Icons.archive,
           onTap: () async {
             await _dbHelper.update(

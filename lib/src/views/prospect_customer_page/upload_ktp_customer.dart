@@ -110,7 +110,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.ratio4x3,
           showCropGrid: true,
-          toolbarColor: HexColor('#891F1F'),
+          toolbarColor: HexColor('#C61818'),
           lockAspectRatio: false,
         ),
         iosUiSettings: IOSUiSettings(
@@ -166,7 +166,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
 //
 //    var config = DocumentScannerConfiguration(
 //      multiPageEnabled: false,
-//      bottomBarBackgroundColor: HexColor('#891F1F'),
+//      bottomBarBackgroundColor: HexColor('#C61818'),
 //      multiPageButtonHidden: true,
 //      cancelButtonTitle: "Cancel",
 //    );
@@ -250,7 +250,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
                         child: IconButton(
                           icon: Icon(Icons.add),
                           iconSize: 45,
-                          color: HexColor('#891F1F'),
+                          color: HexColor('#C61818'),
                           onPressed: () {
 //                            _onSelectCamera();
 //                            _onPickImage();
@@ -466,7 +466,7 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
                     "NEXT",
                     style: TextStyle(color: Colors.white),
                   ),
-                  color: HexColor('#891F1F'),
+                  color: HexColor('#C61818'),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),

@@ -99,7 +99,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 150,
               width: 150,
               decoration: BoxDecoration(
-                color: HexColor('#665C55'),
+                color: HexColor('#212120'),
                 borderRadius: BorderRadius.circular(200),
               ),
             ),
@@ -111,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 100,
               width: 100,
               decoration: BoxDecoration(
-                color: HexColor('#891F1F'),
+                color: HexColor('#C61818'),
                 borderRadius: BorderRadius.circular(200),
               ),
             ),
@@ -123,7 +123,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 150,
               width: 150,
               decoration: BoxDecoration(
-                color: HexColor('#665C55'),
+                color: HexColor('#212120'),
                 borderRadius: BorderRadius.circular(200),
               ),
             ),
@@ -135,7 +135,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 100,
               width: 100,
               decoration: BoxDecoration(
-                color: HexColor('#891F1F'),
+                color: HexColor('#C61818'),
                 borderRadius: BorderRadius.circular(200),
               ),
             ),
@@ -160,7 +160,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   style: TextStyle(
                     letterSpacing: 0.8,
                     fontWeight: FontWeight.w700,
-                    color: HexColor('#665C55'),
+                    color: HexColor('#212120'),
                     fontSize: 20,
                   ),
                 ),

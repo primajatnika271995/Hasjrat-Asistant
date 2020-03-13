@@ -13,13 +13,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HexColor('#891F1F'),
+      backgroundColor: HexColor('#C61818'),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             height: 340,
-            color: HexColor('#891F1F'),
+            color: HexColor('#C61818'),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[

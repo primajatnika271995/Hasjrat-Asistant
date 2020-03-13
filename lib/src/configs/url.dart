@@ -13,6 +13,8 @@ class UriApi {
 
   static const String checkCustomerDMSUri = "/sales-tools-dealer-service/api/v2/dms/customer/list";
 
+  static const String checkLeadDMSUri = "/sales-tools-dealer-service/api/v2/dms/lead/list";
+
   static const String branchCodeUri = "/sales-tools-finance-service/api/v2/branch/list";
 
   static const String outletCodeUri = "/sales-tools-finance-service/api/v2/outlet/list";

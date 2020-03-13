@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Scaffold.of(context).showSnackBar(
               SnackBar(
                 content: Text("Username or Password Incorect!"),
-                backgroundColor: HexColor('#891F1F'),
+                backgroundColor: HexColor('#C61818'),
               ),
             );
           }
@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 200,
                       width: 200,
                       decoration: BoxDecoration(
-                        color: HexColor('#665C55'),
+                        color: HexColor('#212120'),
                         borderRadius: BorderRadius.circular(200),
                       ),
                     ),
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 150,
                       width: 150,
                       decoration: BoxDecoration(
-                        color: HexColor('#891F1F'),
+                        color: HexColor('#C61818'),
                         borderRadius: BorderRadius.circular(200),
                       ),
                     ),
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               hintText: 'Username',
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: HexColor('#891F1F'),
+                                  color: HexColor('#C61818'),
                                 ),
                               ),
                             ),
@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               hintText: 'Password',
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: HexColor('#891F1F'),
+                                  color: HexColor('#C61818'),
                                 ),
                               ),
                             ),
@@ -232,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         _onSubmit();
                       },
-                      color: HexColor('#891F1F'),
+                      color: HexColor('#C61818'),
                       child: Text(
                         "Login",
                         style: TextStyle(
@@ -267,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.0,
-                          color: HexColor('#891F1F'),
+                          color: HexColor('#C61818'),
                           decoration: TextDecoration.underline,
                         ),
                       ),

@@ -128,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: Text(
             "My Profile",
             style: TextStyle(
-              color: HexColor('#891F1F'),
+              color: HexColor('#C61818'),
               fontWeight: FontWeight.w700,
               letterSpacing: 0.5,
             ),
@@ -167,7 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 150,
                             lineHeight: 17,
                             backgroundColor: Colors.grey.withOpacity(0.3),
-                            progressColor: HexColor('#891F1F'),
+                            progressColor: HexColor('#C61818'),
                           ),
                         ),
                         Text(
@@ -291,9 +291,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _onEditProfile();
               },
               highlightElevation: 3,
-              highlightedBorderColor: HexColor('#891F1F'),
+              highlightedBorderColor: HexColor('#C61818'),
               borderSide: BorderSide(
-                color: HexColor('#891F1F'),
+                color: HexColor('#C61818'),
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
@@ -302,7 +302,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 "Detail Profile",
                 style: TextStyle(
                   fontSize: 12,
-                  color: HexColor('#665C55'),
+                  color: HexColor('#212120'),
                 ),
               ),
             ),

@@ -40,6 +40,29 @@ class CustomerService {
       return compute(errorModelFromJson, json.encode(response.data));
     }
   }
+
+  Future leadDMS(LeadPost value) async {
+    final response = await _dio.post(UriApi.checkLeadDMSUri,
+      options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      ),
+      data: {
+        "lead_code": value.leadCode,
+        "lead_name": value.leadName,
+      },
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(customerModelFromJson, json.encode(response.data));
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
 }
 
 class CustomerPost {
@@ -48,4 +71,11 @@ class CustomerPost {
   String custgroup;
 
   CustomerPost({this.cardCode, this.cardName, this.custgroup});
+}
+
+class LeadPost {
+  String leadCode;
+  String leadName;
+
+  LeadPost({this.leadCode, this.leadName});
 }

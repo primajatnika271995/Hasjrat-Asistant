@@ -116,7 +116,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                     "Next",
                     style: TextStyle(color: Colors.white),
                   ),
-                  color: HexColor('#891F1F'),
+                  color: HexColor('#C61818'),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -214,7 +214,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 fontSize: 13,
               ),
             ),
-            activeColor: HexColor('#891F1F'),
+            activeColor: HexColor('#C61818'),
           ),
           RadioListTile<TypeService>(
             value: TypeService.serviceBerkala,
@@ -231,7 +231,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 fontSize: 13,
               ),
             ),
-            activeColor: HexColor('#891F1F'),
+            activeColor: HexColor('#C61818'),
           ),
         ],
       ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_contact.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_customer.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/details_prospect_contact.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/details_prospect_customer.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/upload_ktp_customer.dart';
 
@@ -15,7 +17,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
   void _onAddProspectCustomer() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => UploadKTPCustomerView(),
+        pageBuilder: (_, __, ___) => ProspectContactAdd(),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -28,10 +30,10 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
     );
   }
 
-  void _onViewDetailsProspectCustomer() {
+  void _onViewDetailsContact() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => ProspectDetailsView(),
+        pageBuilder: (_, __, ___) => ProspectContactDetailsView(),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -67,7 +69,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
           return SlidableCustomerView(
             index: index,
             callback: () {
-              _onViewDetailsProspectCustomer();
+              _onViewDetailsContact();
             },
           );
         },
@@ -78,7 +80,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
           _onAddProspectCustomer();
         },
         child: Icon(Icons.add, color: Colors.white),
-        backgroundColor: HexColor('#891F1F'),
+        backgroundColor: HexColor('#C61818'),
       ),
     );
   }

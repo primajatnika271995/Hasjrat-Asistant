@@ -155,7 +155,7 @@ class _CustomerListViewState extends State<CustomerListView> {
                       child: Image.asset(
                         "assets/icons/empty_icon.png",
                         height: 100,
-                        color: HexColor('#891F1F'),
+                        color: HexColor('#C61818'),
                       ),
                     );
                   }

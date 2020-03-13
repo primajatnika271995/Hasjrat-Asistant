@@ -57,7 +57,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.ratio4x3,
             showCropGrid: true,
-            toolbarColor: HexColor('#891F1F'),
+            toolbarColor: HexColor('#C61818'),
             lockAspectRatio: false),
         iosUiSettings: IOSUiSettings(
           minimumAspectRatio: 1.0,
@@ -130,7 +130,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                     "Save",
                     style: TextStyle(color: Colors.white),
                   ),
-                  color: HexColor('#891F1F'),
+                  color: HexColor('#C61818'),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -167,7 +167,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
               child: Text(
                 "Change Profile Photo",
                 style: TextStyle(
-                  color: HexColor('#891F1F'),
+                  color: HexColor('#C61818'),
                   letterSpacing: 0.5,
                   fontSize: 11,
                 ),
@@ -186,15 +186,15 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
-        cursorColor: HexColor('#891F1F'),
+        cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Nama',
           labelStyle: TextStyle(
-            color: HexColor('#891F1F'),
+            color: HexColor('#C61818'),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: HexColor('#891F1F'),
+              color: HexColor('#C61818'),
             ),
           ),
         ),
@@ -210,15 +210,15 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
-        cursorColor: HexColor('#891F1F'),
+        cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Tanggal Lahir',
           labelStyle: TextStyle(
-            color: HexColor('#891F1F'),
+            color: HexColor('#C61818'),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: HexColor('#891F1F'),
+              color: HexColor('#C61818'),
             ),
           ),
         ),
@@ -234,15 +234,15 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
-        cursorColor: HexColor('#891F1F'),
+        cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Jenis Kelamin',
           labelStyle: TextStyle(
-            color: HexColor('#891F1F'),
+            color: HexColor('#C61818'),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: HexColor('#891F1F'),
+              color: HexColor('#C61818'),
             ),
           ),
         ),
@@ -258,15 +258,15 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
-        cursorColor: HexColor('#891F1F'),
+        cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Nama Branch',
           labelStyle: TextStyle(
-            color: HexColor('#891F1F'),
+            color: HexColor('#C61818'),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: HexColor('#891F1F'),
+              color: HexColor('#C61818'),
             ),
           ),
         ),
@@ -282,15 +282,15 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
-        cursorColor: HexColor('#891F1F'),
+        cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Lokasi Penempatan',
           labelStyle: TextStyle(
-            color: HexColor('#891F1F'),
+            color: HexColor('#C61818'),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: HexColor('#891F1F'),
+              color: HexColor('#C61818'),
             ),
           ),
         ),
@@ -306,15 +306,15 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
-        cursorColor: HexColor('#891F1F'),
+        cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Posisi',
           labelStyle: TextStyle(
-            color: HexColor('#891F1F'),
+            color: HexColor('#C61818'),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: HexColor('#891F1F'),
+              color: HexColor('#C61818'),
             ),
           ),
         ),

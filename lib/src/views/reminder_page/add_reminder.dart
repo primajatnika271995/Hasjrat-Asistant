@@ -214,7 +214,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               _currentSelectCustomer == null ? SizedBox() :
               Container(
                 height: 50,
-                color: HexColor('#891F1F'),
+                color: HexColor('#C61818'),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 30),
                   child: Row(
@@ -249,7 +249,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                         _showListCustomer();
                       },
                       icon: Icon(Icons.add),
-                      color: HexColor('#891F1F'),
+                      color: HexColor('#C61818'),
                     ),
                     Text("Add Customer"),
                   ],
@@ -273,7 +273,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                       widget.id == null ? "Create" : "Update",
                       style: TextStyle(color: Colors.white),
                     ),
-                    color: HexColor('#891F1F'),
+                    color: HexColor('#C61818'),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -322,7 +322,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                         Text(val),
                         Icon(
                           val == 'Call' ? Icons.call : Icons.person,
-                          color: HexColor('#891F1F'),
+                          color: HexColor('#C61818'),
                         ),
                       ],
                     ),
