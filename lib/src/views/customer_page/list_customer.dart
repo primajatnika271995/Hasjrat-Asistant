@@ -52,7 +52,6 @@ class _CustomerListViewState extends State<CustomerListView> {
   @override
   void initState() {
     // TODO: implement initState
-//    getCustomer();
     // ignore: close_sinks
     final customerBloc = BlocProvider.of<CustomerBloc>(context);
     customerBloc.add(FetchCustomer(CustomerPost(

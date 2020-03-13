@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:salles_tools/src/bloc/lead_bloc/lead_bloc.dart';
+import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
+import 'package:salles_tools/src/bloc/lead_bloc/lead_state.dart';
+import 'package:salles_tools/src/models/lead_model.dart';
+import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_contact.dart';
-import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_customer.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/details_prospect_contact.dart';
-import 'package:salles_tools/src/views/prospect_customer_page/details_prospect_customer.dart';
-import 'package:salles_tools/src/views/prospect_customer_page/upload_ktp_customer.dart';
 
 class ProspectCustomerListView extends StatefulWidget {
   @override
@@ -47,6 +51,18 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    // ignore: close_sinks
+    final leadBloc = BlocProvider.of<LeadBloc>(context);
+    leadBloc.add(FetchLead(LeadPost(
+      leadCode: "",
+      leadName: "sa",
+    )));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -63,17 +79,52 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return SlidableCustomerView(
-            index: index,
-            callback: () {
-              _onViewDetailsContact();
-            },
-          );
+      body: BlocListener<LeadBloc, LeadState>(
+        listener: (context, state) {
+          if (state is LeadLoading) {
+            onLoading(context);
+          }
+
+          if (state is LeadDisposeLoading) {
+            Future.delayed(Duration(seconds: 3), () {
+              Navigator.of(context, rootNavigator: false).pop();
+            });
+          }
         },
-        itemCount: ProspectCustomer.getProspect().length,
+        child: BlocBuilder<LeadBloc, LeadState>(
+          builder: (context, state) {
+            if (state is LeadFailed) {
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.of(context, rootNavigator: true).pop();
+              });
+              return Center(
+                child: Image.asset(
+                  "assets/icons/empty_icon.png",
+                  height: 100,
+                  color: HexColor('#C61818'),
+                ),
+              );
+            }
+
+            if (state is LeadSuccess) {
+              return ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  var value = state.value.data[index];
+                  return SlidableCustomerView(
+                    index: index,
+                    value: value,
+                    callback: () {
+                      _onViewDetailsContact();
+                    },
+                  );
+                },
+                itemCount: state.value.data.length,
+              );
+            }
+            return SizedBox();
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -88,8 +139,9 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
 
 class SlidableCustomerView extends StatelessWidget {
   final Function callback;
+  final Datum value;
   final int index;
-  SlidableCustomerView({Key key, this.callback, this.index}): super(key: key);
+  SlidableCustomerView({Key key, this.callback, this.value, this.index}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,21 +159,21 @@ class SlidableCustomerView extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: Colors.indigoAccent,
               foregroundColor: Colors.white,
-              backgroundImage: NetworkImage(ProspectCustomer.getProspect()[index].urlProfile),
+              backgroundImage: NetworkImage("https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
             ),
-            title: Text("Customer $index"),
+            title: Text("${value.cardName}"),
             subtitle: Padding(
               padding: const EdgeInsets.only(right: 230),
               child: Container(
                 height: 18,
                 width: 50,
                 decoration: BoxDecoration(
-                  color: ProspectCustomer.getProspect()[index].colors,
+                  color: Colors.red,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
                   child: Text(
-                    "${ProspectCustomer.getProspect()[index].contextType}",
+                    "${value.suspectstatus}",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 9,
@@ -143,44 +195,5 @@ class SlidableCustomerView extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-
-class ProspectCustomer {
-  String urlProfile;
-  String customerName;
-  String contextType;
-  Color colors;
-
-  ProspectCustomer({this.urlProfile, this.customerName, this.contextType, this.colors});
-
-  static List<ProspectCustomer> getProspect() {
-    return <ProspectCustomer>[
-      ProspectCustomer(
-        urlProfile: "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg",
-        customerName: "",
-        contextType: "Context",
-        colors: Colors.orangeAccent,
-      ),
-      ProspectCustomer(
-        urlProfile: "https://keenthemes.com/preview/metronic/theme/assets/pages/media/profile/profile_user.jpg",
-        customerName: "",
-        contextType: "Prospect",
-        colors: Colors.green,
-      ),
-      ProspectCustomer(
-        urlProfile: "https://i.imgur.com/74sByqd.jpg",
-        customerName: "",
-        contextType: "Context",
-        colors: Colors.orangeAccent,
-      ),
-      ProspectCustomer(
-        urlProfile: "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg",
-        customerName: "",
-        contextType: "Hot Prospect",
-        colors: Colors.red,
-      ),
-    ];
   }
 }
