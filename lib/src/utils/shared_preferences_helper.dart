@@ -17,6 +17,7 @@ class SharedPreferencesHelper {
   static const String kSalesJob = "salesJob";
 
   static const String kCustomerJSON = "customerList";
+  static const String kLeadJSON = "leadList";
 
   static Future<SharedPreferencesHelper> getInstance() async {
     if (_instance == null) {
@@ -224,5 +225,23 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString(kCustomerJSON, value);
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the Lead List JSON, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getListLead() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kLeadJSON) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the Lead List JSON
+  /// ----------------------------------------------------------
+  static Future<bool> setListLead(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kLeadJSON, value);
   }
 }
