@@ -1,14 +1,14 @@
 // To parse this JSON data, do
 //
-//     final welcome = welcomeFromJson(jsonString);
+//     final leadModel = leadModelFromJson(jsonString);
 
 import 'dart:convert';
 
-Welcome welcomeFromJson(String str) => Welcome.fromJson(json.decode(str));
+LeadModel leadModelFromJson(String str) => LeadModel.fromJson(json.decode(str));
 
-String welcomeToJson(Welcome data) => json.encode(data.toJson());
+String leadModelToJson(LeadModel data) => json.encode(data.toJson());
 
-class Welcome {
+class LeadModel {
   String status;
   List<Datum> data;
   String error;
@@ -16,7 +16,7 @@ class Welcome {
   int retCode;
   dynamic token;
 
-  Welcome({
+  LeadModel({
     this.status,
     this.data,
     this.error,
@@ -25,7 +25,7 @@ class Welcome {
     this.token,
   });
 
-  factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
+  factory LeadModel.fromJson(Map<String, dynamic> json) => LeadModel(
     status: json["status"] == null ? null : json["status"],
     data: json["data"] == null ? null : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
     error: json["error"] == null ? null : json["error"],
