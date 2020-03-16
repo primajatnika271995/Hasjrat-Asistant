@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/customer_get_form_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 
 class ProspectContactAdd extends StatefulWidget {
   @override
@@ -15,7 +17,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
   var customerContactFocus = new FocusNode();
   var customerSumberContactFocus = new FocusNode();
 
-  String _currentSelectGroup;
+  CustomerGroupModel _currentSelectGroup;
   String _currentSelectSumberContact;
   String _currentSelectFollowUp = "7 Hari";
   String _currentSelectLocation;
@@ -247,23 +249,23 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
               ),
               child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
+                child: DropdownButton<CustomerGroupModel>(
                   value: _currentSelectGroup,
                   hint: Text('Select Group'),
                   isDense: true,
-                  onChanged: (String newVal) {
+                  onChanged: (CustomerGroupModel newVal) {
                     setState(() {
                       _currentSelectGroup = newVal;
-                      state.didChange(newVal);
+                      log.info(_currentSelectGroup.customerGroupId);
                     });
                   },
-                  items: ['Retail', 'Corporation', 'Instansi', 'BUMN', 'Toko/SubDealer'].map((String val) {
-                    return DropdownMenuItem<String>(
+                  items: customerGroupList.map((CustomerGroupModel val) {
+                    return DropdownMenuItem<CustomerGroupModel>(
                       value: val,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(val),
+                          Text(val.customerGroupName),
                         ],
                       ),
                     );

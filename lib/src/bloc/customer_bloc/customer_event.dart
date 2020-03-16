@@ -17,4 +17,13 @@ class FetchCustomer extends CustomerEvent {
   List<Object> get props => [value];
 }
 
+class FetchGender extends CustomerEvent {
+  final String value;
+  FetchGender(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
 class ResetCustomer extends CustomerEvent {}
