@@ -19,6 +19,8 @@ class UriApi {
 
   static const String jobDMSUri = "/sales-tools-dealer-service/api/v2/dms/customer/pekerjaan";
 
+  static const String provinceUri = "/sales-tools-dealer-service/api/v2/dms/wilayah/provinsi";
+
   static const String checkLeadDMSUri = "/sales-tools-dealer-service/api/v2/dms/lead/list";
 
   static const String branchCodeUri = "/sales-tools-finance-service/api/v2/branch/list";

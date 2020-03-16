@@ -44,4 +44,10 @@ class FetchJob extends CustomerEvent {
   List<Object> get props => [value];
 }
 
+class FetchProvince extends CustomerEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
 class ResetCustomer extends CustomerEvent {}

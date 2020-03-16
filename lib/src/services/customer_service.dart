@@ -10,6 +10,7 @@ import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/lead_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
+import 'package:salles_tools/src/models/province_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -127,6 +128,25 @@ class CustomerService {
     log.info(response.statusCode);
     if (response.statusCode == 200) {
       return compute(jobModelFromJson, json.encode(response.data));
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future province() async {
+    final response = await _dio.post(UriApi.provinceUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        )
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(provinceModelFromJson, json.encode(response.data));
     } else if (response.statusCode == 401) {
       return compute(errorTokenExpireFromJson, json.encode(response.data));
     } else {

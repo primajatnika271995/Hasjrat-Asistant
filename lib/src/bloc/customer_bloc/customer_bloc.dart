@@ -7,6 +7,7 @@ import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
+import 'package:salles_tools/src/models/province_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -101,6 +102,23 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         } else {
           yield CustomerDisposeLoading();
           yield CustomerJob(value);
+        }
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
+    if (event is FetchProvince) {
+      yield CustomerLoading();
+
+      try {
+        ProvinceModel value = await _customerService.province();
+
+        if (value.data.isEmpty || value.data == null) {
+          yield CustomerFailed();
+        } else {
+          yield CustomerDisposeLoading();
+          yield CustomerProvince(value);
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");

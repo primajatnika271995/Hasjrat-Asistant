@@ -3,6 +3,7 @@ import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
+import 'package:salles_tools/src/models/province_model.dart';
 
 class CustomerState extends Equatable {
   @override
@@ -56,6 +57,17 @@ class CustomerJob extends CustomerState {
 
   CustomerJob(this._data);
   JobModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
+class CustomerProvince extends CustomerState {
+  final _data;
+
+  CustomerProvince(this._data);
+  ProvinceModel get value => _data;
 
   @override
   // TODO: implement props
