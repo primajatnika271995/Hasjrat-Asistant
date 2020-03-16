@@ -34,10 +34,10 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
     );
   }
 
-  void _onViewDetailsContact() {
+  void _onViewDetailsContact(Datum value) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => ProspectContactDetailsView(),
+        pageBuilder: (_, __, ___) => ProspectContactDetailsView(value),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -115,7 +115,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
                     index: index,
                     value: value,
                     callback: () {
-                      _onViewDetailsContact();
+                      _onViewDetailsContact(value);
                     },
                   );
                 },

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/lead_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProspectContactDetailsView extends StatefulWidget {
+  final Datum value;
+  ProspectContactDetailsView(this.value);
+
   @override
   _ProspectContactDetailsViewState createState() => _ProspectContactDetailsViewState();
 }
@@ -41,6 +45,10 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
             contactCustomer(),
             Divider(),
             alamatCustomer(),
+            Divider(),
+            locationCustomer(),
+            Divider(),
+            jobCustomer(),
             dropdownContext(),
             spkButton(),
             callButton(),
@@ -86,7 +94,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 6,
             child: Text(
-              "Bayu Harsono",
+              "${widget.value.cardName}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -118,7 +126,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 6,
             child: Text(
-              "3190018751021953",
+              "${widget.value.noKtp}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -150,7 +158,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 6,
             child: Text(
-              "+62 85875074351",
+              "${widget.value.phone1}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -214,7 +222,71 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 6,
             child: Text(
-              "Jl. Cicalengka Raya No 11, Antapani Bandung",
+              "${widget.value.addresses[0].address1}, ${widget.value.addresses[0].kecamatanName}, ${widget.value.addresses[0].kabupatenName}, ${widget.value.addresses[0].provinsiName}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget locationCustomer() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Lokasi",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${widget.value.locationName}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget jobCustomer() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Pekerjaan",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${widget.value.pekerjaanName}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -258,10 +330,6 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(val),
-                        Text(
-                          "●",
-                          style: TextStyle(color: val == "Prospect" ? Colors.green : val == "Hot Prospect" ? Colors.red : Colors.orange),
-                        ),
                       ],
                     ),
                   );

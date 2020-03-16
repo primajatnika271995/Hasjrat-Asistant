@@ -36,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _onLogin() async {
     await SharedPreferencesHelper.setAccessToken(null);
     await SharedPreferencesHelper.setListCustomer(null);
+    await SharedPreferencesHelper.setListLead(null);
     Navigator.of(context).pushAndRemoveUntil(
         PageRouteBuilder(
           pageBuilder: (_, __, ___) => BlocProvider<LoginBloc>(
