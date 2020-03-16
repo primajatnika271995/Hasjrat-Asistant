@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/customer_model.dart';
+import 'package:salles_tools/src/models/district_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/error_token_expire_model.dart';
 import 'package:salles_tools/src/models/gender_model.dart';
@@ -11,6 +12,7 @@ import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/lead_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
 import 'package:salles_tools/src/models/province_model.dart';
+import 'package:salles_tools/src/models/sub_district_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -147,6 +149,54 @@ class CustomerService {
     log.info(response.statusCode);
     if (response.statusCode == 200) {
       return compute(provinceModelFromJson, json.encode(response.data));
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future district(String provinceCode) async {
+    final response = await _dio.post(UriApi.districtUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+      data: {
+        "kabupaten_code": "",
+        "kabupaten_name": "",
+        "provinsi_code": provinceCode,
+      }
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(districtModelFromJson, json.encode(response.data));
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future subDistrict(String provinceCode, String kabupatenCode) async {
+    final response = await _dio.post(UriApi.subDistrictUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        data: {
+          "kabupaten_code": kabupatenCode,
+          "kabupaten_name": "",
+          "provinsi_code": provinceCode,
+        }
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(subDistrictModelFromJson, json.encode(response.data));
     } else if (response.statusCode == 401) {
       return compute(errorTokenExpireFromJson, json.encode(response.data));
     } else {

@@ -124,5 +124,39 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         log.warning("Error : ${error.toString()}");
       }
     }
+
+    if (event is FetchDistrict) {
+      yield CustomerLoading();
+
+      try {
+        ProvinceModel value = await _customerService.district(event.provinceCode);
+
+        if (value.data.isEmpty || value.data == null) {
+          yield CustomerFailed();
+        } else {
+          yield CustomerDisposeLoading();
+          yield CustomerDistrict(value);
+        }
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
+    if (event is FetchSubDistrict) {
+      yield CustomerLoading();
+
+      try {
+        ProvinceModel value = await _customerService.subDistrict(event.provinceCode, event.districtCode);
+
+        if (value.data.isEmpty || value.data == null) {
+          yield CustomerFailed();
+        } else {
+          yield CustomerDisposeLoading();
+          yield CustomerSubDistrict(value);
+        }
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
   }
 }

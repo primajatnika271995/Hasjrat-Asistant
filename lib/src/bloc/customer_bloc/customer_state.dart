@@ -1,9 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/customer_model.dart';
+import 'package:salles_tools/src/models/district_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/province_model.dart';
+import 'package:salles_tools/src/models/sub_district_model.dart';
 
 class CustomerState extends Equatable {
   @override
@@ -68,6 +70,28 @@ class CustomerProvince extends CustomerState {
 
   CustomerProvince(this._data);
   ProvinceModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
+class CustomerDistrict extends CustomerState {
+  final _data;
+
+  CustomerDistrict(this._data);
+  DistrictModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
+class CustomerSubDistrict extends CustomerState {
+  final _data;
+
+  CustomerSubDistrict(this._data);
+  SubDistrictModel get value => _data;
 
   @override
   // TODO: implement props

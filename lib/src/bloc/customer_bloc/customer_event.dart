@@ -50,4 +50,23 @@ class FetchProvince extends CustomerEvent {
   List<Object> get props => [];
 }
 
+class FetchDistrict extends CustomerEvent {
+  final String provinceCode;
+  FetchDistrict(this.provinceCode);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [provinceCode];
+}
+
+class FetchSubDistrict extends CustomerEvent {
+  final String provinceCode;
+  final String districtCode;
+  FetchSubDistrict(this.provinceCode, this.districtCode);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [provinceCode, districtCode];
+}
+
 class ResetCustomer extends CustomerEvent {}

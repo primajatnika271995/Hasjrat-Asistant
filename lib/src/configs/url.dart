@@ -21,6 +21,10 @@ class UriApi {
 
   static const String provinceUri = "/sales-tools-dealer-service/api/v2/dms/wilayah/provinsi";
 
+  static const String districtUri = "/sales-tools-dealer-service/api/v2/dms/wilayah/kabupaten";
+
+  static const String subDistrictUri = "/sales-tools-dealer-service/api/v2/dms/wilayah/kecamatan";
+
   static const String checkLeadDMSUri = "/sales-tools-dealer-service/api/v2/dms/lead/list";
 
   static const String branchCodeUri = "/sales-tools-finance-service/api/v2/branch/list";
