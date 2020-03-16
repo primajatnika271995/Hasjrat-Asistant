@@ -17,6 +17,17 @@ class CustomerDisposeLoading extends CustomerState {}
 
 class CustomerFailed extends CustomerState {}
 
+class CustomerSuccess extends CustomerState {
+  final _data;
+
+  CustomerSuccess(this._data);
+  CustomerModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
 class CustomerGender extends CustomerState {
   final _data;
 
@@ -28,11 +39,11 @@ class CustomerGender extends CustomerState {
   List<Object> get props => [_data];
 }
 
-class CustomerSuccess extends CustomerState {
+class CustomerLocation extends CustomerState {
   final _data;
 
-  CustomerSuccess(this._data);
-  CustomerModel get value => _data;
+  CustomerLocation(this._data);
+  GenderModel get value => _data;
 
   @override
   // TODO: implement props
