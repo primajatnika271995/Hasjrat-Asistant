@@ -5,6 +5,7 @@ import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
 import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/models/gender_model.dart';
+import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
@@ -83,6 +84,23 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         } else {
           yield CustomerDisposeLoading();
           yield CustomerLocation(value);
+        }
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
+    if (event is FetchJob) {
+      yield CustomerLoading();
+
+      try {
+        JobModel value = await _customerService.job(event.value);
+
+        if (value.data.isEmpty || value.data == null) {
+          yield CustomerFailed();
+        } else {
+          yield CustomerDisposeLoading();
+          yield CustomerJob(value);
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");
