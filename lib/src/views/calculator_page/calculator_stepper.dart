@@ -12,8 +12,7 @@ import 'package:select_dialog/select_dialog.dart';
 
 class CalculatorStepperScreen extends StatefulWidget {
   @override
-  _CalculatorStepperScreenState createState() =>
-      _CalculatorStepperScreenState();
+  _CalculatorStepperScreenState createState() => _CalculatorStepperScreenState();
 }
 
 class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {

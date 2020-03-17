@@ -17,6 +17,10 @@ class ProspectContactAdd extends StatefulWidget {
 }
 
 class _ProspectContactAddState extends State<ProspectContactAdd> {
+  int _currentStep = 0;
+  VoidCallback _onStepContinue;
+  VoidCallback _onStepCancel;
+
   var customerNameCtrl = new TextEditingController();
   var customerContactCtrl = new TextEditingController();
 
@@ -44,6 +48,21 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
   var currentSelectJob;
   var jobValue;
   List<SelectorJobModel> jobList = [];
+
+  var customerProvinceCtrl = new TextEditingController();
+  var currentSelectProvince;
+  var provinceCode;
+  List<SelectorProvinceModel> provinceList = [];
+
+  var customerDistrictCtrl = new TextEditingController();
+  var currentSelectDistrict;
+  var districtCode;
+  List<SelectorDistrictModel> districtList = [];
+
+  var customerSubDistrictCtrl = new TextEditingController();
+  var currentSelectSubDistrict;
+  var districtSubCode;
+  List<SelectorSubDistrictModel> districtSubList = [];
 
   var customerNameFocus = new FocusNode();
   var customerContactFocus = new FocusNode();
@@ -131,9 +150,72 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     );
   }
 
+  void _showListProvince() {
+    SelectDialog.showModal<SelectorProvinceModel>(
+      context,
+      label: "Province Name",
+      selectedValue: currentSelectProvince,
+      items: provinceList,
+      onChange: (SelectorProvinceModel selected) {
+        setState(() {
+          currentSelectProvince = selected;
+          customerProvinceCtrl.text = selected.provinceName;
+          provinceCode = selected.provinceCode;
+
+          // ignore: close_sinks
+          final customerBloc = BlocProvider.of<CustomerBloc>(context);
+          customerBloc.add(FetchDistrict(provinceCode));
+        });
+      },
+    );
+  }
+
+  void _showListDistrict() {
+    SelectDialog.showModal<SelectorDistrictModel>(
+      context,
+      label: "Kabupaten / Kota",
+      selectedValue: currentSelectDistrict,
+      items: districtList,
+      onChange: (SelectorDistrictModel selected) {
+        setState(() {
+          currentSelectDistrict = selected;
+          customerDistrictCtrl.text = selected.districtName;
+          districtCode = selected.districtCode;
+
+          // ignore: close_sinks
+          final customerBloc = BlocProvider.of<CustomerBloc>(context);
+          customerBloc.add(FetchSubDistrict(provinceCode, districtCode));
+        });
+      },
+    );
+  }
+
+  void _showListSubDistrict() {
+    SelectDialog.showModal<SelectorSubDistrictModel>(
+      context,
+      label: "Kecamatan",
+      selectedValue: currentSelectSubDistrict,
+      items: districtSubList,
+      onChange: (SelectorSubDistrictModel selected) {
+        setState(() {
+          currentSelectSubDistrict = selected;
+          customerSubDistrictCtrl.text = selected.districtSubName;
+          districtSubCode = selected.districtSubCode;
+        });
+      },
+    );
+  }
+
+  Widget _createEventControlBuilder(BuildContext context,
+      {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
+    _onStepContinue = onStepContinue;
+    _onStepCancel = onStepCancel;
+    return SizedBox.shrink();
+  }
+
   @override
+  // ignore: must_call_super
   void initState() {
-    // TODO: implement initState
     customerGroupList.forEach((f) {
       setState(() {
         groupList.add(SelectorGroupModel(
@@ -157,6 +239,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     customerBloc.add(FetchGender(""));
     customerBloc.add(FetchLocation(""));
     customerBloc.add(FetchJob(""));
+    customerBloc.add(FetchProvince());
   }
 
   @override
@@ -165,7 +248,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 1,
+        elevation: 0,
         titleSpacing: 0,
         title: Text(
           "Create Contact / Lead",
@@ -205,6 +288,33 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
             });
           }
 
+          if (state is ProvinceSuccess) {
+            state.value.data.forEach((f) {
+              provinceList.add(SelectorProvinceModel(
+                provinceCode: f.provinsiCode,
+                provinceName: f.provinsiName,
+              ));
+            });
+          }
+
+          if (state is DistrictSuccess) {
+            state.value.data.forEach((f) {
+              districtList.add(SelectorDistrictModel(
+                districtCode: f.kabupatenCode,
+                districtName: f.kabupatenName,
+              ));
+            });
+          }
+
+          if (state is SubDistrictSuccess) {
+            state.value.data.forEach((f) {
+              districtSubList.add(SelectorSubDistrictModel(
+                districtSubCode: f.kecamatanCode,
+                districtSubName: f.kecamatanName,
+              ));
+            });
+          }
+
           if (state is CustomerLoading) {
             onLoading(context);
           }
@@ -213,121 +323,225 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
             Navigator.of(context, rootNavigator: false).pop();
           }
         },
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    "Customer Name (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
+        child: Stack(
+          children: <Widget>[
+            Theme(
+              data: ThemeData(
+                primarySwatch: Colors.orange,
+                canvasColor: Colors.white,
+              ),
+              child: Stepper(
+                type: StepperType.horizontal,
+                currentStep: _currentStep,
+                onStepContinue: () {
+                  if (_currentStep >= 2) return;
+                  setState(() {
+                    _currentStep += 1;
+                  });
+                },
+                onStepCancel: () {
+                  if (_currentStep <= 0) return;
+                  setState(() {
+                    _currentStep -= 1;
+                  });
+                },
+                onStepTapped: (int index) {
+                  setState(() {
+                    _currentStep = index;
+                  });
+                },
+                controlsBuilder: _createEventControlBuilder,
+                steps: [
+                  Step(
+                    title: Text("Form Identity"),
+                    isActive: _currentStep == 0 ? true : false,
+                    state: StepState.editing,
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Customer Name (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        formCustomerName(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Customer Contact (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ),
+                        formCustomerContact(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Group Customer (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ),
+                        formSelectGroup(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Gender (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ),
+                        formSelectGender(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Sumber Contact (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ),
+                        formSelectProspectSource(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Follow Up Pertama (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ),
+                        dropdownFollowUp(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Customer Job (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ),
+                        formSelectJob(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Customer Location (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ),
+                        formSelectLocation(),
+                      ],
                     ),
                   ),
-                ),
-                formCustomerName(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    "Customer Contact (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
+                  Step(
+                    title: Text("Location"),
+                    isActive: _currentStep == 1 ? true : false,
+                    state: StepState.editing,
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Province (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        formSelectProvince(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Kota / Kabupaten (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ),
+                        formSelectDistrict(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Kecamatan (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ),
+                        formSelectSubDistrict(),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
+                          child: Container(
+                            width: screenWidth(context),
+                            child: RaisedButton(
+                              onPressed: () {},
+                              child: Text(
+                                "Create",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: HexColor('#C61818'),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                formCustomerContact(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    "Group Customer (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-                formSelectGroup(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    "Gender (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-                formSelectGender(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    "Sumber Contact (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-                formSelectProspectSource(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    "Follow Up Pertama (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-                dropdownFollowUp(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    "Customer Job (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-                formSelectJob(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    "Customer Location (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-                formSelectLocation(),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 30, right: 30, top: 30, bottom: 10),
-                  child: Container(
-                    width: screenWidth(context),
-                    child: RaisedButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Create",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      color: HexColor('#C61818'),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: BottomAppBar(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    _currentStep == 0
+                        ? SizedBox()
+                        : FlatButton(
+                            onPressed: () => _onStepCancel(),
+                            child: Text(
+                              'BACK',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                          ),
+                    _currentStep == 1
+                        ? SizedBox()
+                        : FlatButton(
+                            onPressed: () => _onStepContinue(),
+                            child: Text(
+                              'NEXT',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -385,6 +599,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
             contentPadding: EdgeInsets.only(bottom: 18, left: 18),
             hintText: 'Input Contact',
             hasFloatingPlaceholder: false,
+            prefixIcon: Icon(Icons.phone_iphone),
             border: OutlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.black,
@@ -569,7 +784,8 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                     width: 1,
                   ),
                 ),
-                contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
+                contentPadding:
+                    EdgeInsets.only(bottom: 18, left: 18, right: 18),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
@@ -582,7 +798,15 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                       state.didChange(newVal);
                     });
                   },
-                  items: ['1 Hari', '2 Hari', '3 Hari', '4 Hari', '5 Hari', '6 Hari', '7 Hari'].map((String val) {
+                  items: [
+                    '1 Hari',
+                    '2 Hari',
+                    '3 Hari',
+                    '4 Hari',
+                    '5 Hari',
+                    '6 Hari',
+                    '7 Hari'
+                  ].map((String val) {
                     return DropdownMenuItem<String>(
                       value: val,
                       child: Row(
@@ -604,7 +828,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
 
   Widget formSelectLocation() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7),
+      padding: const EdgeInsets.only(bottom: 40, top: 7),
       child: Container(
         height: 40,
         child: TextField(
@@ -680,6 +904,132 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
             ),
           ),
           controller: customerJobCtrl,
+          maxLines: null,
+        ),
+      ),
+    );
+  }
+
+  Widget formSelectProvince() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Container(
+        height: 40,
+        child: TextField(
+          readOnly: true,
+          decoration: InputDecoration(
+            hintText: 'Select Province',
+            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
+            suffixIcon: IconButton(
+              onPressed: () {
+                _showListProvince();
+              },
+              icon: Icon(Icons.arrow_drop_down),
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+          ),
+          controller: customerProvinceCtrl,
+          maxLines: null,
+        ),
+      ),
+    );
+  }
+
+  Widget formSelectDistrict() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Container(
+        height: 40,
+        child: TextField(
+          readOnly: true,
+          decoration: InputDecoration(
+            hintText: 'Select District',
+            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
+            suffixIcon: IconButton(
+              onPressed: () {
+                _showListDistrict();
+              },
+              icon: Icon(Icons.arrow_drop_down),
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+          ),
+          controller: customerDistrictCtrl,
+          maxLines: null,
+        ),
+      ),
+    );
+  }
+
+  Widget formSelectSubDistrict() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Container(
+        height: 40,
+        child: TextField(
+          readOnly: true,
+          decoration: InputDecoration(
+            hintText: 'Select Sub District',
+            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
+            suffixIcon: IconButton(
+              onPressed: () {
+                _showListSubDistrict();
+              },
+              icon: Icon(Icons.arrow_drop_down),
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+          ),
+          controller: customerSubDistrictCtrl,
           maxLines: null,
         ),
       ),

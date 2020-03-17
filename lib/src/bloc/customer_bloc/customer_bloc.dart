@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
 import 'package:salles_tools/src/models/customer_model.dart';
+import 'package:salles_tools/src/models/district_model.dart';
 import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
 import 'package:salles_tools/src/models/province_model.dart';
+import 'package:salles_tools/src/models/sub_district_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -103,16 +105,13 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     }
 
     if (event is FetchProvince) {
-      yield CustomerLoading();
-
       try {
         ProvinceModel value = await _customerService.province();
 
         if (value.data.isEmpty || value.data == null) {
           yield CustomerFailed();
         } else {
-          yield CustomerDisposeLoading();
-          yield CustomerProvince(value);
+          yield ProvinceSuccess(value);
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");
@@ -123,13 +122,14 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       yield CustomerLoading();
 
       try {
-        ProvinceModel value = await _customerService.district(event.provinceCode);
+        DistrictModel value = await _customerService.district(event.provinceCode);
 
         if (value.data.isEmpty || value.data == null) {
+          yield CustomerDisposeLoading();
           yield CustomerFailed();
         } else {
           yield CustomerDisposeLoading();
-          yield CustomerDistrict(value);
+          yield DistrictSuccess(value);
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");
@@ -140,13 +140,14 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       yield CustomerLoading();
 
       try {
-        ProvinceModel value = await _customerService.subDistrict(event.provinceCode, event.districtCode);
+        SubDistrictModel value = await _customerService.subDistrict(event.provinceCode, event.districtCode);
 
         if (value.data.isEmpty || value.data == null) {
+          yield CustomerDisposeLoading();
           yield CustomerFailed();
         } else {
           yield CustomerDisposeLoading();
-          yield CustomerSubDistrict(value);
+          yield SubDistrictSuccess(value);
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");

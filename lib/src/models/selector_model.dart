@@ -195,3 +195,57 @@ class SelectorJobModel {
   // TODO: implement hashCode
   int get hashCode => jobField.hashCode^jobName.hashCode;
 }
+
+class SelectorProvinceModel {
+  String provinceCode;
+  String provinceName;
+
+  SelectorProvinceModel({this.provinceCode, this.provinceName});
+
+  @override
+  String toString() => provinceName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorProvinceModel && other.provinceCode == provinceCode;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => provinceCode.hashCode^provinceName.hashCode;
+}
+
+class SelectorDistrictModel {
+  String districtCode;
+  String districtName;
+
+  SelectorDistrictModel({this.districtCode, this.districtName});
+
+  @override
+  String toString() => districtName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorDistrictModel && other.districtCode == districtCode;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => districtCode.hashCode^districtName.hashCode;
+}
+
+class SelectorSubDistrictModel {
+  String districtSubCode;
+  String districtSubName;
+
+  SelectorSubDistrictModel({this.districtSubCode, this.districtSubName});
+
+  @override
+  String toString() => districtSubName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorSubDistrictModel && other.districtSubCode == districtSubCode;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => districtSubCode.hashCode^districtSubName.hashCode;
+}

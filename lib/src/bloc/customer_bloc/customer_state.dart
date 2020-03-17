@@ -66,10 +66,10 @@ class JobSuccess extends CustomerState {
   List<Object> get props => [_data];
 }
 
-class CustomerProvince extends CustomerState {
+class ProvinceSuccess extends CustomerState {
   final _data;
 
-  CustomerProvince(this._data);
+  ProvinceSuccess(this._data);
   ProvinceModel get value => _data;
 
   @override
@@ -77,10 +77,10 @@ class CustomerProvince extends CustomerState {
   List<Object> get props => [_data];
 }
 
-class CustomerDistrict extends CustomerState {
+class DistrictSuccess extends CustomerState {
   final _data;
 
-  CustomerDistrict(this._data);
+  DistrictSuccess(this._data);
   DistrictModel get value => _data;
 
   @override
@@ -88,10 +88,10 @@ class CustomerDistrict extends CustomerState {
   List<Object> get props => [_data];
 }
 
-class CustomerSubDistrict extends CustomerState {
+class SubDistrictSuccess extends CustomerState {
   final _data;
 
-  CustomerSubDistrict(this._data);
+  SubDistrictSuccess(this._data);
   SubDistrictModel get value => _data;
 
   @override
