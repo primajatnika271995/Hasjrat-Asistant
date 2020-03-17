@@ -109,11 +109,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     height: 300,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 200, right: 20),
+                      padding: const EdgeInsets.only(left: 150, right: 20),
                       child: Image.asset(
-                        "assets/icons/header_icon.png",
-                        height: 110,
-                        width: 170,
+                        "assets/icons/hasjrat_toyota_logo.png",
+                        height: 180,
+                        width: 230,
                       ),
                     ),
                   ),
