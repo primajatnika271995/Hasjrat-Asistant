@@ -447,7 +447,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
         width: screenWidth(context),
         child: RaisedButton(
           onPressed: () {
-            launch('tel:+6285875074351');
+            launch('tel:${widget.value.phone1}');
           },
           child: Text("Call", style: TextStyle(color: Colors.white),),
           color: Colors.brown,
