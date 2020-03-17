@@ -5,6 +5,7 @@ import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
 import 'package:salles_tools/src/models/customer_get_form_model.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
+import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
@@ -17,6 +18,8 @@ class ProspectContactAdd extends StatefulWidget {
 }
 
 class _ProspectContactAddState extends State<ProspectContactAdd> {
+  var _formKey = GlobalKey<FormState>();
+
   int _currentStep = 0;
   VoidCallback _onStepContinue;
   VoidCallback _onStepCancel;
@@ -206,6 +209,31 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     );
   }
 
+  void onCreateLead() {
+    if (_formKey.currentState.validate()) {
+      // ignore: close_sinks
+      final customerBloc = BlocProvider.of<CustomerBloc>(context);
+      customerBloc.add(CreateContact(ContactPost(
+          customerName: customerNameCtrl.text,
+          customerGroupId: groupId,
+          prospectSourceId: prospectSourceId,
+          contact: customerContactCtrl.text,
+          gender: genderValue,
+          job: jobValue,
+          location: locationValue,
+          suspectDate: "2020-03-17",
+          suspectFollowUp: 7,
+          provinceName: customerProvinceCtrl.text,
+          provinceCode: provinceCode,
+          kabupatenName: customerDistrictCtrl.text,
+          kabupatenCode: districtCode,
+          kecamatanName: customerSubDistrictCtrl.text,
+          kecamatanCode: districtSubCode,
+          zipCode: "40287"
+      )));
+    }
+  }
+
   Widget _createEventControlBuilder(BuildContext context,
       {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
     _onStepContinue = onStepContinue;
@@ -259,289 +287,298 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: BlocListener<CustomerBloc, CustomerState>(
-        listener: (context, state) {
-          if (state is GenderSuccess) {
-            state.value.data.forEach((f) {
-              genderList.add(SelectorGenderModel(
-                description: f.descr,
-                fieldValue: f.fldValue,
-              ));
-            });
-          }
+      body: Form(
+        key: _formKey,
+        child: BlocListener<CustomerBloc, CustomerState>(
+          listener: (context, state) {
+            if (state is GenderSuccess) {
+              state.value.data.forEach((f) {
+                genderList.add(SelectorGenderModel(
+                  description: f.descr,
+                  fieldValue: f.fldValue,
+                ));
+              });
+            }
 
-          if (state is LocationSuccess) {
-            state.value.data.forEach((f) {
-              locationList.add(SelectorLocationModel(
-                locationField: f.fldValue,
-                locationName: f.descr,
-              ));
-            });
-          }
+            if (state is LocationSuccess) {
+              state.value.data.forEach((f) {
+                locationList.add(SelectorLocationModel(
+                  locationField: f.fldValue,
+                  locationName: f.descr,
+                ));
+              });
+            }
 
-          if (state is JobSuccess) {
-            state.value.data.forEach((f) {
-              jobList.add(SelectorJobModel(
-                jobField: f.fldValue,
-                jobName: f.descr,
-              ));
-            });
-          }
+            if (state is JobSuccess) {
+              state.value.data.forEach((f) {
+                jobList.add(SelectorJobModel(
+                  jobField: f.fldValue,
+                  jobName: f.descr,
+                ));
+              });
+            }
 
-          if (state is ProvinceSuccess) {
-            state.value.data.forEach((f) {
-              provinceList.add(SelectorProvinceModel(
-                provinceCode: f.provinsiCode,
-                provinceName: f.provinsiName,
-              ));
-            });
-          }
+            if (state is ProvinceSuccess) {
+              state.value.data.forEach((f) {
+                provinceList.add(SelectorProvinceModel(
+                  provinceCode: f.provinsiCode,
+                  provinceName: f.provinsiName,
+                ));
+              });
+            }
 
-          if (state is DistrictSuccess) {
-            state.value.data.forEach((f) {
-              districtList.add(SelectorDistrictModel(
-                districtCode: f.kabupatenCode,
-                districtName: f.kabupatenName,
-              ));
-            });
-          }
+            if (state is DistrictSuccess) {
+              state.value.data.forEach((f) {
+                districtList.add(SelectorDistrictModel(
+                  districtCode: f.kabupatenCode,
+                  districtName: f.kabupatenName,
+                ));
+              });
+            }
 
-          if (state is SubDistrictSuccess) {
-            state.value.data.forEach((f) {
-              districtSubList.add(SelectorSubDistrictModel(
-                districtSubCode: f.kecamatanCode,
-                districtSubName: f.kecamatanName,
-              ));
-            });
-          }
+            if (state is SubDistrictSuccess) {
+              state.value.data.forEach((f) {
+                districtSubList.add(SelectorSubDistrictModel(
+                  districtSubCode: f.kecamatanCode,
+                  districtSubName: f.kecamatanName,
+                ));
+              });
+            }
 
-          if (state is CustomerLoading) {
-            onLoading(context);
-          }
+            if (state is CreateContactSuccess) {
+              log.info("Success Create Lead");
+            }
 
-          if (state is CustomerDisposeLoading) {
-            Navigator.of(context, rootNavigator: false).pop();
-          }
-        },
-        child: Stack(
-          children: <Widget>[
-            Theme(
-              data: ThemeData(
-                primarySwatch: Colors.orange,
-                canvasColor: Colors.white,
-              ),
-              child: Stepper(
-                type: StepperType.horizontal,
-                currentStep: _currentStep,
-                onStepContinue: () {
-                  if (_currentStep >= 2) return;
-                  setState(() {
-                    _currentStep += 1;
-                  });
-                },
-                onStepCancel: () {
-                  if (_currentStep <= 0) return;
-                  setState(() {
-                    _currentStep -= 1;
-                  });
-                },
-                onStepTapped: (int index) {
-                  setState(() {
-                    _currentStep = index;
-                  });
-                },
-                controlsBuilder: _createEventControlBuilder,
-                steps: [
-                  Step(
-                    title: Text("Form Identity"),
-                    isActive: _currentStep == 0 ? true : false,
-                    state: StepState.editing,
-                    content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Customer Name (*)",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 1.0,
-                          ),
-                        ),
-                        formCustomerName(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            "Customer Contact (*)",
+            if (state is CustomerLoading) {
+              onLoading(context);
+            }
+
+            if (state is CustomerDisposeLoading) {
+              Navigator.of(context, rootNavigator: false).pop();
+            }
+          },
+          child: Stack(
+            children: <Widget>[
+              Theme(
+                data: ThemeData(
+                  primarySwatch: Colors.orange,
+                  canvasColor: Colors.white,
+                ),
+                child: Stepper(
+                  type: StepperType.horizontal,
+                  currentStep: _currentStep,
+                  onStepContinue: () {
+                    if (_currentStep >= 2) return;
+                    setState(() {
+                      _currentStep += 1;
+                    });
+                  },
+                  onStepCancel: () {
+                    if (_currentStep <= 0) return;
+                    setState(() {
+                      _currentStep -= 1;
+                    });
+                  },
+                  onStepTapped: (int index) {
+                    setState(() {
+                      _currentStep = index;
+                    });
+                  },
+                  controlsBuilder: _createEventControlBuilder,
+                  steps: [
+                    Step(
+                      title: Text("Form Identity"),
+                      isActive: _currentStep == 0 ? true : false,
+                      state: StepState.editing,
+                      content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Customer Name (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
                             ),
                           ),
-                        ),
-                        formCustomerContact(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            "Group Customer (*)",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                        formSelectGroup(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            "Gender (*)",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                        formSelectGender(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            "Sumber Contact (*)",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                        formSelectProspectSource(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            "Follow Up Pertama (*)",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                        dropdownFollowUp(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            "Customer Job (*)",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                        formSelectJob(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            "Customer Location (*)",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                        formSelectLocation(),
-                      ],
-                    ),
-                  ),
-                  Step(
-                    title: Text("Location"),
-                    isActive: _currentStep == 1 ? true : false,
-                    state: StepState.editing,
-                    content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Province (*)",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 1.0,
-                          ),
-                        ),
-                        formSelectProvince(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            "Kota / Kabupaten (*)",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                        formSelectDistrict(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            "Kecamatan (*)",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                        formSelectSubDistrict(),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
-                          child: Container(
-                            width: screenWidth(context),
-                            child: RaisedButton(
-                              onPressed: () {},
-                              child: Text(
-                                "Create",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              color: HexColor('#C61818'),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: BottomAppBar(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    _currentStep == 0
-                        ? SizedBox()
-                        : FlatButton(
-                            onPressed: () => _onStepCancel(),
+                          formCustomerName(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
                             child: Text(
-                              'BACK',
+                              "Customer Contact (*)",
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
-                                color: Colors.blueAccent,
+                                letterSpacing: 1.0,
                               ),
                             ),
                           ),
-                    _currentStep == 1
-                        ? SizedBox()
-                        : FlatButton(
-                            onPressed: () => _onStepContinue(),
+                          formCustomerContact(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
                             child: Text(
-                              'NEXT',
+                              "Group Customer (*)",
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
-                                color: Colors.blueAccent,
+                                letterSpacing: 1.0,
                               ),
                             ),
                           ),
+                          formSelectGroup(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              "Gender (*)",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ),
+                          formSelectGender(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              "Sumber Contact (*)",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ),
+                          formSelectProspectSource(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              "Follow Up Pertama (*)",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ),
+                          dropdownFollowUp(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              "Customer Job (*)",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ),
+                          formSelectJob(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              "Customer Location (*)",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ),
+                          formSelectLocation(),
+                        ],
+                      ),
+                    ),
+                    Step(
+                      title: Text("Location"),
+                      isActive: _currentStep == 1 ? true : false,
+                      state: StepState.editing,
+                      content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Province (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                          formSelectProvince(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              "Kota / Kabupaten (*)",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ),
+                          formSelectDistrict(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              "Kecamatan (*)",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ),
+                          formSelectSubDistrict(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
+                            child: Container(
+                              width: screenWidth(context),
+                              child: RaisedButton(
+                                onPressed: () {
+                                  onCreateLead();
+                                },
+                                child: Text(
+                                  "Create",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                color: HexColor('#C61818'),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: BottomAppBar(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      _currentStep == 0
+                          ? SizedBox()
+                          : FlatButton(
+                              onPressed: () => _onStepCancel(),
+                              child: Text(
+                                'BACK',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                            ),
+                      _currentStep == 1
+                          ? SizedBox()
+                          : FlatButton(
+                              onPressed: () => _onStepContinue(),
+                              child: Text(
+                                'NEXT',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

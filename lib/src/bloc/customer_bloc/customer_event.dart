@@ -69,4 +69,13 @@ class FetchSubDistrict extends CustomerEvent {
   List<Object> get props => [provinceCode, districtCode];
 }
 
+class CreateContact extends CustomerEvent {
+  final ContactPost value;
+  CreateContact(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
 class ResetCustomer extends CustomerEvent {}

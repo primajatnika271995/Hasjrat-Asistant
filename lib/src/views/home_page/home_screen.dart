@@ -153,8 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
             top: paddingTop(context) + 10,
             left: 20,
             child: Image.asset(
-              "assets/icons/hasjrat_logo_apps.png",
-              height: 40,
+              "assets/icons/hasjrat_toyota_logo.png",
+              height: 50,
+              width: 150,
             ),
           ),
           Positioned(
@@ -176,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: paddingTop(context), left: 20),
+                  padding: EdgeInsets.only(top: paddingTop(context) + 70, left: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,28 +198,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 40),
-                  child: Image.asset(
-                    "assets/icons/header_icon.png",
-                    height: 170,
-                  ),
-                ),
               ],
             ),
           ),
           Positioned(
-            top: 0,
+            top: paddingTop(context),
             right: 0,
-            child: Container(
-              height: 55,
-              width: 55,
-              decoration: BoxDecoration(
-                color: HexColor('#212120'),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(100),
-                ),
-              ),
+            child: Image.asset(
+              "assets/icons/new_header_icon.png",
+              height: 170,
             ),
           ),
         ],

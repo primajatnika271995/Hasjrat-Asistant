@@ -99,6 +99,12 @@ class SubDistrictSuccess extends CustomerState {
   List<Object> get props => [_data];
 }
 
+class CreateContactSuccess extends CustomerState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
 class CustomerError extends CustomerState {
   final _data;
 

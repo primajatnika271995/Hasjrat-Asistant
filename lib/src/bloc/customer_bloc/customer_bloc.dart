@@ -153,5 +153,19 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         log.warning("Error : ${error.toString()}");
       }
     }
+
+    if (event is CreateContact) {
+      yield CustomerLoading();
+
+      try {
+        await _customerService.createLead(event.value);
+
+        yield CustomerDisposeLoading();
+        yield CreateContactSuccess();
+      } catch(error) {
+        yield CustomerDisposeLoading();
+        log.warning("Error : ${error.toString()}");
+      }
+    }
   }
 }

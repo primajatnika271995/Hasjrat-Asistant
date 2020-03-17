@@ -205,6 +205,50 @@ class CustomerService {
       return compute(errorModelFromJson, json.encode(response.data));
     }
   }
+
+  Future createLead(ContactPost value) async {
+    final response = await _dio.post(UriApi.createLeadDMSUri,
+      options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      ),
+      data: {
+        "addresses": [
+          {
+            "address1": value.kabupatenName,
+            "address2": value.kecamatanCode,
+            "addres s3": value.provinceName,
+            "kabupaten_code": value.kabupatenCode,
+            "kecamatan_code": value.kecamatanCode,
+            "provinsi_code": value.provinceCode,
+            "zipcode": value.zipCode
+          }
+        ],
+        "card_name": value.customerName,
+        "customer_group_id": value.customerGroupId,
+        "gender": value.gender,
+        "groupCode": 100,
+        "location": value.location,
+        "pekerjaan": value.job,
+        "phone1": value.contact,
+        "phone2": "",
+        "phone3": "",
+        "prospect_source_id": value.prospectSourceId,
+        "suspect_date": value.suspectDate,
+        "suspect_followup": 7
+      },
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      log.info("OK DONE");
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
 }
 
 class CustomerPost {
@@ -220,4 +264,25 @@ class LeadPost {
   String leadName;
 
   LeadPost({this.leadCode, this.leadName});
+}
+
+class ContactPost {
+  String customerName;
+  int customerGroupId;
+  String gender;
+  String location;
+  String job;
+  String contact;
+  int prospectSourceId;
+  String suspectDate;
+  int suspectFollowUp;
+  String provinceName;
+  String provinceCode;
+  String kabupatenName;
+  String kabupatenCode;
+  String kecamatanName;
+  String kecamatanCode;
+  String zipCode;
+
+  ContactPost({this.customerName, this.customerGroupId, this.gender, this.location, this.job, this.contact, this.prospectSourceId, this.suspectDate, this.suspectFollowUp, this.provinceName, this.provinceCode, this.kabupatenName, this.kabupatenCode, this.kecamatanName, this.kecamatanCode, this.zipCode});
 }
