@@ -67,7 +67,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
           yield CustomerFailed();
         } else {
           yield CustomerDisposeLoading();
-          yield CustomerGender(value);
+          yield GenderSuccess(value);
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");
@@ -75,16 +75,13 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     }
 
     if (event is FetchLocation) {
-      yield CustomerLoading();
-
       try {
         LocationModel value = await _customerService.location(event.value);
 
         if (value.data.isEmpty || value.data == null) {
           yield CustomerFailed();
         } else {
-          yield CustomerDisposeLoading();
-          yield CustomerLocation(value);
+          yield LocationSuccess(value);
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");
@@ -92,16 +89,13 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     }
 
     if (event is FetchJob) {
-      yield CustomerLoading();
-
       try {
         JobModel value = await _customerService.job(event.value);
 
         if (value.data.isEmpty || value.data == null) {
           yield CustomerFailed();
         } else {
-          yield CustomerDisposeLoading();
-          yield CustomerJob(value);
+          yield JobSuccess(value);
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");

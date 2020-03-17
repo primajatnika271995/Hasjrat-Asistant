@@ -105,3 +105,93 @@ class SelectorAssetTypeModel {
   // TODO: implement hashCode
   int get hashCode => assetTypeCode.hashCode^assetTypeName.hashCode;
 }
+
+class SelectorGenderModel {
+  String fieldValue;
+  String description;
+
+  SelectorGenderModel({this.fieldValue, this.description});
+
+  @override
+  String toString() => description;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorGenderModel && other.description == description;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => fieldValue.hashCode^description.hashCode;
+}
+
+class SelectorGroupModel {
+  String groupId;
+  String groupName;
+
+  SelectorGroupModel({this.groupId, this.groupName});
+
+  @override
+  String toString() => groupName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorGroupModel && other.groupId == groupId;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => groupId.hashCode^groupName.hashCode;
+}
+
+class SelectorProspectSourceModel {
+  int sourceId;
+  String sourceName;
+
+  SelectorProspectSourceModel({this.sourceId, this.sourceName});
+
+  @override
+  String toString() => sourceName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorProspectSourceModel && other.sourceId == sourceId;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => sourceId.hashCode^sourceName.hashCode;
+}
+
+class SelectorLocationModel {
+  String locationField;
+  String locationName;
+
+  SelectorLocationModel({this.locationField, this.locationName});
+
+  @override
+  String toString() => locationName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorLocationModel && other.locationField == locationField;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => locationField.hashCode^locationName.hashCode;
+}
+
+class SelectorJobModel {
+  String jobField;
+  String jobName;
+
+  SelectorJobModel({this.jobField, this.jobName});
+
+  @override
+  String toString() => jobName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorJobModel && other.jobField == jobField;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => jobField.hashCode^jobName.hashCode;
+}

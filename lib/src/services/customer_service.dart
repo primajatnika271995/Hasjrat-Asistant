@@ -58,6 +58,8 @@ class CustomerService {
       data: {
         "lead_code": value.leadCode,
         "lead_name": value.leadName,
+        "limit": "",
+        "start": ""
       },
     );
 

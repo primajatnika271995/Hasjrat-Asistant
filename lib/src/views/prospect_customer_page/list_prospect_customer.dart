@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_bloc.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_state.dart';
@@ -21,7 +22,10 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
   void _onAddProspectCustomer() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => ProspectContactAdd(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => CustomerBloc(CustomerService()),
+          child: ProspectContactAdd(),
+        ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -57,7 +61,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
     final leadBloc = BlocProvider.of<LeadBloc>(context);
     leadBloc.add(FetchLead(LeadPost(
       leadCode: "",
-      leadName: "sa",
+      leadName: "",
     )));
     super.initState();
   }
@@ -110,7 +114,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
               return ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  var value = state.value.data[index];
+                  var value = state.value.data.reversed.toList()[index];
                   return SlidableCustomerView(
                     index: index,
                     value: value,
@@ -119,7 +123,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
                     },
                   );
                 },
-                itemCount: state.value.data.length,
+                itemCount: 5,
               );
             }
             return SizedBox();

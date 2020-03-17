@@ -4,6 +4,7 @@ import 'package:salles_tools/src/models/district_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
+import 'package:salles_tools/src/models/location_model.dart';
 import 'package:salles_tools/src/models/province_model.dart';
 import 'package:salles_tools/src/models/sub_district_model.dart';
 
@@ -32,10 +33,10 @@ class CustomerSuccess extends CustomerState {
   List<Object> get props => [_data];
 }
 
-class CustomerGender extends CustomerState {
+class GenderSuccess extends CustomerState {
   final _data;
 
-  CustomerGender(this._data);
+  GenderSuccess(this._data);
   GenderModel get value => _data;
 
   @override
@@ -43,21 +44,21 @@ class CustomerGender extends CustomerState {
   List<Object> get props => [_data];
 }
 
-class CustomerLocation extends CustomerState {
+class LocationSuccess extends CustomerState {
   final _data;
 
-  CustomerLocation(this._data);
-  GenderModel get value => _data;
+  LocationSuccess(this._data);
+  LocationModel get value => _data;
 
   @override
   // TODO: implement props
   List<Object> get props => [_data];
 }
 
-class CustomerJob extends CustomerState {
+class JobSuccess extends CustomerState {
   final _data;
 
-  CustomerJob(this._data);
+  JobSuccess(this._data);
   JobModel get value => _data;
 
   @override

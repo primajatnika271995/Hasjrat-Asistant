@@ -20,35 +20,51 @@ class LeadBloc extends Bloc<LeadEvent, LeadState> {
   Stream<LeadState> mapEventToState(LeadEvent event) async* {
     if (event is FetchLead) {
       yield LeadLoading();
-      var cache = await SharedPreferencesHelper.getListLead();
+//      var cache = await SharedPreferencesHelper.getListLead();
 
-      if (cache == null) {
-        log.info("Lead Cache Null Data");
+      try {
+        LeadModel value = await _customerService.leadDMS(event.value);
 
-        try {
-          LeadModel value = await _customerService.leadDMS(event.value);
+        if (value.data.isEmpty || value.data == null) {
+          yield LeadFailed();
+        } else {
+          await SharedPreferencesHelper.setListLead(json.encode(value));
 
-          if (value.data.isEmpty || value.data == null) {
-            yield LeadFailed();
-          } else {
-            await SharedPreferencesHelper.setListLead(json.encode(value));
-
-            yield LeadDisposeLoading();
-            yield LeadSuccess(value);
-          }
-
-        } catch(error) {
-          log.warning("Error : ${error.toString()}");
+          yield LeadDisposeLoading();
+          yield LeadSuccess(value);
         }
-      } else {
-        log.info("Lead Cache on Data");
-        var cacheData = await SharedPreferencesHelper.getListLead();
-        log.info(cacheData);
 
-        LeadModel value = leadModelFromJson(cacheData);
-        yield LeadDisposeLoading();
-        yield LeadSuccess(value);
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
       }
+
+//      if (cache == null) {
+//        log.info("Lead Cache Null Data");
+//
+//        try {
+//          LeadModel value = await _customerService.leadDMS(event.value);
+//
+//          if (value.data.isEmpty || value.data == null) {
+//            yield LeadFailed();
+//          } else {
+//            await SharedPreferencesHelper.setListLead(json.encode(value));
+//
+//            yield LeadDisposeLoading();
+//            yield LeadSuccess(value);
+//          }
+//
+//        } catch(error) {
+//          log.warning("Error : ${error.toString()}");
+//        }
+//      } else {
+//        log.info("Lead Cache on Data");
+//        var cacheData = await SharedPreferencesHelper.getListLead();
+//        log.info(cacheData);
+//
+//        LeadModel value = leadModelFromJson(cacheData);
+//        yield LeadDisposeLoading();
+//        yield LeadSuccess(value);
+//      }
     }
   }
 }
