@@ -1,3 +1,4 @@
+import 'package:bottom_sheet_x/bottom_sheet_x.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +29,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final ScrollController _scrollController = ScrollController();
+  final NavBottomSheetController _navBottomSheetController = NavBottomSheetController();
 
   var _salesName;
 
@@ -35,22 +38,36 @@ class _HomeScreenState extends State<HomeScreen> {
     "Book Test Drive",
     "Catalog",
     "Calculator",
-    "Knowledge Base",
+    "Reminder",
     "Book Service",
     "Costumer",
     "Prospect Costumer",
-    "Reminder",
+    "More",
+  ];
+
+  List<String> _moreMenuName = [
+    "Knowledge Base",
+    "Activity Report",
+    "Price List",
+    "Promotion",
   ];
 
   List<String> _assetsMenu = [
     "assets/icons/book_test_drive_icon.png",
     "assets/icons/catalog_icon.png",
     "assets/icons/calculator_icon.png",
-    "assets/icons/knowledge_base_icon.png",
+    "assets/icons/reminder_icon.png",
     "assets/icons/book_service_icon.png",
     "assets/icons/costumer_icon.png",
     "assets/icons/prospect_costumer_icon.png",
-    "assets/icons/reminder_icon.png",
+    "assets/icons/more_icon.png",
+  ];
+
+  List<String> _assetsMoreMenu = [
+    "assets/icons/knowledge_base_icon.png",
+    "assets/icons/activity_report_icon.png",
+    "assets/icons/price_list_icon.png",
+    "assets/icons/promotion_icon.png",
   ];
 
   List _menuNavigation = [
@@ -64,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => FinanceBloc(FinanceService()),
       child: CalculatorStepperScreen(),
     ),
-    KnowledgeBaseScreen(),
+    ReminderListView(),
     BookServiceListView(),
     BlocProvider(
       create: (context) => CustomerBloc(CustomerService()),
@@ -74,8 +91,65 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => LeadBloc(CustomerService()),
       child: ProspectCustomerListView(),
     ),
-    ReminderListView(),
   ];
+
+  List _moreMenuNavigation = [];
+
+  void _showMoreMenu() {
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        builder: (context) {
+          return Container(
+            height: screenHeight(context) / 2,
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+              itemCount: 4,
+              itemBuilder: (context, index) {
+                return Material(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Image.asset(
+                            _assetsMoreMenu[index],
+                            height: 50,
+                          ),
+                          Flexible(
+                            child: Text(
+                              _moreMenuName[index],
+                              style: TextStyle(
+                                letterSpacing: 0.7,
+                                fontSize: 13,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+    );
+  }
 
   void _getPreferences() async {
     _salesName = await SharedPreferencesHelper.getSalesName();
@@ -227,19 +301,23 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white,
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => _menuNavigation[index],
-                      transitionDuration: Duration(milliseconds: 150),
-                      transitionsBuilder:
-                          (_, Animation<double> animation, __, Widget child) {
-                        return Opacity(
-                          opacity: animation.value,
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
+                  if (index == 7) {
+                    _showMoreMenu();
+                  } else {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => _menuNavigation[index],
+                        transitionDuration: Duration(milliseconds: 150),
+                        transitionsBuilder:
+                            (_, Animation<double> animation, __, Widget child) {
+                          return Opacity(
+                            opacity: animation.value,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 5),

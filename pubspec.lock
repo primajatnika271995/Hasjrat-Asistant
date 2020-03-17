@@ -43,6 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  bottom_sheet_x:
+    dependency: "direct main"
+    description:
+      name: bottom_sheet_x
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   carousel_slider:
     dependency: "direct main"
     description:
