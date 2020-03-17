@@ -215,7 +215,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       final customerBloc = BlocProvider.of<CustomerBloc>(context);
       customerBloc.add(CreateContact(ContactPost(
           customerName: customerNameCtrl.text,
-          customerGroupId: groupId,
+          customerGroupId: int.parse(groupId),
           prospectSourceId: prospectSourceId,
           contact: customerContactCtrl.text,
           gender: genderValue,
@@ -231,6 +231,8 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
           kecamatanCode: districtSubCode,
           zipCode: "40287"
       )));
+    } else {
+      log.warning("Please Complete Form!");
     }
   }
 
@@ -347,6 +349,22 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
 
             if (state is CreateContactSuccess) {
               log.info("Success Create Lead");
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Success Create Lead"),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            }
+
+            if (state is CreateContactError) {
+              log.warning("Fail Create Lead");
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Failed Create Lead"),
+                  backgroundColor: Colors.red,
+                ),
+              );
             }
 
             if (state is CustomerLoading) {

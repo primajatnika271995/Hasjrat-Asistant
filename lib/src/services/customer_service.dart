@@ -217,7 +217,7 @@ class CustomerService {
         "addresses": [
           {
             "address1": value.kabupatenName,
-            "address2": value.kecamatanCode,
+            "address2": value.kecamatanName,
             "addres s3": value.provinceName,
             "kabupaten_code": value.kabupatenCode,
             "kecamatan_code": value.kecamatanCode,

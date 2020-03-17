@@ -236,8 +236,8 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: 0,
             left: 0,
             child: Container(
-              height: 55,
-              width: 55,
+              height: 75,
+              width: 75,
               decoration: BoxDecoration(
                 color: HexColor('#C61818'),
                 borderRadius: BorderRadius.only(

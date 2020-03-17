@@ -164,6 +164,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         yield CreateContactSuccess();
       } catch(error) {
         yield CustomerDisposeLoading();
+        yield CreateContactError();
         log.warning("Error : ${error.toString()}");
       }
     }
