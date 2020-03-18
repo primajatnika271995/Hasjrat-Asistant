@@ -343,7 +343,7 @@ class _ReminderListViewState extends State<ReminderListView> {
             Navigator.of(context).push(
               PageRouteBuilder(
                 pageBuilder: (_, __, ___) => BlocProvider(
-                  create: (context) => CustomerBloc(CustomerService()),
+                  create: (context) => LeadBloc(CustomerService()),
                   child: ReminderAddView(
                     id: value.id,
                     taskType: value.taskType,
@@ -452,7 +452,7 @@ class _ReminderListViewState extends State<ReminderListView> {
             Navigator.of(context).push(
               PageRouteBuilder(
                 pageBuilder: (_, __, ___) => BlocProvider(
-                  create: (context) => CustomerBloc(CustomerService()),
+                  create: (context) => LeadBloc(CustomerService()),
                   child: ReminderAddView(
                     id: value.id,
                     taskType: value.taskType,
@@ -582,7 +582,7 @@ class _ReminderListViewState extends State<ReminderListView> {
             Navigator.of(context).push(
               PageRouteBuilder(
                 pageBuilder: (_, __, ___) => BlocProvider(
-                  create: (context) => CustomerBloc(CustomerService()),
+                  create: (context) => LeadBloc(CustomerService()),
                   child: ReminderAddView(
                     id: value.id,
                     taskType: value.taskType,
@@ -711,7 +711,7 @@ class _ReminderListViewState extends State<ReminderListView> {
             Navigator.of(context).push(
               PageRouteBuilder(
                 pageBuilder: (_, __, ___) => BlocProvider(
-                  create: (context) => CustomerBloc(CustomerService()),
+                  create: (context) => LeadBloc(CustomerService()),
                   child: ReminderAddView(
                     id: value.id,
                     taskType: value.taskType,
