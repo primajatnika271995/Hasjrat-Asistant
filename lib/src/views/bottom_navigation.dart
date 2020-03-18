@@ -47,22 +47,22 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
           items: <BottomNavigationBarItem> [
             BottomNavigationBarItem(
               icon: Image.asset('assets/icons/home_icon.png', height: 25, color: HexColor('#212120'),),
-              activeIcon: Image.asset('assets/icons/home_icon.png', height: 25,),
+              activeIcon: Image.asset('assets/icons/home_icon.png', height: 25, color: HexColor('#C61818'),),
               title: Text("Home"),
             ),
             BottomNavigationBarItem(
               icon: Image.asset('assets/icons/notification_icon.png', height: 25, color: HexColor('#212120'),),
-              activeIcon: Image.asset('assets/icons/notification_icon.png', height: 25,),
+              activeIcon: Image.asset('assets/icons/notification_icon.png', height: 25, color: HexColor('#C61818'),),
               title: Text("Notification"),
             ),
             BottomNavigationBarItem(
               icon: Image.asset('assets/icons/dashboard_icon.png', height: 25, color: HexColor('#212120'),),
-              activeIcon: Image.asset('assets/icons/dashboard_icon.png', height: 25,),
+              activeIcon: Image.asset('assets/icons/dashboard_icon.png', height: 25),
               title: Text("Dashboard"),
             ),
             BottomNavigationBarItem(
               icon: Image.asset('assets/icons/profile_icon.png', height: 25, color: HexColor('#212120'),),
-              activeIcon: Image.asset('assets/icons/profile_icon.png', height: 25,),
+              activeIcon: Image.asset('assets/icons/profile_icon.png', height: 25, color: HexColor('#C61818'),),
               title: Text("Profile"),
             ),
           ],
