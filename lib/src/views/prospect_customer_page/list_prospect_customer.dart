@@ -8,6 +8,7 @@ import 'package:salles_tools/src/bloc/lead_bloc/lead_state.dart';
 import 'package:salles_tools/src/models/lead_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/components/bottom_loader_content.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_contact.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/details_prospect_contact.dart';
@@ -18,6 +19,8 @@ class ProspectCustomerListView extends StatefulWidget {
 }
 
 class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
 
   void _onAddProspectCustomer() {
     Navigator.of(context).push(
@@ -54,16 +57,37 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
     );
   }
 
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      // ignore: close_sinks
+      final leadBloc = BlocProvider.of<LeadBloc>(context);
+      leadBloc.add(FetchLead(LeadPost(
+        leadCode: "",
+        leadName: "",
+      )));
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    // ignore: close_sinks
-    final leadBloc = BlocProvider.of<LeadBloc>(context);
-    leadBloc.add(FetchLead(LeadPost(
-      leadCode: "",
-      leadName: "",
-    )));
+    _scrollController.addListener(_onScroll);
+//    // ignore: close_sinks
+//    final leadBloc = BlocProvider.of<LeadBloc>(context);
+//    leadBloc.add(FetchLead(LeadPost(
+//      leadCode: "",
+//      leadName: "",
+//    )));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -97,6 +121,12 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
         },
         child: BlocBuilder<LeadBloc, LeadState>(
           builder: (context, state) {
+            if (state is LeadInitial) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
             if (state is LeadFailed) {
               Future.delayed(Duration(seconds: 3), () {
                 Navigator.of(context, rootNavigator: true).pop();
@@ -113,17 +143,19 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
             if (state is LeadSuccess) {
               return ListView.builder(
                 shrinkWrap: true,
+                controller: _scrollController,
                 itemBuilder: (context, index) {
-                  var value = state.value.data.reversed.toList()[index];
-                  return SlidableCustomerView(
+                  return index >= state.leads.length
+                      ? BottomLoader()
+                      : SlidableCustomerView(
                     index: index,
-                    value: value,
+                    value: state.leads[index],
                     callback: () {
-                      _onViewDetailsContact(value);
+                      _onViewDetailsContact(state.leads[index]);
                     },
                   );
                 },
-                itemCount: 5,
+                itemCount: state.hasReachedMax ? state.leads.length : state.leads.length + 1,
               );
             }
             return SizedBox();

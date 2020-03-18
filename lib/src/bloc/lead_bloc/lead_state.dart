@@ -17,14 +17,25 @@ class LeadDisposeLoading extends LeadState {}
 class LeadFailed extends LeadState {}
 
 class LeadSuccess extends LeadState {
-  final _data;
+  final List<Datum> leads;
+  final bool hasReachedMax;
 
-  LeadSuccess(this._data);
-  LeadModel get value => _data;
+  LeadSuccess({this.leads, this.hasReachedMax});
+
+  LeadSuccess copyWith({List<Datum> leads, bool hasReachedMax}) {
+    return LeadSuccess(
+      leads: leads ?? this.leads,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
 
   @override
   // TODO: implement props
-  List<Object> get props => [_data];
+  List<Object> get props => [leads, hasReachedMax];
+
+  @override
+  String toString() =>
+      'Lead Loaded { lead: ${leads.length}, hasReachedMax: $hasReachedMax }';
 }
 
 class CustomerError extends LeadState {

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_bloc.dart';
+import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/utils/app_theme.dart';
@@ -88,7 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: CustomerListView(),
     ),
     BlocProvider(
-      create: (context) => LeadBloc(CustomerService()),
+      create: (context) => LeadBloc(CustomerService())..add(FetchLead(LeadPost(
+        leadCode: "",
+        leadName: "",
+        ))),
       child: ProspectCustomerListView(),
     ),
   ];

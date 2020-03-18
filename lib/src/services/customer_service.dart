@@ -48,7 +48,7 @@ class CustomerService {
     }
   }
 
-  Future leadDMS(LeadPost value) async {
+  Future leadDMS(LeadPost value, String start, String limit) async {
     final response = await _dio.post(UriApi.checkLeadDMSUri,
       options: Options(
           headers: {
@@ -58,8 +58,8 @@ class CustomerService {
       data: {
         "lead_code": value.leadCode,
         "lead_name": value.leadName,
-        "limit": "",
-        "start": ""
+        "limit": limit,
+        "start": start
       },
     );
 

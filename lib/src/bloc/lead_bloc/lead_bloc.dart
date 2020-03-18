@@ -13,58 +13,43 @@ class LeadBloc extends Bloc<LeadEvent, LeadState> {
   LeadBloc(this._customerService);
 
   @override
+  Stream<LeadState> transformEvents(Stream<LeadEvent> events, Stream<LeadState> Function(LeadEvent) next) {
+    // TODO: implement transformEvents
+    return super.transformEvents(events, next);
+  }
+
+  @override
   // TODO: implement initialState
   LeadState get initialState => LeadInitial();
 
   @override
   Stream<LeadState> mapEventToState(LeadEvent event) async* {
-    if (event is FetchLead) {
-      yield LeadLoading();
-//      var cache = await SharedPreferencesHelper.getListLead();
+    final currentState = state;
 
-      try {
-        LeadModel value = await _customerService.leadDMS(event.value);
-
-        if (value.data.isEmpty || value.data == null) {
-          yield LeadFailed();
-        } else {
-          await SharedPreferencesHelper.setListLead(json.encode(value));
-
-          yield LeadDisposeLoading();
-          yield LeadSuccess(value);
+    if (event is FetchLead && !_hasReachedMax(currentState)) {
+        log.info("intial");
+        if (currentState is LeadInitial) {
+          LeadModel value = await _customerService.leadDMS(event.value, "0", "20");
+          List<Datum> leads = value.data;
+          yield LeadSuccess(
+            leads: leads,
+            hasReachedMax: false,
+          );
         }
 
-      } catch(error) {
-        log.warning("Error : ${error.toString()}");
-      }
-
-//      if (cache == null) {
-//        log.info("Lead Cache Null Data");
-//
-//        try {
-//          LeadModel value = await _customerService.leadDMS(event.value);
-//
-//          if (value.data.isEmpty || value.data == null) {
-//            yield LeadFailed();
-//          } else {
-//            await SharedPreferencesHelper.setListLead(json.encode(value));
-//
-//            yield LeadDisposeLoading();
-//            yield LeadSuccess(value);
-//          }
-//
-//        } catch(error) {
-//          log.warning("Error : ${error.toString()}");
-//        }
-//      } else {
-//        log.info("Lead Cache on Data");
-//        var cacheData = await SharedPreferencesHelper.getListLead();
-//        log.info(cacheData);
-//
-//        LeadModel value = leadModelFromJson(cacheData);
-//        yield LeadDisposeLoading();
-//        yield LeadSuccess(value);
-//      }
+        if (currentState is LeadSuccess) {
+          log.info("onSuccess");
+          LeadModel value = await _customerService.leadDMS(
+              event.value, currentState.leads.length.toString(), "20");
+          List<Datum> leads = value.data;
+          yield leads.isEmpty
+              ? currentState.copyWith(hasReachedMax: true)
+              : LeadSuccess(
+              leads: currentState.leads + leads, hasReachedMax: false);
+        }
     }
   }
+
+  bool _hasReachedMax(LeadState state) =>
+      state is LeadSuccess && state.hasReachedMax;
 }
