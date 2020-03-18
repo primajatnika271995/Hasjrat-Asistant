@@ -219,7 +219,6 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
     return Row(
       children: <Widget>[
         Expanded(
-          flex: 2,
           child: Padding(
             padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
             child: Container(

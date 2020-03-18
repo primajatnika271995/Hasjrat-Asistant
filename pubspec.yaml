@@ -120,8 +120,8 @@ dependencies:
   # A Flutter plugin for accessing the Android AlarmManager service
   android_alarm_manager: ^0.4.5+4
 
-  # Plugin Stack Bottom Sheet
-  bottom_sheet_x: ^1.0.0
+  # RFlutter Alert is super customizable and easy-to-use alert/popup dialogs for Flutter.
+  rflutter_alert: ^1.0.3
 
   # A cross platform plugin for displaying local notifications.
   flutter_local_notifications: ^1.2.0+3

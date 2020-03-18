@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
@@ -349,22 +350,42 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
 
             if (state is CreateContactSuccess) {
               log.info("Success Create Lead");
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Success Create Lead"),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              Alert(
+                  context: context,
+                  type: AlertType.success,
+                  title: 'Success',
+                  desc: "Created Lead!",
+                  buttons: [
+                    DialogButton(
+                      child: Text(
+                        "OK",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      onPressed: () => Navigator.pop(context, true),
+                      color: HexColor("#C61818"),
+                    ),
+                  ]
+              ).show();
             }
 
             if (state is CreateContactError) {
               log.warning("Fail Create Lead");
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Failed Create Lead"),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              Alert(
+                context: context,
+                type: AlertType.error,
+                title: 'Error',
+                desc: "Failed to Create Lead!",
+                buttons: [
+                  DialogButton(
+                    child: Text(
+                      "OK",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                    color: HexColor("#C61818"),
+                  ),
+                ]
+              ).show();
             }
 
             if (state is CustomerLoading) {

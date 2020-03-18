@@ -1,4 +1,3 @@
-import 'package:bottom_sheet_x/bottom_sheet_x.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,8 +29,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final ScrollController _scrollController = ScrollController();
-  final NavBottomSheetController _navBottomSheetController = NavBottomSheetController();
 
   var _salesName;
 
