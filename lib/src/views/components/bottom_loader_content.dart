@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/utils/hex_converter.dart';
 
 class BottomLoader extends StatelessWidget {
   @override
@@ -6,11 +7,14 @@ class BottomLoader extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: Center(
-        child: SizedBox(
-          width: 33,
-          height: 33,
-          child: CircularProgressIndicator(
-            strokeWidth: 1.5,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: SizedBox(
+            height: 25,
+            width: 25,
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(HexColor('#C61818')),
+            ),
           ),
         ),
       ),

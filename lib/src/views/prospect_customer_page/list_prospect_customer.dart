@@ -196,6 +196,7 @@ class SlidableCustomerView extends StatelessWidget {
               this.callback();
             },
             leading: CircleAvatar(
+              radius: 25,
               backgroundColor: Colors.indigoAccent,
               foregroundColor: Colors.white,
               backgroundImage: NetworkImage("https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
