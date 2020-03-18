@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   var _salesName;
+  var _branchName;
 
   List<String> _menuName = [
     "Book Test Drive",
@@ -154,6 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _getPreferences() async {
     _salesName = await SharedPreferencesHelper.getSalesName();
+    _branchName = await SharedPreferencesHelper.getSalesBrach();
     setState(() {});
   }
 
@@ -230,7 +232,17 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Image.asset(
               "assets/icons/hasjrat_toyota_logo.png",
               height: 50,
-              width: 150,
+              width: 130,
+            ),
+          ),
+          Positioned(
+            top: paddingTop(context) + 44,
+            left: 20,
+            child: Text("Hasjrat Abadi $_branchName",
+              style: TextStyle(
+                fontSize: 11,
+                color: Colors.black,
+              ),
             ),
           ),
           Positioned(
