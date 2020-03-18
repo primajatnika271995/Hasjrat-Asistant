@@ -13,6 +13,7 @@ class SharedPreferencesHelper {
   static const String kSalesBirthday = "salesBirthday";
   static const String kSalesGender = "salesGender";
   static const String kSalesBranch = "salesBranch";
+  static const String kSalesBranchId = "salesBranchId";
   static const String kSalesOutlet = "salesOutlet";
   static const String kSalesJob = "salesJob";
 
@@ -171,6 +172,24 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString(kSalesBranch, value);
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the sales brach Id, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getSalesBrachId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kSalesBranchId) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the salse branch Id
+  /// ----------------------------------------------------------
+  static Future<bool> setSalesBrachId(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kSalesBranchId, value);
   }
 
   /// ------------------------------------------------------------

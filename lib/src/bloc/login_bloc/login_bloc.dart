@@ -34,6 +34,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await SharedPreferencesHelper.setSalesBirthday(employee.birthDate.toString());
         await SharedPreferencesHelper.setSalesGender(employee.jenisKelamin);
         await SharedPreferencesHelper.setSalesBrach(employee.branch.name);
+        await SharedPreferencesHelper.setSalesBrachId(employee.branch.id);
         await SharedPreferencesHelper.setSalesOutlet(employee.outlet.name);
         await SharedPreferencesHelper.setSalesJob(employee.section.newName);
 

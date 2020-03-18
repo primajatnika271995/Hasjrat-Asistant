@@ -309,12 +309,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
           if (state is AssetKindSuccess) {
             state.value.result.forEach((f) {
-              assetKindList.add(
-                SelectorAssetKindModel(
-                  id: f.id,
-                  assetKindName: f.text,
-                ),
-              );
+              if (f.text == "Mobil") {
+                assetKindList.add(
+                  SelectorAssetKindModel(
+                    id: f.id,
+                    assetKindName: f.text,
+                  ),
+                );
+              }
             });
           }
 
