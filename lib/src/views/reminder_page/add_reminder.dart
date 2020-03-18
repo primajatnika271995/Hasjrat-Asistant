@@ -4,7 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
+import 'package:salles_tools/src/bloc/lead_bloc/lead_bloc.dart';
+import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
+import 'package:salles_tools/src/bloc/lead_bloc/lead_state.dart';
 import 'package:salles_tools/src/models/reminder_sqlite_model.dart';
+import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
@@ -56,8 +60,9 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   var noteFocus = new FocusNode();
 
   String _currentSelectTask;
-  String _currentSelectCustomer;
-  List<String> _customerList = [];
+  var _currentSelectLead;
+  var _leadName;
+  List<SelectorLeadModel> _leadList = [];
 
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -89,14 +94,33 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   }
 
   void _showListCustomer() {
-    SelectDialog.showModal<String>(
+    SelectDialog.showModal<SelectorLeadModel>(
       context,
-      label: "Data Customer",
-      selectedValue: _currentSelectCustomer,
-      items: _customerList,
-      onChange: (String selected) {
+      label: "Data Lead",
+      selectedValue: _currentSelectLead,
+      items: _leadList,
+      itemBuilder: (context, SelectorLeadModel item, bool isSelected) {
+        return Container(
+          decoration: !isSelected
+              ? null
+              : BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white,
+            border: Border.all(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          child: ListTile(
+            selected: isSelected,
+            title: Text(item.leadName),
+            subtitle: Text("Contact : ${item.leadContact}"),
+          ),
+        );
+      },
+      onChange: (SelectorLeadModel selected) {
         setState(() {
-          _currentSelectCustomer = selected;
+          _currentSelectLead = selected;
+          _leadName = selected.leadName;
         });
       },
     );
@@ -105,13 +129,13 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   void _onCreateReminder() async {
     DateTime _now = DateTime.now();
 
-    if (_currentSelectCustomer != null) {
+    if (_currentSelectLead != null) {
       log.info(_now.difference(_dateTime).inDays);
       if (_now.difference(_dateTime).inDays <= -1) {
         await _dbHelper.insert(ReminderSqlite(
           _currentSelectTask,
           taskDescriptionCtrl.text,
-          _currentSelectCustomer,
+          _currentSelectLead,
           dateSelected.text,
           timeSelected.text,
           notesCtrl.text,
@@ -122,7 +146,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
         await _dbHelper.insert(ReminderSqlite(
           _currentSelectTask,
           taskDescriptionCtrl.text,
-          _currentSelectCustomer,
+          _leadName,
           dateSelected.text,
           timeSelected.text,
           notesCtrl.text,
@@ -140,7 +164,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       ReminderSqlite(
         _currentSelectTask,
         taskDescriptionCtrl.text,
-        _currentSelectCustomer,
+        _leadName,
         dateSelected.text,
         timeSelected.text,
         notesCtrl.text,
@@ -155,18 +179,17 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   void initState() {
     // TODO: implement initState
     _currentSelectTask = widget.taskType;
-    _currentSelectCustomer = widget.customerName;
+    _leadName = widget.customerName;
     taskDescriptionCtrl.text = widget.taskDescription;
     dateSelected.text = widget.dateReminder;
     timeSelected.text = widget.timeReminder;
     notesCtrl.text = widget.notes;
 
     // ignore: close_sinks
-    final customerBloc = BlocProvider.of<CustomerBloc>(context);
-    customerBloc.add(FetchCustomer(CustomerPost(
-      cardCode: "",
-      cardName: "",
-      custgroup: "",
+    final leadBloc = BlocProvider.of<LeadBloc>(context);
+    leadBloc.add(RefreshLead(LeadPost(
+      leadName: "",
+      leadCode: "",
     )));
 
     super.initState();
@@ -189,19 +212,22 @@ class _ReminderAddViewState extends State<ReminderAddView> {
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: BlocListener<CustomerBloc, CustomerState>(
+      body: BlocListener<LeadBloc, LeadState>(
         listener: (context, state) {
-          if (state is CustomerSuccess) {
-            state.value.data.forEach((val) {
-              _customerList.add(val.cardName);
+          if (state is LeadSuccess) {
+            state.leads.forEach((val) {
+              _leadList.add(SelectorLeadModel(
+                leadName: val.cardName,
+                leadContact: val.phone1,
+              ));
             });
           }
 
-          if (state is CustomerLoading) {
+          if (state is LeadLoading) {
             onLoading(context);
           }
 
-          if (state is CustomerDisposeLoading) {
+          if (state is LeadDisposeLoading) {
             Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context, rootNavigator: false).pop();
             });
@@ -211,7 +237,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _currentSelectCustomer == null ? SizedBox() :
+              _currentSelectLead == null ? SizedBox() :
               Container(
                 height: 50,
                 color: HexColor('#C61818'),
@@ -227,7 +253,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                         ),
                       ),
                       Text(
-                        "$_currentSelectCustomer",
+                        "$_leadName",
                         style: TextStyle(
                           fontSize: 16,
                           letterSpacing: 0.8,

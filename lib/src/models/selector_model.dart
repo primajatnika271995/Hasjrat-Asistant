@@ -249,3 +249,21 @@ class SelectorSubDistrictModel {
   // TODO: implement hashCode
   int get hashCode => districtSubCode.hashCode^districtSubName.hashCode;
 }
+
+class SelectorLeadModel {
+  String leadName;
+  String leadContact;
+
+  SelectorLeadModel({this.leadName, this.leadContact});
+
+  @override
+  String toString() => leadName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorLeadModel && other.leadName == leadName;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => leadName.hashCode^leadContact.hashCode;
+}
