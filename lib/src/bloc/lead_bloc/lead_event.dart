@@ -17,6 +17,16 @@ class FetchLead extends LeadEvent {
   List<Object> get props => [value];
 }
 
+class RefreshLead extends LeadEvent {
+  final LeadPost value;
+
+  RefreshLead(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
 class FetchLeadFilter extends LeadEvent {
   final LeadPost value;
 

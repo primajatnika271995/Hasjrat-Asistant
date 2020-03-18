@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -27,6 +29,8 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
 
   var searchCtrl = new TextEditingController();
   var _currentSelectFilter;
+
+  Completer<void> _refreshCompleter;
 
   void _onAddProspectCustomer() {
     Navigator.of(context).push(
@@ -72,7 +76,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
         )));
         break;
       case "by Code":
-      // ignore: close_sinks
+        // ignore: close_sinks
         final leadBloc = BlocProvider.of<LeadBloc>(context);
         leadBloc.add(FetchLeadFilter(LeadPost(
           leadCode: searchCtrl.text,
@@ -142,49 +146,63 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
             });
           }
         },
-        child: BlocBuilder<LeadBloc, LeadState>(
-          builder: (context, state) {
-            if (state is LeadInitial) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            if (state is LeadFailed) {
-              Future.delayed(Duration(seconds: 3), () {
-                Navigator.of(context, rootNavigator: true).pop();
-              });
-              return Center(
-                child: Image.asset(
-                  "assets/icons/empty_icon.png",
-                  height: 100,
-                  color: HexColor('#C61818'),
-                ),
-              );
-            }
-
-            if (state is LeadSuccess) {
-              return ListView.builder(
-                shrinkWrap: true,
-                controller: _scrollController,
-                itemBuilder: (context, index) {
-                  return index >= state.leads.length
-                      ? BottomLoader()
-                      : SlidableCustomerView(
-                          index: index,
-                          value: state.leads[index],
-                          callback: () {
-                            _onViewDetailsContact(state.leads[index]);
-                          },
-                        );
-                },
-                itemCount: state.hasReachedMax
-                    ? state.leads.length
-                    : state.leads.length + 1,
-              );
-            }
-            return SizedBox();
+        child: RefreshIndicator(
+          onRefresh: () {
+            // ignore: close_sinks
+            final leadBloc = BlocProvider.of<LeadBloc>(context);
+            leadBloc.add(RefreshLead(LeadPost(
+              leadCode: "",
+              leadName: "",
+            )));
+            return _refreshCompleter.future;
           },
+          child: BlocBuilder<LeadBloc, LeadState>(
+            builder: (context, state) {
+              if (state is LeadInitial) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (state is LeadFailed) {
+                Future.delayed(Duration(seconds: 3), () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                });
+                return Center(
+                  child: Image.asset(
+                    "assets/icons/empty_icon.png",
+                    height: 100,
+                    color: HexColor('#C61818'),
+                  ),
+                );
+              }
+
+              if (state is LeadSuccess) {
+                _refreshCompleter?.complete();
+                _refreshCompleter = Completer();
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  itemBuilder: (context, index) {
+                    return index >= state.leads.length
+                        ? BottomLoader()
+                        : SlidableCustomerView(
+                            index: index,
+                            value: state.leads[index],
+                            callback: () {
+                              _onViewDetailsContact(state.leads[index]);
+                            },
+                          );
+                  },
+                  itemCount: state.hasReachedMax
+                      ? state.leads.length
+                      : state.leads.length + 1,
+                );
+              }
+              return SizedBox();
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
