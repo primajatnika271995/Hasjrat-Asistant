@@ -9,6 +9,7 @@ import 'package:salles_tools/src/bloc/lead_bloc/lead_state.dart';
 import 'package:salles_tools/src/models/lead_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/bottom_loader_content.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_contact.dart';
@@ -23,6 +24,9 @@ class ProspectCustomerListView extends StatefulWidget {
 class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
+
+  var searchCtrl = new TextEditingController();
+  var _currentSelectFilter;
 
   void _onAddProspectCustomer() {
     Navigator.of(context).push(
@@ -57,6 +61,27 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
     );
   }
 
+  void onFilterLead() {
+    switch (_currentSelectFilter) {
+      case "by Name":
+      // ignore: close_sinks
+        final leadBloc = BlocProvider.of<LeadBloc>(context);
+        leadBloc.add(FetchLeadFilter(LeadPost(
+          leadCode: "",
+          leadName: searchCtrl.text,
+        )));
+        break;
+      case "by Code":
+      // ignore: close_sinks
+        final leadBloc = BlocProvider.of<LeadBloc>(context);
+        leadBloc.add(FetchLeadFilter(LeadPost(
+          leadCode: searchCtrl.text,
+          leadName: "",
+        )));
+        break;
+    }
+  }
+
   void _onScroll() {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
@@ -74,12 +99,6 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
   void initState() {
     // TODO: implement initState
     _scrollController.addListener(_onScroll);
-//    // ignore: close_sinks
-//    final leadBloc = BlocProvider.of<LeadBloc>(context);
-//    leadBloc.add(FetchLead(LeadPost(
-//      leadCode: "",
-//      leadName: "",
-//    )));
     super.initState();
   }
 
@@ -104,6 +123,10 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
             color: Colors.black,
             letterSpacing: 0.5,
           ),
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(45),
+          child: searchContent(),
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
@@ -173,6 +196,130 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
       ),
     );
   }
+
+  Widget searchContent() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+            child: Container(
+              height: 30.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 15.0,
+                    spreadRadius: 0.0,
+                  )
+                ],
+              ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+                  child: Theme(
+                    data: ThemeData(hintColor: Colors.transparent),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        enabled: false,
+                        contentPadding: EdgeInsets.only(bottom: 18),
+                        suffixIcon: Icon(
+                          Icons.search,
+                          color: Color(0xFF6991C7),
+                          size: 24.0,
+                        ),
+                        hintText: "Search",
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 13,
+                        ),
+                      ),
+                      controller: searchCtrl,
+                      onEditingComplete: () {
+                        onFilterLead();
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Container(
+              height: 40,
+              child: FormField(
+                builder: (FormFieldState state) {
+                  return InputDecorator(
+                    decoration: InputDecoration(
+                      hintText: 'Filter',
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 0,
+                        ),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 0,
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 0,
+                        ),
+                      ),
+                      contentPadding:
+                      EdgeInsets.only(bottom: 18, left: 18, right: 18),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: _currentSelectFilter,
+                        hint: Text('Filter'),
+                        isDense: true,
+                        onChanged: (String newVal) {
+                          setState(() {
+                            _currentSelectFilter = newVal;
+                            state.didChange(newVal);
+                          });
+                        },
+                        items: [
+                          'by Name',
+                          'by Code'
+                        ].map((String val) {
+                          return DropdownMenuItem<String>(
+                            value: val,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(val, style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                ),),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class SlidableCustomerView extends StatelessWidget {
@@ -199,7 +346,8 @@ class SlidableCustomerView extends StatelessWidget {
               radius: 25,
               backgroundColor: Colors.indigoAccent,
               foregroundColor: Colors.white,
-              backgroundImage: NetworkImage("https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
+              backgroundImage: NetworkImage(
+                  "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
             ),
             title: Padding(
               padding: const EdgeInsets.only(top: 5, bottom: 5),
@@ -256,7 +404,9 @@ class SlidableCustomerView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      value.suspectDate == null ? "No Date" : "${value.suspectDate.day}/${value.suspectDate.month}/${value.suspectDate.year}",
+                      value.suspectDate == null
+                          ? "No Date"
+                          : "${value.suspectDate.day}/${value.suspectDate.month}/${value.suspectDate.year}",
                       style: TextStyle(
                         letterSpacing: 1.0,
                         fontSize: 11,

@@ -51,6 +51,19 @@ class LeadBloc extends Bloc<LeadEvent, LeadState> {
               leads: currentState.leads + leads, hasReachedMax: false);
         }
     }
+
+    if (event is FetchLeadFilter) {
+      yield LeadLoading();
+
+      LeadModel value = await _customerService.leadDMS(event.value, "", "");
+      List<Datum> leads = value.data;
+
+      yield LeadDisposeLoading();
+      yield LeadSuccess(
+        leads: leads,
+        hasReachedMax: true,
+      );
+    }
   }
 
   bool _hasReachedMax(LeadState state) =>
