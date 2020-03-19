@@ -28,12 +28,12 @@ class ReminderAddView extends StatefulWidget {
 
   ReminderAddView(
       {this.id,
-      this.taskType,
-      this.taskDescription,
-      this.customerName,
-      this.dateReminder,
-      this.timeReminder,
-      this.notes});
+        this.taskType,
+        this.taskDescription,
+        this.customerName,
+        this.dateReminder,
+        this.timeReminder,
+        this.notes});
 
   @override
   _ReminderAddViewState createState() => _ReminderAddViewState();
@@ -326,7 +326,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               ),
               errorText: 'Task Type harus diisi',
               contentPadding:
-                  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
