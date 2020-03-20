@@ -52,10 +52,10 @@ class Datum {
   String itemType;
   String itemCode;
   int itemGroup;
-  int offtr;
-  int bbn;
-  int logistic;
-  int ontr;
+  double offtr;
+  double bbn;
+  double logistic;
+  double ontr;
   DateTime pricelistTanggal;
   String dalamKota;
   String customerGroupName;
