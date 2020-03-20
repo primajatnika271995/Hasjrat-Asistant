@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
 import 'package:salles_tools/src/models/class1_item_model.dart';
+import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
@@ -77,6 +78,23 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
           yield PriceListSuccess(value);
         }
       } catch (error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
+    if (event is FetchItemList) {
+      yield DmsLoading();
+      try {
+        ItemListModel value = await _dmsService.itemList(event.value);
+
+        if (value.data.isEmpty || value.data == null) {
+          yield ItemListFailed();
+        } else {
+          yield DmsDisposeLoading();
+          yield ItemListSuccess(value);
+        }
+      } catch (error) {
+        yield ItemListFailed();
         log.warning("Error : ${error.toString()}");
       }
     }

@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/class1_item_model.dart';
 import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
+import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
 
@@ -61,6 +62,21 @@ class ItemTypeSuccess extends DmsState {
   @override
   // TODO: implement props
   List<Object> get props => [_data];
+}
+
+class ItemListSuccess extends DmsState {
+  final _data;
+
+  ItemListSuccess(this._data);
+  ItemListModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
+class ItemListFailed extends DmsState {
+
 }
 
 class DmsError extends DmsState {

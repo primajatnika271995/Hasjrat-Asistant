@@ -25,6 +25,8 @@ class UriApi {
 
   static const String itemModelDMSUri = "/sales-tools-dealer-service/api/v2/dms/item/model/list";
 
+  static const String itemListDMSUri = "/sales-tools-dealer-service/api/v2/dms/item/list";
+
   static const String jobDMSUri = "/sales-tools-dealer-service/api/v2/dms/customer/pekerjaan";
 
   static const String provinceUri = "/sales-tools-dealer-service/api/v2/dms/wilayah/provinsi";

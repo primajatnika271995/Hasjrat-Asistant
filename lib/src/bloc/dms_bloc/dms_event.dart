@@ -43,4 +43,14 @@ class FetchItemType extends DmsEvent {
   List<Object> get props => [value];
 }
 
+class FetchItemList extends DmsEvent {
+  final ItemListPost value;
+
+  FetchItemList(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
 class ResetDms extends DmsEvent {}

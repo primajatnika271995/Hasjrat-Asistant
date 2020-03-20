@@ -8,6 +8,7 @@ import 'package:salles_tools/src/models/customer_get_form_model.dart';
 import 'package:salles_tools/src/models/lead_model.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
+import 'package:salles_tools/src/utils/currency_format.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:select_dialog/select_dialog.dart';
 
@@ -21,6 +22,8 @@ class ProspectAddView extends StatefulWidget {
 
 class _ProspectAddViewState extends State<ProspectAddView> {
   var _formKey = GlobalKey<FormState>();
+
+  int dataSelection = -1;
 
   int _currentStep = 0;
   VoidCallback _onStepContinue;
@@ -56,6 +59,12 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   var currentSelectItemType;
   List<String> itemTypeList = [];
 
+  void _onSelectionItemData(int index) {
+    setState(() {
+      dataSelection = index;
+    });
+  }
+
   void _showListClass1() {
     SelectDialog.showModal<String>(
       context,
@@ -64,6 +73,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
       items: class1List,
       onChange: (String selected) {
         setState(() {
+          itemModelList = [];
           currentSelectClass1 = selected;
           class1Ctrl.text = selected;
 
@@ -88,6 +98,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
       items: itemModelList.toSet().toList(),
       onChange: (String selected) {
         setState(() {
+          itemTypeList = [];
           currentSelectItemModel = selected;
           itemModelCtrl.text = selected;
 
@@ -112,6 +123,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
       items: itemTypeList,
       onChange: (String selected) {
         setState(() {
+          priceList = [];
           currentSelectItemType = selected;
           itemTypeCtrl.text = selected;
 
@@ -170,6 +182,14 @@ class _ProspectAddViewState extends State<ProspectAddView> {
         setState(() {
           currentSelectPriceList = selected;
           itemCodeCtrl.text = selected.itemCode;
+
+          // ignore: close_sinks
+          final dmsBloc = BlocProvider.of<DmsBloc>(context);
+          dmsBloc.add(FetchItemList(ItemListPost(
+            itemCode: itemCodeCtrl.text,
+            customerGroup: "1",
+            itemGroup: "101",
+          )));
         });
       },
     );
@@ -381,6 +401,8 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                             ),
                           ),
                           formSelectItemCode(),
+                          itemList(),
+                          SizedBox(height: 10),
                         ],
                       ),
                     ),
@@ -865,6 +887,140 @@ class _ProspectAddViewState extends State<ProspectAddView> {
           controller: itemCodeCtrl,
           maxLines: null,
         ),
+      ),
+    );
+  }
+
+  Widget itemList() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 3),
+      child: BlocBuilder<DmsBloc, DmsState>(
+        builder: (context, state) {
+          if (state is ItemListSuccess) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Text(
+                    "Data Stock",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    var value = state.value.data[index];
+                    return ExpansionTile(
+                      title: Text("${value.itemName}"),
+                      initiallyExpanded: dataSelection == index ? true : false,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Item Code"),
+                              Text(
+                                "${value.itemCode}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Item Model"),
+                              Text("${value.itemModel}"),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Off The Road"),
+                              Text("Rp ${CurrencyFormat().data.format(value.pricelists[0].offtr)}"),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("On The Road"),
+                              Text("Rp ${CurrencyFormat().data.format(value.pricelists[0].ontr)}"),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Rp ${CurrencyFormat().data.format(value.pricelists[0].ontr)}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1.0,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              RaisedButton(
+                                onPressed: () {
+                                  _onSelectionItemData(index);
+                                },
+                                elevation: 1,
+                                child: Text(
+                                  dataSelection == index
+                                      ? "Selected"
+                                      : "Take it",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                color: dataSelection == index
+                                    ? Colors.green
+                                    : Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  itemCount: state.value.data.length,
+                ),
+              ],
+            );
+          }
+
+          if (state is ItemListFailed) {
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text(
+                  "Data tidak berhasil ditemukan!",
+                  style: TextStyle(
+                    letterSpacing: 1.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            );
+          }
+          return SizedBox();
+        },
       ),
     );
   }

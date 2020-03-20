@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/class1_item_model.dart';
+import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
@@ -53,6 +54,26 @@ class DmsService {
     }
   }
 
+  Future itemList(ItemListPost value) async {
+    final response = await _dio.post(UriApi.itemListDMSUri,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+        data: {
+          "custgroup": value.customerGroup,
+          "itemcode": value.itemCode,
+          "itemgroup": value.itemGroup
+        }
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(itemListModelFromJson, json.encode(response.data));
+    }
+  }
+
   Future priceList(PriceListPost value) async {
     final response = await _dio.post(UriApi.priceListDMSUri,
       options: Options(
@@ -87,4 +108,12 @@ class ItemModelPost {
   String itemType;
 
   ItemModelPost({this.itemClass, this.itemClass1, this.itemModel, this.itemType});
+}
+
+class ItemListPost {
+  String customerGroup;
+  String itemCode;
+  String itemGroup;
+
+  ItemListPost({this.customerGroup, this.itemCode, this.itemGroup});
 }
