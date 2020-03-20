@@ -220,83 +220,83 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget sliverAppBar() {
-    return SliverAppBar(
-      expandedHeight: 200,
-      backgroundColor: AppTheme.white,
-      automaticallyImplyLeading: false,
-      flexibleSpace: Stack(
-        children: <Widget>[
-          Positioned(
-            top: paddingTop(context) + 10,
-            left: 20,
-            child: Image.asset(
-              "assets/icons/hasjrat_toyota_logo.png",
-              height: 50,
-              width: 130,
-            ),
-          ),
-          Positioned(
-            top: paddingTop(context) + 44,
-            left: 20,
-            child: Text("Hasjrat Abadi $_branchName",
-              style: TextStyle(
-                fontSize: 11,
-                color: Colors.black,
+    return SliverToBoxAdapter(
+      child: Container(
+        height: 220,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              top: paddingTop(context) + 10,
+              left: 20,
+              child: Image.asset(
+                "assets/icons/hasjrat_toyota_logo.png",
+                height: 50,
+                width: 130,
               ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Container(
-              height: 75,
-              width: 75,
-              decoration: BoxDecoration(
-                color: HexColor('#C61818'),
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(100),
+            Positioned(
+              top: paddingTop(context) + 44,
+              left: 20,
+              child: Text("Hasjrat Abadi $_branchName",
+                style: TextStyle(
+                  fontSize: 11,
+                  color: Colors.black,
                 ),
               ),
             ),
-          ),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: paddingTop(context) + 70, left: 20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 80),
-                        child: Text(
-                          "Selamat Datang",
-                          style: AppTheme.selamatDatangStyle,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          "$_salesName",
-                          style: AppTheme.namaSalesStyle,
-                        ),
-                      ),
-                    ],
+            Positioned(
+              bottom: 0,
+              left: 0,
+              child: Container(
+                height: 75,
+                width: 75,
+                decoration: BoxDecoration(
+                  color: HexColor('#C61818'),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(100),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-          Positioned(
-            top: paddingTop(context),
-            right: 0,
-            child: Image.asset(
-              "assets/icons/new_header_icon.png",
-              height: 170,
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: paddingTop(context) + 70, left: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 80),
+                          child: Text(
+                            "Selamat Datang",
+                            style: AppTheme.selamatDatangStyle,
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            "$_salesName",
+                            style: AppTheme.namaSalesStyle,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Positioned(
+              top: paddingTop(context),
+              right: 0,
+              child: Image.asset(
+                "assets/icons/new_header_icon.png",
+                height: 170,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

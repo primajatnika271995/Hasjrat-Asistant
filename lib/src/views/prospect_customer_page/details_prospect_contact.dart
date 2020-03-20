@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/models/lead_model.dart';
+import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_customer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProspectContactDetailsView extends StatefulWidget {
@@ -14,6 +18,24 @@ class ProspectContactDetailsView extends StatefulWidget {
 
 class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView> {
   String _currentContextType = "Hot Prospect";
+
+  void _onAddProspect() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => CustomerBloc(CustomerService()),
+          child: ProspectAddView(value: widget.value),
+        ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +60,8 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
             SizedBox(
               height: 30,
             ),
+            leadCode(),
+            Divider(),
             namaCustomer(),
             Divider(),
             nikCustomer(),
@@ -50,7 +74,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
             Divider(),
             jobCustomer(),
             dropdownContext(),
-            spkButton(),
+            prospectButton(),
             callButton(),
           ],
         ),
@@ -83,7 +107,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 4,
             child: Text(
-              "Nama",
+              "Lead Name",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -95,6 +119,38 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
             flex: 6,
             child: Text(
               "${widget.value.cardName}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget leadCode() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Lead Code",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${widget.value.leadCode}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -406,14 +462,16 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
     );
   }
 
-  Widget spkButton() {
+  Widget prospectButton() {
     return Padding(
       padding: const EdgeInsets.only(left: 30, right: 30),
       child: Container(
         width: screenWidth(context),
         child: RaisedButton(
-          onPressed: () {},
-          child: Text("Copy to SPK", style: TextStyle(color: Colors.white),),
+          onPressed: () {
+            _onAddProspect();
+          },
+          child: Text("Prospect", style: TextStyle(color: Colors.white),),
           color: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),

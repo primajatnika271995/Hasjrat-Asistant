@@ -121,8 +121,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     top: -30,
                     left: -30,
                     child: Container(
-                      height: 200,
-                      width: 200,
+                      height: 170,
+                      width: 170,
                       decoration: BoxDecoration(
                         color: HexColor('#212120'),
                         borderRadius: BorderRadius.circular(200),
@@ -130,11 +130,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   Positioned(
-                    bottom: 50,
-                    left: -40,
+                    bottom: 80,
+                    left: -50,
                     child: Container(
-                      height: 150,
-                      width: 150,
+                      height: 130,
+                      width: 130,
                       decoration: BoxDecoration(
                         color: HexColor('#C61818'),
                         borderRadius: BorderRadius.circular(200),

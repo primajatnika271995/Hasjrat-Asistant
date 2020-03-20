@@ -34,8 +34,6 @@ class _UploadKTPCustomerViewState extends State<UploadKTPCustomerView> {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProspectAddView(
-          nameScan: namaScan,
-          nikScan: nikScan,
         ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
