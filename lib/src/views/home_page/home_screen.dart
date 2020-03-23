@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
+import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_bloc.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
+import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/utils/app_theme.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
@@ -100,7 +102,10 @@ class _HomeScreenState extends State<HomeScreen> {
   List _moreMenuNavigation = [
     KnowledgeBaseScreen(),
     AddActivityReportView(),
-    PriceListView(),
+    BlocProvider(
+      create: (context) => DmsBloc(DmsService()),
+      child: PriceListView(),
+    ),
     PromotionListScreen(),
   ];
 
