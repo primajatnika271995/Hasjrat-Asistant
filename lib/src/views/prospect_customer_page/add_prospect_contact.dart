@@ -72,7 +72,33 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
   var customerContactFocus = new FocusNode();
   var customerSumberContactFocus = new FocusNode();
 
-  String _currentSelectFollowUp = "7 Hari";
+  var _currentSelectFollowUp = "7 Hari";
+  var followUpCtrl = new TextEditingController();
+  List<String> followUpList = [
+    "1 Hari",
+    "2 Hari",
+    "3 Hari",
+    "4 Hari",
+    "5 Hari",
+    "5 Hari",
+    "6 Hari",
+    "7 Hari",
+  ];
+
+  void _showListFollowUp() {
+    SelectDialog.showModal<String>(
+      context,
+      label: "Follow Up",
+      selectedValue: _currentSelectFollowUp,
+      items: followUpList,
+      onChange: (String selected) {
+        setState(() {
+          _currentSelectFollowUp = selected;
+          followUpCtrl.text = selected;
+        });
+      },
+    );
+  }
 
   void _showListGender() {
     SelectDialog.showModal<SelectorGenderModel>(
@@ -247,6 +273,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
   @override
   // ignore: must_call_super
   void initState() {
+    followUpCtrl.text = "7 Hari";
     customerGroupList.forEach((f) {
       setState(() {
         groupList.add(SelectorGroupModel(
@@ -627,38 +654,47 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          textInputAction: TextInputAction.next,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18),
-            hintText: 'Input Name',
-            hasFloatingPlaceholder: false,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 18),
+                  prefixIcon: Icon(
+                    Icons.perm_identity,
+                    color: Color(0xFF6991C7),
+                    size: 24.0,
+                  ),
+                  hintText: 'Input Name',
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                onEditingComplete: () {
+                  FocusScope.of(context).requestFocus(customerContactFocus);
+                },
+                controller: customerNameCtrl,
+                focusNode: customerNameFocus,
               ),
             ),
           ),
-          onEditingComplete: () {
-            FocusScope.of(context).requestFocus(customerContactFocus);
-          },
-          controller: customerNameCtrl,
-          focusNode: customerNameFocus,
-          maxLines: null,
         ),
       ),
     );
@@ -668,39 +704,48 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18),
-            hintText: 'Input Contact',
-            hasFloatingPlaceholder: false,
-            prefixIcon: Icon(Icons.phone_iphone),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                keyboardType: TextInputType.numberWithOptions(),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 18),
+                  prefixIcon: Icon(
+                    Icons.phone_android,
+                    color: Color(0xFF6991C7),
+                    size: 24.0,
+                  ),
+                  hintText: 'Input Contact',
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                onEditingComplete: () {
+                  FocusScope.of(context).requestFocus(customerSumberContactFocus);
+                },
+                controller: customerContactCtrl,
+                focusNode: customerContactFocus,
               ),
             ),
           ),
-          onEditingComplete: () {
-            FocusScope.of(context).requestFocus(customerSumberContactFocus);
-          },
-          controller: customerContactCtrl,
-          focusNode: customerContactFocus,
-          maxLines: null,
         ),
       ),
     );
@@ -710,39 +755,52 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Customer Group',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListGroup();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListGroup();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Select Customer Group',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerGroupCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: customerGroupCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -752,39 +810,52 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Gender',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListGender();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListGender();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Gender',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerGenderCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: customerGenderCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -794,39 +865,52 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Prospect Source',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListSource();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListSource();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Select Prospect Source',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerProspectSourceCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: customerProspectSourceCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -836,67 +920,52 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: FormField(
-          builder: (FormFieldState state) {
-            return InputDecorator(
-              decoration: InputDecoration(
-                hintText: 'Follow Up',
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 1,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 1,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 1,
-                  ),
-                ),
-                contentPadding:
-                    EdgeInsets.only(bottom: 18, left: 18, right: 18),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _currentSelectFollowUp,
-                  hint: Text('Follow UP'),
-                  isDense: true,
-                  onChanged: (String newVal) {
-                    setState(() {
-                      _currentSelectFollowUp = newVal;
-                      state.didChange(newVal);
-                    });
-                  },
-                  items: [
-                    '1 Hari',
-                    '2 Hari',
-                    '3 Hari',
-                    '4 Hari',
-                    '5 Hari',
-                    '6 Hari',
-                    '7 Hari'
-                  ].map((String val) {
-                    return DropdownMenuItem<String>(
-                      value: val,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(val),
-                        ],
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListFollowUp();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
                       ),
-                    );
-                  }).toList(),
+                      hintText: "Select Follow Up",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: followUpCtrl,
+                  ),
                 ),
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );
@@ -904,41 +973,54 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
 
   Widget formSelectLocation() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 40, top: 7),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Customer Location',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListLocation();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListLocation();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Select Customer Location',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerLocationCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: customerLocationCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -948,39 +1030,52 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Customer Job',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListJob();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListJob();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Select Customer Job',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerJobCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: customerJobCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -990,39 +1085,52 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Province',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListProvince();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListProvince();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Select Province',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerProvinceCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: customerProvinceCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -1032,39 +1140,52 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select District',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListDistrict();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListDistrict();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Select District',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerDistrictCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: customerDistrictCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -1074,39 +1195,52 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Sub District',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListSubDistrict();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListSubDistrict();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Select Sub District',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerSubDistrictCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: customerSubDistrictCtrl,
-          maxLines: null,
         ),
       ),
     );
