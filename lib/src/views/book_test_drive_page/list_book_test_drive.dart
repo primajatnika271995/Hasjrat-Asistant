@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
+
+import '../../bloc/dms_bloc/dms_bloc.dart';
+import '../../services/dms_service.dart';
 
 class BookTestDriveListView extends StatefulWidget {
   @override
@@ -13,10 +17,12 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
   void _onAddBookTestDrive() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => BookTestDriveAddView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => DmsBloc(DmsService()),
+          child: BookTestDriveAddView(),
+        ),
         transitionDuration: Duration(milliseconds: 150),
-        transitionsBuilder:
-            (_, Animation<double> animation, __, Widget child) {
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
             opacity: animation.value,
             child: child,
