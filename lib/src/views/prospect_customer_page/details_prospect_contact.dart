@@ -70,7 +70,11 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
             Divider(),
             contactCustomer(),
             Divider(),
-            alamatCustomer(),
+            provinceCustomer(),
+            Divider(),
+            kotaCustomer(),
+            Divider(),
+            kecamatanCustomer(),
             Divider(),
             locationCustomer(),
             Divider(),
@@ -260,7 +264,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
     );
   }
 
-  Widget alamatCustomer() {
+  Widget provinceCustomer() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
       child: Row(
@@ -269,7 +273,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 4,
             child: Text(
-              "Alamat",
+              "Provinsi",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -280,7 +284,71 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 6,
             child: Text(
-              "${widget.value.addresses[0].address1}, ${widget.value.addresses[0].kecamatanName}, ${widget.value.addresses[0].kabupatenName}, ${widget.value.addresses[0].provinsiName}",
+              "${widget.value.addresses[0].provinsiName}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget kotaCustomer() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Kota",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${widget.value.addresses[0].kabupatenName}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget kecamatanCustomer() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Kecamatan",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${widget.value.addresses[0].kecamatanName}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,

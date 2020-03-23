@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget sliverAppBar() {
     return SliverToBoxAdapter(
       child: Container(
-        height: 220,
+        height: 240,
         child: Stack(
           children: <Widget>[
             Positioned(

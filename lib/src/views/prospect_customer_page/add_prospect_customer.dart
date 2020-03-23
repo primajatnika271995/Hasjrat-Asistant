@@ -31,12 +31,23 @@ class _ProspectAddViewState extends State<ProspectAddView> {
 
   final dateFormat = DateFormat("yyyy-MM-dd");
 
-  var _currentSelectFollowUp = "7 Hari";
-
   var leadCodeCtrl = new TextEditingController();
   var leadNameCtrl = new TextEditingController();
   var prospectDateCtrl = new TextEditingController();
+  var followUpCtrl = new TextEditingController();
   var salesNameCtrl = new TextEditingController();
+
+  var _currentSelectFollowUp = "7 Hari";
+  List<String> followUpList = [
+    "1 Hari",
+    "2 Hari",
+    "3 Hari",
+    "4 Hari",
+    "5 Hari",
+    "5 Hari",
+    "6 Hari",
+    "7 Hari",
+  ];
 
   var customerProspectSourceCtrl = new TextEditingController();
   var currentSelectProspectSource;
@@ -138,6 +149,21 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     );
   }
 
+  void _showListFollowUp() {
+    SelectDialog.showModal<String>(
+      context,
+      label: "Follow Up",
+      selectedValue: _currentSelectFollowUp,
+      items: followUpList,
+      onChange: (String selected) {
+        setState(() {
+          _currentSelectFollowUp = selected;
+          followUpCtrl.text = selected;
+        });
+      },
+    );
+  }
+
   void _showListSource() {
     SelectDialog.showModal<SelectorProspectSourceModel>(
       context,
@@ -157,7 +183,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   void _showListItemCode() {
     SelectDialog.showModal<SelectorPriceListModel>(
       context,
-      label: "Item Model",
+      label: "Item Code",
       selectedValue: currentSelectPriceList,
       items: priceList,
       itemBuilder: (context, SelectorPriceListModel item, bool isSelected) {
@@ -202,6 +228,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     leadNameCtrl.text = widget.value.cardName;
     prospectDateCtrl.value = TextEditingValue(text: dateFormat.format(DateTime.now()).toString());
     salesNameCtrl.text = widget.value.salesName;
+    followUpCtrl.text = "7 Hari";
 
     // ignore: close_sinks
     final dmsBloc = BlocProvider.of<DmsBloc>(context);
@@ -461,37 +488,45 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        width: 150,
-        color: Colors.grey.withOpacity(0.3),
-        child: TextField(
-          textInputAction: TextInputAction.next,
-          enabled: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18),
-            hintText: 'Prospect Date',
-            prefixIcon: Icon(Icons.date_range),
-            hasFloatingPlaceholder: false,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabled: false,
+                  contentPadding: EdgeInsets.only(bottom: 17),
+                  prefixIcon: Icon(
+                    Icons.date_range,
+                    color: Color(0xFF6991C7),
+                    size: 24.0,
+                  ),
+                  hintText: "Date",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: prospectDateCtrl,
               ),
             ),
           ),
-          controller: prospectDateCtrl,
         ),
       ),
     );
@@ -501,35 +536,40 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        color: Colors.grey.withOpacity(0.3),
-        child: TextField(
-          textInputAction: TextInputAction.next,
-          enabled: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18),
-            hintText: 'Lead Code',
-            hasFloatingPlaceholder: false,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabled: false,
+                  contentPadding: EdgeInsets.only(bottom: 17),
+                  hintText: "Lead Code",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: leadCodeCtrl,
               ),
             ),
           ),
-          controller: leadCodeCtrl,
         ),
       ),
     );
@@ -539,35 +579,40 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        color: Colors.grey.withOpacity(0.3),
-        child: TextField(
-          textInputAction: TextInputAction.next,
-          enabled: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18),
-            hintText: 'Lead Name',
-            hasFloatingPlaceholder: false,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabled: false,
+                  contentPadding: EdgeInsets.only(bottom: 17),
+                  hintText: "Lead Name",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: leadNameCtrl,
               ),
             ),
           ),
-          controller: leadNameCtrl,
         ),
       ),
     );
@@ -577,35 +622,45 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        color: Colors.grey.withOpacity(0.3),
-        child: TextField(
-          textInputAction: TextInputAction.next,
-          enabled: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18),
-            hintText: 'Sales Name',
-            hasFloatingPlaceholder: false,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabled: false,
+                  contentPadding: EdgeInsets.only(bottom: 17),
+                  prefixIcon: Icon(
+                    Icons.perm_identity,
+                    color: Color(0xFF6991C7),
+                    size: 24.0,
+                  ),
+                  hintText: "Sales Name",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: salesNameCtrl,
               ),
             ),
           ),
-          controller: salesNameCtrl,
         ),
       ),
     );
@@ -615,67 +670,52 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: FormField(
-          builder: (FormFieldState state) {
-            return InputDecorator(
-              decoration: InputDecoration(
-                hintText: 'Follow Up',
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 1,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 1,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 1,
-                  ),
-                ),
-                contentPadding:
-                EdgeInsets.only(bottom: 18, left: 18, right: 18),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _currentSelectFollowUp,
-                  hint: Text('Follow Up'),
-                  isDense: true,
-                  onChanged: (String newVal) {
-                    setState(() {
-                      _currentSelectFollowUp = newVal;
-                      state.didChange(newVal);
-                    });
-                  },
-                  items: [
-                    '1 Hari',
-                    '2 Hari',
-                    '3 Hari',
-                    '4 Hari',
-                    '5 Hari',
-                    '6 Hari',
-                    '7 Hari'
-                  ].map((String val) {
-                    return DropdownMenuItem<String>(
-                      value: val,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(val),
-                        ],
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListFollowUp();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
                       ),
-                    );
-                  }).toList(),
+                      hintText: "Select Follow Up",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: followUpCtrl,
+                  ),
                 ),
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );
@@ -685,39 +725,52 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Prospect Source',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListSource();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListSource();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Source",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerProspectSourceCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: customerProspectSourceCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -727,39 +780,52 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Class1 ',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListClass1();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListClass1();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Class 1",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: class1Ctrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: class1Ctrl,
-          maxLines: null,
         ),
       ),
     );
@@ -769,39 +835,52 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Item Model ',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListItemModel();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListItemModel();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Item Model",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: itemModelCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: itemModelCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -811,39 +890,52 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Item Type ',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListItemType();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListItemType();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Item Type",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: itemTypeCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: itemTypeCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -853,39 +945,52 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            hintText: 'Select Item Code',
-            contentPadding: EdgeInsets.only(bottom: 18, left: 18, right: 18),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListItemCode();
-              },
-              icon: Icon(Icons.arrow_drop_down),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListItemCode();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Item Code",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: itemCodeCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: itemCodeCtrl,
-          maxLines: null,
         ),
       ),
     );

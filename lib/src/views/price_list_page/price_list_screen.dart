@@ -114,7 +114,7 @@ class _PriceListViewState extends State<PriceListView> {
   void _showListItemCode() {
     SelectDialog.showModal<SelectorPriceListModel>(
       context,
-      label: "Item Model",
+      label: "Item Code",
       selectedValue: currentSelectPriceList,
       items: priceList,
       itemBuilder: (context, SelectorPriceListModel item, bool isSelected) {
