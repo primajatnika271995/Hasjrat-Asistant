@@ -528,7 +528,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: GestureDetector(
@@ -542,8 +542,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                       border: InputBorder.none,
                       enabled: false,
                       contentPadding: EdgeInsets.only(bottom: 18),
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
+                      prefixIcon: Icon(
+                        Icons.local_convenience_store,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
@@ -583,7 +583,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: GestureDetector(
@@ -597,8 +597,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                       border: InputBorder.none,
                       enabled: false,
                       contentPadding: EdgeInsets.only(bottom: 18),
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
+                      prefixIcon: Icon(
+                        Icons.location_on,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
@@ -638,7 +638,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: GestureDetector(
@@ -652,8 +652,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                       border: InputBorder.none,
                       enabled: false,
                       contentPadding: EdgeInsets.only(bottom: 18),
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
+                      prefixIcon: Icon(
+                        Icons.merge_type,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
@@ -693,7 +693,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: GestureDetector(
@@ -707,8 +707,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                       border: InputBorder.none,
                       enabled: false,
                       contentPadding: EdgeInsets.only(bottom: 18),
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
+                      prefixIcon: Icon(
+                        Icons.invert_colors,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
@@ -748,7 +748,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: GestureDetector(
@@ -762,8 +762,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                       border: InputBorder.none,
                       enabled: false,
                       contentPadding: EdgeInsets.only(bottom: 18),
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
+                      prefixIcon: Icon(
+                        Icons.group_work,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
@@ -803,7 +803,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: GestureDetector(
@@ -817,8 +817,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                       border: InputBorder.none,
                       enabled: false,
                       contentPadding: EdgeInsets.only(bottom: 18),
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
+                      prefixIcon: Icon(
+                        Icons.directions_car,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
