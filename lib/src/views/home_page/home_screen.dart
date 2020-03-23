@@ -11,14 +11,16 @@ import 'package:salles_tools/src/utils/app_theme.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
+import 'package:salles_tools/src/views/activity_report_page/add_activity_report.dart';
 import 'package:salles_tools/src/views/book_service_page/list_book_service.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/list_book_test_drive.dart';
-import 'package:salles_tools/src/views/calculator_page/calculator_screen.dart';
 import 'package:salles_tools/src/views/calculator_page/calculator_stepper.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_screen.dart';
 import 'package:salles_tools/src/views/customer_page/list_customer.dart';
 import 'package:salles_tools/src/views/home_page/list_promotion.dart';
 import 'package:salles_tools/src/views/knowledge_base_page/knowledge_base_screen.dart';
+import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
+import 'package:salles_tools/src/views/promotion_page/list_promotion.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/list_prospect_customer.dart';
 import 'package:salles_tools/src/views/reminder_page/list_reminder.dart';
 
@@ -95,7 +97,12 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
-  List _moreMenuNavigation = [];
+  List _moreMenuNavigation = [
+    KnowledgeBaseScreen(),
+    AddActivityReportView(),
+    PriceListView(),
+    PromotionListScreen(),
+  ];
 
   void _showMoreMenu() {
     showModalBottomSheet(
@@ -121,7 +128,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => _moreMenuNavigation[index],
+                          transitionDuration: Duration(milliseconds: 150),
+                          transitionsBuilder:
+                              (_, Animation<double> animation, __, Widget child) {
+                            return Opacity(
+                              opacity: animation.value,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Column(
