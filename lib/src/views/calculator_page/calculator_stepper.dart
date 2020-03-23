@@ -24,7 +24,13 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
   var dpVehicleCtrl = MoneyMaskedTextController(leftSymbol: 'Rp ', precision: 0, decimalSeparator: '');
   int priceSelection = -1;
+
+  var methodeCtrl = new TextEditingController();
   String currentSelectMethode;
+  List<String> methodeList = [
+    "Down Payment",
+    "Price List",
+  ];
 
   var branchNameCtrl = new TextEditingController();
   var currentSelectBranch;
@@ -121,6 +127,21 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           break;
         }
     }
+  }
+
+  void _showListPayment() {
+    SelectDialog.showModal<String>(
+      context,
+      label: "Payment",
+      selectedValue: currentSelectMethode,
+      items: methodeList,
+      onChange: (String selected) {
+        setState(() {
+          currentSelectMethode = selected;
+          methodeCtrl.text = selected;
+        });
+      },
+    );
   }
 
   void _showListBranch() {
@@ -493,42 +514,52 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18),
-            hintText: 'Select Branch',
-            hasFloatingPlaceholder: false,
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListBranch();
-              },
-              icon: Icon(Icons.navigate_next),
-              color: Colors.red,
-            ),
-            prefixIcon: Icon(Icons.location_on, color: HexColor('#C61818')),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListBranch();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Branch",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: branchNameCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: branchNameCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -538,42 +569,52 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18),
-            hasFloatingPlaceholder: false,
-            hintText: 'Select Outlet',
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListOutlet();
-              },
-              icon: Icon(Icons.navigate_next),
-              color: Colors.red,
-            ),
-            prefixIcon: Icon(Icons.location_on, color: HexColor('#C61818')),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListOutlet();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Outlet",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: outletNameCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: outletNameCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -583,42 +624,52 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18),
-            hasFloatingPlaceholder: false,
-            hintText: 'Select Asset Kind',
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListAssetKind();
-              },
-              icon: Icon(Icons.navigate_next),
-              color: Colors.red,
-            ),
-            prefixIcon: Icon(Icons.web_asset, color: HexColor('#C61818')),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListAssetKind();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Asset Kind",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: assetKindCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: assetKindCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -628,42 +679,52 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18),
-            hasFloatingPlaceholder: false,
-            hintText: 'Select Insurance',
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListInsuranceType();
-              },
-              icon: Icon(Icons.navigate_next),
-              color: Colors.red,
-            ),
-            prefixIcon: Icon(Icons.assignment_ind, color: HexColor('#C61818')),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListInsuranceType();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Insurance",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: insuranceTypeCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: insuranceTypeCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -673,42 +734,52 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18),
-            hasFloatingPlaceholder: false,
-            hintText: 'Select Asset Group',
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListAssetGroup();
-              },
-              icon: Icon(Icons.navigate_next),
-              color: Colors.red,
-            ),
-            prefixIcon: Icon(Icons.group_work, color: HexColor('#C61818')),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListAssetGroup();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Asset Group",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: assetGroupCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: assetGroupCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -718,42 +789,52 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
-        height: 40,
-        child: TextField(
-          readOnly: true,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 18),
-            hasFloatingPlaceholder: false,
-            hintText: 'Select Asset Type',
-            suffixIcon: IconButton(
-              onPressed: () {
-                _showListAssetType();
-              },
-              icon: Icon(Icons.navigate_next),
-              color: Colors.red,
-            ),
-            prefixIcon: Icon(Icons.directions_car, color: HexColor('#C61818')),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListAssetType();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Asset Type",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: assetTypeCtrl,
+                  ),
+                ),
               ),
             ),
           ),
-          controller: assetTypeCtrl,
-          maxLines: null,
         ),
       ),
     );
@@ -761,38 +842,55 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
   Widget selectedMethode() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: FormField(
-        builder: (FormFieldState state) {
-          return InputDecorator(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: currentSelectMethode,
-                hint: Text('Select Simulation Type'),
-                isDense: true,
-                onChanged: (String newVal) {
-                  setState(() {
-                    currentSelectMethode = newVal;
-                    state.didChange(newVal);
-                  });
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListPayment();
                 },
-                items: ['Down Payment', 'Price List'].map((String val) {
-                  return DropdownMenuItem<String>(
-                    value: val,
-                    child: Text(val),
-                  );
-                }).toList(),
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Payment",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: methodeCtrl,
+                  ),
+                ),
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
