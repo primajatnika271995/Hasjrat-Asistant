@@ -21,7 +21,7 @@ class EmployeeModel {
   String joinDate;
   DateTime birthDate;
   Branch branch;
-  Branch outlet;
+  Outlet outlet;
   Branch location;
   Branch job;
   Section section;
@@ -60,7 +60,7 @@ class EmployeeModel {
     joinDate: json["joinDate"] == null ? null : json["joinDate"],
     birthDate: json["birthDate"] == null ? null : DateTime.parse(json["birthDate"]),
     branch: json["branch"] == null ? null : Branch.fromJson(json["branch"]),
-    outlet: json["outlet"] == null ? null : Branch.fromJson(json["outlet"]),
+    outlet: json["outlet"] == null ? null : Outlet.fromJson(json["outlet"]),
     location: json["location"] == null ? null : Branch.fromJson(json["location"]),
     job: json["job"] == null ? null : Branch.fromJson(json["job"]),
     section: json["section"] == null ? null : Section.fromJson(json["section"]),
@@ -107,6 +107,28 @@ class Branch {
     "name": name == null ? null : name,
   };
 }
+
+class Outlet {
+  String id;
+  String name;
+
+  Outlet({
+    this.id,
+    this.name,
+  });
+
+  factory Outlet.fromJson(Map<String, dynamic> json) => Outlet(
+    id: json["id"] == null ? null : json["id"],
+    name: json["name"] == null ? null : json["name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
+    "name": name == null ? null : name,
+  };
+}
+
+
 
 class Section {
   String id;

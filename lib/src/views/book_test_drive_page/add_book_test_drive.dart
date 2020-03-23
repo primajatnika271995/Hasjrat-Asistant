@@ -11,6 +11,10 @@ import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:select_dialog/select_dialog.dart';
 
+import '../../utils/shared_preferences_helper.dart';
+import '../../utils/shared_preferences_helper.dart';
+import '../../utils/shared_preferences_helper.dart';
+
 class BookTestDriveAddView extends StatefulWidget {
   @override
   _BookTestDriveAddViewState createState() => _BookTestDriveAddViewState();
@@ -18,6 +22,13 @@ class BookTestDriveAddView extends StatefulWidget {
 
 class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   var _formKey = GlobalKey<FormState>();
+
+//shared prefference var
+  var _branchName;
+  var _branchId;
+  var _outletName;
+  var _outletId;
+//end of shared prefference var
 
 // list car dms
   var itemCodeCtrl = new TextEditingController();
@@ -36,6 +47,11 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   var currentSelectItemType;
   List<String> itemTypeList = [];
 // list car dms
+
+//text editing controller init
+  var branchNameCtrl = new TextEditingController();
+  var outletNameCtrl = new TextEditingController();
+//end of text editing controller init
 
   var costumerNameFocus = new FocusNode();
   var emailFocus = new FocusNode();
@@ -148,6 +164,22 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
         });
       },
     );
+  }
+
+  void _getSharedPrefferences() async {
+    _branchName = await SharedPreferencesHelper.getSalesBrach();
+    _branchId = await SharedPreferencesHelper.getSalesBrachId();
+
+    _outletName = await SharedPreferencesHelper.getSalesOutlet();
+    _outletId = await SharedPreferencesHelper.getSalesOutletId();
+
+    setState(() {
+      // branchNameCtrl.text = _branchName;
+      // outletNameCtrl.text = _outletName;
+
+      branchNameCtrl.text = _branchId;
+      outletNameCtrl.text = _outletId;
+    });
   }
 
   @override
@@ -522,35 +554,32 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           ],
         ),
         child: Center(
-          child: Padding(
-            padding: EdgeInsets.only(left: 20, right: 2),
-            child: Theme(
-              data: ThemeData(hintColor: Colors.transparent),
-              child: GestureDetector(
-                onTap: () {
-                  //list dealer from api here
-                  print('Open dialog chose dealer from api');
-                },
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      enabled: false,
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Color(0xFF6991C7),
-                        size: 24.0,
-                      ),
-                      hintText: "Select Dealer",
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 13,
-                      ),
+          child: Theme(
+            data: ThemeData(hintColor: Colors.transparent),
+            child: GestureDetector(
+              onTap: () {
+                //list dealer from api here
+                print('Open dialog chose dealer from api');
+              },
+              child: AbsorbPointer(
+                child: TextFormField(
+                  readOnly: true,
+                  decoration: new InputDecoration(
+                    border: InputBorder.none,
+                    enabled: false,
+                    suffixIcon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Color(0xFF6991C7),
+                      size: 24.0,
                     ),
-                    // controller: dealerCtrl,
+                    hintText: "Select Dealer",
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13,
+                    ),
                   ),
+                  controller: branchNameCtrl,
                 ),
               ),
             ),
@@ -579,35 +608,32 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           ],
         ),
         child: Center(
-          child: Padding(
-            padding: EdgeInsets.only(left: 20, right: 2),
-            child: Theme(
-              data: ThemeData(hintColor: Colors.transparent),
-              child: GestureDetector(
-                onTap: () {
-                  //list dealer from api here
-                  print('Open dialog chose Outlet from api');
-                },
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      enabled: false,
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Color(0xFF6991C7),
-                        size: 24.0,
-                      ),
-                      hintText: "Select Outlet",
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 13,
-                      ),
+          child: Theme(
+            data: ThemeData(hintColor: Colors.transparent),
+            child: GestureDetector(
+              onTap: () {
+                //list dealer from api here
+                print('Open dialog chose Outlet from api');
+              },
+              child: AbsorbPointer(
+                child: TextFormField(
+                  readOnly: true,
+                  decoration: new InputDecoration(
+                    border: InputBorder.none,
+                    enabled: false,
+                    suffixIcon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Color(0xFF6991C7),
+                      size: 24.0,
                     ),
-                    // controller: dealerCtrl,
+                    hintText: "Select Outlet",
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13,
+                    ),
                   ),
+                  controller: outletNameCtrl,
                 ),
               ),
             ),
@@ -937,8 +963,11 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   @override
   void initState() {
     // TODO: implement initState
+    _getSharedPrefferences();
+
     final dmsBloc = BlocProvider.of<DmsBloc>(context);
     dmsBloc.add(FetchClass1Item());
+
     print(
         "============================= page add booking test drive =============================");
     super.initState();

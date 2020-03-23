@@ -8,6 +8,8 @@ import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
+import '../../utils/shared_preferences_helper.dart';
+
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginService loginService;
   LoginBloc(this.loginService);
@@ -22,7 +24,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        AuthenticationModel value = await loginService.login(event.username, event.password);
+        AuthenticationModel value =
+            await loginService.login(event.username, event.password);
 
         await SharedPreferencesHelper.setAccessToken(value.accessToken);
         await SharedPreferencesHelper.setUsername(event.username);
@@ -31,15 +34,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         EmployeeModel employee = await loginService.checkNIK(event.username);
         await SharedPreferencesHelper.setSalesName(employee.name);
         await SharedPreferencesHelper.setSalesNIK(employee.id);
-        await SharedPreferencesHelper.setSalesBirthday(employee.birthDate.toString());
+        await SharedPreferencesHelper.setSalesBirthday(
+            employee.birthDate.toString());
         await SharedPreferencesHelper.setSalesGender(employee.jenisKelamin);
+        
         await SharedPreferencesHelper.setSalesBrach(employee.branch.name);
         await SharedPreferencesHelper.setSalesBrachId(employee.branch.id);
+
         await SharedPreferencesHelper.setSalesOutlet(employee.outlet.name);
+        await SharedPreferencesHelper.setSalesOutletId(employee.outlet.id);
+
         await SharedPreferencesHelper.setSalesJob(employee.section.newName);
 
         yield LoginSuccess(value);
-      } catch(err) {
+      } catch (err) {
         log.warning(err.toString());
         yield LoginFailed();
       }
