@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:salles_tools/src/bloc/booking_bloc/booking_drive._bloc.dart';
+import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_event.dart';
+import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_state.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
+import 'package:salles_tools/src/models/test_drive_model.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:select_dialog/select_dialog.dart';
 
+import '../../bloc/dms_bloc/dms_event.dart';
 import '../../utils/shared_preferences_helper.dart';
 import '../../utils/shared_preferences_helper.dart';
 import '../../utils/shared_preferences_helper.dart';
+import '../components/log.dart';
 
 class BookTestDriveAddView extends StatefulWidget {
   @override
@@ -21,6 +28,7 @@ class BookTestDriveAddView extends StatefulWidget {
 }
 
 class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
+  List<String> _listKendaraan = new List<String>();
   var _formKey = GlobalKey<FormState>();
 
 //shared prefference var
@@ -38,33 +46,30 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   var class1Ctrl = new TextEditingController();
   var currentSelectClass1;
   List<String> class1List = [];
-
-  var itemModelCtrl = new TextEditingController();
-  var currentSelectItemModel;
-  List<String> itemModelList = [];
-
-  var itemTypeCtrl = new TextEditingController();
-  var currentSelectItemType;
-  List<String> itemTypeList = [];
 // list car dms
 
+  int convertDate;
+
 //text editing controller init
+  var customerNameCtrl = new TextEditingController();
+  var customerContactCtrl = new TextEditingController();
   var branchNameCtrl = new TextEditingController();
   var outletNameCtrl = new TextEditingController();
+  var dateSelected = new TextEditingController();
+  var timeSelected = new TextEditingController();
+  var notesCtrl = new TextEditingController();
 //end of text editing controller init
 
   var costumerNameFocus = new FocusNode();
-  var emailFocus = new FocusNode();
   var phoneNumberFocus = new FocusNode();
+  var dateSelectedFocus = new FocusNode();
+  var timeSelectedFocus = new FocusNode();
 
   final dateFormat = DateFormat("dd MMMM yyyy");
   final timeFormat = DateFormat("h:mm a");
 
   DateTime _dateTime = DateTime.now();
   TimeOfDay timeOfDay = TimeOfDay.now();
-
-  var dateSelected = new TextEditingController();
-  var timeSelected = new TextEditingController();
 
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -79,6 +84,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
         _dateTime = picked;
         dateSelected.value =
             TextEditingValue(text: dateFormat.format(picked).toString());
+        convertDate = _dateTime.toUtc().millisecondsSinceEpoch;
       });
   }
 
@@ -95,6 +101,16 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
       });
   }
 
+  final modelItems = List.generate(
+    50,
+    (index) => TestDriveModel(
+      // avatar: "https://i.imgur.com/lTy4hiN.jpg",
+      // name: "Deivão $index",
+      // id: "$index",
+      // createdAt: DateTime.now(),
+    ),
+  );
+
   void _showListClass1() {
     SelectDialog.showModal<String>(
       context,
@@ -102,65 +118,9 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
       selectedValue: currentSelectClass1,
       items: class1List,
       onChange: (String selected) {
-        setState(() {
-          itemModelList = [];
+        setState(() {    
           currentSelectClass1 = selected;
           class1Ctrl.text = selected;
-
-          // ignore: close_sinks
-          final dmsBloc = BlocProvider.of<DmsBloc>(context);
-          dmsBloc.add(FetchItemModel(ItemModelPost(
-              itemType: "",
-              itemModel: "",
-              itemClass1: class1Ctrl.text,
-              itemClass: "")));
-        });
-      },
-    );
-  }
-
-  void _showListItemModel() {
-    SelectDialog.showModal<String>(
-      context,
-      label: "Item Model",
-      selectedValue: currentSelectItemModel,
-      items: itemModelList.toSet().toList(),
-      onChange: (String selected) {
-        setState(() {
-          itemTypeList = [];
-          currentSelectItemModel = selected;
-          itemModelCtrl.text = selected;
-
-          // ignore: close_sinks
-          final dmsBloc = BlocProvider.of<DmsBloc>(context);
-          dmsBloc.add(FetchItemType(ItemModelPost(
-              itemType: "",
-              itemModel: itemModelCtrl.text,
-              itemClass1: class1Ctrl.text,
-              itemClass: "")));
-        });
-      },
-    );
-  }
-
-  void _showListItemType() {
-    SelectDialog.showModal<String>(
-      context,
-      label: "Item Type",
-      selectedValue: currentSelectItemType,
-      items: itemTypeList,
-      onChange: (String selected) {
-        setState(() {
-          priceList = [];
-          currentSelectItemType = selected;
-          itemTypeCtrl.text = selected;
-
-          // ignore: close_sinks
-          final dmsBloc = BlocProvider.of<DmsBloc>(context);
-          dmsBloc.add(FetchPriceList(PriceListPost(
-            itemCode: "",
-            custGroup: "1",
-          )));
         });
       },
     );
@@ -174,13 +134,34 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     _outletId = await SharedPreferencesHelper.getSalesOutletId();
 
     setState(() {
-      // branchNameCtrl.text = _branchName;
-      // outletNameCtrl.text = _outletName;
+      branchNameCtrl.text = _branchName;
+      outletNameCtrl.text = _outletName;
 
-      branchNameCtrl.text = _branchId;
-      outletNameCtrl.text = _outletId;
+      // branchNameCtrl.text = _branchId;
+      // outletNameCtrl.text = _outletId;
     });
   }
+
+  // void onSaveBooking() {
+  //   if (_formKey.currentState.validate()) {
+  //     print("data register book test drive");
+  //     final dmsBloc = BlocProvider.of<DmsBloc>(context);
+  //     dmsBloc.add(BookingTestDriveRegister(BookingTestDrivePost(
+  //       customerName: customerNameCtrl.text,
+  //       customerPhone: customerContactCtrl.text,
+  //       branchCode: _branchId,
+  //       outletCode: _outletId,
+  //       notes: notesCtrl.text,
+  //       carId: itemCodeCtrl.text,
+  //       schedule: convertDate,
+  //     )));
+  //     print("schedule in milisecon => $convertDate");
+  //     print(
+  //         "data booking | ${customerNameCtrl.text} | ${customerContactCtrl.text} | $_branchId | $_outletId | ${notesCtrl.text} | ${itemCodeCtrl.text} | $convertDate");
+  //   } else {
+  //     log.warning("Please Complete Form!");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +182,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
       ),
       body: Form(
         key: _formKey,
-        child: BlocListener<DmsBloc, DmsState>(
+        child: BlocListener<BookingDriveBloc, BookingDriveState>(
           listener: (context, state) {
             if (state is DmsLoading) {
               onLoading(context);
@@ -210,36 +191,46 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             if (state is DmsDisposeLoading) {
               Navigator.of(context, rootNavigator: false).pop();
             }
-
-            if (state is Class1ItemSuccess) {
-              state.value.data.forEach((f) {
-                class1List.add(f);
+            if (state is CarListSuccess) {
+               state.value.data.forEach((f) {
+                class1List.add(f.itemModel);
               });
             }
-
-            if (state is ItemModelSuccess) {
-              state.value.data.forEach((f) {
-                itemModelList.add(f.itemModel);
-              });
+            if (state is RegisterBookingTestDriveSuccess) {
+              log.info("Success Create Booking Test Drive");
+              Alert(
+                  context: context,
+                  type: AlertType.success,
+                  title: 'Success',
+                  desc: "Created Booking Test Drive!",
+                  buttons: [
+                    DialogButton(
+                      child: Text(
+                        "OK",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      onPressed: () => Navigator.pop(context, true),
+                      color: HexColor("#C61818"),
+                    ),
+                  ]).show();
             }
-
-            if (state is ItemTypeSuccess) {
-              state.value.data.forEach((f) {
-                itemTypeList.add(f.itemType);
-              });
-            }
-
-            if (state is PriceListSuccess) {
-              state.value.data.forEach((f) {
-                if (f.itemModel == currentSelectItemModel &&
-                    f.itemType == currentSelectItemType) {
-                  priceList.add(SelectorPriceListModel(
-                    itemCode: f.itemCode,
-                    itemModel: f.itemModel,
-                    itemType: f.itemType,
-                  ));
-                }
-              });
+            if (state is RegisterBookingTestDriveError) {
+              log.warning("Fail Create Booking Test Drive");
+              Alert(
+                  context: context,
+                  type: AlertType.error,
+                  title: 'Error',
+                  desc: "Failed to Create Booking Test Drive!",
+                  buttons: [
+                    DialogButton(
+                      child: Text(
+                        "OK",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      color: HexColor("#C61818"),
+                    ),
+                  ]).show();
             }
           },
           child: SingleChildScrollView(
@@ -257,17 +248,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                   ),
                 ),
                 formAddCustomer(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 20),
-                  child: Text(
-                    "Customer Email (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-                formEmail(),
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
@@ -315,28 +295,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
-                    "Model (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-                formAddModelVehicle(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 20),
-                  child: Text(
-                    "Type (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-                formAddType(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 20),
-                  child: Text(
                     "Date (*)",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
@@ -374,10 +332,10 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                     width: screenWidth(context),
                     child: RaisedButton(
                       onPressed: () {
-                        print('go to next step');
+                        // onSaveBooking();
                       },
                       child: Text(
-                        "Next",
+                        "Save",
                         style: TextStyle(color: Colors.white),
                       ),
                       color: HexColor('#C61818'),
@@ -438,53 +396,9 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 onEditingComplete: () {
                   FocusScope.of(context).requestFocus(costumerNameFocus);
                 },
-                //controller next here
+                controller: customerNameCtrl,
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget formEmail() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-      child: Container(
-        height: 30,
-        decoration: new BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(30),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 15,
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: Center(
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              prefixIcon: Icon(
-                Icons.email,
-                color: Color(0xFF6991C7),
-                size: 24.0,
-              ),
-              hintText: "Input Email",
-              hintStyle: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.w400,
-                fontSize: 13,
-              ),
-            ),
-            focusNode: emailFocus,
-            onEditingComplete: () {
-              FocusScope.of(context).requestFocus(emailFocus);
-            },
           ),
         ),
       ),
@@ -525,10 +439,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 fontSize: 13,
               ),
             ),
+            keyboardType: TextInputType.number,
             focusNode: phoneNumberFocus,
             onEditingComplete: () {
               FocusScope.of(context).requestFocus(phoneNumberFocus);
             },
+            controller: customerContactCtrl,
           ),
         ),
       ),
@@ -567,6 +483,11 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                   decoration: new InputDecoration(
                     border: InputBorder.none,
                     enabled: false,
+                    prefixIcon: Icon(
+                      Icons.local_convenience_store,
+                      color: Color(0xFF6991C7),
+                      size: 24.0,
+                    ),
                     suffixIcon: Icon(
                       Icons.arrow_drop_down,
                       color: Color(0xFF6991C7),
@@ -621,6 +542,11 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                   decoration: new InputDecoration(
                     border: InputBorder.none,
                     enabled: false,
+                    prefixIcon: Icon(
+                      Icons.location_on,
+                      color: Color(0xFF6991C7),
+                      size: 24.0,
+                    ),
                     suffixIcon: Icon(
                       Icons.arrow_drop_down,
                       color: Color(0xFF6991C7),
@@ -701,118 +627,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     );
   }
 
-  Widget formAddModelVehicle() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-      child: Container(
-        height: 30,
-        decoration: new BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(30),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 0,
-              blurRadius: 15,
-            ),
-          ],
-        ),
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.only(left: 20, right: 2),
-            child: Theme(
-              data: ThemeData(hintColor: Colors.transparent),
-              child: GestureDetector(
-                onTap: () {
-                  _showListItemModel();
-                },
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      enabled: false,
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Color(0xFF6991C7),
-                        size: 24.0,
-                      ),
-                      hintText: "Select Model Vehicle",
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 13,
-                      ),
-                    ),
-                    controller: itemModelCtrl,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget formAddType() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-      child: Container(
-        height: 30,
-        decoration: new BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(30),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 0,
-              blurRadius: 15,
-            ),
-          ],
-        ),
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.only(left: 20, right: 2),
-            child: Theme(
-              data: ThemeData(hintColor: Colors.transparent),
-              child: GestureDetector(
-                onTap: () {
-                  _showListItemType();
-                },
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      enabled: false,
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Color(0xFF6991C7),
-                        size: 24.0,
-                      ),
-                      hintText: "Select Type",
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 13,
-                      ),
-                    ),
-                    controller: itemTypeCtrl,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget formDatePicker() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
@@ -856,7 +670,8 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                       fontSize: 13,
                     ),
                   ),
-                  // controller: dealerCtrl,
+                  controller: dateSelected,
+                  focusNode: dateSelectedFocus,
                 ),
               ),
             ),
@@ -909,7 +724,8 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                       fontSize: 13,
                     ),
                   ),
-                  // controller: dealerCtrl,
+                  controller: timeSelected,
+                  focusNode: timeSelectedFocus,
                 ),
               ),
             ),
@@ -965,8 +781,9 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     // TODO: implement initState
     _getSharedPrefferences();
 
-    final dmsBloc = BlocProvider.of<DmsBloc>(context);
-    dmsBloc.add(FetchClass1Item());
+    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
+    // dmsBloc.add(FetchClass1Item());
+    bookingDriveBloc.add(FetchTestDriveCar());
 
     print(
         "============================= page add booking test drive =============================");

@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 
+import '../../services/dms_service.dart';
+
 class DmsEvent extends Equatable {
   @override
   // TODO: implement props

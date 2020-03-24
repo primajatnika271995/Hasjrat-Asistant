@@ -89,3 +89,4 @@ class DmsError extends DmsState {
   // TODO: implement props
   List<Object> get props => [_data];
 }
+

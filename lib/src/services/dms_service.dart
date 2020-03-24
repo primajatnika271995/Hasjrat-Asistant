@@ -10,6 +10,9 @@ import 'package:salles_tools/src/models/price_list_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
+import '../models/error_model.dart';
+import '../models/error_token_expire_model.dart';
+
 class DmsService {
   final Dio _dio = new Dio();
 
@@ -19,12 +22,13 @@ class DmsService {
   }
 
   Future class1() async {
-    final response = await _dio.post(UriApi.class1ItemDMSUri,
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        ),
+    final response = await _dio.post(
+      UriApi.class1ItemDMSUri,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),
     );
 
     log.info(response.statusCode);
@@ -35,18 +39,17 @@ class DmsService {
 
   Future itemModel(ItemModelPost value) async {
     final response = await _dio.post(UriApi.itemModelDMSUri,
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      ),
-      data: {
-        "item_class": value.itemClass,
-        "item_class1": value.itemClass1,
-        "item_model": value.itemModel,
-        "item_type": value.itemType
-      }
-    );
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+        data: {
+          "item_class": value.itemClass,
+          "item_class1": value.itemClass1,
+          "item_model": value.itemModel,
+          "item_type": value.itemType
+        });
 
     log.info(response.statusCode);
     if (response.statusCode == 200) {
@@ -65,8 +68,7 @@ class DmsService {
           "custgroup": value.customerGroup,
           "itemcode": value.itemCode,
           "itemgroup": value.itemGroup
-        }
-    );
+        });
 
     log.info(response.statusCode);
     if (response.statusCode == 200) {
@@ -76,16 +78,12 @@ class DmsService {
 
   Future priceList(PriceListPost value) async {
     final response = await _dio.post(UriApi.priceListDMSUri,
-      options: Options(
+        options: Options(
           headers: {
             'Content-Type': 'application/json',
           },
-      ),
-      data: {
-        "custgroup": value.custGroup,
-        "itemcode": value.itemCode
-      }
-    );
+        ),
+        data: {"custgroup": value.custGroup, "itemcode": value.itemCode});
 
     log.info(response.statusCode);
     if (response.statusCode == 200) {
@@ -107,7 +105,8 @@ class ItemModelPost {
   String itemModel;
   String itemType;
 
-  ItemModelPost({this.itemClass, this.itemClass1, this.itemModel, this.itemType});
+  ItemModelPost(
+      {this.itemClass, this.itemClass1, this.itemModel, this.itemType});
 }
 
 class ItemListPost {

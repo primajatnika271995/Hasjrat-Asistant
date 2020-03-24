@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:salles_tools/src/bloc/booking_bloc/booking_drive._bloc.dart';
+import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
 
@@ -18,7 +20,7 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => BlocProvider(
-          create: (context) => DmsBloc(DmsService()),
+          create: (context) => BookingDriveBloc(BookingDriveService()),
           child: BookTestDriveAddView(),
         ),
         transitionDuration: Duration(milliseconds: 150),
