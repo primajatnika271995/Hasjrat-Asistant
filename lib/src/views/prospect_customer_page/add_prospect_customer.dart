@@ -1019,9 +1019,9 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    var value = state.value.data[index];
+                    var value = state.value.data[0].stocks[index];
                     return ExpansionTile(
-                      title: Text("${value.itemName}"),
+                      title: Text("${state.value.data[0].itemName}"),
                       initiallyExpanded: dataSelection == index ? true : false,
                       children: <Widget>[
                         Padding(
@@ -1031,7 +1031,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                             children: <Widget>[
                               Text("Item Code"),
                               Text(
-                                "${value.itemCode}",
+                                "${state.value.data[0].itemCode}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -1044,7 +1044,25 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("Item Model"),
-                              Text("${value.itemModel}"),
+                              Text("${state.value.data[0].itemModel}"),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Year"),
+                              Text("${value.tahun}"),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Color"),
+                              Text("${value.namaWarna}"),
                             ],
                           ),
                         ),
@@ -1054,7 +1072,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("Off The Road"),
-                              Text("Rp ${CurrencyFormat().data.format(value.pricelists[0].offtr)}"),
+                              Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].offtr)}"),
                             ],
                           ),
                         ),
@@ -1064,7 +1082,16 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("On The Road"),
-                              Text("Rp ${CurrencyFormat().data.format(value.pricelists[0].ontr)}"),
+                              Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}"),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Stock"),
+                              Text("${value.quantity}"),
                             ],
                           ),
                         ),
@@ -1074,7 +1101,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                "Rp ${CurrencyFormat().data.format(value.pricelists[0].ontr)}",
+                                "Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 1.0,
@@ -1104,7 +1131,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                       ],
                     );
                   },
-                  itemCount: state.value.data.length,
+                  itemCount: state.value.data[0].stocks.length,
                 ),
               ],
             );
