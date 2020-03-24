@@ -220,61 +220,63 @@ class _PriceListViewState extends State<PriceListView> {
               });
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Text(
-                    "Item Class 1 (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Text(
+                      "Item Class 1 (*)",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                   ),
-                ),
-                formSelectItemClass1(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Text(
-                    "Item Model (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
+                  formSelectItemClass1(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Text(
+                      "Item Model (*)",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                   ),
-                ),
-                formSelectItemModel(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Text(
-                    "Item Type (*)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
+                  formSelectItemModel(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Text(
+                      "Item Type (*)",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                   ),
-                ),
-                formSelectItemType(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Text(
-                    "Item Code",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
+                  formSelectItemType(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Text(
+                      "Item Code",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                   ),
-                ),
-                formSelectItemCode(),
-                itemList(),
-                SizedBox(height: 10),
-              ],
+                  formSelectItemCode(),
+                  itemList(),
+                  SizedBox(height: 10),
+                ],
+              ),
             ),
           ),
         ),
@@ -525,10 +527,10 @@ class _PriceListViewState extends State<PriceListView> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    var value = state.value.data[index];
+                    var value = state.value.data[0].stocks[index];
                     return ExpansionTile(
-                      title: Text("${value.itemName}"),
                       initiallyExpanded: true,
+                      title: Text("${state.value.data[0].itemName}"),
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
@@ -537,7 +539,7 @@ class _PriceListViewState extends State<PriceListView> {
                             children: <Widget>[
                               Text("Item Code"),
                               Text(
-                                "${value.itemCode}",
+                                "${state.value.data[0].itemCode}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -550,7 +552,25 @@ class _PriceListViewState extends State<PriceListView> {
                           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("Item Model"),
-                              Text("${value.itemModel}"),
+                              Text("${state.value.data[0].itemModel}"),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Year"),
+                              Text("${value.tahun}"),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Color"),
+                              Text("${value.namaWarna}"),
                             ],
                           ),
                         ),
@@ -560,7 +580,7 @@ class _PriceListViewState extends State<PriceListView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("Off The Road"),
-                              Text("Rp ${CurrencyFormat().data.format(value.pricelists[0].offtr)}"),
+                              Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].offtr)}"),
                             ],
                           ),
                         ),
@@ -570,14 +590,23 @@ class _PriceListViewState extends State<PriceListView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("On The Road"),
-                              Text("Rp ${CurrencyFormat().data.format(value.pricelists[0].ontr)}"),
+                              Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}"),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Stock"),
+                              Text("${value.quantity}"),
                             ],
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 15),
                           child: Text(
-                            "Rp ${CurrencyFormat().data.format(value.pricelists[0].ontr)}",
+                            "Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -588,7 +617,7 @@ class _PriceListViewState extends State<PriceListView> {
                       ],
                     );
                   },
-                  itemCount: state.value.data.length,
+                  itemCount: state.value.data[0].stocks.length,
                 ),
               ],
             );
