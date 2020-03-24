@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/views/promotion_page/details_promotion.dart';
 
 class PromotionListScreen extends StatefulWidget {
   @override
@@ -6,6 +7,22 @@ class PromotionListScreen extends StatefulWidget {
 }
 
 class _PromotionListScreenState extends State<PromotionListScreen> {
+
+  void _onDetailsPromotion() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => PromotionDetailsView(),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +48,9 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
               child: Card(
                 elevation: 5,
                 child: ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    _onDetailsPromotion();
+                  },
                   title: Padding(
                     padding: const EdgeInsets.only(top: 5, bottom: 5),
                     child: Text(
