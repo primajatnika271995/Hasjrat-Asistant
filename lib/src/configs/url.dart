@@ -1,9 +1,9 @@
 class UriApi {
   UriApi._();
-//  static const String baseApi = "http://tabeldata.ip-dynamic.com/hasjrat-sales-tools";
+ static const String baseApi = "http://tabeldata.ip-dynamic.com/hasjrat-sales-tools";
 
   // Azure IP
-  static const String baseApi = "http://cvktoyota.southeastasia.cloudapp.azure.com:8090/hasjrat-sales-tools";
+  // static const String baseApi = "http://cvktoyota.southeastasia.cloudapp.azure.com:8090/hasjrat-sales-tools";
 
   static const String loginUri = "/sales-tools-auth-service/oauth/token";
 
@@ -55,4 +55,7 @@ class UriApi {
 
   static const String simulationPriceListUri = "/sales-tools-finance-service/api/v2/simulation/select-price-list";
 
+  static const String registerBookingTestDriveUri = "/sales-tools-booking-service/api/v2/test-drive/booking/register";
+
+  static const String testDriveCarUri = "/sales-tools-booking-service/api/v2/test-drive/cars/list";
 }
