@@ -24,6 +24,8 @@ class TestDriveModel {
     String createdDate;
     bool enabled;
 
+  var data;
+
     TestDriveModel({
         this.id,
         this.itemModel,
@@ -57,8 +59,6 @@ class TestDriveModel {
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
         enabled: json["enabled"] == null ? null : json["enabled"],
     );
-
-  get data => null;
 
     Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,

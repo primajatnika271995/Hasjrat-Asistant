@@ -43,9 +43,9 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   var currentSelectPriceList;
   List<SelectorPriceListModel> priceList = [];
 
-  var class1Ctrl = new TextEditingController();
+  var vehicleCtrl = new TextEditingController();
   var currentSelectClass1;
-  List<String> class1List = [];
+  List<SelectorVehicleModel> vehicleList = [];
 // list car dms
 
   int convertDate;
@@ -101,26 +101,34 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
       });
   }
 
-  final modelItems = List.generate(
-    50,
-    (index) => TestDriveModel(
-      // avatar: "https://i.imgur.com/lTy4hiN.jpg",
-      // name: "Deivão $index",
-      // id: "$index",
-      // createdAt: DateTime.now(),
-    ),
-  );
-
-  void _showListClass1() {
-    SelectDialog.showModal<String>(
+  void _showListVehicle() {
+    SelectDialog.showModal<SelectorVehicleModel>(
       context,
-      label: "Class 1",
-      selectedValue: currentSelectClass1,
-      items: class1List,
-      onChange: (String selected) {
-        setState(() {    
-          currentSelectClass1 = selected;
-          class1Ctrl.text = selected;
+      label: "Item Code",
+      selectedValue: currentSelectPriceList,
+      items: vehicleList,
+      itemBuilder: (context, SelectorVehicleModel item, bool isSelected) {
+        return Container(
+          decoration: !isSelected
+              ? null
+              : BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white,
+            border: Border.all(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          child: ListTile(
+            selected: isSelected,
+            title: Text("${item.itemModel} ${item.itemType}"),
+            subtitle: Text("Item Code : ${item.id}"),
+          ),
+        );
+      },
+      onChange: (SelectorVehicleModel selected) {
+        setState(() {
+          currentSelectPriceList = selected;
+          vehicleCtrl.text = selected.itemModel;
         });
       },
     );
@@ -192,8 +200,10 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
               Navigator.of(context, rootNavigator: false).pop();
             }
             if (state is CarListSuccess) {
-               state.value.data.forEach((f) {
-                class1List.add(f.itemModel);
+              state.value.data.forEach((f) {
+                vehicleList.add(SelectorVehicleModel(
+                  //
+                ));
               });
             }
             if (state is RegisterBookingTestDriveSuccess) {
@@ -596,7 +606,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 onTap: () {
                   //list vehicle name from api here
                   print('Open dialog chose vehicle name from api');
-                  _showListClass1();
+                  _showListVehicle();
                 },
                 child: AbsorbPointer(
                   child: TextFormField(
@@ -616,7 +626,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                         fontSize: 13,
                       ),
                     ),
-                    controller: class1Ctrl,
+                    controller: vehicleCtrl,
                   ),
                 ),
               ),

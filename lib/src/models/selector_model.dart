@@ -286,3 +286,22 @@ class SelectorPriceListModel {
   // TODO: implement hashCode
   int get hashCode => itemModel.hashCode^itemType.hashCode^itemCode.hashCode;
 }
+
+class SelectorVehicleModel {
+  String id;
+  String itemModel;
+  String itemType;
+
+  SelectorVehicleModel({this.itemModel, this.itemType, this.id});
+
+  @override
+  String toString() => itemModel;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorVehicleModel && other.itemModel == itemModel;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => itemModel.hashCode^itemType.hashCode^id.hashCode;
+}
