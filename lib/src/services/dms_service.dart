@@ -104,7 +104,7 @@ class DmsService {
         "customer_group_id": value.customerGroupId,
         "from_suspect": "Y",
         "is_fleet": "N",
-        "lead_code": "N",
+        "lead_code": value.leadCode,
         "models": [
           {
             "item_code": value.itemCode,
