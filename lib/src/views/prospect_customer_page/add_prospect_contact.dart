@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
@@ -8,6 +13,7 @@ import 'package:salles_tools/src/models/customer_get_form_model.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/utils/regex_file.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -20,6 +26,12 @@ class ProspectContactAdd extends StatefulWidget {
 
 class _ProspectContactAddState extends State<ProspectContactAdd> {
   var _formKey = GlobalKey<FormState>();
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  var nikScan, namaScan;
+  int loopIndex = 0;
+  Image currentPreviewImage;
+  final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
 
   int _currentStep = 0;
   VoidCallback _onStepContinue;
@@ -27,6 +39,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
 
   var customerNameCtrl = new TextEditingController();
   var customerContactCtrl = new TextEditingController();
+  var customerNIKCtrl = new TextEditingController();
 
   var customerGenderCtrl = new TextEditingController();
   var currentSelectGender;
@@ -68,6 +81,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
   var districtSubCode;
   List<SelectorSubDistrictModel> districtSubList = [];
 
+  var customerNIKFocus = new FocusNode();
   var customerNameFocus = new FocusNode();
   var customerContactFocus = new FocusNode();
   var customerSumberContactFocus = new FocusNode();
@@ -263,6 +277,82 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     }
   }
 
+  void onTakeOCR() async {
+    final scaffold = _scaffoldKey.currentState;
+    setState(() {
+      loopIndex = 0;
+    });
+
+    try {
+      final file = await ImagePicker.pickImage(source: ImageSource.camera);
+      if (file == null) {
+        throw Exception('File is not available');
+      }
+
+      var fileCropper = await ImageCropper.cropImage(
+        sourcePath: file.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Identity Card Cropper',
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.ratio4x3,
+          showCropGrid: true,
+          toolbarColor: HexColor('#C61818'),
+          lockAspectRatio: false,
+        ),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ),
+      );
+
+      setState(() {
+        currentPreviewImage = Image.file(File(fileCropper.path));
+      });
+
+      final FirebaseVisionImage visionImage =
+      FirebaseVisionImage.fromFile(fileCropper);
+      final VisionText visionText =
+      await textRecognizer.processImage(visionImage);
+
+      String text = visionText.text;
+      for (TextBlock block in visionText.blocks) {
+        log.info("Block Data : ${block.text}");
+        if (nikScan == null) {
+          setState(() {
+            nikScan = Regex.isValidationNIK(block.text);
+            customerNIKCtrl.text = nikScan;
+          });
+        }
+
+        if (loopIndex <= 4) {
+          log.info(loopIndex);
+          setState(() {
+            loopIndex = loopIndex + 1;
+            namaScan = block.text;
+//            customerNameCtrl.text = namaScan;
+          });
+        }
+
+        log.info("NIK : $nikScan");
+        log.info("Nama : $namaScan");
+        for (TextLine line in block.lines) {
+          for (TextElement element in line.elements) {}
+        }
+      }
+    } catch (e) {
+      scaffold.showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
+
+  }
+
   Widget _createEventControlBuilder(BuildContext context,
       {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
     _onStepContinue = onStepContinue;
@@ -303,6 +393,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -459,6 +550,45 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          Card(
+                            elevation: 3,
+                            child: Container(
+                              height: 170,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    FloatingActionButton(
+                                      onPressed: () {
+                                        onTakeOCR();
+                                      },
+                                      heroTag: 'ocr-camera',
+                                      child: Icon(Icons.camera_enhance,
+                                        color: Colors.white,
+                                      ),
+                                      backgroundColor: Colors.blue,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Text("Scan data Kartu Identitas / KTP",
+                                        style: TextStyle(
+                                          letterSpacing: 1.0
+                                      ),),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            "Customer NIK (*)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                          formCustomerNIK(),
                           Text(
                             "Customer Name (*)",
                             style: TextStyle(
@@ -544,6 +674,9 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                             ),
                           ),
                           formSelectLocation(),
+                          SizedBox(
+                            height: 30,
+                          ),
                         ],
                       ),
                     ),
@@ -676,7 +809,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 18),
                   prefixIcon: Icon(
-                    Icons.perm_identity,
+                    Icons.person_outline,
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
@@ -692,6 +825,57 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 },
                 controller: customerNameCtrl,
                 focusNode: customerNameFocus,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formCustomerNIK() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 17),
+                  prefixIcon: Icon(
+                    Icons.credit_card,
+                    color: Color(0xFF6991C7),
+                    size: 24.0,
+                  ),
+                  hintText: 'Input NIK',
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                onEditingComplete: () {
+                  FocusScope.of(context).requestFocus(customerNameFocus);
+                },
+                controller: customerNIKCtrl,
+                focusNode: customerNIKFocus,
               ),
             ),
           ),
