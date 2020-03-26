@@ -1,14 +1,14 @@
 // To parse this JSON data, do
 //
-//     final testDriveModel = testDriveModelFromJson(jsonString);
+//     final testDriveVehicleModel = testDriveVehicleModelFromJson(jsonString);
 
 import 'dart:convert';
 
-List<TestDriveModel> testDriveModelFromJson(String str) => List<TestDriveModel>.from(json.decode(str).map((x) => TestDriveModel.fromJson(x)));
+List<TestDriveVehicleModel> testDriveVehicleModelFromJson(String str) => List<TestDriveVehicleModel>.from(json.decode(str).map((x) => TestDriveVehicleModel.fromJson(x)));
 
-String testDriveModelToJson(List<TestDriveModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String testDriveVehicleModelToJson(List<TestDriveVehicleModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class TestDriveModel {
+class TestDriveVehicleModel {
     String id;
     String itemModel;
     String itemType;
@@ -24,9 +24,7 @@ class TestDriveModel {
     String createdDate;
     bool enabled;
 
-  var data;
-
-    TestDriveModel({
+    TestDriveVehicleModel({
         this.id,
         this.itemModel,
         this.itemType,
@@ -43,7 +41,7 @@ class TestDriveModel {
         this.enabled,
     });
 
-    factory TestDriveModel.fromJson(Map<String, dynamic> json) => TestDriveModel(
+    factory TestDriveVehicleModel.fromJson(Map<String, dynamic> json) => TestDriveVehicleModel(
         id: json["id"] == null ? null : json["id"],
         itemModel: json["itemModel"] == null ? null : json["itemModel"],
         itemType: json["itemType"] == null ? null : json["itemType"],

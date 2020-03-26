@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:salles_tools/src/bloc/booking_bloc/booking_drive._bloc.dart';
+import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_event.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_state.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
-import 'package:salles_tools/src/models/test_drive_model.dart';
+import 'package:salles_tools/src/models/test_drive_vehicle_model.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
@@ -121,7 +121,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           child: ListTile(
             selected: isSelected,
             title: Text("${item.itemModel} ${item.itemType}"),
-            subtitle: Text("Item Code : ${item.id}"),
           ),
         );
       },
@@ -172,6 +171,17 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   // }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    // ignore: close_sinks
+    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
+    bookingDriveBloc.add(FetchTestDriveCar());
+
+    _getSharedPrefferences();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -192,20 +202,24 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
         key: _formKey,
         child: BlocListener<BookingDriveBloc, BookingDriveState>(
           listener: (context, state) {
-            if (state is DmsLoading) {
+            if (state is BookingDriveLoading) {
               onLoading(context);
             }
 
-            if (state is DmsDisposeLoading) {
+            if (state is BookingDriveDisposeLoading) {
               Navigator.of(context, rootNavigator: false).pop();
             }
+
             if (state is CarListSuccess) {
-              state.value.data.forEach((f) {
+              state.value.forEach((f) {
                 vehicleList.add(SelectorVehicleModel(
-                  //
+                  itemModel: f.itemModel,
+                  id: f.id,
+                  itemType: f.itemType,
                 ));
               });
             }
+
             if (state is RegisterBookingTestDriveSuccess) {
               log.info("Success Create Booking Test Drive");
               Alert(
@@ -224,6 +238,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                     ),
                   ]).show();
             }
+
             if (state is RegisterBookingTestDriveError) {
               log.warning("Fail Create Booking Test Drive");
               Alert(
@@ -613,6 +628,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                     readOnly: true,
                     decoration: new InputDecoration(
                       border: InputBorder.none,
+                      contentPadding: EdgeInsets.only(bottom: 17),
                       enabled: false,
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
@@ -784,19 +800,5 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    _getSharedPrefferences();
-
-    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
-    // dmsBloc.add(FetchClass1Item());
-    bookingDriveBloc.add(FetchTestDriveCar());
-
-    print(
-        "============================= page add booking test drive =============================");
-    super.initState();
   }
 }

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:salles_tools/src/models/test_drive_model.dart';
+import 'package:salles_tools/src/models/test_drive_vehicle_model.dart';
 
 class BookingDriveState extends Equatable {
   @override
@@ -21,11 +21,10 @@ class CarListSuccess extends BookingDriveState {
   final _data;
 
   CarListSuccess(this._data);
-  TestDriveModel get value => _data;
+  List<TestDriveVehicleModel> get value => _data;
 
   @override
   List<Object> get props => [_data];
-
 }
 
 class RegisterBookingTestDriveSuccess extends BookingDriveState{
