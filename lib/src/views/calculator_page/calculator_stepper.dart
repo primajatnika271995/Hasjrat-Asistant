@@ -99,7 +99,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         } else {
           // ignore: close_sinks
           final simulationBloc = BlocProvider.of<FinanceBloc>(context);
-          simulationBloc.add(FetchSimulationDownPayment(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal, (dpVehicleCtrl.numberValue / 10).toString()));
+          simulationBloc.add(FetchSimulationDownPayment(branchCode, "ASK01", "ASIPC", assetGroupCode, assetTypeCode, priceListId, priceOriginal, (dpVehicleCtrl.numberValue / 10).toString()));
         }
         break;
       case "Price List":
@@ -123,7 +123,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         } else {
           // ignore: close_sinks
           final simulationBloc = BlocProvider.of<FinanceBloc>(context);
-          simulationBloc.add(FetchSimulationPriceList(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode, priceListId, priceOriginal));
+          simulationBloc.add(FetchSimulationPriceList(branchCode, "ASK01", "ASIPC", assetGroupCode, assetTypeCode, priceListId, priceOriginal));
           break;
         }
     }
@@ -147,7 +147,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   void _showListBranch() {
     SelectDialog.showModal<SelectorBranchModel>(
       context,
-      label: "Branch Name",
+      label: "Nama Branch",
       selectedValue: currentSelectBranch,
       items: branchList,
       onChange: (SelectorBranchModel selected) {
@@ -168,7 +168,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   void _showListOutlet() {
     SelectDialog.showModal<SelectorOutletModel>(
       context,
-      label: "Outlet Name",
+      label: "Nama Outlet",
       selectedValue: currentSelectOutlet,
       items: outletList,
       onChange: (SelectorOutletModel selected) {
@@ -178,9 +178,13 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           outletNameCtrl.text = selected.outletName;
           outletCode = selected.id;
 
+//          // ignore: close_sinks
+//          final assetKindBloc = BlocProvider.of<FinanceBloc>(context);
+//          assetKindBloc.add(FetchAssetKind(branchCode));
+
           // ignore: close_sinks
-          final assetKindBloc = BlocProvider.of<FinanceBloc>(context);
-          assetKindBloc.add(FetchAssetKind(branchCode));
+          final assetGroupBloc = BlocProvider.of<FinanceBloc>(context);
+          assetGroupBloc.add(FetchAssetGroup(branchCode, "ASK01", "ASIPC"));
         });
       },
     );
@@ -222,7 +226,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
           // ignore: close_sinks
           final assetGroupBloc = BlocProvider.of<FinanceBloc>(context);
-          assetGroupBloc.add(FetchAssetGroup(branchCode, assetKindCode, insuranceTypeCode));
+          assetGroupBloc.add(FetchAssetGroup(branchCode, "ASK01", "ASIPC"));
         });
       },
     );
@@ -231,7 +235,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   void _showListAssetGroup() {
     SelectDialog.showModal<SelectorAssetGroupModel>(
       context,
-      label: "Asset Group",
+      label: "Kendaraan",
       selectedValue: currentSelectAssetGroup,
       items: assetGroupList,
       onChange: (SelectorAssetGroupModel selected) {
@@ -243,7 +247,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
           // ignore: close_sinks
           final assetTypeBloc = BlocProvider.of<FinanceBloc>(context);
-          assetTypeBloc.add(FetchAssetType(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode));
+          assetTypeBloc.add(FetchAssetType(branchCode, "ASK01", "ASIPC", assetGroupCode));
         });
       },
     );
@@ -252,7 +256,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   void _showListAssetType() {
     SelectDialog.showModal<SelectorAssetTypeModel>(
       context,
-      label: "Asset Group",
+      label: "Tipe",
       selectedValue: currentSelectAssetType,
       items: assetTypeList,
       onChange: (SelectorAssetTypeModel selected) {
@@ -265,7 +269,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
           // ignore: close_sinks
           final assetPriceBloc = BlocProvider.of<FinanceBloc>(context);
-          assetPriceBloc.add(FetchAssetPrice(branchCode, assetKindCode, insuranceTypeCode, assetGroupCode, assetTypeCode));
+          assetPriceBloc.add(FetchAssetPrice(branchCode, "ASK01", "ASIPC", assetGroupCode, assetTypeCode));
         });
       },
     );
@@ -417,7 +421,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 steps: [
                   Step(
                     isActive: _currentStep == 0 ? true : false,
-                    title: Text("Vehicle"),
+                    title: Text("Kendaraan"),
                     state: StepState.editing,
                     content: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -432,22 +436,22 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                           letterSpacing: 1.0,
                         )),
                         formSelectOutlet(),
-                        Text("Asset Kind", style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.0,
-                        )),
-                        formSelectAssetKind(),
-                        Text("Insurance", style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.0,
-                        )),
-                        formSelectInsuranceType(),
-                        Text("Asset Group", style: TextStyle(
+//                        Text("Asset Kind", style: TextStyle(
+//                          fontWeight: FontWeight.w700,
+//                          letterSpacing: 1.0,
+//                        )),
+//                        formSelectAssetKind(),
+//                        Text("Insurance", style: TextStyle(
+//                          fontWeight: FontWeight.w700,
+//                          letterSpacing: 1.0,
+//                        )),
+//                        formSelectInsuranceType(),
+                        Text("Kendaraan", style: TextStyle(
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.0,
                         )),
                         formSelectAssetGroup(),
-                        Text("Asset Type", style: TextStyle(
+                        Text("Tipe", style: TextStyle(
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.0,
                         )),
@@ -457,7 +461,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                   ),
                   Step(
                     isActive: _currentStep == 1 ? true : false,
-                    title: Text("Category"),
+                    title: Text("Kategori"),
                     state: StepState.editing,
                     content: stepCategory(),
                   ),
@@ -547,7 +551,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Branch",
+                      hintText: "Pilih Branch",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -602,7 +606,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Outlet",
+                      hintText: "Pilih Outlet",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -767,7 +771,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Asset Group",
+                      hintText: "Pilih Kendaraan",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -822,7 +826,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Asset Type",
+                      hintText: "Pilih Tipe",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -877,7 +881,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Payment",
+                      hintText: "Pilih tipe Simulasi",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1078,7 +1082,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
               padding:
               const EdgeInsets.only(right: 25, top: 10),
               child: Text(
-                "Simulation Type",
+                "Tipe Simulasi",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.0,
