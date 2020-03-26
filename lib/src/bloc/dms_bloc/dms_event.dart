@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 
 import '../../services/dms_service.dart';
@@ -49,6 +50,15 @@ class FetchItemList extends DmsEvent {
   final ItemListPost value;
 
   FetchItemList(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
+class CreateProspect extends DmsEvent {
+  final ProspectPost value;
+  CreateProspect(this.value);
 
   @override
   // TODO: implement props

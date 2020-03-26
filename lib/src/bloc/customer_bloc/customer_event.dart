@@ -78,13 +78,4 @@ class CreateContact extends CustomerEvent {
   List<Object> get props => [value];
 }
 
-class CreateProspect extends CustomerEvent {
-  final ProspectPost value;
-  CreateProspect(this.value);
-
-  @override
-  // TODO: implement props
-  List<Object> get props => [value];
-}
-
 class ResetCustomer extends CustomerEvent {}

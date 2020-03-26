@@ -98,5 +98,20 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
         log.warning("Error : ${error.toString()}");
       }
     }
+
+    if (event is CreateProspect) {
+      yield DmsLoading();
+
+      try {
+        await _dmsService.createProspect(event.value);
+
+        yield DmsDisposeLoading();
+        yield CreateProspectSuccess();
+      } catch(error) {
+        yield DmsDisposeLoading();
+        yield CreateProspectError();
+        log.warning("Error : ${error.toString()}");
+      }
+    }
   }
 }

@@ -90,6 +90,51 @@ class DmsService {
       return compute(priceListModelFromJson, json.encode(response.data));
     }
   }
+
+  Future createProspect(ProspectPost value) async {
+    final response = await _dio.post(UriApi.createProspectDMSUri,
+      options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      ),
+      data: {
+        "card_code": "",
+        "card_name": value.cardName,
+        "customer_group_id": value.customerGroupId,
+        "from_suspect": "Y",
+        "is_fleet": "N",
+        "lead_code": "N",
+        "models": [
+          {
+            "item_code": value.itemCode,
+            "item_colour": value.itemColor,
+            "item_model": value.itemModel,
+            "item_type": value.itemType,
+            "item_year": value.itemYear,
+            "price": value.price,
+            "quantity": value.quantity
+          }
+        ],
+        "payment_type_id": 2,
+        "prospect_classification_id": 2,
+        "prospect_date": value.prospectDate,
+        "prospect_first_vehicle": "",
+        "prospect_followup": 7,
+        "prospect_source_id": 10,
+        "trade_in": "N"
+      },
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      log.info("OK DONE");
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
 }
 
 class PriceListPost {
@@ -115,4 +160,22 @@ class ItemListPost {
   String itemGroup;
 
   ItemListPost({this.customerGroup, this.itemCode, this.itemGroup});
+}
+
+class ProspectPost {
+  String cardName;
+  String customerGroupId;
+  String fromSuspect;
+  String leadCode;
+  String itemCode;
+  String itemColor;
+  String itemModel;
+  String itemType;
+  String itemYear;
+  dynamic price;
+  String quantity;
+  String prospectDate;
+  int prospectFollowUp;
+
+  ProspectPost({this.cardName, this.customerGroupId, this.fromSuspect, this.leadCode, this.itemCode, this.itemColor, this.itemModel, this.itemType, this.itemYear, this.price, this.quantity, this.prospectDate, this.prospectFollowUp});
 }

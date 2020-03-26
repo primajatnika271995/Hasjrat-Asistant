@@ -79,6 +79,18 @@ class ItemListFailed extends DmsState {
 
 }
 
+class CreateProspectSuccess extends DmsState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class CreateProspectError extends DmsState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
 class DmsError extends DmsState {
   final _data;
 

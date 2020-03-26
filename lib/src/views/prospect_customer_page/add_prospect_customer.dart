@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
@@ -9,7 +10,10 @@ import 'package:salles_tools/src/models/lead_model.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/utils/currency_format.dart';
+import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
 
 class ProspectAddView extends StatefulWidget {
@@ -24,6 +28,8 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   var _formKey = GlobalKey<FormState>();
 
   int dataSelection = -1;
+  
+  DateTime currentTime = DateTime.now();
 
   int _currentStep = 0;
   VoidCallback _onStepContinue;
@@ -37,6 +43,10 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   var followUpCtrl = new TextEditingController();
   var salesNameCtrl = new TextEditingController();
 
+  var _currentSelectItemColour;
+  var _currentSelectYear;
+  var _currentSelectPrice;
+  var _currentSelectQuantity;
   var _currentSelectFollowUp = "7 Hari";
   List<String> followUpList = [
     "1 Hari",
@@ -69,12 +79,6 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   var itemTypeCtrl = new TextEditingController();
   var currentSelectItemType;
   List<String> itemTypeList = [];
-
-  void _onSelectionItemData(int index) {
-    setState(() {
-      dataSelection = index;
-    });
-  }
 
   void _showListClass1() {
     SelectDialog.showModal<String>(
@@ -221,6 +225,45 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     );
   }
 
+  void onCreateProspect() {
+    log.info("""
+      Card Name : ${widget.value.cardName}
+      Customer Group ID : ${widget.value.customerGroupId}
+      Prospect Source ID : $prospectSourceId
+      Lead Code : ${widget.value.leadCode}
+      Item Code : ${itemCodeCtrl.text}
+      Item Model : ${itemModelCtrl.text}
+      Item Type : ${itemTypeCtrl.text}
+      Item Colour : $_currentSelectItemColour
+      Item Year : $_currentSelectYear
+      Price $_currentSelectPrice
+      Date ${DateFormat("yyyy-MM-dd").format(currentTime)}
+    """);
+
+    if (_formKey.currentState.validate()) {
+      // ignore: close_sinks
+      final dmsBloc = BlocProvider.of<DmsBloc>(context);
+      dmsBloc.add(CreateProspect(ProspectPost(
+        cardName: widget.value.cardName,
+        customerGroupId: widget.value.customerGroupId.toString(),
+        fromSuspect: "Y",
+        itemColor: _currentSelectItemColour,
+        itemModel: itemModelCtrl.text,
+        itemType: itemTypeCtrl.text,
+        itemYear: _currentSelectYear,
+        leadCode: widget.value.leadCode,
+        prospectFollowUp: 7,
+        prospectDate: DateFormat("yyyy-MM-dd").format(currentTime).toString(),
+        quantity: "1",
+        price: _currentSelectPrice,
+        itemCode: itemCodeCtrl.text,
+
+      )));
+    } else {
+      log.warning("Please Complete Form!");
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -300,6 +343,46 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                   ));
                 }
               });
+            }
+
+            if (state is CreateProspectSuccess) {
+              log.info("Success Create Lead");
+              Alert(
+                  context: context,
+                  type: AlertType.success,
+                  title: 'Success',
+                  desc: "Created Prospect!",
+                  buttons: [
+                    DialogButton(
+                      child: Text(
+                        "OK",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      onPressed: () => Navigator.pop(context, true),
+                      color: HexColor("#C61818"),
+                    ),
+                  ]
+              ).show();
+            }
+
+            if (state is CreateProspectError) {
+              log.warning("Fail Create Prospect");
+              Alert(
+                  context: context,
+                  type: AlertType.error,
+                  title: 'Error',
+                  desc: "Failed to Create Prospect!",
+                  buttons: [
+                    DialogButton(
+                      child: Text(
+                        "OK",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      color: HexColor("#C61818"),
+                    ),
+                  ]
+              ).show();
             }
           },
           child: Stack(
@@ -429,6 +512,26 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                           formSelectItemCode(),
                           itemList(),
+                          SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
+                            child: Container(
+                              width: screenWidth(context),
+                              child: RaisedButton(
+                                onPressed: () {
+                                  onCreateProspect();
+                                },
+                                child: Text(
+                                  "Create",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                color: HexColor('#C61818'),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                            ),
+                          ),
                           SizedBox(height: 10),
                         ],
                       ),
@@ -1110,7 +1213,12 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                               ),
                               RaisedButton(
                                 onPressed: () {
-                                  _onSelectionItemData(index);
+                                  setState(() {
+                                    dataSelection = index;
+                                    _currentSelectItemColour = state.value.data[0].stocks[index].namaWarna;
+                                    _currentSelectYear = state.value.data[0].stocks[index].tahun;
+                                    _currentSelectPrice = state.value.data[0].pricelists[0].ontr;
+                                  });
                                 },
                                 elevation: 1,
                                 child: Text(
