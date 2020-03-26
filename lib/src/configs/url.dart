@@ -15,6 +15,8 @@ class UriApi {
 
   static const String createLeadDMSUri = "/sales-tools-dealer-service/api/v2/dms/lead/add";
 
+  static const String createProspectDMSUri = "/sales-tools-dealer-service/api/v2/dms/prospect/add";
+
   static const String genderDMSUri = "/sales-tools-dealer-service/api/v2/dms/customer/jenis-kelamin";
 
   static const String locationDMSUri = "/sales-tools-dealer-service/api/v2/dms/customer/lokasi";
