@@ -10,6 +10,7 @@ import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/models/test_drive_vehicle_model.dart';
+import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
@@ -46,18 +47,23 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   var vehicleCtrl = new TextEditingController();
   var currentSelectClass1;
   List<SelectorVehicleModel> vehicleList = [];
+
 // list car dms
 
   int convertDate;
+  int convertTime;
+  int convertDateTime;
 
 //text editing controller init
   var customerNameCtrl = new TextEditingController();
   var customerContactCtrl = new TextEditingController();
   var branchNameCtrl = new TextEditingController();
   var outletNameCtrl = new TextEditingController();
-  var dateSelected = new TextEditingController();
-  var timeSelected = new TextEditingController();
+  var dateSelectedCtrl = new TextEditingController();
+  var timeSelectedCtrl = new TextEditingController();
   var notesCtrl = new TextEditingController();
+
+  var selectedCarId;
 //end of text editing controller init
 
   var costumerNameFocus = new FocusNode();
@@ -66,7 +72,10 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   var timeSelectedFocus = new FocusNode();
 
   final dateFormat = DateFormat("dd MMMM yyyy");
+  final dateFormatConvert = DateFormat("yyyy-MM-dd");
   final timeFormat = DateFormat("h:mm a");
+
+  var dateTimeFormat = new DateFormat("dd MMM yyyy, hh:mm a");
 
   DateTime _dateTime = DateTime.now();
   TimeOfDay timeOfDay = TimeOfDay.now();
@@ -82,9 +91,10 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     if (picked != null && picked != _dateTime)
       setState(() {
         _dateTime = picked;
-        dateSelected.value =
+        dateSelectedCtrl.value =
             TextEditingValue(text: dateFormat.format(picked).toString());
-        convertDate = _dateTime.toUtc().millisecondsSinceEpoch;
+        // convertDate = _dateTime.toUtc().millisecondsSinceEpoch;
+
       });
   }
 
@@ -97,7 +107,8 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     if (picked != null && picked != timeOfDay)
       setState(() {
         timeOfDay = picked;
-        timeSelected.value = TextEditingValue(text: timeOfDay.format(context));
+        timeSelectedCtrl.value =
+            TextEditingValue(text: timeOfDay.format(context));
       });
   }
 
@@ -112,15 +123,16 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           decoration: !isSelected
               ? null
               : BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.white,
-            border: Border.all(
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
           child: ListTile(
             selected: isSelected,
             title: Text("${item.itemModel} ${item.itemType}"),
+            subtitle: Text("${item.id}"),
           ),
         );
       },
@@ -128,7 +140,9 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
         setState(() {
           currentSelectPriceList = selected;
           vehicleCtrl.text = selected.itemModel;
+          selectedCarId = selected.id;
         });
+        print('car Id => $selectedCarId');
       },
     );
   }
@@ -149,26 +163,34 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     });
   }
 
-  // void onSaveBooking() {
-  //   if (_formKey.currentState.validate()) {
-  //     print("data register book test drive");
-  //     final dmsBloc = BlocProvider.of<DmsBloc>(context);
-  //     dmsBloc.add(BookingTestDriveRegister(BookingTestDrivePost(
-  //       customerName: customerNameCtrl.text,
-  //       customerPhone: customerContactCtrl.text,
-  //       branchCode: _branchId,
-  //       outletCode: _outletId,
-  //       notes: notesCtrl.text,
-  //       carId: itemCodeCtrl.text,
-  //       schedule: convertDate,
-  //     )));
-  //     print("schedule in milisecon => $convertDate");
-  //     print(
-  //         "data booking | ${customerNameCtrl.text} | ${customerContactCtrl.text} | $_branchId | $_outletId | ${notesCtrl.text} | ${itemCodeCtrl.text} | $convertDate");
-  //   } else {
-  //     log.warning("Please Complete Form!");
-  //   }
-  // }
+  void onSaveBooking() {
+    var dateAndTime = "${dateFormatConvert.format(_dateTime).toString()} ${timeOfDay.format(context)}";
+    DateFormat format = new DateFormat("dd MMMM yyyy hh:mm a");
+    var parseDate = DateTime.parse(dateAndTime);
+    setState(() {
+      convertDate = parseDate.toUtc().millisecondsSinceEpoch;
+      print(convertDate);
+    });
+    
+    if (_formKey.currentState.validate()) {
+      print("data register book test drive");
+      final dmsBloc = BlocProvider.of<BookingDriveBloc>(context);
+      dmsBloc.add(BookingTestDriveRegister(BookingTestDrivePost(
+        customerName: customerNameCtrl.text,
+        customerPhone: customerContactCtrl.text,
+        branchCode: _branchId,
+        outletCode: _outletId,
+        notes: notesCtrl.text,
+        carId: selectedCarId,
+        schedule: convertDate,
+      )));
+      
+      print(
+          "data booking | ${customerNameCtrl.text} | ${customerContactCtrl.text} | $_branchId | $_outletId | ${notesCtrl.text} | ${itemCodeCtrl.text} | $convertDate | $selectedCarId");
+    } else {
+      log.warning("Please Complete Form!");
+    }
+  }
 
   @override
   void initState() {
@@ -357,7 +379,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                     width: screenWidth(context),
                     child: RaisedButton(
                       onPressed: () {
-                        // onSaveBooking();
+                        onSaveBooking();
                       },
                       child: Text(
                         "Save",
@@ -696,7 +718,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                       fontSize: 13,
                     ),
                   ),
-                  controller: dateSelected,
+                  controller: dateSelectedCtrl,
                   focusNode: dateSelectedFocus,
                 ),
               ),
@@ -750,7 +772,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                       fontSize: 13,
                     ),
                   ),
-                  controller: timeSelected,
+                  controller: timeSelectedCtrl,
                   focusNode: timeSelectedFocus,
                 ),
               ),

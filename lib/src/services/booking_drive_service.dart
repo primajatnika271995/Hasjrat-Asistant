@@ -18,7 +18,8 @@ class BookingDriveService {
   }
 
   Future fetchCarList() async {
-    final response = await _dio.get(UriApi.testDriveCarUri,
+    final response = await _dio.get(
+      UriApi.testDriveCarUri,
       options: Options(
         headers: {
           'Content-Type': 'application/json',
@@ -32,7 +33,6 @@ class BookingDriveService {
     }
   }
 
-  
   Future registerBookingTestDrive(BookingTestDrivePost value) async {
     final response = await _dio.post(
       UriApi.registerBookingTestDriveUri,
@@ -40,27 +40,26 @@ class BookingDriveService {
         headers: {'Content-Type': 'application/json'},
       ),
       data: {
-         "customerName": value.customerName,
-         "customerPhone": value.customerPhone,
-         "branchCode": value.branchCode,
-         "outletCode": value.outletCode,
-         "carId": value.carId,
-         "notes": value.notes,
-         "scheduleInMillisecond": value.schedule,
+        "customerName": value.customerName,
+        "customerPhone": value.customerPhone,
+        "branchCode": value.branchCode,
+        "outletCode": value.outletCode,
+        "carId": value.carId,
+        "notes": value.notes,
+        "scheduleInMillisecond": value.schedule,
       },
     );
     log.info(response.statusCode);
     if (response.statusCode == 200) {
-      log.info("OK DONE");
+      log.info("REGISTER BOOKING TEST DRIVE SUCCEESS");
     } else if (response.statusCode == 401) {
       return compute(errorTokenExpireFromJson, json.encode(response.data));
     } else {
       return compute(errorModelFromJson, json.encode(response.data));
     }
   }
-
-
 }
+
 class BookingTestDrivePost {
   String customerName;
   String customerPhone;
