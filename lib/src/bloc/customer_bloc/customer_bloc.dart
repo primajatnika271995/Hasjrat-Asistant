@@ -168,5 +168,20 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         log.warning("Error : ${error.toString()}");
       }
     }
+
+    if (event is CreateProspect) {
+      yield CustomerLoading();
+
+      try {
+        await _customerService.createProspect(event.value);
+
+        yield CustomerDisposeLoading();
+        yield CreateProspectSuccess();
+      } catch(error) {
+        yield CustomerDisposeLoading();
+        yield CreateProspectError();
+        log.warning("Error : ${error.toString()}");
+      }
+    }
   }
 }

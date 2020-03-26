@@ -111,6 +111,18 @@ class CreateContactError extends CustomerState {
   List<Object> get props => [];
 }
 
+class CreateProspectSuccess extends CustomerState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class CreateProspectError extends CustomerState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
 class CustomerError extends CustomerState {
   final _data;
 
