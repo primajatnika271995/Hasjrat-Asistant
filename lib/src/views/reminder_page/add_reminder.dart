@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
-import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
-import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_bloc.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_state.dart';
@@ -60,6 +57,8 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   var noteFocus = new FocusNode();
 
   String _currentSelectTask;
+  List<String> _taskList = ["Call", "Meet Up"];
+
   var _currentSelectLead;
   var _leadName;
   List<SelectorLeadModel> _leadList = [];
@@ -91,6 +90,39 @@ class _ReminderAddViewState extends State<ReminderAddView> {
         timeOfDay = picked;
         timeSelected.value = TextEditingValue(text: timeOfDay.format(context));
       });
+  }
+
+  void _showListTask() {
+    SelectDialog.showModal<String>(
+      context,
+      label: "Task Type",
+      selectedValue: _currentSelectTask,
+      items: _taskList,
+      itemBuilder: (context, String item, bool isSelected) {
+        return Container(
+          decoration: !isSelected
+              ? null
+              : BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white,
+            border: Border.all(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          child: ListTile(
+            selected: isSelected,
+            title: Text(item),
+            trailing: Icon(item == "Call" ? Icons.call : Icons.people),
+          ),
+        );
+      },
+      onChange: (String selected) {
+        setState(() {
+          _currentSelectTask = selected;
+          taskTypeCtrl.text = selected;
+        });
+      },
+    );
   }
 
   void _showListCustomer() {
@@ -201,7 +233,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 1,
         titleSpacing: 0,
         title: Text(
           "Add Reminder",
@@ -265,6 +297,17 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                   ),
                 ),
               ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  "Task Type (*)",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
               dropdownMenu(),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
@@ -281,10 +324,55 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                   ],
                 ),
               ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  "Task Title (*)",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
               formTaskDescription(),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  "Date (*)",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
               formDatePicker(),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  "Time (*)",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
               formTimePicker(),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  "Note (*)",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
               formNote(),
+              SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Container(
@@ -315,121 +403,160 @@ class _ReminderAddViewState extends State<ReminderAddView> {
 
   Widget dropdownMenu() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-      child: FormField(
-        builder: (FormFieldState state) {
-          return InputDecorator(
-            decoration: InputDecoration(
-              hintText: 'Task Type',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              errorText: 'Task Type harus diisi',
-              contentPadding:
-              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: _currentSelectTask,
-                hint: Text('Task Type'),
-                isDense: true,
-                onChanged: (String newVal) {
-                  setState(() {
-                    _currentSelectTask = newVal;
-                    state.didChange(newVal);
-                  });
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListTask();
                 },
-                items: ['Call', 'Meet Up'].map((String val) {
-                  return DropdownMenuItem<String>(
-                    value: val,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(val),
-                        Icon(
-                          val == 'Call' ? Icons.call : Icons.person,
-                          color: HexColor('#C61818'),
-                        ),
-                      ],
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Task Type",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
                     ),
-                  );
-                }).toList(),
+                    controller: taskTypeCtrl,
+                  ),
+                ),
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
 
   Widget formTaskDescription() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: TextField(
-        textInputAction: TextInputAction.done,
-        decoration: InputDecoration(
-          hintText: 'Task Description',
-          errorText: 'Task Description harus diisi',
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 17),
+                  prefixIcon: Icon(
+                    Icons.title,
+                    color: Color(0xFF6991C7),
+                    size: 24.0,
+                  ),
+                  hintText: "Task Title",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: taskDescriptionCtrl,
+              ),
             ),
           ),
         ),
-        controller: taskDescriptionCtrl,
-        maxLines: null,
       ),
     );
   }
 
   Widget formDatePicker() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-      child: GestureDetector(
-        onTap: () {
-          _selectedDate(context);
-        },
-        child: AbsorbPointer(
-          child: TextField(
-            controller: dateSelected,
-            keyboardType: TextInputType.datetime,
-            decoration: InputDecoration(
-              hintText: 'Select Date',
-              errorText: 'Tanggal harus diisi',
-              prefixIcon: Icon(Icons.calendar_today),
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black,
-                  width: 1,
-                ),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black,
-                  width: 1,
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black,
-                  width: 1,
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _selectedDate(context);
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      prefixIcon: Icon(
+                        Icons.calendar_today,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Pilih Tanggal",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: dateSelected,
+                    focusNode: dateSelectedFocus,
+                  ),
                 ),
               ),
             ),
-            focusNode: dateSelectedFocus,
           ),
         ),
       ),
@@ -438,40 +565,59 @@ class _ReminderAddViewState extends State<ReminderAddView> {
 
   Widget formTimePicker() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-      child: GestureDetector(
-        onTap: () {
-          _selectedTime(context);
-          FocusScope.of(context).requestFocus(noteFocus);
-        },
-        child: AbsorbPointer(
-          child: TextField(
-            controller: timeSelected,
-            keyboardType: TextInputType.datetime,
-            decoration: InputDecoration(
-              hintText: 'Select Time',
-              errorText: 'Waktu harus diisi',
-              prefixIcon: Icon(Icons.access_time),
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black,
-                  width: 1,
-                ),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black,
-                  width: 1,
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black,
-                  width: 1,
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _selectedTime(context);
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 18),
+                      prefixIcon: Icon(
+                        Icons.access_time,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Pilih Jam",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: timeSelected,
+                    focusNode: timeSelectedFocus,
+                  ),
                 ),
               ),
             ),
-            focusNode: timeSelectedFocus,
           ),
         ),
       ),
@@ -480,18 +626,41 @@ class _ReminderAddViewState extends State<ReminderAddView> {
 
   Widget formNote() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-      child: TextField(
-        textInputAction: TextInputAction.done,
-        decoration: InputDecoration(
-          hintText: 'Note',
-          border: OutlineInputBorder(),
-          enabledBorder: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(),
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
         ),
-        controller: notesCtrl,
-        maxLines: 4,
-        focusNode: noteFocus,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "Notes",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: notesCtrl,
+                maxLines: 6,
+                focusNode: noteFocus,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
