@@ -358,7 +358,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                         "OK",
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
-                      onPressed: () => Navigator.pop(context, true),
+                      onPressed: () => Navigator.pop(context, false),
                       color: HexColor("#C61818"),
                     ),
                   ]

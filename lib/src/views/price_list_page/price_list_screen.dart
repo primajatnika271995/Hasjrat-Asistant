@@ -505,140 +505,151 @@ class _PriceListViewState extends State<PriceListView> {
   }
 
   Widget itemList() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 3),
-      child: BlocBuilder<DmsBloc, DmsState>(
-        builder: (context, state) {
-          if (state is ItemListSuccess) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 10),
-                  child: Text(
-                    "Data Stock",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 3),
+        child: BlocBuilder<DmsBloc, DmsState>(
+          builder: (context, state) {
+            if (state is ItemListSuccess) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20, bottom: 10),
+                    child: Text(
+                      "Data Stock",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                   ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    var value = state.value.data[0].stocks[index];
-                    return ExpansionTile(
-                      initiallyExpanded: true,
-                      title: Text("${state.value.data[0].itemName}"),
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      var value = state.value.data[0].stocks[index];
+                      return Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: ExpansionTile(
+                            initiallyExpanded: true,
+                            title: Text("${state.value.data[0].itemName}"),
                             children: <Widget>[
-                              Text("Item Code"),
-                              Text(
-                                "${state.value.data[0].itemCode}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Item Code"),
+                                    Text(
+                                      "${state.value.data[0].itemCode}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Item Model"),
+                                    Text("${state.value.data[0].itemModel}"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Year"),
+                                    Text("${value.tahun}"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Color"),
+                                    Text("${value.namaWarna}"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Off The Road"),
+                                    Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].offtr)}"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("On The Road"),
+                                    Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Stock"),
+                                    Text("${value.quantity}"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                child: Text(
+                                  "Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.0,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("Item Model"),
-                              Text("${state.value.data[0].itemModel}"),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("Year"),
-                              Text("${value.tahun}"),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("Color"),
-                              Text("${value.namaWarna}"),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("Off The Road"),
-                              Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].offtr)}"),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("On The Road"),
-                              Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}"),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("Stock"),
-                              Text("${value.quantity}"),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                          child: Text(
-                            "Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                  itemCount: state.value.data[0].stocks.length,
-                ),
-              ],
-            );
-          }
+                      );
+                    },
+                    itemCount: state.value.data[0].stocks.length,
+                  ),
+                ],
+              );
+            }
 
-          if (state is ItemListFailed) {
-            return Center(
-              child: Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Text(
-                  "Data tidak berhasil ditemukan!",
-                  style: TextStyle(
-                    letterSpacing: 1.0,
-                    fontWeight: FontWeight.w700,
+            if (state is ItemListFailed) {
+              return Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text(
+                    "Data tidak berhasil ditemukan!",
+                    style: TextStyle(
+                      letterSpacing: 1.0,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-              ),
-            );
-          }
-          return SizedBox();
-        },
+              );
+            }
+            return SizedBox();
+          },
+        ),
       ),
     );
   }
