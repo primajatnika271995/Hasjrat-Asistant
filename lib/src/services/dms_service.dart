@@ -7,6 +7,7 @@ import 'package:salles_tools/src/models/class1_item_model.dart';
 import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
+import 'package:salles_tools/src/models/prospect_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -91,6 +92,31 @@ class DmsService {
     }
   }
 
+  Future prospectDMS(ProspectGet value, String start, String limit) async {
+    final response = await _dio.post(UriApi.checkProspectDMSUri,
+      options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      ),
+      data: {
+        "lead_code": value.leadCode,
+        "lead_name": value.leadName,
+        "limit": limit,
+        "start": start
+      },
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(prospectModelFromJson, json.encode(response.data));
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
   Future createProspect(ProspectPost value) async {
     final response = await _dio.post(UriApi.createProspectDMSUri,
       options: Options(
@@ -160,6 +186,13 @@ class ItemListPost {
   String itemGroup;
 
   ItemListPost({this.customerGroup, this.itemCode, this.itemGroup});
+}
+
+class ProspectGet {
+  String leadCode;
+  String leadName;
+
+  ProspectGet({this.leadCode, this.leadName});
 }
 
 class ProspectPost {
