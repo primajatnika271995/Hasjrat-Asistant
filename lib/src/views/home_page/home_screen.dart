@@ -40,13 +40,13 @@ class _HomeScreenState extends State<HomeScreen> {
   var _branchName;
 
   List<String> _menuName = [
-    "Book Test Drive",
+    "Costumer",
+    "Prospect Costumer",
     "Catalog",
     "Calculator",
     "Reminder",
     "Book Service",
-    "Costumer",
-    "Prospect Costumer",
+    "Book Test Drive",
     "More",
   ];
 
@@ -58,13 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List<String> _assetsMenu = [
-    "assets/icons/book_test_drive_icon.png",
+    "assets/icons/costumer_icon.png",
+    "assets/icons/prospect_costumer_icon.png",
     "assets/icons/catalog_icon.png",
     "assets/icons/calculator_icon.png",
     "assets/icons/reminder_icon.png",
     "assets/icons/book_service_icon.png",
-    "assets/icons/costumer_icon.png",
-    "assets/icons/prospect_costumer_icon.png",
+    "assets/icons/book_test_drive_icon.png",
     "assets/icons/more_icon.png",
   ];
 
@@ -76,7 +76,11 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List _menuNavigation = [
-    BookTestDriveListView(),
+    BlocProvider(
+      create: (context) => CustomerBloc(CustomerService()),
+      child: CustomerListView(),
+    ),
+    SalesInputView(),
     CatalogScreen(),
     BlocProvider(
       create: (context) => FinanceBloc(FinanceService()),
@@ -84,11 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
     ReminderListView(),
     BookServiceListView(),
-    BlocProvider(
-      create: (context) => CustomerBloc(CustomerService()),
-      child: CustomerListView(),
-    ),
-    SalesInputView(),
+    BookTestDriveListView(),
   ];
 
   List _moreMenuNavigation = [
