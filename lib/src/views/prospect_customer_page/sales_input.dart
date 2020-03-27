@@ -7,7 +7,7 @@ import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
-import 'package:salles_tools/src/views/prospect_customer_page/list_contact_customer.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/list_prospect_contact.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/list_prospect_customer.dart';
 
 class SalesInputView extends StatefulWidget {
@@ -25,7 +25,7 @@ class _SalesInputViewState extends State<SalesInputView> {
             leadCode: "",
             leadName: "",
             ))),
-          child: ContactCustomerListView(),
+          child: ProspectContactListView(),
         ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:

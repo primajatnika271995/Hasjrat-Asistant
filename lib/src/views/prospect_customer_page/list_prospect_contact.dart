@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_bloc.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
@@ -11,19 +10,18 @@ import 'package:salles_tools/src/bloc/lead_bloc/lead_state.dart';
 import 'package:salles_tools/src/models/lead_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
-import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/bottom_loader_content.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_contact.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/details_prospect_contact.dart';
 
-class ContactCustomerListView extends StatefulWidget {
+class ProspectContactListView extends StatefulWidget {
   @override
-  _ContactCustomerListViewState createState() =>
-      _ContactCustomerListViewState();
+  _ProspectContactListViewState createState() =>
+      _ProspectContactListViewState();
 }
 
-class _ContactCustomerListViewState extends State<ContactCustomerListView> {
+class _ProspectContactListViewState extends State<ProspectContactListView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
 
