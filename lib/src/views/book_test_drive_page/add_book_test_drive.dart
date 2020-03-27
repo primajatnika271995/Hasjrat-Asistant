@@ -132,7 +132,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           child: ListTile(
             selected: isSelected,
             title: Text("${item.itemModel} ${item.itemType}"),
-            subtitle: Text("${item.id}"),
           ),
         );
       },
@@ -425,6 +424,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
                 decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(bottom: 17),
                   border: InputBorder.none,
                   // contentPadding: EdgeInsets.only(bottom: 18),
                   prefixIcon: Icon(
@@ -473,6 +473,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
         child: Center(
           child: TextFormField(
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(bottom: 17),
               border: InputBorder.none,
               prefixIcon: Icon(
                 Icons.phone,
@@ -528,6 +529,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: TextFormField(
                   readOnly: true,
                   decoration: new InputDecoration(
+                    contentPadding: EdgeInsets.only(bottom: 17),
                     border: InputBorder.none,
                     enabled: false,
                     prefixIcon: Icon(
@@ -587,6 +589,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: TextFormField(
                   readOnly: true,
                   decoration: new InputDecoration(
+                    contentPadding: EdgeInsets.only(bottom: 17),
                     border: InputBorder.none,
                     enabled: false,
                     prefixIcon: Icon(
@@ -641,16 +644,14 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
               data: ThemeData(hintColor: Colors.transparent),
               child: GestureDetector(
                 onTap: () {
-                  //list vehicle name from api here
-                  print('Open dialog chose vehicle name from api');
                   _showListVehicle();
                 },
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
                     decoration: new InputDecoration(
-                      border: InputBorder.none,
                       contentPadding: EdgeInsets.only(bottom: 17),
+                      border: InputBorder.none,
                       enabled: false,
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
@@ -704,6 +705,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: TextFormField(
                   readOnly: true,
                   decoration: new InputDecoration(
+                    contentPadding: EdgeInsets.only(bottom: 17),
                     border: InputBorder.none,
                     enabled: false,
                     prefixIcon: Icon(
@@ -758,6 +760,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: TextFormField(
                   readOnly: true,
                   decoration: new InputDecoration(
+                    contentPadding: EdgeInsets.only(bottom: 17),
                     border: InputBorder.none,
                     enabled: false,
                     prefixIcon: Icon(
