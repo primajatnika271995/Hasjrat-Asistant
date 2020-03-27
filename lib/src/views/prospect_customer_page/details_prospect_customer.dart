@@ -1,17 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/prospect_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProspectDetailsView extends StatefulWidget {
+  final Datum value;
+  ProspectDetailsView(this.value);
+
   @override
   _ProspectDetailsViewState createState() => _ProspectDetailsViewState();
 }
 
 class _ProspectDetailsViewState extends State<ProspectDetailsView> {
-  
-  ContextType _currentSelectContext;
+  String _currentContextType = "Prospect";
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Customer",
+          "Prospect Details",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -33,39 +36,28 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            profileImage(),
-            namaCustomer(),
+            SizedBox(
+              height: 30,
+            ),
+            prospectId(),
             Divider(),
-            nikCustomer(),
+            leadCode(),
+            Divider(),
+            namaCustomer(),
             Divider(),
             contactCustomer(),
             Divider(),
-            emailCustomer(),
+            provinceCustomer(),
             Divider(),
-            alamatCustomer(),
+            kotaCustomer(),
+            Divider(),
+            kecamatanCustomer(),
+            Divider(),
+            locationCustomer(),
             dropdownContext(),
-            vehicleCustomer(),
-            Divider(),
-            colorVehicleCustomer(),
-            ktpImage(),
             spkButton(),
-            saveButton(),
             callButton(),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget profileImage() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 25),
-      child: Center(
-        child: CircleAvatar(
-          backgroundColor: Colors.white,
-          radius: 50,
-          backgroundImage: NetworkImage(
-              "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
         ),
       ),
     );
@@ -87,7 +79,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
     );
   }
 
-  Widget namaCustomer() {
+  Widget prospectId() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
       child: Row(
@@ -96,7 +88,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 4,
             child: Text(
-              "Nama",
+              "Prospect Id",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -107,7 +99,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 6,
             child: Text(
-              "Bayu Harsono",
+              "${widget.value.prospectNum}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -119,7 +111,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
     );
   }
 
-  Widget nikCustomer() {
+  Widget namaCustomer() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
       child: Row(
@@ -128,7 +120,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 4,
             child: Text(
-              "NIK",
+              "Customer Name",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -139,7 +131,39 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 6,
             child: Text(
-              "3190018751021953",
+              "${widget.value.cardName}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget leadCode() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Customer Code",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${widget.value.leadCode}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -171,7 +195,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 6,
             child: Text(
-              "+62 85875074351",
+              "${widget.value.phone1}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -215,7 +239,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
     );
   }
 
-  Widget alamatCustomer() {
+  Widget provinceCustomer() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
       child: Row(
@@ -224,7 +248,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 4,
             child: Text(
-              "Alamat",
+              "Provinsi",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -235,7 +259,103 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 6,
             child: Text(
-              "Jl. Cicalengka Raya No 11, Antapani Bandung",
+              "${widget.value.address1}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget kotaCustomer() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Kota",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${widget.value.address2}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget kecamatanCustomer() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Kecamatan",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${widget.value.address3}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget locationCustomer() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Lokasi",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${widget.value.location}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -262,28 +382,23 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
               EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton<ContextType>(
-//                        value: _currentSelectTask,
+              child: DropdownButton<String>(
+                value: _currentContextType,
                 hint: Text('Context Type'),
                 isDense: true,
-                onChanged: (ContextType newVal) {
+                onChanged: (String newVal) {
                   setState(() {
-                    _currentSelectContext = newVal;
-                    state.didChange(newVal.contextName);
-                    print(_currentSelectContext.contextName);
+                    _currentContextType = newVal;
+                    state.didChange(newVal);
                   });
                 },
-                items: ContextType.getTask().map((ContextType val) {
-                  return DropdownMenuItem<ContextType>(
+                items: ["Prospect", "Hot Prospect", "Context"].map((String val) {
+                  return DropdownMenuItem<String>(
                     value: val,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(val.contextName),
-                        Text(
-                          "●",
-                          style: TextStyle(color: val.contextColor),
-                        ),
+                        Text(val),
                       ],
                     ),
                   );
@@ -362,12 +477,12 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget spkButton() {
     return Padding(
-      padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
+      padding: const EdgeInsets.only(left: 30, right: 30),
       child: Container(
         width: screenWidth(context),
         child: RaisedButton(
           onPressed: () {},
-          child: Text("SPK", style: TextStyle(color: Colors.white),),
+          child: Text("Copy to SPK", style: TextStyle(color: Colors.white),),
           color: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
@@ -401,7 +516,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
         width: screenWidth(context),
         child: RaisedButton(
           onPressed: () {
-            launch('tel:+6285875074351');
+            launch('tel:${widget.value.phone1}');
           },
           child: Text("Call", style: TextStyle(color: Colors.white),),
           color: Colors.brown,
@@ -411,20 +526,5 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
         ),
       ),
     );
-  }
-}
-
-class ContextType {
-  String contextName;
-  Color contextColor;
-
-  ContextType({this.contextName, this.contextColor});
-
-  static List<ContextType> getTask() {
-    return <ContextType>[
-      ContextType(contextName: 'Context', contextColor: Colors.orangeAccent),
-      ContextType(contextName: 'Prospect', contextColor: Colors.green),
-      ContextType(contextName: 'Hot Prospect', contextColor: Colors.red),
-    ];
   }
 }

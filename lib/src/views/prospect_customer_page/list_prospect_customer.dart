@@ -23,14 +23,14 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
   final _scrollThreshold = 200.0;
 
   var searchCtrl = new TextEditingController();
-  var _currentSelectFilter;
+  var _currentSelectFilter = "by Name";
 
   Completer<void> _refreshCompleter;
 
   void _onViewDetailsProspect(Datum value) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => ProspectDetailsView(),
+        pageBuilder: (_, __, ___) => ProspectDetailsView(value),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
@@ -376,12 +376,12 @@ class SlidableCustomerView extends StatelessWidget {
                         height: 18,
                         width: 50,
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Colors.blue,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(
                           child: Text(
-                            "${value.prospectStatus}",
+                            "${value.docStatus}",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 9,

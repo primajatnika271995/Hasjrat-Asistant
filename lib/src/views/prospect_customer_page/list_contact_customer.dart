@@ -406,7 +406,7 @@ class SlidableCustomerView extends StatelessWidget {
                         height: 18,
                         width: 50,
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: value.suspectstatus == "Close" ? Colors.red : Colors.blue,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(
