@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/class1_item_model.dart';
-import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
+import 'package:salles_tools/src/models/prospect_model.dart' as prospect;
 
 class DmsState extends Equatable {
   @override
@@ -83,6 +83,28 @@ class CreateProspectSuccess extends DmsState {
   @override
   // TODO: implement props
   List<Object> get props => [];
+}
+
+class ProspectSuccess extends DmsState {
+  final List<prospect.Datum> prospects;
+  final bool hasReachedMax;
+
+  ProspectSuccess({this.prospects, this.hasReachedMax});
+
+  ProspectSuccess copyWith({List<prospect.Datum> prospect, bool hasReachedMax}) {
+    return ProspectSuccess(
+      prospects: prospect ?? this.prospects,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [prospects, hasReachedMax];
+
+  @override
+  String toString() =>
+      'Prospect Loaded { prospect: ${prospects.length}, hasReachedMax: $hasReachedMax }';
 }
 
 class CreateProspectError extends DmsState {

@@ -3,34 +3,57 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
-import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
-import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
-import 'package:salles_tools/src/models/prospect_model.dart';
-import 'package:salles_tools/src/services/dms_service.dart';
+import 'package:intl/intl.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
+import 'package:salles_tools/src/bloc/lead_bloc/lead_bloc.dart';
+import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
+import 'package:salles_tools/src/bloc/lead_bloc/lead_state.dart';
+import 'package:salles_tools/src/models/lead_model.dart';
+import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/bottom_loader_content.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
-import 'package:salles_tools/src/views/prospect_customer_page/details_prospect_customer.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/add_prospect_contact.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/details_prospect_contact.dart';
 
-class ProspectCustomerListView extends StatefulWidget {
+class ContactCustomerListView extends StatefulWidget {
   @override
-  _ProspectCustomerListViewState createState() => _ProspectCustomerListViewState();
+  _ContactCustomerListViewState createState() =>
+      _ContactCustomerListViewState();
 }
 
-class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
+class _ContactCustomerListViewState extends State<ContactCustomerListView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
 
   var searchCtrl = new TextEditingController();
-  var _currentSelectFilter;
+  var _currentSelectFilter = "by Name";
 
   Completer<void> _refreshCompleter;
 
-  void _onViewDetailsProspect(Datum value) {
+  void _onAddProspectCustomer() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => ProspectDetailsView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => CustomerBloc(CustomerService()),
+          child: ProspectContactAdd(),
+        ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onViewDetailsContact(Datum value) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => ProspectContactDetailsView(value),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
@@ -46,16 +69,16 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
     switch (_currentSelectFilter) {
       case "by Name":
       // ignore: close_sinks
-        final prospectBloc = BlocProvider.of<DmsBloc>(context);
-        prospectBloc.add(FetchProspectFilter(ProspectGet(
+        final leadBloc = BlocProvider.of<LeadBloc>(context);
+        leadBloc.add(FetchLeadFilter(LeadPost(
           leadCode: "",
           leadName: searchCtrl.text,
         )));
         break;
       case "by Code":
-      // ignore: close_sinks
-        final prospectBloc = BlocProvider.of<DmsBloc>(context);
-        prospectBloc.add(FetchProspectFilter(ProspectGet(
+        // ignore: close_sinks
+        final leadBloc = BlocProvider.of<LeadBloc>(context);
+        leadBloc.add(FetchLeadFilter(LeadPost(
           leadCode: searchCtrl.text,
           leadName: "",
         )));
@@ -68,8 +91,8 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
       // ignore: close_sinks
-      final leadBloc = BlocProvider.of<DmsBloc>(context);
-      leadBloc.add(FetchProspect(ProspectGet(
+      final leadBloc = BlocProvider.of<LeadBloc>(context);
+      leadBloc.add(FetchLead(LeadPost(
         leadCode: "",
         leadName: "",
       )));
@@ -99,7 +122,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
         elevation: 3,
         titleSpacing: 0,
         title: Text(
-          "Prospect Customer",
+          "Contact",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -111,13 +134,13 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: BlocListener<DmsBloc, DmsState>(
+      body: BlocListener<LeadBloc, LeadState>(
         listener: (context, state) {
-          if (state is DmsLoading) {
+          if (state is LeadLoading) {
             onLoading(context);
           }
 
-          if (state is DmsDisposeLoading) {
+          if (state is LeadDisposeLoading) {
             Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context, rootNavigator: false).pop();
             });
@@ -126,22 +149,22 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
         child: RefreshIndicator(
           onRefresh: () {
             // ignore: close_sinks
-            final leadBloc = BlocProvider.of<DmsBloc>(context);
-            leadBloc.add(RefreshProspect(ProspectGet(
+            final leadBloc = BlocProvider.of<LeadBloc>(context);
+            leadBloc.add(RefreshLead(LeadPost(
               leadCode: "",
               leadName: "",
             )));
             return _refreshCompleter.future;
           },
-          child: BlocBuilder<DmsBloc, DmsState>(
+          child: BlocBuilder<LeadBloc, LeadState>(
             builder: (context, state) {
-              if (state is DmsInitial) {
+              if (state is LeadInitial) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               }
 
-              if (state is DmsFailed) {
+              if (state is LeadFailed) {
                 Future.delayed(Duration(seconds: 3), () {
                   Navigator.of(context, rootNavigator: true).pop();
                 });
@@ -154,7 +177,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
                 );
               }
 
-              if (state is ProspectSuccess) {
+              if (state is LeadSuccess) {
                 _refreshCompleter?.complete();
                 _refreshCompleter = Completer();
 
@@ -162,25 +185,32 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
                   shrinkWrap: true,
                   controller: _scrollController,
                   itemBuilder: (context, index) {
-                    return index >= state.prospects.length
+                    return index >= state.leads.length
                         ? BottomLoader()
                         : SlidableCustomerView(
-                      index: index,
-                      value: state.prospects[index],
-                      callback: () {
-                        _onViewDetailsProspect(state.prospects[index]);
-                      },
-                    );
+                            index: index,
+                            value: state.leads[index],
+                            callback: () {
+                              _onViewDetailsContact(state.leads[index]);
+                            },
+                          );
                   },
                   itemCount: state.hasReachedMax
-                      ? state.prospects.length
-                      : state.prospects.length + 1,
+                      ? state.leads.length
+                      : state.leads.length + 1,
                 );
               }
               return SizedBox();
             },
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _onAddProspectCustomer();
+        },
+        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: HexColor('#C61818'),
       ),
     );
   }
@@ -381,7 +411,7 @@ class SlidableCustomerView extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            "${value.prospectStatus}",
+                            "${value.suspectstatus}",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 9,
@@ -392,9 +422,9 @@ class SlidableCustomerView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      value.prospectDate == null
+                      value.suspectDate == null
                           ? "No Date"
-                          : "${value.prospectDate.day}/${value.prospectDate.month}/${value.prospectDate.year}",
+                          : "${value.suspectDate.day}/${value.suspectDate.month}/${value.suspectDate.year}",
                       style: TextStyle(
                         letterSpacing: 1.0,
                         fontSize: 11,

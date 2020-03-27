@@ -65,4 +65,34 @@ class CreateProspect extends DmsEvent {
   List<Object> get props => [value];
 }
 
+class FetchProspect extends DmsEvent {
+  final ProspectGet value;
+
+  FetchProspect(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
+class RefreshProspect extends DmsEvent {
+  final ProspectGet value;
+
+  RefreshProspect(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
+class FetchProspectFilter extends DmsEvent {
+  final ProspectGet value;
+
+  FetchProspectFilter(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
 class ResetDms extends DmsEvent {}

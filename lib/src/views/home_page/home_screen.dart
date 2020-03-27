@@ -23,7 +23,8 @@ import 'package:salles_tools/src/views/home_page/list_promotion.dart';
 import 'package:salles_tools/src/views/knowledge_base_page/knowledge_base_screen.dart';
 import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
 import 'package:salles_tools/src/views/promotion_page/list_promotion.dart';
-import 'package:salles_tools/src/views/prospect_customer_page/list_prospect_customer.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/list_contact_customer.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/sales_input.dart';
 import 'package:salles_tools/src/views/reminder_page/list_reminder.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -90,13 +91,14 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => CustomerBloc(CustomerService()),
       child: CustomerListView(),
     ),
-    BlocProvider(
-      create: (context) => LeadBloc(CustomerService())..add(FetchLead(LeadPost(
-        leadCode: "",
-        leadName: "",
-        ))),
-      child: ProspectCustomerListView(),
-    ),
+//    BlocProvider(
+//      create: (context) => LeadBloc(CustomerService())..add(FetchLead(LeadPost(
+//        leadCode: "",
+//        leadName: "",
+//        ))),
+//      child: ProspectCustomerListView(),
+//    ),
+    SalesInputView(),
   ];
 
   List _moreMenuNavigation = [
