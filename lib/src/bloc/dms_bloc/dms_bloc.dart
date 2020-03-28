@@ -25,14 +25,18 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
       if (currentState is DmsInitial) {
         yield DmsLoading();
 
-        prospect.ProspectModel value = await _dmsService.prospectDMS(event.value, "0", "20");
-        List<prospect.Datum> prospects = value.data;
+        try {
+          prospect.ProspectModel value = await _dmsService.prospectDMS(event.value, "0", "20");
+          List<prospect.Datum> prospects = value.data;
 
-        yield DmsDisposeLoading();
-        yield ProspectSuccess(
-          prospects: prospects,
-          hasReachedMax: false,
-        );
+          yield DmsDisposeLoading();
+          yield ProspectSuccess(
+            prospects: prospects,
+            hasReachedMax: false,
+          );
+        } catch(err) {
+          yield DmsError();
+        }
       }
 
       if (currentState is ProspectSuccess) {

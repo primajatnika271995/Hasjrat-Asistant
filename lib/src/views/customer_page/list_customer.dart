@@ -164,7 +164,15 @@ class _CustomerListViewState extends State<CustomerListView> {
                       Navigator.of(context, rootNavigator: true).pop();
                     });
                     return Center(
-                      child: Text("${state.error.message}"),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Column(
+                          children: <Widget>[
+                            Image.asset("assets/icons/error_banner.jpg", height: 200),
+                            Text("502 Error Bad Gateway"),
+                          ],
+                        ),
+                      ),
                     );
                   }
 

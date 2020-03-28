@@ -154,6 +154,23 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
                 );
               }
 
+              if (state is DmsError) {
+                Future.delayed(Duration(seconds: 3), () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                });
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset("assets/icons/error_banner.jpg", height: 200),
+                        Text("502 Error Bad Gateway"),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
               if (state is ProspectSuccess) {
                 _refreshCompleter?.complete();
                 _refreshCompleter = Completer();

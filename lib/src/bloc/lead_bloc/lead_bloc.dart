@@ -30,20 +30,24 @@ class LeadBloc extends Bloc<LeadEvent, LeadState> {
         if (currentState is LeadInitial) {
           yield LeadLoading();
 
-          LeadModel value = await _customerService.leadDMS(event.value, "0", "20");
-          List<Datum> leads = value.data;
+          try {
+            LeadModel value = await _customerService.leadDMS(event.value, "0", "20");
+            List<Datum> leads = value.data;
 
-          yield LeadDisposeLoading();
-          yield LeadSuccess(
-            leads: leads,
-            hasReachedMax: false,
-          );
+            yield LeadDisposeLoading();
+            yield LeadSuccess(
+              leads: leads,
+              hasReachedMax: false,
+            );
+          } catch(error) {
+            log.warning("Error : ${error.toString()}");
+            yield LeadError();
+          }
         }
 
         if (currentState is LeadSuccess) {
           log.info("onSuccess");
-          LeadModel value = await _customerService.leadDMS(
-              event.value, currentState.leads.length.toString(), "20");
+          LeadModel value = await _customerService.leadDMS(event.value, currentState.leads.length.toString(), "20");
           List<Datum> leads = value.data;
           yield leads.isEmpty
               ? currentState.copyWith(hasReachedMax: true)

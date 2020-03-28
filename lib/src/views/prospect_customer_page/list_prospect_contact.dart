@@ -175,6 +175,23 @@ class _ProspectContactListViewState extends State<ProspectContactListView> {
                 );
               }
 
+              if (state is LeadError) {
+                Future.delayed(Duration(seconds: 3), () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                });
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset("assets/icons/error_banner.jpg", height: 200),
+                        Text("502 Error Bad Gateway"),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
               if (state is LeadSuccess) {
                 _refreshCompleter?.complete();
                 _refreshCompleter = Completer();

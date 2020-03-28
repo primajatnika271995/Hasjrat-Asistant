@@ -5,6 +5,7 @@ import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
 import 'package:salles_tools/src/models/customer_model.dart';
 import 'package:salles_tools/src/models/district_model.dart';
+import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
@@ -45,8 +46,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
 
         } catch(error) {
           log.warning("Error : ${error.toString()}");
-          CustomerError valError = await _customerService.customerDMS(event.value);
-          CustomerError(valError);
+          yield CustomerError();
         }
       } else {
         log.info("Customer Cache on Data");

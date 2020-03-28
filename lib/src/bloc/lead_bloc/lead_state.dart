@@ -38,13 +38,8 @@ class LeadSuccess extends LeadState {
       'Lead Loaded { lead: ${leads.length}, hasReachedMax: $hasReachedMax }';
 }
 
-class CustomerError extends LeadState {
-  final _data;
-
-  CustomerError(this._data);
-  ErrorModel get error => _data;
-
+class LeadError extends LeadState {
   @override
   // TODO: implement props
-  List<Object> get props => [_data];
+  List<Object> get props => [];
 }

@@ -114,13 +114,8 @@ class CreateProspectError extends DmsState {
 }
 
 class DmsError extends DmsState {
-  final _data;
-
-  DmsError(this._data);
-  ErrorModel get error => _data;
-
   @override
   // TODO: implement props
-  List<Object> get props => [_data];
+  List<Object> get props => [];
 }
 

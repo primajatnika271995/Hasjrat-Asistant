@@ -52,6 +52,8 @@ class LoginService {
         return compute(errorModelFromJson, json.encode(error.response.data));
       } else if (error.response.statusCode == 502) {
         return compute(errorModelFromJson, json.encode(error.response.data));
+      } else if (error.response.statusCode == 400) {
+        log.info("Error 400");
       }
     }
   }

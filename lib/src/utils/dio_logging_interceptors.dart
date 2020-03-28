@@ -57,8 +57,6 @@ class DioLoggingInterceptors extends InterceptorsWrapper {
 
   @override
   Future onError(DioError err) async {
-    final navigatorKey = GlobalKey<NavigatorState>();
-
     log.info("<-- ${err.message} ${(err.response?.request != null ? (err.response.request.baseUrl + err.response.request.path) : 'URL')}");
     log.info("${err.response != null ? err.response.data : 'Unknown Error'}");
     log.info("<-- End Error");

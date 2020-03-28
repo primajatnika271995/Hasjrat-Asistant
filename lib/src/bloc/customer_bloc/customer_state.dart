@@ -112,12 +112,7 @@ class CreateContactError extends CustomerState {
 }
 
 class CustomerError extends CustomerState {
-  final _data;
-
-  CustomerError(this._data);
-  ErrorModel get error => _data;
-
   @override
   // TODO: implement props
-  List<Object> get props => [_data];
+  List<Object> get props => [];
 }

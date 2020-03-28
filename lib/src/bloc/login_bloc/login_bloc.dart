@@ -24,8 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        AuthenticationModel value =
-            await loginService.login(event.username, event.password);
+        AuthenticationModel value = await loginService.login(event.username, event.password);
 
         await SharedPreferencesHelper.setAccessToken(value.accessToken);
         await SharedPreferencesHelper.setUsername(event.username);
@@ -34,8 +33,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         EmployeeModel employee = await loginService.checkNIK(event.username);
         await SharedPreferencesHelper.setSalesName(employee.name);
         await SharedPreferencesHelper.setSalesNIK(employee.id);
-        await SharedPreferencesHelper.setSalesBirthday(
-            employee.birthDate.toString());
+        await SharedPreferencesHelper.setSalesBirthday(employee.birthDate.toString());
         await SharedPreferencesHelper.setSalesGender(employee.jenisKelamin);
         
         await SharedPreferencesHelper.setSalesBrach(employee.branch.name);

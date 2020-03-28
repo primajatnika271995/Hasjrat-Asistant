@@ -25,51 +25,69 @@ class CustomerService {
   }
 
   Future customerDMS(CustomerPost value) async {
-    final response = await _dio.post(UriApi.checkCustomerDMSUri,
-      options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          }
-      ),
-      data: {
-        "cardcode": value.cardCode,
-        "cardname": value.cardName,
-        "custgroup": value.custgroup,
-      },
-    );
 
-    log.info(response.statusCode);
-    if (response.statusCode == 200) {
-      return compute(customerModelFromJson, json.encode(response.data));
-    } else if (response.statusCode == 401) {
-      return compute(errorTokenExpireFromJson, json.encode(response.data));
-    } else {
-      return compute(errorModelFromJson, json.encode(response.data));
+    try {
+      final response = await _dio.post(UriApi.checkCustomerDMSUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        data: {
+          "cardcode": value.cardCode,
+          "cardname": value.cardName,
+          "custgroup": value.custgroup,
+        },
+      );
+
+      log.info(response.statusCode);
+      if (response.statusCode == 200) {
+        return compute(customerModelFromJson, json.encode(response.data));
+      }
+    } on DioError catch(error) {
+      log.warning("Customer Error Status: ${error.response.statusCode}");
+
+      if (error.response.statusCode == 502) {
+        return compute(errorModelFromJson, json.encode(error.response.data));
+      } else if (error.response.statusCode == 401) {
+        return compute(errorTokenExpireFromJson, json.encode(error.response.data));
+      } else {
+        return compute(errorModelFromJson, json.encode(error.response.data));
+      }
     }
   }
 
   Future leadDMS(LeadPost value, String start, String limit) async {
-    final response = await _dio.post(UriApi.checkLeadDMSUri,
-      options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          }
-      ),
-      data: {
-        "lead_code": value.leadCode,
-        "lead_name": value.leadName,
-        "limit": limit,
-        "start": start
-      },
-    );
 
-    log.info(response.statusCode);
-    if (response.statusCode == 200) {
-      return compute(leadModelFromJson, json.encode(response.data));
-    } else if (response.statusCode == 401) {
-      return compute(errorTokenExpireFromJson, json.encode(response.data));
-    } else {
-      return compute(errorModelFromJson, json.encode(response.data));
+    try {
+      final response = await _dio.post(UriApi.checkLeadDMSUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        data: {
+          "lead_code": value.leadCode,
+          "lead_name": value.leadName,
+          "limit": limit,
+          "start": start
+        },
+      );
+
+      log.info(response.statusCode);
+      if (response.statusCode == 200) {
+        return compute(leadModelFromJson, json.encode(response.data));
+      }
+    } on DioError catch(error) {
+      log.warning("Lead Error Status: ${error.response.statusCode}");
+
+      if (error.response.statusCode == 502) {
+        return compute(errorModelFromJson, json.encode(error.response.data));
+      } else if (error.response.statusCode == 401) {
+        return compute(errorTokenExpireFromJson, json.encode(error.response.data));
+      } else {
+        return compute(errorModelFromJson, json.encode(error.response.data));
+      }
     }
   }
 
