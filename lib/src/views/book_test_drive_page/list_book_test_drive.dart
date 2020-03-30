@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
+import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_state.dart';
+import 'package:salles_tools/src/models/list_booking_drive_model.dart';
 import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
+import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 
 import '../../bloc/booking_bloc/booking_drive_event.dart';
 import '../../bloc/dms_bloc/dms_bloc.dart';
@@ -64,15 +69,56 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return SlidableBookTestDriveView(
-            index: index,
-            callback: () {},
-          );
+      body: BlocListener<BookingDriveBloc, BookingDriveState>(
+        listener: (context, state) {
+          if (state is BookingDriveLoading) {
+            onLoading(context);
+          }
         },
-        itemCount: BookTestDrive.getBook().length,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              BlocBuilder<BookingDriveBloc, BookingDriveState>(
+                builder: (context, state) {
+                  if (state is ListBookingDriveFailed) {
+                    print("List Schedule failed");
+                    Future.delayed(Duration(seconds: 3), () {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    });
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Column(
+                          children: <Widget>[
+                            Image.asset("assets/icons/error_banner.jpg",
+                                height: 200),
+                            Text("502 Error Bad Gateway"),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
+                  if (state is ListBookingDriveSuccess) {
+                    print("List Schedule success");
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return SlidableBookTestDriveView(
+                          index: index,
+                          value: state.value[index],
+                        );
+                      },
+                    );
+                  }
+                  return SizedBox();
+                },
+              ),
+            ],
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -87,8 +133,9 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
 
 class SlidableBookTestDriveView extends StatelessWidget {
   final Function callback;
+  final BookingDriveScheduleModel value;
   final int index;
-  SlidableBookTestDriveView({Key key, this.callback, this.index})
+  SlidableBookTestDriveView({Key key, this.callback, this.index, this.value})
       : super(key: key);
 
   @override
@@ -139,7 +186,7 @@ class SlidableBookTestDriveView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      '${BookTestDrive.getBook()[index].customerName}',
+                      '${value.customerName}',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -149,7 +196,7 @@ class SlidableBookTestDriveView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        '${BookTestDrive.getBook()[index].vehicleName}',
+                        '${value.customerPhone}',
                         style: TextStyle(
                           fontSize: 13,
                           letterSpacing: 0.7,
@@ -157,7 +204,7 @@ class SlidableBookTestDriveView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${BookTestDrive.getBook()[index].locationName}',
+                      '${value.createdBy}',
                       style: TextStyle(
                         fontSize: 13,
                         letterSpacing: 0.7,
@@ -166,51 +213,51 @@ class SlidableBookTestDriveView extends StatelessWidget {
                   ],
                 ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 40, top: 10),
-                        child: Container(
-                          height: 18,
-                          width: 70,
-                          decoration: BoxDecoration(
-                            color: BookTestDrive.getBook()[index].statusColor,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Center(
-                            child: Text(
-                              '${BookTestDrive.getBook()[index].status}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 9,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        '${BookTestDrive.getBook()[index].date}',
-                        style: TextStyle(
-                          fontSize: 11,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      Text(
-                        '${BookTestDrive.getBook()[index].time}',
-                        style: TextStyle(
-                          fontSize: 11,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // Expanded(
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(left: 15, right: 5),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.end,
+              //       children: <Widget>[
+              //         Padding(
+              //           padding: const EdgeInsets.only(bottom: 40, top: 10),
+              //           child: Container(
+              //             height: 18,
+              //             width: 70,
+              //             decoration: BoxDecoration(
+              //               color: BookTestDrive.getBook()[index].statusColor,
+              //               borderRadius: BorderRadius.circular(5),
+              //             ),
+              //             child: Center(
+              //               child: Text(
+              //                 '${BookTestDrive.getBook()[index].status}',
+              //                 style: TextStyle(
+              //                   color: Colors.white,
+              //                   fontSize: 9,
+              //                   fontWeight: FontWeight.w400,
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         Text(
+              //           '${BookTestDrive.getBook()[index].date}',
+              //           style: TextStyle(
+              //             fontSize: 11,
+              //             letterSpacing: 0.5,
+              //           ),
+              //         ),
+              //         Text(
+              //           '${BookTestDrive.getBook()[index].time}',
+              //           style: TextStyle(
+              //             fontSize: 11,
+              //             letterSpacing: 0.5,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
