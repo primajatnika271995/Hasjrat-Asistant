@@ -48,7 +48,7 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
       branchCode: "10100",
       outletCode: "10104",
       dateAfter: "2022-03-31",
-      dateBefore: "2018-03-24",
+      dateBefore: "2020-03-27",
     )));
     super.initState();
   }
@@ -227,19 +227,33 @@ class SlidableBookTestDriveView extends StatelessWidget {
                         child: Container(
                           height: 18,
                           width: 70,
-                          decoration: BoxDecoration(
-                            color: BookTestDrive.getBook()[index].statusColor,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
+                          decoration: value.approve == false
+                              ? BoxDecoration(
+                                  color: Colors.redAccent,
+                                  borderRadius: BorderRadius.circular(5),
+                                )
+                              : BoxDecoration(
+                                  color: Colors.blueAccent,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
                           child: Center(
-                            child: Text(
-                              '${value.approve}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 9,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
+                            child: value.approve == false
+                                ? Text(
+                                    'Rejected',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  )
+                                : Text(
+                                    'Approved',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
                           ),
                         ),
                       ),
