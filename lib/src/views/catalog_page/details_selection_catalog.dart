@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
+import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
@@ -28,7 +30,10 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
   void _onBookTestDrive() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => BookTestDriveAddView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => BookingDriveBloc(BookingDriveService()),
+          child: BookTestDriveAddView(),
+        ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
