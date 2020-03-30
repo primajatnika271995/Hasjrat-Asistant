@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_state.dart';
 import 'package:salles_tools/src/models/list_booking_drive_model.dart';
@@ -105,6 +106,7 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
+                      itemCount: state.value.length,
                       itemBuilder: (context, index) {
                         return SlidableBookTestDriveView(
                           index: index,
@@ -135,6 +137,7 @@ class SlidableBookTestDriveView extends StatelessWidget {
   final Function callback;
   final BookingDriveScheduleModel value;
   final int index;
+  final dateFormat = DateFormat("dd-MM-yyyy");
   SlidableBookTestDriveView({Key key, this.callback, this.index, this.value})
       : super(key: key);
 
@@ -196,7 +199,7 @@ class SlidableBookTestDriveView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        '${value.customerPhone}',
+                        '${value.car.itemModel}',
                         style: TextStyle(
                           fontSize: 13,
                           letterSpacing: 0.7,
@@ -213,51 +216,51 @@ class SlidableBookTestDriveView extends StatelessWidget {
                   ],
                 ),
               ),
-              // Expanded(
-              //   child: Padding(
-              //     padding: const EdgeInsets.only(left: 15, right: 5),
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.end,
-              //       children: <Widget>[
-              //         Padding(
-              //           padding: const EdgeInsets.only(bottom: 40, top: 10),
-              //           child: Container(
-              //             height: 18,
-              //             width: 70,
-              //             decoration: BoxDecoration(
-              //               color: BookTestDrive.getBook()[index].statusColor,
-              //               borderRadius: BorderRadius.circular(5),
-              //             ),
-              //             child: Center(
-              //               child: Text(
-              //                 '${BookTestDrive.getBook()[index].status}',
-              //                 style: TextStyle(
-              //                   color: Colors.white,
-              //                   fontSize: 9,
-              //                   fontWeight: FontWeight.w400,
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //         Text(
-              //           '${BookTestDrive.getBook()[index].date}',
-              //           style: TextStyle(
-              //             fontSize: 11,
-              //             letterSpacing: 0.5,
-              //           ),
-              //         ),
-              //         Text(
-              //           '${BookTestDrive.getBook()[index].time}',
-              //           style: TextStyle(
-              //             fontSize: 11,
-              //             letterSpacing: 0.5,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 40, top: 10),
+                        child: Container(
+                          height: 18,
+                          width: 70,
+                          decoration: BoxDecoration(
+                            color: BookTestDrive.getBook()[index].statusColor,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${value.approve}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '${dateFormat.format(DateTime.parse(value.schedule))}',
+                        style: TextStyle(
+                          fontSize: 11,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      // Text(
+                      //   '${value.}',
+                      //   style: TextStyle(
+                      //     fontSize: 11,
+                      //     letterSpacing: 0.5,
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
