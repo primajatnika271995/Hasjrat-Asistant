@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_bloc.dart';
+import 'package:salles_tools/src/services/sales_month_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/dashboard_page/dashboard_screen.dart';
 import 'package:salles_tools/src/views/home_page/home_screen.dart';
@@ -14,7 +17,11 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
   int _selectedIndex = 0;
 
   List<Widget> _widgetPages = [
-    HomeScreen(),
+//    HomeScreen(),
+    BlocProvider(
+      create: (context) => SalesMonthBloc(SalesMonthService()),
+      child: HomeScreen(),
+    ),
     NotificationScreen(),
     DashboardScreen(),
     ProfileScreen(),
