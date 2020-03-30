@@ -213,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   barrierColor: Colors.grey.withOpacity(0.5),
                   context: context,
                   barrierLabel: '',
-                  barrierDismissible: false,
+                  barrierDismissible: true,
                   transitionDuration: Duration(milliseconds: 1000),
                   transitionBuilder: (context, a1, a2, widget) {
                     final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;

@@ -312,7 +312,9 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       );
 
       setState(() {
-        currentPreviewImage = Image.file(File(fileCropper.path));
+        currentPreviewImage = Image.file(File(fileCropper.path),
+          fit: BoxFit.cover,
+        );
       });
 
       final FirebaseVisionImage visionImage =
@@ -335,7 +337,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
           setState(() {
             loopIndex = loopIndex + 1;
             namaScan = block.text;
-//            customerNameCtrl.text = namaScan;
+            customerNameCtrl.text = namaScan;
           });
         }
 
@@ -550,6 +552,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          currentPreviewImage == null ?
                           Card(
                             elevation: 3,
                             child: Container(
@@ -576,6 +579,24 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                                       ),),
                                     ),
                                   ],
+                                ),
+                              ),
+                            ),
+                          ) :
+                          Center(
+                            child: Card(
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Container(
+                                height: 170,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ClipRRect(
+                                  child: currentPreviewImage,
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
                             ),
