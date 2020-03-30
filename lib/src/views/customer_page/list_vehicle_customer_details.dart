@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/customer_model.dart';
+import 'package:salles_tools/src/utils/hex_converter.dart';
 
 class VehicleCustomerDetailsListView extends StatefulWidget {
+  final Datum datum;
+  VehicleCustomerDetailsListView({this.datum});
+
   @override
   _VehicleCustomerDetailsListViewState createState() =>
       _VehicleCustomerDetailsListViewState();
@@ -12,7 +17,13 @@ class _VehicleCustomerDetailsListViewState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ListView.builder(
+      body: widget.datum.vins == null ? Center(
+        child: Image.asset(
+          "assets/icons/empty_icon.png",
+          height: 100,
+          color: HexColor('#C61818'),
+        ),
+      ) : ListView.builder(
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return Padding(
@@ -44,14 +55,14 @@ class _VehicleCustomerDetailsListViewState
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              '${VehicleCostumer.getVehicle()[index].vehicleName}',
+                              '${widget.datum.vins[index].itemName}',
                               style: TextStyle(
                                 letterSpacing: 1.0,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             Text(
-                              '${VehicleCostumer.getVehicle()[index].vehiclePoliceNumber}',
+                              '${widget.datum.vins[index].whsCode}',
                               style: TextStyle(
                                 letterSpacing: 1.0,
                               ),
@@ -61,11 +72,11 @@ class _VehicleCustomerDetailsListViewState
                       ],
                     ),
                   ),
-                  vehicleColor(VehicleCostumer.getVehicle()[index].vehicleColor),
-                  vehicleYear(VehicleCostumer.getVehicle()[index].vehicleYear),
-                  vehicleChasis(VehicleCostumer.getVehicle()[index].vehicleChasisNumber),
-                  vehicleMachine(VehicleCostumer.getVehicle()[index].vehicleMachineNumber),
-                  vehicleExpire(VehicleCostumer.getVehicle()[index].vehicleSTNKExpire),
+                  vehicleColor(widget.datum.vins[index].namaWarna),
+                  vehicleYear(widget.datum.vins[index].tahun),
+                  vehicleChasis(widget.datum.vins[index].nomorRangka),
+                  vehicleMachine(widget.datum.vins[index].nomorMesin),
+                  vehicleExpire(widget.datum.vins[index].nomorRegister),
                   Padding(
                     padding: EdgeInsets.only(top: 10),
                   ),
@@ -74,7 +85,7 @@ class _VehicleCustomerDetailsListViewState
             ),
           );
         },
-        itemCount: VehicleCostumer.getVehicle().length,
+        itemCount: widget.datum.vins.length,
       ),
     );
   }
@@ -216,7 +227,7 @@ class _VehicleCustomerDetailsListViewState
           Expanded(
             flex: 4,
             child: Text(
-              "STNK Expire",
+              "Nomor Regitrasi",
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,

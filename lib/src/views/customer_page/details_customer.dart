@@ -72,7 +72,9 @@ class _CustomerDetailsViewState extends State<CustomerDetailsView> {
             ProfileScreen(
               datum: widget.datum,
             ),
-            VehicleCustomerDetailsListView(),
+            VehicleCustomerDetailsListView(
+              datum: widget.datum,
+            ),
           ],
         ),
       ),

@@ -53,7 +53,7 @@ class Datum {
   int salesCode;
   dynamic officeBranchCode;
   String officeCode;
-  String pricelistCode;
+  dynamic pricelistCode;
   Gender gender;
   String phone1;
   String phone2;
@@ -61,9 +61,10 @@ class Datum {
   String fax;
   String email;
   DateTime dob;
-  TaxId taxId;
+  String taxId;
   String taxAddress;
   String noKtp;
+  dynamic alamatKtp;
   dynamic occupation;
   Location location;
   String pengeluaran;
@@ -73,10 +74,10 @@ class Datum {
   String ecvatgroup;
   String kodeFakturPajak;
   int groupNum;
-  String companyName;
-  For frozenfor;
-  For validfor;
-  List<dynamic> vins;
+  CompanyName companyName;
+  Frozenfor frozenfor;
+  Validfor validfor;
+  List<Vin> vins;
 
   Datum({
     this.cardCode,
@@ -98,6 +99,7 @@ class Datum {
     this.taxId,
     this.taxAddress,
     this.noKtp,
+    this.alamatKtp,
     this.occupation,
     this.location,
     this.pengeluaran,
@@ -122,7 +124,7 @@ class Datum {
     salesCode: json["sales_code"] == null ? null : json["sales_code"],
     officeBranchCode: json["office_branch_code"],
     officeCode: json["office_code"] == null ? null : json["office_code"],
-    pricelistCode: json["pricelist_code"] == null ? null : json["pricelist_code"],
+    pricelistCode: json["pricelist_code"],
     gender: json["gender"] == null ? null : genderValues.map[json["gender"]],
     phone1: json["phone1"] == null ? null : json["phone1"],
     phone2: json["phone2"] == null ? null : json["phone2"],
@@ -130,9 +132,10 @@ class Datum {
     fax: json["fax"] == null ? null : json["fax"],
     email: json["email"] == null ? null : json["email"],
     dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
-    taxId: json["tax_id"] == null ? null : taxIdValues.map[json["tax_id"]],
+    taxId: json["tax_id"] == null ? null : json["tax_id"],
     taxAddress: json["tax_address"] == null ? null : json["tax_address"],
     noKtp: json["no_ktp"] == null ? null : json["no_ktp"],
+    alamatKtp: json["alamat_ktp"],
     occupation: json["occupation"],
     location: json["location"] == null ? null : locationValues.map[json["location"]],
     pengeluaran: json["pengeluaran"] == null ? null : json["pengeluaran"],
@@ -142,10 +145,10 @@ class Datum {
     ecvatgroup: json["ecvatgroup"] == null ? null : json["ecvatgroup"],
     kodeFakturPajak: json["kode_faktur_pajak"] == null ? null : json["kode_faktur_pajak"],
     groupNum: json["group_num"] == null ? null : json["group_num"],
-    companyName: json["company_name"] == null ? null : json["company_name"],
-    frozenfor: json["frozenfor"] == null ? null : forValues.map[json["frozenfor"]],
-    validfor: json["validfor"] == null ? null : forValues.map[json["validfor"]],
-    vins: json["vins"] == null ? null : List<dynamic>.from(json["vins"].map((x) => x)),
+    companyName: json["company_name"] == null ? null : companyNameValues.map[json["company_name"]],
+    frozenfor: json["frozenfor"] == null ? null : frozenforValues.map[json["frozenfor"]],
+    validfor: json["validfor"] == null ? null : validforValues.map[json["validfor"]],
+    vins: json["vins"] == null ? null : List<Vin>.from(json["vins"].map((x) => Vin.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -157,7 +160,7 @@ class Datum {
     "sales_code": salesCode == null ? null : salesCode,
     "office_branch_code": officeBranchCode,
     "office_code": officeCode == null ? null : officeCode,
-    "pricelist_code": pricelistCode == null ? null : pricelistCode,
+    "pricelist_code": pricelistCode,
     "gender": gender == null ? null : genderValues.reverse[gender],
     "phone1": phone1 == null ? null : phone1,
     "phone2": phone2 == null ? null : phone2,
@@ -165,9 +168,10 @@ class Datum {
     "fax": fax == null ? null : fax,
     "email": email == null ? null : email,
     "dob": dob == null ? null : dob.toIso8601String(),
-    "tax_id": taxId == null ? null : taxIdValues.reverse[taxId],
+    "tax_id": taxId == null ? null : taxId,
     "tax_address": taxAddress == null ? null : taxAddress,
     "no_ktp": noKtp == null ? null : noKtp,
+    "alamat_ktp": alamatKtp,
     "occupation": occupation,
     "location": location == null ? null : locationValues.reverse[location],
     "pengeluaran": pengeluaran == null ? null : pengeluaran,
@@ -177,45 +181,132 @@ class Datum {
     "ecvatgroup": ecvatgroup == null ? null : ecvatgroup,
     "kode_faktur_pajak": kodeFakturPajak == null ? null : kodeFakturPajak,
     "group_num": groupNum == null ? null : groupNum,
-    "company_name": companyName == null ? null : companyName,
-    "frozenfor": frozenfor == null ? null : forValues.reverse[frozenfor],
-    "validfor": validfor == null ? null : forValues.reverse[validfor],
-    "vins": vins == null ? null : List<dynamic>.from(vins.map((x) => x)),
+    "company_name": companyName == null ? null : companyNameValues.reverse[companyName],
+    "frozenfor": frozenfor == null ? null : frozenforValues.reverse[frozenfor],
+    "validfor": validfor == null ? null : validforValues.reverse[validfor],
+    "vins": vins == null ? null : List<dynamic>.from(vins.map((x) => x.toJson())),
   };
 }
 
-enum CardType { C }
+enum CardType { C, EMPTY, A, G }
 
 final cardTypeValues = EnumValues({
-  "C": CardType.C
+  "A": CardType.A,
+  "C": CardType.C,
+  "": CardType.EMPTY,
+  "G": CardType.G
 });
 
-enum For { N, Y }
+enum CompanyName { EMPTY, RAHMAT_TEST, PT_BANK_RAKYAT_INDONESIA }
 
-final forValues = EnumValues({
-  "N": For.N,
-  "Y": For.Y
+final companyNameValues = EnumValues({
+  "": CompanyName.EMPTY,
+  "PT. BANK RAKYAT INDONESIA": CompanyName.PT_BANK_RAKYAT_INDONESIA,
+  "rahmat test": CompanyName.RAHMAT_TEST
 });
 
-enum Gender { L, P }
+enum Frozenfor { N }
+
+final frozenforValues = EnumValues({
+  "N": Frozenfor.N
+});
+
+enum Gender { P, L, EMPTY }
 
 final genderValues = EnumValues({
+  "": Gender.EMPTY,
   "L": Gender.L,
   "P": Gender.P
 });
 
-enum Location { DK }
+enum Location { DK, LK }
 
 final locationValues = EnumValues({
-  "DK": Location.DK
+  "DK": Location.DK,
+  "LK": Location.LK
 });
 
-enum TaxId { EMPTY, THE_000000000000000 }
+enum Validfor { Y }
 
-final taxIdValues = EnumValues({
-  "": TaxId.EMPTY,
-  "00.000.000.0-000.000": TaxId.THE_000000000000000
+final validforValues = EnumValues({
+  "Y": Validfor.Y
 });
+
+class Vin {
+  String itemCode;
+  String itemName;
+  String nomorRangka;
+  String nomorMesin;
+  String whsCode;
+  int quantity;
+  String nomorRegister;
+  String nomorKunci;
+  dynamic nomorRrn;
+  dynamic kodeTahun;
+  dynamic tahun;
+  dynamic kodeWarna;
+  dynamic namaWarna;
+  String officeCode;
+  dynamic whsName;
+  String officeName;
+
+  Vin({
+    this.itemCode,
+    this.itemName,
+    this.nomorRangka,
+    this.nomorMesin,
+    this.whsCode,
+    this.quantity,
+    this.nomorRegister,
+    this.nomorKunci,
+    this.nomorRrn,
+    this.kodeTahun,
+    this.tahun,
+    this.kodeWarna,
+    this.namaWarna,
+    this.officeCode,
+    this.whsName,
+    this.officeName,
+  });
+
+  factory Vin.fromJson(Map<String, dynamic> json) => Vin(
+    itemCode: json["item_code"] == null ? null : json["item_code"],
+    itemName: json["item_name"] == null ? null : json["item_name"],
+    nomorRangka: json["nomor_rangka"] == null ? null : json["nomor_rangka"],
+    nomorMesin: json["nomor_mesin"] == null ? null : json["nomor_mesin"],
+    whsCode: json["whs_code"] == null ? null : json["whs_code"],
+    quantity: json["quantity"] == null ? null : json["quantity"],
+    nomorRegister: json["nomor_register"] == null ? null : json["nomor_register"],
+    nomorKunci: json["nomor_kunci"] == null ? null : json["nomor_kunci"],
+    nomorRrn: json["nomor_rrn"],
+    kodeTahun: json["kode_tahun"],
+    tahun: json["tahun"],
+    kodeWarna: json["kode_warna"],
+    namaWarna: json["nama_warna"],
+    officeCode: json["office_code"] == null ? null : json["office_code"],
+    whsName: json["whs_name"],
+    officeName: json["office_name"] == null ? null : json["office_name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "item_code": itemCode == null ? null : itemCode,
+    "item_name": itemName == null ? null : itemName,
+    "nomor_rangka": nomorRangka == null ? null : nomorRangka,
+    "nomor_mesin": nomorMesin == null ? null : nomorMesin,
+    "whs_code": whsCode == null ? null : whsCode,
+    "quantity": quantity == null ? null : quantity,
+    "nomor_register": nomorRegister == null ? null : nomorRegister,
+    "nomor_kunci": nomorKunci == null ? null : nomorKunci,
+    "nomor_rrn": nomorRrn,
+    "kode_tahun": kodeTahun,
+    "tahun": tahun,
+    "kode_warna": kodeWarna,
+    "nama_warna": namaWarna,
+    "office_code": officeCode == null ? null : officeCode,
+    "whs_name": whsName,
+    "office_name": officeName == null ? null : officeName,
+  };
+}
 
 class EnumValues<T> {
   Map<String, T> map;
