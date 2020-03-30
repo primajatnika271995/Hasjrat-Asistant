@@ -5,6 +5,7 @@ import 'package:salles_tools/src/models/class1_item_model.dart';
 import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
+import 'package:salles_tools/src/models/program_penjualan_model.dart';
 import 'package:salles_tools/src/models/prospect_model.dart' as prospect;
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -26,7 +27,8 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
         yield DmsLoading();
 
         try {
-          prospect.ProspectModel value = await _dmsService.prospectDMS(event.value, "0", "20");
+          prospect.ProspectModel value =
+              await _dmsService.prospectDMS(event.value, "0", "20");
           List<prospect.Datum> prospects = value.data;
 
           yield DmsDisposeLoading();
@@ -34,26 +36,29 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
             prospects: prospects,
             hasReachedMax: false,
           );
-        } catch(err) {
+        } catch (err) {
           yield DmsError();
         }
       }
 
       if (currentState is ProspectSuccess) {
         log.info("onSuccess");
-        prospect.ProspectModel value = await _dmsService.prospectDMS(event.value, currentState.prospects.length.toString(), "20");
+        prospect.ProspectModel value = await _dmsService.prospectDMS(
+            event.value, currentState.prospects.length.toString(), "20");
         List<prospect.Datum> prospects = value.data;
         yield prospects.isEmpty
             ? currentState.copyWith(hasReachedMax: true)
             : ProspectSuccess(
-            prospects: currentState.prospects + prospects, hasReachedMax: false);
+                prospects: currentState.prospects + prospects,
+                hasReachedMax: false);
       }
     }
 
     if (event is FetchProspectFilter) {
       yield DmsLoading();
 
-      prospect.ProspectModel value = await _dmsService.prospectDMS(event.value, "", "");
+      prospect.ProspectModel value =
+          await _dmsService.prospectDMS(event.value, "", "");
       List<prospect.Datum> prospects = value.data;
 
       yield DmsDisposeLoading();
@@ -66,7 +71,8 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
     if (event is RefreshProspect) {
       yield DmsLoading();
 
-      prospect.ProspectModel value = await _dmsService.prospectDMS(event.value, "", "");
+      prospect.ProspectModel value =
+          await _dmsService.prospectDMS(event.value, "", "");
       List<prospect.Datum> prospects = value.data;
 
       yield DmsDisposeLoading();
@@ -165,10 +171,27 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
 
         yield DmsDisposeLoading();
         yield CreateProspectSuccess();
-      } catch(error) {
+      } catch (error) {
         yield DmsDisposeLoading();
         yield CreateProspectError();
         log.warning("Error : ${error.toString()}");
+      }
+    }
+
+    if (event is FetchProgramPenjualan) {
+      yield DmsLoading();
+      try {
+        List<ProgramPenjualanModel> value =
+            await _dmsService.fetchListProgramPenjualan();
+        if (value == null) {
+          yield ListProgramPenjualanError();
+        } else {
+          yield DmsDisposeLoading();
+          yield ListProgramPenjualanSuccess(value);
+        }
+      } catch (e) {
+        yield DmsDisposeLoading();
+        yield ListProgramPenjualanError();
       }
     }
   }

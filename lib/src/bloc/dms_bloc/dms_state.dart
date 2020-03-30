@@ -4,6 +4,7 @@ import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
+import 'package:salles_tools/src/models/program_penjualan_model.dart';
 import 'package:salles_tools/src/models/prospect_model.dart' as prospect;
 
 class DmsState extends Equatable {
@@ -75,9 +76,7 @@ class ItemListSuccess extends DmsState {
   List<Object> get props => [_data];
 }
 
-class ItemListFailed extends DmsState {
-
-}
+class ItemListFailed extends DmsState {}
 
 class CreateProspectSuccess extends DmsState {
   @override
@@ -91,7 +90,8 @@ class ProspectSuccess extends DmsState {
 
   ProspectSuccess({this.prospects, this.hasReachedMax});
 
-  ProspectSuccess copyWith({List<prospect.Datum> prospect, bool hasReachedMax}) {
+  ProspectSuccess copyWith(
+      {List<prospect.Datum> prospect, bool hasReachedMax}) {
     return ProspectSuccess(
       prospects: prospect ?? this.prospects,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
@@ -119,3 +119,13 @@ class DmsError extends DmsState {
   List<Object> get props => [];
 }
 
+class ListProgramPenjualanError extends DmsState {}
+
+class ListProgramPenjualanSuccess extends DmsState {
+  final _data;
+
+  ListProgramPenjualanSuccess(this._data);
+  List<ProgramPenjualanModel> get value => _data;
+  @override
+  List<Object> get props => [_data];
+}

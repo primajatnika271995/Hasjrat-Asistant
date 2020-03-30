@@ -330,7 +330,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SliverToBoxAdapter(
-              child: PromotionListView(),
+              child: BlocProvider(
+                create: (context) => DmsBloc(DmsService()),
+                child: PromotionListView(),
+              ),
             ),
           ],
         ),

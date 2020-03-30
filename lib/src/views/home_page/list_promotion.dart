@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
+import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -36,6 +39,9 @@ class _PromotionListViewState extends State<PromotionListView>
   @override
   void initState() {
     // TODO: implement initState
+    final dmsBloc = BlocProvider.of<DmsBloc>(context);
+    dmsBloc.add(FetchProgramPenjualan());
+
     Timer(Duration(seconds: 3), () {
       setState(() => loadImage = false);
     });
@@ -100,7 +106,8 @@ class _PromotionListViewState extends State<PromotionListView>
                       end: Alignment.topCenter,
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                   child: Text(
                     'No. $index image',
                     style: TextStyle(

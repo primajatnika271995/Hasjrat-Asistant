@@ -95,4 +95,10 @@ class FetchProspectFilter extends DmsEvent {
   List<Object> get props => [value];
 }
 
+class FetchProgramPenjualan extends DmsEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
 class ResetDms extends DmsEvent {}

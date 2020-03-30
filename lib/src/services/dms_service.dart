@@ -7,6 +7,7 @@ import 'package:salles_tools/src/models/class1_item_model.dart';
 import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
+import 'package:salles_tools/src/models/program_penjualan_model.dart';
 import 'package:salles_tools/src/models/prospect_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -94,12 +95,11 @@ class DmsService {
 
   Future prospectDMS(ProspectGet value, String start, String limit) async {
     try {
-      final response = await _dio.post(UriApi.checkProspectDMSUri,
-        options: Options(
-            headers: {
-              'Content-Type': 'application/json',
-            }
-        ),
+      final response = await _dio.post(
+        UriApi.checkProspectDMSUri,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+        }),
         data: {
           "lead_code": value.leadCode,
           "lead_name": value.leadName,
@@ -112,13 +112,14 @@ class DmsService {
       if (response.statusCode == 200) {
         return compute(prospectModelFromJson, json.encode(response.data));
       }
-    } on DioError catch(error) {
+    } on DioError catch (error) {
       log.warning("Prospect Error Status: ${error.response.statusCode}");
 
       if (error.response.statusCode == 502) {
         return compute(errorModelFromJson, json.encode(error.response.data));
       } else if (error.response.statusCode == 401) {
-        return compute(errorTokenExpireFromJson, json.encode(error.response.data));
+        return compute(
+            errorTokenExpireFromJson, json.encode(error.response.data));
       } else {
         return compute(errorModelFromJson, json.encode(error.response.data));
       }
@@ -126,12 +127,11 @@ class DmsService {
   }
 
   Future createProspect(ProspectPost value) async {
-    final response = await _dio.post(UriApi.createProspectDMSUri,
-      options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          }
-      ),
+    final response = await _dio.post(
+      UriApi.createProspectDMSUri,
+      options: Options(headers: {
+        'Content-Type': 'application/json',
+      }),
       data: {
         "card_code": "",
         "card_name": value.cardName,
@@ -167,6 +167,22 @@ class DmsService {
       return compute(errorTokenExpireFromJson, json.encode(response.data));
     } else {
       return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future fetchListProgramPenjualan() async {
+    final response = await _dio.post(
+      UriApi.programPenjualanUri,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      log.info("SUKSES FETCH LIST PROGRAM PENJUALAN");
+      return compute(programPenjualanModelFromJson, json.encode(response.data));
     }
   }
 }
@@ -218,5 +234,18 @@ class ProspectPost {
   String prospectDate;
   int prospectFollowUp;
 
-  ProspectPost({this.cardName, this.customerGroupId, this.fromSuspect, this.leadCode, this.itemCode, this.itemColor, this.itemModel, this.itemType, this.itemYear, this.price, this.quantity, this.prospectDate, this.prospectFollowUp});
+  ProspectPost(
+      {this.cardName,
+      this.customerGroupId,
+      this.fromSuspect,
+      this.leadCode,
+      this.itemCode,
+      this.itemColor,
+      this.itemModel,
+      this.itemType,
+      this.itemYear,
+      this.price,
+      this.quantity,
+      this.prospectDate,
+      this.prospectFollowUp});
 }
