@@ -6,6 +6,7 @@ import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
 
+import '../../bloc/booking_bloc/booking_drive_event.dart';
 import '../../bloc/dms_bloc/dms_bloc.dart';
 import '../../services/dms_service.dart';
 
@@ -15,7 +16,6 @@ class BookTestDriveListView extends StatefulWidget {
 }
 
 class _BookTestDriveListViewState extends State<BookTestDriveListView> {
-
   void _onAddBookTestDrive() {
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -32,6 +32,19 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
+    bookingDriveBloc.add(FetchListBookingDrive(ListBookingDrivePost(
+      branchCode: "10100",
+      outletCode: "10104",
+      dateAfter: "2022-03-31",
+      dateBefore: "2018-03-24",
+    )));
+    super.initState();
   }
 
   @override
@@ -75,7 +88,8 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
 class SlidableBookTestDriveView extends StatelessWidget {
   final Function callback;
   final int index;
-  SlidableBookTestDriveView({Key key, this.callback, this.index}): super(key: key);
+  SlidableBookTestDriveView({Key key, this.callback, this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +123,8 @@ class SlidableBookTestDriveView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(left: 5, top: 5, bottom: 15),
+                      padding:
+                          const EdgeInsets.only(left: 5, top: 5, bottom: 15),
                       child: Image.network(
                         "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png",
                         height: 70,
@@ -232,7 +247,7 @@ class BookTestDrive {
   });
 
   static List<BookTestDrive> getBook() {
-    return<BookTestDrive>[
+    return <BookTestDrive>[
       BookTestDrive(
         status: 'Confirmation',
         statusColor: Colors.orangeAccent,

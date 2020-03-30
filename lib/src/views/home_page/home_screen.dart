@@ -33,6 +33,9 @@ import 'package:salles_tools/src/views/prospect_customer_page/list_prospect_cont
 import 'package:salles_tools/src/views/prospect_customer_page/sales_input.dart';
 import 'package:salles_tools/src/views/reminder_page/list_reminder.dart';
 
+import '../../bloc/booking_bloc/booking_drive_bloc.dart';
+import '../../services/booking_drive_service.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -93,7 +96,10 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
     ReminderListView(),
     BookServiceListView(),
-    BookTestDriveListView(),
+    BlocProvider(
+      create: (context) => BookingDriveBloc(BookingDriveService()),
+      child: BookTestDriveListView(),
+    ),
   ];
 
   List _moreMenuNavigation = [
@@ -108,71 +114,72 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _showMoreMenu() {
     showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
-        builder: (context) {
-          return Container(
-            height: screenHeight(context) / 2,
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return Material(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
+      ),
+      builder: (context) {
+        return Container(
+          height: screenHeight(context) / 2,
+          child: GridView.builder(
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+            itemCount: 4,
+            itemBuilder: (context, index) {
+              return Material(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => _moreMenuNavigation[index],
-                          transitionDuration: Duration(milliseconds: 150),
-                          transitionsBuilder:
-                              (_, Animation<double> animation, __, Widget child) {
-                            return Opacity(
-                              opacity: animation.value,
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Image.asset(
-                            _assetsMoreMenu[index],
-                            height: 50,
-                          ),
-                          Flexible(
-                            child: Text(
-                              _moreMenuName[index],
-                              style: TextStyle(
-                                letterSpacing: 0.7,
-                                fontSize: 13,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => _moreMenuNavigation[index],
+                        transitionDuration: Duration(milliseconds: 150),
+                        transitionsBuilder:
+                            (_, Animation<double> animation, __, Widget child) {
+                          return Opacity(
+                            opacity: animation.value,
+                            child: child,
+                          );
+                        },
                       ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Image.asset(
+                          _assetsMoreMenu[index],
+                          height: 50,
+                        ),
+                        Flexible(
+                          child: Text(
+                            _moreMenuName[index],
+                            style: TextStyle(
+                              letterSpacing: 0.7,
+                              fontSize: 13,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            ),
-          );
-        },
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -188,10 +195,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _getPreferences();
     // ignore: close_sinks
     final salesMonthBloc = BlocProvider.of<SalesMonthBloc>(context);
-    salesMonthBloc.add(FetchSalesMonth(SalesMonthPost(
-      branchCode: "10100",
-      outletCode: "10104"
-    )));
+    salesMonthBloc.add(FetchSalesMonth(
+        SalesMonthPost(branchCode: "10100", outletCode: "10104")));
     super.initState();
   }
 
@@ -216,9 +221,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   barrierDismissible: true,
                   transitionDuration: Duration(milliseconds: 1000),
                   transitionBuilder: (context, a1, a2, widget) {
-                    final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+                    final curvedValue =
+                        Curves.easeInOutBack.transform(a1.value) - 1.0;
                     return Transform(
-                      transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
+                      transform: Matrix4.translationValues(
+                          0.0, curvedValue * 200, 0.0),
                       child: Opacity(
                         opacity: a1.value,
                         child: AlertDialog(
@@ -233,7 +240,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10),
-                                    child: Text("Sales of The Month",
+                                    child: Text(
+                                      "Sales of The Month",
                                       style: TextStyle(
                                         letterSpacing: 0.8,
                                         fontSize: 20,
@@ -242,8 +250,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 20, bottom: 25),
-                                    child: Text("${state.salesData.name}",
+                                    padding: const EdgeInsets.only(
+                                        top: 20, bottom: 25),
+                                    child: Text(
+                                      "${state.salesData.name}",
                                       style: TextStyle(
                                         letterSpacing: 0.8,
                                         fontWeight: FontWeight.w700,
@@ -253,13 +263,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   Stack(
                                     children: <Widget>[
-                                      Image.asset("assets/icons/circular_frame.png"),
+                                      Image.asset(
+                                          "assets/icons/circular_frame.png"),
                                       Center(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding:
+                                              const EdgeInsets.only(top: 15),
                                           child: CircleAvatar(
                                             radius: 65,
-                                            backgroundColor: Colors.indigoAccent,
+                                            backgroundColor:
+                                                Colors.indigoAccent,
                                             foregroundColor: Colors.white,
                                             backgroundImage: NetworkImage(
                                                 "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
@@ -343,7 +356,8 @@ class _HomeScreenState extends State<HomeScreen> {
             Positioned(
               top: paddingTop(context) + 44,
               left: 20,
-              child: Text("Hasjrat Abadi $_branchName",
+              child: Text(
+                "Hasjrat Abadi $_branchName",
                 style: TextStyle(
                   fontSize: 11,
                   color: Colors.black,
@@ -369,7 +383,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(top: paddingTop(context) + 70, left: 20),
+                    padding: EdgeInsets.only(
+                        top: paddingTop(context) + 70, left: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,

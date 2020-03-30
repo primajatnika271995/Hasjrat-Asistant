@@ -5,19 +5,14 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_event.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_state.dart';
-import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
-import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
-import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/models/test_drive_vehicle_model.dart';
 import 'package:salles_tools/src/services/booking_drive_service.dart';
-import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:select_dialog/select_dialog.dart';
 
-import '../../bloc/dms_bloc/dms_event.dart';
 import '../../utils/shared_preferences_helper.dart';
 import '../../utils/shared_preferences_helper.dart';
 import '../../utils/shared_preferences_helper.dart';
@@ -818,7 +813,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                   ),
                 ),
                 maxLines: 7,
-                //controller next here
+                controller: notesCtrl,
               ),
             ),
           ),

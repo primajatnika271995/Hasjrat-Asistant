@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/test_drive_vehicle_model.dart';
+import 'package:salles_tools/src/models/list_booking_drive_model.dart';
 
 class BookingDriveState extends Equatable {
   @override
@@ -27,9 +28,8 @@ class CarListSuccess extends BookingDriveState {
   List<Object> get props => [_data];
 }
 
-class RegisterBookingTestDriveSuccess extends BookingDriveState{
+class RegisterBookingTestDriveSuccess extends BookingDriveState {
   @override
-
   List<Object> get props => [];
 }
 
@@ -37,4 +37,16 @@ class RegisterBookingTestDriveError extends BookingDriveState {
   @override
   // TODO: implement props
   List<Object> get props => [];
+}
+
+class ListBookingDriveFailed extends BookingDriveState {}
+
+class ListBookingDriveSuccess extends BookingDriveState {
+  final _data;
+
+  ListBookingDriveSuccess(this._data);
+  List<BookingDriveScheduleModel> get value => _data;
+
+  @override
+  List<Object> get props => [_data];
 }

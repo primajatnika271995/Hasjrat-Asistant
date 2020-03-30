@@ -6,8 +6,11 @@ import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/error_token_expire_model.dart';
 import 'package:salles_tools/src/models/test_drive_vehicle_model.dart';
+import 'package:salles_tools/src/models/list_booking_drive_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
+
+import '../configs/url.dart';
 
 class BookingDriveService {
   final Dio _dio = new Dio();
@@ -58,6 +61,29 @@ class BookingDriveService {
       return compute(errorModelFromJson, json.encode(response.data));
     }
   }
+
+  Future fetchListSchedule(ListBookingDrivePost value) async {
+    final response = await _dio.post(
+      UriApi.listScheduleBookingDriveUri,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),
+      data: {
+        "branchCode": value.branchCode,
+        "dateAfter": value.dateAfter,
+        "dateBefore": value.dateBefore,
+        "outletCode": value.outletCode,
+      },
+    );
+    log.info(response.statusCode);
+    print("status code => ${response.statusCode}");
+    if (response.statusCode == 200) {
+      log.info("SUCCESS FETCH LIST SCHEDULE BOOKING DRIVE");
+      return compute(bookingDriveScheduleModelFromJson, json.encode(response.data));
+    }
+  }
 }
 
 class BookingTestDrivePost {
@@ -77,5 +103,19 @@ class BookingTestDrivePost {
     this.outletCode,
     this.carId,
     this.schedule,
+  });
+}
+
+class ListBookingDrivePost {
+  String branchCode;
+  String outletCode;
+  String dateAfter;
+  String dateBefore;
+
+  ListBookingDrivePost({
+    this.branchCode,
+    this.outletCode,
+    this.dateAfter,
+    this.dateBefore,
   });
 }
