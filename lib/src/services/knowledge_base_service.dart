@@ -19,7 +19,7 @@ class KnowledgeBaseService {
 
   Future questionAsk() async {
     try {
-      final response = await _dio.get(UriApi.knowledgeBaseUri);
+      final response = await _dio.post(UriApi.knowledgeBaseUri);
 
       log.info(response.statusCode);
       return compute(knowladgeBaseModelFromJson, json.encode(response.data));

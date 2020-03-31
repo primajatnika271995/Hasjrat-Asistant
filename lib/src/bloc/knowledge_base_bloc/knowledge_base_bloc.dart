@@ -15,10 +15,14 @@ class KnowledgeBaseBloc extends Bloc<KnowledgeBaseEvent, KnowledgeBaseState> {
   @override
   Stream<KnowledgeBaseState> mapEventToState(KnowledgeBaseEvent event) async* {
     if (event is FetchKnowledgeBase) {
+      yield KnowledgeBaseLoading();
+
       try {
         KnowladgeBaseModel value = await _knowledgeBaseService.questionAsk();
+        yield KnowledgeBaseDisposeLoading();
         yield KnowledgeBaseSuccess(value);
       } catch(err) {
+        yield KnowledgeBaseDisposeLoading();
         yield KnowledgeBaseError();
       }
     }

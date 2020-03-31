@@ -12,6 +12,14 @@ class KnowledgeBaseInitial extends KnowledgeBaseState {
 
 }
 
+class KnowledgeBaseLoading extends KnowledgeBaseState {
+
+}
+
+class KnowledgeBaseDisposeLoading extends KnowledgeBaseState {
+
+}
+
 class KnowledgeBaseSuccess extends KnowledgeBaseState {
   final _data;
 
