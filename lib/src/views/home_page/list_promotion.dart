@@ -66,11 +66,9 @@ class _PromotionListViewState extends State<PromotionListView>
   @override
   Widget build(BuildContext context) {
     return BlocListener<DmsBloc, DmsState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       child: BlocBuilder<DmsBloc, DmsState>(
         builder: (context, state) {
-
           if (state is DmsLoading) {
             return Container(
               height: 160,
@@ -79,24 +77,16 @@ class _PromotionListViewState extends State<PromotionListView>
           }
 
           if (state is ListProgramPenjualanError) {
-            return Center(
-              child: Padding(
-                padding: EdgeInsets.only(top: 50, bottom: 10),
-                child: Column(
-                  children: <Widget>[
-                    Image.asset("assets/icons/error_banner.jpg", height: 150),
-                    Text("Promotion Not Available",
-                      style: TextStyle(
-                        letterSpacing: 0.8,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            print("list promo failed");
+            return Container(
+              height: 160,
+              child: _loadingImageAnimation(context),
             );
           }
 
           if (state is ListProgramPenjualanSuccess) {
+            print("List promo success");
+
             return CarouselSlider.builder(
                 initialPage: 1,
                 autoPlay: false,

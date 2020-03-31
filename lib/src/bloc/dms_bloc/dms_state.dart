@@ -4,7 +4,8 @@ import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
-import 'package:salles_tools/src/models/program_penjualan_model.dart';
+import 'package:salles_tools/src/models/program_penjualan_model.dart'
+    as programPenjualan;
 import 'package:salles_tools/src/models/prospect_model.dart' as prospect;
 
 class DmsState extends Equatable {
@@ -125,8 +126,8 @@ class ListProgramPenjualanSuccess extends DmsState {
   final _data;
 
   ListProgramPenjualanSuccess(this._data);
-  ProgramPenjualanModel get value => _data;
-  
+  programPenjualan.ProgramPenjualanModel get value => _data;
+
   @override
   List<Object> get props => [_data];
 }

@@ -171,19 +171,22 @@ class DmsService {
   }
 
   Future fetchListProgramPenjualan(ProgramPenjualanPost value) async {
-    final response = await _dio.post(UriApi.programPenjualanUri,
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        ),
-        data: {
-          "name": value.name,
-          "programId": value.programId,
-        });
+    final response = await _dio.post(
+      UriApi.programPenjualanUri,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),
+      data: {
+        "name": value.name,
+        "programId": value.programId,
+      },
+    );
     log.info(response.statusCode);
+    print("status code => ${response.statusCode}");
     if (response.statusCode == 200) {
-      log.info("SUKSES FETCH LIST PROGRAM PENJUALAN");
+      log.info("SUCCESS FETCH LIST PROGRAM PENJUALAN");
       return compute(programPenjualanModelFromJson, json.encode(response.data));
     }
   }

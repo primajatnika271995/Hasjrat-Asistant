@@ -7,6 +7,8 @@ import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
 import 'package:salles_tools/src/models/program_penjualan_model.dart';
 import 'package:salles_tools/src/models/prospect_model.dart' as prospect;
+import 'package:salles_tools/src/models/program_penjualan_model.dart'
+    as programPenjualan;
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -177,19 +179,18 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
         log.warning("Error : ${error.toString()}");
       }
     }
-
     if (event is FetchProgramPenjualan) {
       yield DmsLoading();
       try {
         ProgramPenjualanModel value = await _dmsService.fetchListProgramPenjualan(event.value);
-        if (value.data.isEmpty || value.data == null) {
+        if (value == null) {
           yield ListProgramPenjualanError();
         } else {
           yield DmsDisposeLoading();
           yield ListProgramPenjualanSuccess(value);
         }
       } catch (e) {
-        log.warning("Error : ${e.toString()}");
+        yield DmsDisposeLoading();
         yield ListProgramPenjualanError();
       }
     }
