@@ -123,11 +123,28 @@ class DmsError extends DmsState {
 class ListProgramPenjualanError extends DmsState {}
 
 class ListProgramPenjualanSuccess extends DmsState {
-  final _data;
+  final List<programPenjualan.Datum> programSales;
 
-  ListProgramPenjualanSuccess(this._data);
-  programPenjualan.ProgramPenjualanModel get value => _data;
+  ListProgramPenjualanSuccess({this.programSales});
+
+  ListProgramPenjualanSuccess copyWith({List<programPenjualan.Datum> promoSale, bool hasReachedMax}) {
+    return ListProgramPenjualanSuccess(
+      programSales: promoSale ?? this.programSales,
+    );
+  }
 
   @override
-  List<Object> get props => [_data];
+  // TODO: implement props
+  List<Object> get props => [programSales];
+
 }
+
+// class ListProgramPenjualanSuccess extends DmsState {
+//   final _data;
+
+//   ListProgramPenjualanSuccess(this._data);
+//   programPenjualan.ProgramPenjualanModel get value => _data;
+
+//   @override
+//   List<Object> get props => [_data];
+// }

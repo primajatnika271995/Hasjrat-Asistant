@@ -179,18 +179,19 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
         log.warning("Error : ${error.toString()}");
       }
     }
+
     if (event is FetchProgramPenjualan) {
       yield DmsLoading();
+
       try {
-        ProgramPenjualanModel value = await _dmsService.fetchListProgramPenjualan(event.value);
-        if (value == null) {
-          yield ListProgramPenjualanError();
-        } else {
-          yield DmsDisposeLoading();
-          yield ListProgramPenjualanSuccess(value);
-        }
-      } catch (e) {
+        ProgramPenjualanModel value =
+            await _dmsService.fetchListProgramPenjualan(event.value);
+        List<programPenjualan.Datum> programSales = value.data;
+
         yield DmsDisposeLoading();
+        yield ListProgramPenjualanSuccess(programSales: programSales);
+      } catch (error) {
+        log.warning("Error : ${error.toString()}");
         yield ListProgramPenjualanError();
       }
     }

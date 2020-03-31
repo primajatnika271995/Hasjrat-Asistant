@@ -78,9 +78,21 @@ class _PromotionListViewState extends State<PromotionListView>
 
           if (state is ListProgramPenjualanError) {
             print("list promo failed");
-            return Container(
-              height: 160,
-              child: _loadingImageAnimation(context),
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 50, bottom: 10),
+                child: Column(
+                  children: <Widget>[
+                    Image.asset("assets/icons/error_banner.jpg", height: 150),
+                    Text(
+                      "Promotion Not Available",
+                      style: TextStyle(
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             );
           }
 
@@ -97,9 +109,9 @@ class _PromotionListViewState extends State<PromotionListView>
                 height: 180,
                 enableInfiniteScroll: false,
                 aspectRatio: 2.0,
-                itemCount: state.value.data.length,
+                itemCount: state.programSales.length,
                 itemBuilder: (context, index) {
-                  var data = state.value.data[index];
+                  var data = state.programSales[index];
                   return GestureDetector(
                     onTap: () {},
                     child: Container(

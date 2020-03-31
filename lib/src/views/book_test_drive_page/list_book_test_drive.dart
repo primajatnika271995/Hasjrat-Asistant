@@ -75,6 +75,11 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
           if (state is BookingDriveLoading) {
             onLoading(context);
           }
+          if (state is BookingDriveDisposeLoading) {
+            Future.delayed(Duration(seconds: 3), () {
+              Navigator.of(context, rootNavigator: false).pop();
+            });
+          }
         },
         child: SingleChildScrollView(
           child: Column(
