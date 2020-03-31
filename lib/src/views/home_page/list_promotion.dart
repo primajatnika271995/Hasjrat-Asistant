@@ -67,26 +67,36 @@ class _PromotionListViewState extends State<PromotionListView>
   Widget build(BuildContext context) {
     return BlocListener<DmsBloc, DmsState>(
       listener: (context, state) {
-        if (state is DmsLoading) {
-          return Container(
-            height: 160,
-            child: _loadingImageAnimation(context),
-          );
-        }
       },
       child: BlocBuilder<DmsBloc, DmsState>(
         builder: (context, state) {
-          if (state is ListProgramPenjualanError) {
-            print("list promo failed");
+
+          if (state is DmsLoading) {
             return Container(
               height: 160,
               child: _loadingImageAnimation(context),
             );
           }
 
-          if (state is ListProgramPenjualanSuccess) {
-            print("List promo success");
+          if (state is ListProgramPenjualanError) {
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 50, bottom: 10),
+                child: Column(
+                  children: <Widget>[
+                    Image.asset("assets/icons/error_banner.jpg", height: 150),
+                    Text("Promotion Not Available",
+                      style: TextStyle(
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
 
+          if (state is ListProgramPenjualanSuccess) {
             return ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
