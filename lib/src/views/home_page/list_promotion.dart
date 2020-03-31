@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
+import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
+import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -40,7 +42,14 @@ class _PromotionListViewState extends State<PromotionListView>
   void initState() {
     // TODO: implement initState
     final dmsBloc = BlocProvider.of<DmsBloc>(context);
-    dmsBloc.add(FetchProgramPenjualan());
+    dmsBloc.add(
+      FetchProgramPenjualan(
+        ProgramPenjualanPost(
+          name: "",
+          programId: "",
+        ),
+      ),
+    );
 
     Timer(Duration(seconds: 3), () {
       setState(() => loadImage = false);
@@ -56,25 +65,96 @@ class _PromotionListViewState extends State<PromotionListView>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 5, bottom: 16),
-      child: loadImage
-          ? Container(
+    return BlocListener<DmsBloc, DmsState>(
+      listener: (context, state) {
+        if (state is DmsLoading) {
+          return Container(
+            height: 160,
+            child: _loadingImageAnimation(context),
+          );
+        }
+      },
+      child: BlocBuilder<DmsBloc, DmsState>(
+        builder: (context, state) {
+          if (state is ListProgramPenjualanError) {
+            print("list promo failed");
+            return Container(
               height: 160,
               child: _loadingImageAnimation(context),
-            )
-          : CarouselSlider(
-              items: child,
-              initialPage: 1,
-              autoPlay: false,
-              enlargeCenterPage: true,
-              viewportFraction: 0.9,
-              autoPlayCurve: Curves.bounceIn,
-              reverse: false,
-              height: 180,
-              enableInfiniteScroll: false,
-              aspectRatio: 2.0,
-            ),
+            );
+          }
+
+          if (state is ListProgramPenjualanSuccess) {
+            print("List promo success");
+
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: state.value.data.length,
+              itemBuilder: (context, index) {
+                return CarouselSlider.builder(
+                    initialPage: 1,
+                    autoPlay: false,
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.9,
+                    autoPlayCurve: Curves.bounceIn,
+                    reverse: false,
+                    height: 180,
+                    enableInfiniteScroll: false,
+                    aspectRatio: 2.0,
+                    itemCount: state.value.data.length,
+                    itemBuilder: (context, index) {
+                      var data = state.value.data[index];
+                      return GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          margin: EdgeInsets.all(5.0),
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5.0)),
+                            child: Stack(children: <Widget>[
+                              Image.network(
+                                  "https://www.mistercarz.com.my/images/promo/2017/toyota.jpg",
+                                  fit: BoxFit.cover,
+                                  width: 1000.0),
+                              Positioned(
+                                bottom: 0.0,
+                                left: 0.0,
+                                right: 0.0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color.fromARGB(200, 0, 0, 0),
+                                        Color.fromARGB(0, 0, 0, 0)
+                                      ],
+                                      begin: Alignment.bottomCenter,
+                                      end: Alignment.topCenter,
+                                    ),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 20.0),
+                                  child: Text(
+                                    '${data.programPenjualanName}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ),
+                        ),
+                      );
+                    });
+              },
+            );
+          }
+          return SizedBox();
+        },
+      ),
     );
   }
 

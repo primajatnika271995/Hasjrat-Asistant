@@ -170,15 +170,17 @@ class DmsService {
     }
   }
 
-  Future fetchListProgramPenjualan() async {
-    final response = await _dio.post(
-      UriApi.programPenjualanUri,
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      ),
-    );
+  Future fetchListProgramPenjualan(ProgramPenjualanPost value) async {
+    final response = await _dio.post(UriApi.programPenjualanUri,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+        data: {
+          "name": value.name,
+          "programId": value.programId,
+        });
     log.info(response.statusCode);
     if (response.statusCode == 200) {
       log.info("SUKSES FETCH LIST PROGRAM PENJUALAN");
@@ -248,4 +250,13 @@ class ProspectPost {
       this.quantity,
       this.prospectDate,
       this.prospectFollowUp});
+}
+
+class ProgramPenjualanPost {
+  String name;
+  String programId;
+  ProgramPenjualanPost({
+    this.name,
+    this.programId,
+  });
 }

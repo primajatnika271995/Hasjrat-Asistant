@@ -125,7 +125,8 @@ class ListProgramPenjualanSuccess extends DmsState {
   final _data;
 
   ListProgramPenjualanSuccess(this._data);
-  List<ProgramPenjualanModel> get value => _data;
+  ProgramPenjualanModel get value => _data;
+  
   @override
   List<Object> get props => [_data];
 }

@@ -96,9 +96,13 @@ class FetchProspectFilter extends DmsEvent {
 }
 
 class FetchProgramPenjualan extends DmsEvent {
+  final ProgramPenjualanPost value;
+
+  FetchProgramPenjualan(this.value);
+
   @override
   // TODO: implement props
-  List<Object> get props => [];
+  List<Object> get props => [value];
 }
 
 class ResetDms extends DmsEvent {}
