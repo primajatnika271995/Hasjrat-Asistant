@@ -109,9 +109,9 @@ class _PromotionListViewState extends State<PromotionListView>
                 height: 180,
                 enableInfiniteScroll: false,
                 aspectRatio: 2.0,
-                itemCount: state.programSales.length,
+                itemCount: state.value.data.length,
                 itemBuilder: (context, index) {
-                  var data = state.programSales[index];
+                  var data = state.value.data[index];
                   return GestureDetector(
                     onTap: () {},
                     child: Container(

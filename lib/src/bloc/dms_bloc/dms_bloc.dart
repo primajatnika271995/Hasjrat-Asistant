@@ -153,7 +153,7 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
       try {
         ItemListModel value = await _dmsService.itemList(event.value);
 
-        if (value.data[0].stocks.isEmpty || value.data[0].stocks == null) {
+        if (value.data.isEmpty || value.data == null) {
           yield ItemListFailed();
         } else {
           yield DmsDisposeLoading();
@@ -186,12 +186,14 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
       try {
         ProgramPenjualanModel value =
             await _dmsService.fetchListProgramPenjualan(event.value);
-        List<programPenjualan.Datum> programSales = value.data;
-
-        yield DmsDisposeLoading();
-        yield ListProgramPenjualanSuccess(programSales: programSales);
-      } catch (error) {
-        log.warning("Error : ${error.toString()}");
+        if (value.data.isEmpty) {
+          yield ListProgramPenjualanError();
+        } else {
+          yield DmsDisposeLoading();
+          yield ListProgramPenjualanSuccess(value);
+        }
+      } catch (e) {
+        log.warning("Error : ${e.toString()}");
         yield ListProgramPenjualanError();
       }
     }
