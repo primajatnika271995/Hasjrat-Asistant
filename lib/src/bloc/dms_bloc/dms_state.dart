@@ -127,7 +127,7 @@ class ListProgramPenjualanSuccess extends DmsState {
 
   ListProgramPenjualanSuccess({this.programSales});
 
-  ListProgramPenjualanSuccess copyWith({List<programPenjualan.Datum> promoSale, bool hasReachedMax}) {
+  ListProgramPenjualanSuccess copyWith({List<programPenjualan.Datum> promoSale}) {
     return ListProgramPenjualanSuccess(
       programSales: promoSale ?? this.programSales,
     );
