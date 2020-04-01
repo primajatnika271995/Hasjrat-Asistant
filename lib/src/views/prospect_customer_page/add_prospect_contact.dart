@@ -481,7 +481,10 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                         "OK",
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
-                      onPressed: () => Navigator.pop(context, true),
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                        Navigator.pop(context, true);
+                      },
                       color: HexColor("#C61818"),
                     ),
                   ]

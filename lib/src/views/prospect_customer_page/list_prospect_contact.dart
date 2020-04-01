@@ -45,7 +45,14 @@ class _ProspectContactListViewState extends State<ProspectContactListView> {
           );
         },
       ),
-    );
+    ).then((onValue) {
+      // ignore: close_sinks
+      final leadBloc = BlocProvider.of<LeadBloc>(context);
+      leadBloc.add(FetchLead(LeadPost(
+        leadCode: "",
+        leadName: "",
+      )));
+    });
   }
 
   void _onViewDetailsContact(Datum value) {
