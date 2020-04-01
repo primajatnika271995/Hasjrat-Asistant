@@ -153,7 +153,7 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
       try {
         ItemListModel value = await _dmsService.itemList(event.value);
 
-        if (value.data.isEmpty || value.data == null) {
+        if (value.data[0].stocks.isEmpty || value.data[0].stocks == null) {
           yield ItemListFailed();
         } else {
           yield DmsDisposeLoading();

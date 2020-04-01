@@ -19,8 +19,13 @@ class KnowledgeBaseBloc extends Bloc<KnowledgeBaseEvent, KnowledgeBaseState> {
 
       try {
         KnowladgeBaseModel value = await _knowledgeBaseService.questionAsk();
-        yield KnowledgeBaseDisposeLoading();
-        yield KnowledgeBaseSuccess(value);
+
+        if (value.data == null || value.data.isEmpty) {
+          yield KnowledgeBaseFailed();
+        } else {
+          yield KnowledgeBaseDisposeLoading();
+          yield KnowledgeBaseSuccess(value);
+        }
       } catch(err) {
         yield KnowledgeBaseDisposeLoading();
         yield KnowledgeBaseError();

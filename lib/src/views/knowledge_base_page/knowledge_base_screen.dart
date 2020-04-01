@@ -128,6 +128,22 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                     );
                   }
 
+                  if (state is KnowledgeBaseFailed) {
+                    Future.delayed(Duration(seconds: 3), () {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    });
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 100),
+                        child: Column(
+                          children: <Widget>[
+                            Image.asset("assets/icons/no_data.png", height: 200),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
                   if (state is KnowledgeBaseSuccess) {
                     return ListView.builder(
                       shrinkWrap: true,
