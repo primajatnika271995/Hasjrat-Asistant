@@ -178,9 +178,9 @@ class Model {
     dynamic itemColour;
     String nomorRegister;
     String nomorRangka;
-    int cashbackHasjrat;
-    int cashbackLeasing;
-    int discPl;
+    double cashbackHasjrat;
+    double cashbackLeasing;
+    double discPl;
     dynamic subsidiDealer;
     String gift;
     String itemName;
