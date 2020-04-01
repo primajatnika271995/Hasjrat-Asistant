@@ -45,8 +45,9 @@ class _PromotionListViewState extends State<PromotionListView>
     dmsBloc.add(
       FetchProgramPenjualan(
         ProgramPenjualanPost(
-          name: "",
-          programId: "",
+          id: "",
+          limit: 10,
+          start: 1,
         ),
       ),
     );
