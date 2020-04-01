@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/catalog_bloc/catalog_bloc.dart';
+import 'package:salles_tools/src/bloc/catalog_bloc/catalog_event.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/catalog_page/details_selection_catalog.dart';
 import 'package:salles_tools/src/views/components/trusty_horizontal_menu.dart';
@@ -9,7 +12,6 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
-
   void _onSeeDetails(String heroName) {
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -17,8 +19,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
           heroName: heroName,
         ),
         transitionDuration: Duration(milliseconds: 750),
-        transitionsBuilder:
-            (_, Animation<double> animation, __, Widget child) {
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
             opacity: animation.value,
             child: child,
@@ -26,6 +27,13 @@ class _CatalogScreenState extends State<CatalogScreen> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    final bookingDriveBloc = BlocProvider.of<CatalogBloc>(context);
+    bookingDriveBloc.add(FetchCatalogList());
+    super.initState();
   }
 
   @override
@@ -130,10 +138,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
                               Text(
                                 "LE Auto",
                                 style: TextStyle(
-                                  letterSpacing: 0.8,
-                                  fontSize: 13,
-                                  color: Colors.grey
-                                ),
+                                    letterSpacing: 0.8,
+                                    fontSize: 13,
+                                    color: Colors.grey),
                               ),
                               SizedBox(
                                 height: 5.0,

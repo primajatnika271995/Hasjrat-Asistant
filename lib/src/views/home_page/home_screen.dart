@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/catalog_bloc/catalog_bloc.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_bloc.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_event.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_state.dart';
+import 'package:salles_tools/src/services/catalog_service.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
@@ -91,7 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: CustomerListView(),
     ),
     SalesInputView(),
-    CatalogScreen(),
+    BlocProvider(
+      create: (context) => CatalogBloc(CatalogService()),
+      child: CatalogScreen(),
+    ),
     BlocProvider(
       create: (context) => FinanceBloc(FinanceService()),
       child: CalculatorStepperScreen(),
