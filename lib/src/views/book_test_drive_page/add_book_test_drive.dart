@@ -205,9 +205,9 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
               onLoading(context);
             }
 
-            if (state is BookingDriveDisposeLoading) {
-              Navigator.of(context).pop();
-            }
+//            if (state is BookingDriveDisposeLoading) {
+//              Navigator.of(context).pop();
+//            }
 
             if (state is CarListSuccess) {
               state.value.forEach((f) {

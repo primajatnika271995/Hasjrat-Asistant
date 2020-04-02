@@ -3,10 +3,9 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
-import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
-import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
-import 'package:salles_tools/src/services/dms_service.dart';
+import 'package:salles_tools/src/bloc/catalog_bloc/catalog_bloc.dart';
+import 'package:salles_tools/src/bloc/catalog_bloc/catalog_event.dart';
+import 'package:salles_tools/src/bloc/catalog_bloc/catalog_state.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -42,16 +41,8 @@ class _PromotionListViewState extends State<PromotionListView>
   void initState() {
     // TODO: implement initState
     // ignore: close_sinks
-    final dmsBloc = BlocProvider.of<DmsBloc>(context);
-    dmsBloc.add(
-      FetchProgramPenjualan(
-        ProgramPenjualanPost(
-          id: "",
-          limit: "10",
-          start: "0",
-        ),
-      ),
-    );
+    final bannerBloc = BlocProvider.of<CatalogBloc>(context);
+    bannerBloc.add(FetchBannerPromotionList());
 
     Timer(Duration(seconds: 3), () {
       setState(() => loadImage = false);
@@ -67,18 +58,18 @@ class _PromotionListViewState extends State<PromotionListView>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<DmsBloc, DmsState>(
+    return BlocListener<CatalogBloc, CatalogState>(
       listener: (context, state) {},
-      child: BlocBuilder<DmsBloc, DmsState>(
+      child: BlocBuilder<CatalogBloc, CatalogState>(
         builder: (context, state) {
-          if (state is DmsLoading) {
+          if (state is CatalogLoading) {
             return Container(
               height: 160,
               child: _loadingImageAnimation(context),
             );
           }
 
-          if (state is ListProgramPenjualanError) {
+          if (state is CatalogListFailed) {
             return Center(
               child: Padding(
                 padding: EdgeInsets.only(top: 50, bottom: 10),
@@ -97,7 +88,7 @@ class _PromotionListViewState extends State<PromotionListView>
             );
           }
 
-          if (state is ListProgramPenjualanSuccess) {
+          if (state is BannerPromotionSuccess) {
             return CarouselSlider.builder(
                 initialPage: 1,
                 autoPlay: false,
@@ -172,7 +163,7 @@ class _PromotionListViewState extends State<PromotionListView>
                               padding: EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 20.0),
                               child: Text(
-                                '${data.programPenjualanName}',
+                                '${data.title}',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20.0,
