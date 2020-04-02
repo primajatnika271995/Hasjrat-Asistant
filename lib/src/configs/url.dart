@@ -70,4 +70,6 @@ class UriApi {
   static const String programPenjualanUri = "/sales-tools-dealer-service/api/v2/dms/program/penjualan/list";
 
   static const String knowledgeBaseUri = "/sales-tools-qna-service/api/v2/qna/datatables";
+
+  static const String catalogListUri = "/sales-tools-catalog-service/api/v2/catalog/list";
 }

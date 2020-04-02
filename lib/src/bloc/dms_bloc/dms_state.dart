@@ -6,6 +6,7 @@ import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
 import 'package:salles_tools/src/models/program_penjualan_model.dart'
     as programPenjualan;
+import 'package:salles_tools/src/models/program_penjualan_model.dart';
 import 'package:salles_tools/src/models/prospect_model.dart' as prospect;
 
 class DmsState extends Equatable {
@@ -123,28 +124,11 @@ class DmsError extends DmsState {
 class ListProgramPenjualanError extends DmsState {}
 
 class ListProgramPenjualanSuccess extends DmsState {
-  final List<programPenjualan.Datum> programSales;
+  final _data;
 
-  ListProgramPenjualanSuccess({this.programSales});
-
-  ListProgramPenjualanSuccess copyWith({List<programPenjualan.Datum> promoSale}) {
-    return ListProgramPenjualanSuccess(
-      programSales: promoSale ?? this.programSales,
-    );
-  }
-
+  ListProgramPenjualanSuccess(this._data);
+  ProgramPenjualanModel get value => _data;
+  
   @override
-  // TODO: implement props
-  List<Object> get props => [programSales];
-
+  List<Object> get props => [_data];
 }
-
-// class ListProgramPenjualanSuccess extends DmsState {
-//   final _data;
-
-//   ListProgramPenjualanSuccess(this._data);
-//   programPenjualan.ProgramPenjualanModel get value => _data;
-
-//   @override
-//   List<Object> get props => [_data];
-// }

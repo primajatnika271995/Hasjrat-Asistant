@@ -179,8 +179,9 @@ class DmsService {
         },
       ),
       data: {
-        "name": value.name,
-        "programId": value.programId,
+        "id": value.id,
+        "limit": value.limit,
+        "start": value.start,
       },
     );
     log.info(response.statusCode);
@@ -256,10 +257,12 @@ class ProspectPost {
 }
 
 class ProgramPenjualanPost {
-  String name;
-  String programId;
+  String id;
+  int limit;
+  int start;
   ProgramPenjualanPost({
-    this.name,
-    this.programId,
+    this.id,
+    this.limit,
+    this.start,
   });
 }
