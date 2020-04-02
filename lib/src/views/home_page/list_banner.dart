@@ -6,19 +6,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_bloc.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_event.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_state.dart';
+import 'package:salles_tools/src/models/banner_model.dart';
 import 'package:salles_tools/src/views/components/log.dart';
+import 'package:salles_tools/src/views/home_page/details_banner.dart';
 import 'package:shimmer/shimmer.dart';
 
-class PromotionListView extends StatefulWidget {
+class BannerListView extends StatefulWidget {
   final Function callback;
-  PromotionListView({Key key, this.callback}) : super(key: key);
+  BannerListView({Key key, this.callback}) : super(key: key);
 
   @override
-  _PromotionListViewState createState() => _PromotionListViewState();
+  _BannerListViewState createState() => _BannerListViewState();
 }
 
-class _PromotionListViewState extends State<PromotionListView>
-    with TickerProviderStateMixin {
+class _BannerListViewState extends State<BannerListView> with TickerProviderStateMixin {
   bool loadImage = true;
 
   static List<String> imgList = [
@@ -35,6 +36,23 @@ class _PromotionListViewState extends State<PromotionListView>
     }
 
     return result;
+  }
+
+  void _onDetailsBanner(Datum value) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BannerDetailsView(
+          data: value,
+        ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -104,34 +122,7 @@ class _PromotionListViewState extends State<PromotionListView>
                   var data = state.value.data[index];
                   return GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          opaque: false,
-                          pageBuilder: (context, _, __) {
-                            return Material(
-                              color: Colors.black54,
-                              child: Container(
-                                padding: EdgeInsets.all(30),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Hero(
-                                    tag: "promotion-tag$index",
-                                    child: Image.network(
-                                      "https://www.mistercarz.com.my/images/promo/2017/toyota.jpg",
-                                      width: 300.0,
-                                      height: 300.0,
-                                      alignment: Alignment.center,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
+                      _onDetailsBanner(data);
                     },
                     child: Container(
                       margin: EdgeInsets.all(5.0),
@@ -139,7 +130,7 @@ class _PromotionListViewState extends State<PromotionListView>
                         borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         child: Stack(children: <Widget>[
                           Hero(
-                            tag: "promotion-tag$index",
+                            tag: "promotion-tag${data.id}",
                             child: Image.network(
                                 "https://www.mistercarz.com.my/images/promo/2017/toyota.jpg",
                                 fit: BoxFit.cover,

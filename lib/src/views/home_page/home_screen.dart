@@ -29,7 +29,7 @@ import 'package:salles_tools/src/views/calculator_page/calculator_stepper.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_screen.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/customer_page/list_customer.dart';
-import 'package:salles_tools/src/views/home_page/list_promotion.dart';
+import 'package:salles_tools/src/views/home_page/list_banner.dart';
 import 'package:salles_tools/src/views/knowledge_base_page/knowledge_base_screen.dart';
 import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
 import 'package:salles_tools/src/views/promotion_page/list_promotion.dart';
@@ -345,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverToBoxAdapter(
               child: BlocProvider(
                 create: (context) => CatalogBloc(CatalogService()),
-                child: PromotionListView(),
+                child: BannerListView(),
               ),
             ),
           ],
