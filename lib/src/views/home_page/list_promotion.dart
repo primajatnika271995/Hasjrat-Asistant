@@ -41,13 +41,14 @@ class _PromotionListViewState extends State<PromotionListView>
   @override
   void initState() {
     // TODO: implement initState
+    // ignore: close_sinks
     final dmsBloc = BlocProvider.of<DmsBloc>(context);
     dmsBloc.add(
       FetchProgramPenjualan(
         ProgramPenjualanPost(
           id: "",
-          limit: 10,
-          start: 1,
+          limit: "10",
+          start: "0",
         ),
       ),
     );

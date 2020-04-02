@@ -119,7 +119,10 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => DmsBloc(DmsService()),
       child: PriceListView(),
     ),
-    PromotionListScreen(),
+    BlocProvider(
+      create: (context) => DmsBloc(DmsService()),
+      child: PromotionListScreen(),
+    ),
   ];
 
   void _showMoreMenu() {

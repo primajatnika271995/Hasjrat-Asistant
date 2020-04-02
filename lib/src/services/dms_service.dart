@@ -258,8 +258,8 @@ class ProspectPost {
 
 class ProgramPenjualanPost {
   String id;
-  int limit;
-  int start;
+  String limit;
+  String start;
   ProgramPenjualanPost({
     this.id,
     this.limit,
