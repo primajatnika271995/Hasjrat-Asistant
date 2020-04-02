@@ -81,6 +81,25 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
         child: SingleChildScrollView(
           child: BlocBuilder<DmsBloc, DmsState>(
             builder: (context, state) {
+              if (state is ListProgramPenjualanError) {
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 50, bottom: 10),
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset("assets/icons/error_banner.jpg", height: 150),
+                        Text(
+                          "Promotion Not Available",
+                          style: TextStyle(
+                            letterSpacing: 0.8,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
               if (state is ListProgramPenjualanSuccess) {
                 return ListView.builder(
                   shrinkWrap: true,

@@ -17,13 +17,16 @@ class _VehicleCustomerDetailsListViewState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: widget.datum.vins == null ? Center(
-        child: Image.asset(
-          "assets/icons/empty_icon.png",
-          height: 100,
-          color: HexColor('#C61818'),
+      body: widget.datum.vins.length < 1 ? Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: 100),
+          child: Column(
+            children: <Widget>[
+              Image.asset("assets/icons/no_data.png", height: 200),
+            ],
+          ),
         ),
-      ) : ListView.builder(
+      ): ListView.builder(
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return Padding(
