@@ -112,16 +112,48 @@ class _PromotionListViewState extends State<PromotionListView>
                 itemBuilder: (context, index) {
                   var data = state.value.data[index];
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (context, _, __) {
+                            return Material(
+                              color: Colors.black54,
+                              child: Container(
+                                padding: EdgeInsets.all(30),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Hero(
+                                    tag: "promotion-tag$index",
+                                    child: Image.network(
+                                      "https://www.mistercarz.com.my/images/promo/2017/toyota.jpg",
+                                      width: 300.0,
+                                      height: 300.0,
+                                      alignment: Alignment.center,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                     child: Container(
                       margin: EdgeInsets.all(5.0),
                       child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         child: Stack(children: <Widget>[
-                          Image.network(
-                              "https://www.mistercarz.com.my/images/promo/2017/toyota.jpg",
-                              fit: BoxFit.cover,
-                              width: 1000.0),
+                          Hero(
+                            tag: "promotion-tag$index",
+                            child: Image.network(
+                                "https://www.mistercarz.com.my/images/promo/2017/toyota.jpg",
+                                fit: BoxFit.cover,
+                                width: 1000.0),
+                          ),
                           Positioned(
                             bottom: 0.0,
                             left: 0.0,
