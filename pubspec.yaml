@@ -96,6 +96,9 @@ dependencies:
   # A TypeAhead (autocomplete) widget for Flutter
   flutter_typeahead: ^1.7.0
 
+  # Flutter date range pickers use a dialog window to select a range of date on mobile.
+  date_range_picker: ^1.0.6
+
   # For Simple Serialize
   equatable: ^1.0.1
 

@@ -3,18 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
+import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_event.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_state.dart';
 import 'package:salles_tools/src/models/list_booking_drive_model.dart';
 import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:salles_tools/src/views/components/log.dart';
-import 'package:sticky_headers/sticky_headers/widget.dart';
-
-import '../../bloc/booking_bloc/booking_drive_event.dart';
-import '../../bloc/dms_bloc/dms_bloc.dart';
-import '../../services/dms_service.dart';
 
 class BookTestDriveListView extends StatefulWidget {
   @override
@@ -22,6 +20,12 @@ class BookTestDriveListView extends StatefulWidget {
 }
 
 class _BookTestDriveListViewState extends State<BookTestDriveListView> {
+  String salesBranchCode;
+  String salesOutletCode;
+
+  var dateSelectedCtrl = new TextEditingController();
+  final dateFormat = DateFormat("yyyy-MM-dd");
+
   void _onAddBookTestDrive() {
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -40,16 +44,50 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
     );
   }
 
+  Future<Null> _selectedDate(BuildContext context) async {
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+        context: context,
+        initialFirstDate: new DateTime.now(),
+        initialLastDate: (new DateTime.now()).add(new Duration(days: 14)),
+        firstDate: DateTime(1900, 1),
+        lastDate: DateTime(2100),
+    );
+
+    if (picked != null) {
+      log.info(picked);
+      dateSelectedCtrl.value =
+          TextEditingValue(text: '${dateFormat.format(picked[0]).toString()} - ${dateFormat.format(picked[1]).toString()}');
+
+      // ignore: close_sinks
+      final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
+      bookingDriveBloc.add(FetchListBookingDrive(ListBookingDrivePost(
+        branchCode: salesBranchCode,
+        outletCode: salesOutletCode,
+        dateAfter: dateFormat.format(picked[0]).toString(),
+        dateBefore: dateFormat.format(picked[1]).toString(),
+      )));
+    }
+  }
+
+  void _getPreferences() async {
+    salesBranchCode = await SharedPreferencesHelper.getSalesBrachId();
+    salesOutletCode = await SharedPreferencesHelper.getSalesOutletId();
+    setState(() {});
+
+    // ignore: close_sinks
+    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
+    bookingDriveBloc.add(FetchListBookingDrive(ListBookingDrivePost(
+      branchCode: salesBranchCode,
+      outletCode: salesOutletCode,
+      dateAfter: dateFormat.format(DateTime.now()).toString(),
+      dateBefore: dateFormat.format(DateTime.now()).toString(),
+    )));
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
-    bookingDriveBloc.add(FetchListBookingDrive(ListBookingDrivePost(
-      branchCode: "10100",
-      outletCode: "10104",
-      dateAfter: "2022-03-31",
-      dateBefore: "2020-03-27",
-    )));
+    _getPreferences();
     super.initState();
   }
 
@@ -75,30 +113,78 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
           if (state is BookingDriveLoading) {
             onLoading(context);
           }
+
           if (state is BookingDriveDisposeLoading) {
-            Future.delayed(Duration(seconds: 3), () {
-              Navigator.of(context, rootNavigator: false).pop();
-            });
+            Navigator.of(context, rootNavigator: false).pop();
           }
         },
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                child: Container(
+                  height: 30.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 15.0,
+                        spreadRadius: 0.0,
+                      )
+                    ],
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+                      child: Theme(
+                        data: ThemeData(hintColor: Colors.transparent),
+                        child: GestureDetector(
+                          onTap: () {
+                            _selectedDate(context);
+                          },
+                          child: AbsorbPointer(
+                            child: TextFormField(
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabled: false,
+                                contentPadding: EdgeInsets.only(bottom: 18),
+                                suffixIcon: Icon(
+                                  Icons.search,
+                                  color: Color(0xFF6991C7),
+                                  size: 24.0,
+                                ),
+                                hintText: "Search Date",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              controller: dateSelectedCtrl,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               BlocBuilder<BookingDriveBloc, BookingDriveState>(
                 builder: (context, state) {
                   if (state is ListBookingDriveFailed) {
-                    print("List Schedule failed");
                     Future.delayed(Duration(seconds: 3), () {
                       Navigator.of(context, rootNavigator: true).pop();
                     });
                     return Center(
                       child: Padding(
-                        padding: EdgeInsets.only(top: 50),
+                        padding: EdgeInsets.only(top: 100),
                         child: Column(
                           children: <Widget>[
-                            Image.asset("assets/icons/error_banner.jpg",
-                                height: 200),
-                            Text("502 Error Bad Gateway"),
+                            Image.asset("assets/icons/no_data.png", height: 200),
                           ],
                         ),
                       ),
@@ -106,8 +192,6 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
                   }
 
                   if (state is ListBookingDriveSuccess) {
-                    print("List Schedule success");
-
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),

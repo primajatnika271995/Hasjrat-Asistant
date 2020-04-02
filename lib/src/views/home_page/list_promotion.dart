@@ -77,7 +77,6 @@ class _PromotionListViewState extends State<PromotionListView>
           }
 
           if (state is ListProgramPenjualanError) {
-            print("list promo failed");
             return Center(
               child: Padding(
                 padding: EdgeInsets.only(top: 50, bottom: 10),
@@ -97,8 +96,6 @@ class _PromotionListViewState extends State<PromotionListView>
           }
 
           if (state is ListProgramPenjualanSuccess) {
-            print("List promo success");
-
             return CarouselSlider.builder(
                 initialPage: 1,
                 autoPlay: false,

@@ -6,15 +6,12 @@ import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_event.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_state.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
-import 'package:salles_tools/src/models/test_drive_vehicle_model.dart';
 import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:select_dialog/select_dialog.dart';
 
-import '../../utils/shared_preferences_helper.dart';
-import '../../utils/shared_preferences_helper.dart';
 import '../../utils/shared_preferences_helper.dart';
 import '../components/log.dart';
 
@@ -83,7 +80,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
       lastDate: DateTime(2100),
     );
 
-    if (picked != null && picked != _dateTime)
+    if (picked != null)
       setState(() {
         _dateTime = picked;
         dateSelectedCtrl.value =
@@ -99,7 +96,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
       initialTime: timeOfDay,
     );
 
-    if (picked != null && picked != timeOfDay)
+    if (picked != null)
       setState(() {
         timeOfDay = picked;
         timeSelectedCtrl.value =
@@ -158,16 +155,17 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   }
 
   void onSaveBooking() {
-    var dateAndTime = "${dateFormatConvert.format(_dateTime).toString()} ${timeOfDay.format(context)}";
-    DateFormat format = new DateFormat("dd MMMM yyyy hh:mm a");
-    var parseDate = DateTime.parse(dateAndTime);
-    setState(() {
-      convertDate = parseDate.toUtc().millisecondsSinceEpoch;
-      print(convertDate);
-    });
+//    var dateAndTime = "${dateFormatConvert.format(_dateTime).toString()} ${timeOfDay.format(context)}";
+//    var parseDate = DateTime.parse(dateAndTime);
+//    log.warning(parseDate);
+//
+//    setState(() {
+//      convertDate = parseDate.toUtc().millisecondsSinceEpoch;
+//      print(convertDate);
+//    });
     
     if (_formKey.currentState.validate()) {
-      print("data register book test drive");
+      // ignore: close_sinks
       final dmsBloc = BlocProvider.of<BookingDriveBloc>(context);
       dmsBloc.add(BookingTestDriveRegister(BookingTestDrivePost(
         customerName: customerNameCtrl.text,
@@ -176,9 +174,9 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
         outletCode: _outletId,
         notes: notesCtrl.text,
         carId: selectedCarId,
-        schedule: convertDate,
+        schedule: DateTime.now().millisecondsSinceEpoch,
       )));
-      
+
       print(
           "data booking | ${customerNameCtrl.text} | ${customerContactCtrl.text} | $_branchId | $_outletId | ${notesCtrl.text} | ${itemCodeCtrl.text} | $convertDate | $selectedCarId");
     } else {
@@ -220,10 +218,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           listener: (context, state) {
             if (state is BookingDriveLoading) {
               onLoading(context);
-            }
-
-            if (state is BookingDriveDisposeLoading) {
-              Navigator.of(context, rootNavigator: false).pop();
             }
 
             if (state is CarListSuccess) {

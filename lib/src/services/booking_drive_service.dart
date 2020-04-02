@@ -78,9 +78,7 @@ class BookingDriveService {
       },
     );
     log.info(response.statusCode);
-    print("status code => ${response.statusCode}");
     if (response.statusCode == 200) {
-      log.info("SUCCESS FETCH LIST SCHEDULE BOOKING DRIVE");
       return compute(bookingDriveScheduleModelFromJson, json.encode(response.data));
     }
   }
