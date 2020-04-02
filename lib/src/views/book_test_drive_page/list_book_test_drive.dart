@@ -63,8 +63,8 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
       bookingDriveBloc.add(FetchListBookingDrive(ListBookingDrivePost(
         branchCode: salesBranchCode,
         outletCode: salesOutletCode,
-        dateAfter: dateFormat.format(picked[0]).toString(),
-        dateBefore: dateFormat.format(picked[1]).toString(),
+        dateAfter: dateFormat.format(picked[1]).toString(),
+        dateBefore: dateFormat.format(picked[0]).toString(),
       )));
     }
   }
@@ -138,7 +138,7 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
                   ),
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+                      padding: const EdgeInsets.only(left: 5.0, right: 2.0),
                       child: Theme(
                         data: ThemeData(hintColor: Colors.transparent),
                         child: GestureDetector(
@@ -152,8 +152,8 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
                                 border: InputBorder.none,
                                 enabled: false,
                                 contentPadding: EdgeInsets.only(bottom: 18),
-                                suffixIcon: Icon(
-                                  Icons.search,
+                                prefixIcon: Icon(
+                                  Icons.date_range,
                                   color: Color(0xFF6991C7),
                                   size: 24.0,
                                 ),
@@ -236,135 +236,118 @@ class SlidableBookTestDriveView extends StatelessWidget {
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            border: Border(
-              bottom: BorderSide(
-                color: Colors.black,
-              ),
-              top: BorderSide(
-                color: Colors.black,
-              ),
-              left: BorderSide(
-                color: Colors.black,
-              ),
-              right: BorderSide(
-                color: Colors.black,
-              ),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Card(
+          elevation: 5,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
             ),
-          ),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 5, top: 5, bottom: 15),
-                      child: Image.network(
-                        "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png",
-                        height: 70,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 5, top: 5, bottom: 15),
+                        child: Image.network(
+                          "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png",
+                          height: 70,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      '${value.customerName}',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        '${value.customerName}',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.0,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        '${value.car.itemModel}',
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(
+                          '${value.car.itemModel}',
+                          style: TextStyle(
+                            fontSize: 13,
+                            letterSpacing: 0.7,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '${value.customerPhone}',
                         style: TextStyle(
                           fontSize: 13,
                           letterSpacing: 0.7,
                         ),
                       ),
-                    ),
-                    Text(
-                      '${value.createdBy}',
-                      style: TextStyle(
-                        fontSize: 13,
-                        letterSpacing: 0.7,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 40, top: 10),
-                        child: Container(
-                          height: 18,
-                          width: 70,
-                          decoration: value.approve == false
-                              ? BoxDecoration(
-                                  color: Colors.redAccent,
-                                  borderRadius: BorderRadius.circular(5),
-                                )
-                              : BoxDecoration(
-                                  color: Colors.blueAccent,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                          child: Center(
-                            child: value.approve == false
-                                ? Text(
-                                    'Rejected',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                                : Text(
-                                    'Approved',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        '${dateFormat.format(DateTime.parse(value.schedule))}',
-                        style: TextStyle(
-                          fontSize: 11,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      // Text(
-                      //   '${value.}',
-                      //   style: TextStyle(
-                      //     fontSize: 11,
-                      //     letterSpacing: 0.5,
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 40, top: 10),
+                          child: Container(
+                            height: 18,
+                            width: 70,
+                            decoration: value.approve == false
+                                ? BoxDecoration(
+                                    color: Colors.redAccent,
+                                    borderRadius: BorderRadius.circular(5),
+                                  )
+                                : BoxDecoration(
+                                    color: Colors.blueAccent,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                            child: Center(
+                              child: value.approve == false
+                                  ? Text(
+                                      'Rejected',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    )
+                                  : Text(
+                                      'Approved',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '${dateFormat.format(DateTime.parse(value.schedule))}',
+                          style: TextStyle(
+                            fontSize: 11,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

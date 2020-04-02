@@ -9,11 +9,10 @@ import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
-
-import '../../utils/shared_preferences_helper.dart';
-import '../components/log.dart';
 
 class BookTestDriveAddView extends StatefulWidget {
   @override
@@ -21,17 +20,13 @@ class BookTestDriveAddView extends StatefulWidget {
 }
 
 class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
-  List<String> _listKendaraan = new List<String>();
   var _formKey = GlobalKey<FormState>();
 
-//shared prefference var
   var _branchName;
   var _branchId;
   var _outletName;
   var _outletId;
-//end of shared prefference var
 
-// list car dms
   var itemCodeCtrl = new TextEditingController();
   var currentSelectPriceList;
   List<SelectorPriceListModel> priceList = [];
@@ -46,7 +41,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   int convertTime;
   int convertDateTime;
 
-//text editing controller init
   var customerNameCtrl = new TextEditingController();
   var customerContactCtrl = new TextEditingController();
   var branchNameCtrl = new TextEditingController();
@@ -56,7 +50,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   var notesCtrl = new TextEditingController();
 
   var selectedCarId;
-//end of text editing controller init
 
   var costumerNameFocus = new FocusNode();
   var phoneNumberFocus = new FocusNode();
@@ -65,9 +58,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
 
   final dateFormat = DateFormat("dd MMMM yyyy");
   final dateFormatConvert = DateFormat("yyyy-MM-dd");
-  final timeFormat = DateFormat("h:mm a");
-
-  var dateTimeFormat = new DateFormat("dd MMM yyyy, hh:mm a");
+  final timeFormat = DateFormat("HH:mm:ss");
 
   DateTime _dateTime = DateTime.now();
   TimeOfDay timeOfDay = TimeOfDay.now();
@@ -85,14 +76,18 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
         _dateTime = picked;
         dateSelectedCtrl.value =
             TextEditingValue(text: dateFormat.format(picked).toString());
-        // convertDate = _dateTime.toUtc().millisecondsSinceEpoch;
-
       });
   }
 
   Future<Null> _selectedTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
       context: context,
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child,
+        );
+      },
       initialTime: timeOfDay,
     );
 
@@ -133,7 +128,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           vehicleCtrl.text = selected.itemModel;
           selectedCarId = selected.id;
         });
-        print('car Id => $selectedCarId');
       },
     );
   }
@@ -148,21 +142,15 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     setState(() {
       branchNameCtrl.text = _branchName;
       outletNameCtrl.text = _outletName;
-
-      // branchNameCtrl.text = _branchId;
-      // outletNameCtrl.text = _outletId;
     });
   }
 
   void onSaveBooking() {
-//    var dateAndTime = "${dateFormatConvert.format(_dateTime).toString()} ${timeOfDay.format(context)}";
-//    var parseDate = DateTime.parse(dateAndTime);
-//    log.warning(parseDate);
-//
-//    setState(() {
-//      convertDate = parseDate.toUtc().millisecondsSinceEpoch;
-//      print(convertDate);
-//    });
+    var dateAndTime = "${dateFormatConvert.format(_dateTime).toString()} ${timeOfDay.hour}:${timeOfDay.minute}:00";
+    DateTime parseDate = DateTime.parse(dateAndTime);
+    log.info(parseDate.millisecondsSinceEpoch);
+    log.info(dateAndTime);
+    log.info(DateTime.now());
     
     if (_formKey.currentState.validate()) {
       // ignore: close_sinks
@@ -174,11 +162,8 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
         outletCode: _outletId,
         notes: notesCtrl.text,
         carId: selectedCarId,
-        schedule: DateTime.now().millisecondsSinceEpoch,
+        schedule: parseDate.millisecondsSinceEpoch,
       )));
-
-      print(
-          "data booking | ${customerNameCtrl.text} | ${customerContactCtrl.text} | $_branchId | $_outletId | ${notesCtrl.text} | ${itemCodeCtrl.text} | $convertDate | $selectedCarId");
     } else {
       log.warning("Please Complete Form!");
     }
@@ -218,6 +203,10 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           listener: (context, state) {
             if (state is BookingDriveLoading) {
               onLoading(context);
+            }
+
+            if (state is BookingDriveDisposeLoading) {
+              Navigator.of(context).pop();
             }
 
             if (state is CarListSuccess) {
@@ -275,7 +264,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
-                    "Customer Name (*)",
+                    "Nama Customer (*)",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
@@ -286,7 +275,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
-                    "Customer Contact (*)",
+                    "Nomer Telepon Customer (*)",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
@@ -297,7 +286,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
-                    "Branch (*)",
+                    "Nama Branch (*)",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
@@ -308,7 +297,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
-                    "Outlet (*)",
+                    "Nama Outlet (*)",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
@@ -319,7 +308,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
-                    "Vehicle Name (*)",
+                    "Kendaraan (*)",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
@@ -330,7 +319,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
-                    "Date (*)",
+                    "Tanggal Booking (*)",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
@@ -341,7 +330,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
-                    "Time (*)",
+                    "Waktu Booking (*)",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
@@ -415,13 +404,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(bottom: 17),
                   border: InputBorder.none,
-                  // contentPadding: EdgeInsets.only(bottom: 18),
                   prefixIcon: Icon(
                     Icons.perm_identity,
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: "Input Name",
+                  hintText: "Masukan Nama Customer",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -430,7 +418,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 ),
                 focusNode: costumerNameFocus,
                 onEditingComplete: () {
-                  FocusScope.of(context).requestFocus(costumerNameFocus);
+                  FocusScope.of(context).requestFocus(phoneNumberFocus);
                 },
                 controller: customerNameCtrl,
               ),
@@ -460,28 +448,31 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           ],
         ),
         child: Center(
-          child: TextFormField(
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(bottom: 17),
-              border: InputBorder.none,
-              prefixIcon: Icon(
-                Icons.phone,
-                color: Color(0xFF6991C7),
-                size: 24.0,
-              ),
-              hintText: "Input Phone Number",
-              hintStyle: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.w400,
-                fontSize: 13,
+          child: Padding(
+            padding: EdgeInsets.only(left: 5, right: 2),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(bottom: 17),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(
+                    Icons.phone,
+                    color: Color(0xFF6991C7),
+                    size: 24.0,
+                  ),
+                  hintText: "Masukan Nomer Telepon",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+                focusNode: phoneNumberFocus,
+                controller: customerContactCtrl,
               ),
             ),
-            keyboardType: TextInputType.number,
-            focusNode: phoneNumberFocus,
-            onEditingComplete: () {
-              FocusScope.of(context).requestFocus(phoneNumberFocus);
-            },
-            controller: customerContactCtrl,
           ),
         ),
       ),
@@ -507,38 +498,34 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           ],
         ),
         child: Center(
-          child: Theme(
-            data: ThemeData(hintColor: Colors.transparent),
-            child: GestureDetector(
-              onTap: () {
-                //list dealer from api here
-                print('Open dialog chose dealer from api');
-              },
-              child: AbsorbPointer(
-                child: TextFormField(
-                  readOnly: true,
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom: 17),
-                    border: InputBorder.none,
-                    enabled: false,
-                    prefixIcon: Icon(
-                      Icons.local_convenience_store,
-                      color: Color(0xFF6991C7),
-                      size: 24.0,
+          child: Padding(
+            padding: EdgeInsets.only(left: 5, right: 2),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 17),
+                      border: InputBorder.none,
+                      enabled: false,
+                      prefixIcon: Icon(
+                        Icons.local_convenience_store,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Dealer",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
                     ),
-                    suffixIcon: Icon(
-                      Icons.arrow_drop_down,
-                      color: Color(0xFF6991C7),
-                      size: 24.0,
-                    ),
-                    hintText: "Select Dealer",
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                    ),
+                    controller: branchNameCtrl,
                   ),
-                  controller: branchNameCtrl,
                 ),
               ),
             ),
@@ -567,38 +554,33 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           ],
         ),
         child: Center(
-          child: Theme(
-            data: ThemeData(hintColor: Colors.transparent),
-            child: GestureDetector(
-              onTap: () {
-                //list dealer from api here
-                print('Open dialog chose Outlet from api');
-              },
-              child: AbsorbPointer(
-                child: TextFormField(
-                  readOnly: true,
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom: 17),
-                    border: InputBorder.none,
-                    enabled: false,
-                    prefixIcon: Icon(
-                      Icons.location_on,
-                      color: Color(0xFF6991C7),
-                      size: 24.0,
+          child: Padding(
+            padding: EdgeInsets.only(left: 5, right: 2),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {},
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 17),
+                      border: InputBorder.none,
+                      enabled: false,
+                      prefixIcon: Icon(
+                        Icons.location_on,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Select Outlet",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
                     ),
-                    suffixIcon: Icon(
-                      Icons.arrow_drop_down,
-                      color: Color(0xFF6991C7),
-                      size: 24.0,
-                    ),
-                    hintText: "Select Outlet",
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                    ),
+                    controller: outletNameCtrl,
                   ),
-                  controller: outletNameCtrl,
                 ),
               ),
             ),
@@ -647,7 +629,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Vehicle Name",
+                      hintText: "Pilih Nama Kendaraan",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -684,33 +666,36 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           ],
         ),
         child: Center(
-          child: Theme(
-            data: ThemeData(hintColor: Colors.transparent),
-            child: GestureDetector(
-              onTap: () {
-                _selectedDate(context);
-              },
-              child: AbsorbPointer(
-                child: TextFormField(
-                  readOnly: true,
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom: 17),
-                    border: InputBorder.none,
-                    enabled: false,
-                    prefixIcon: Icon(
-                      Icons.date_range,
-                      color: Color(0xFF6991C7),
-                      size: 24.0,
+          child: Padding(
+            padding: EdgeInsets.only(left: 5, right: 2),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _selectedDate(context);
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 17),
+                      border: InputBorder.none,
+                      enabled: false,
+                      prefixIcon: Icon(
+                        Icons.date_range,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Pilih Tanggal",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
                     ),
-                    hintText: "Select Date",
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                    ),
+                    controller: dateSelectedCtrl,
+                    focusNode: dateSelectedFocus,
                   ),
-                  controller: dateSelectedCtrl,
-                  focusNode: dateSelectedFocus,
                 ),
               ),
             ),
@@ -739,33 +724,36 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
           ],
         ),
         child: Center(
-          child: Theme(
-            data: ThemeData(hintColor: Colors.transparent),
-            child: GestureDetector(
-              onTap: () {
-                _selectedTime(context);
-              },
-              child: AbsorbPointer(
-                child: TextFormField(
-                  readOnly: true,
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom: 17),
-                    border: InputBorder.none,
-                    enabled: false,
-                    prefixIcon: Icon(
-                      Icons.access_time,
-                      color: Color(0xFF6991C7),
-                      size: 24.0,
+          child: Padding(
+            padding: EdgeInsets.only(left: 5, right: 2),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _selectedTime(context);
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 17),
+                      border: InputBorder.none,
+                      enabled: false,
+                      prefixIcon: Icon(
+                        Icons.access_time,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Pilih Waktu",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
                     ),
-                    hintText: "Select Time",
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                    ),
+                    controller: timeSelectedCtrl,
+                    focusNode: timeSelectedFocus,
                   ),
-                  controller: timeSelectedCtrl,
-                  focusNode: timeSelectedFocus,
                 ),
               ),
             ),
@@ -798,6 +786,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintStyle: TextStyle(
