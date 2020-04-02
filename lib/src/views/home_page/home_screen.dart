@@ -320,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Promotions",
+                      "Banner Promotion",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,

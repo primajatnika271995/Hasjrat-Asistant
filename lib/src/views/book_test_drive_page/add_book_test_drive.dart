@@ -205,9 +205,9 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
               onLoading(context);
             }
 
-//            if (state is BookingDriveDisposeLoading) {
-//              Navigator.of(context).pop();
-//            }
+            if (state is BookingDriveDisposeLoading) {
+              Navigator.of(context).pop();
+            }
 
             if (state is CarListSuccess) {
               state.value.forEach((f) {
@@ -226,6 +226,11 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                   type: AlertType.success,
                   title: 'Success',
                   desc: "Created Booking Test Drive!",
+                  style: AlertStyle(
+                    animationDuration: Duration(milliseconds: 500),
+                    overlayColor: Colors.black54,
+                    animationType: AnimationType.grow,
+                  ),
                   buttons: [
                     DialogButton(
                       child: Text(
@@ -245,6 +250,11 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                   type: AlertType.error,
                   title: 'Error',
                   desc: "Failed to Create Booking Test Drive!",
+                  style: AlertStyle(
+                    animationDuration: Duration(milliseconds: 500),
+                    overlayColor: Colors.black54,
+                    animationType: AnimationType.grow,
+                  ),
                   buttons: [
                     DialogButton(
                       child: Text(

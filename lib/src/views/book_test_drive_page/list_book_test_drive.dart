@@ -25,6 +25,7 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
 
   var dateSelectedCtrl = new TextEditingController();
   final dateFormat = DateFormat("yyyy-MM-dd");
+  final dateFormater = DateFormat("yyyy/MM/dd");
 
   void _onAddBookTestDrive() {
     Navigator.of(context).push(
@@ -56,7 +57,7 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
     if (picked != null) {
       log.info(picked);
       dateSelectedCtrl.value =
-          TextEditingValue(text: '${dateFormat.format(picked[0]).toString()} - ${dateFormat.format(picked[1]).toString()}');
+          TextEditingValue(text: '${dateFormater.format(picked[0]).toString()} s.d ${dateFormater.format(picked[1]).toString()}');
 
       // ignore: close_sinks
       final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
@@ -106,6 +107,61 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
             letterSpacing: 0.5,
           ),
         ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(45),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Container(
+              height: 30.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 15.0,
+                    spreadRadius: 0.0,
+                  )
+                ],
+              ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+                  child: Theme(
+                    data: ThemeData(hintColor: Colors.transparent),
+                    child: GestureDetector(
+                      onTap: () {
+                        _selectedDate(context);
+                      },
+                      child: AbsorbPointer(
+                        child: TextFormField(
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            enabled: false,
+                            contentPadding: EdgeInsets.only(bottom: 17),
+                            prefixIcon: Icon(
+                              Icons.date_range,
+                              color: Color(0xFF6991C7),
+                              size: 24.0,
+                            ),
+                            hintText: "Search Date",
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13,
+                            ),
+                          ),
+                          controller: dateSelectedCtrl,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: BlocListener<BookingDriveBloc, BookingDriveState>(
@@ -121,58 +177,6 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                child: Container(
-                  height: 30.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 15.0,
-                        spreadRadius: 0.0,
-                      )
-                    ],
-                  ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 5.0, right: 2.0),
-                      child: Theme(
-                        data: ThemeData(hintColor: Colors.transparent),
-                        child: GestureDetector(
-                          onTap: () {
-                            _selectedDate(context);
-                          },
-                          child: AbsorbPointer(
-                            child: TextFormField(
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                enabled: false,
-                                contentPadding: EdgeInsets.only(bottom: 18),
-                                prefixIcon: Icon(
-                                  Icons.date_range,
-                                  color: Color(0xFF6991C7),
-                                  size: 24.0,
-                                ),
-                                hintText: "Search Date",
-                                hintStyle: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 13,
-                                ),
-                              ),
-                              controller: dateSelectedCtrl,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
               BlocBuilder<BookingDriveBloc, BookingDriveState>(
                 builder: (context, state) {
                   if (state is ListBookingDriveFailed) {
@@ -260,38 +264,40 @@ class SlidableBookTestDriveView extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        '${value.customerName}',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          '${value.car.itemModel}',
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '${value.customerName.toUpperCase()}',
                           style: TextStyle(
                             fontSize: 13,
-                            letterSpacing: 0.7,
                             fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
                           ),
                         ),
-                      ),
-                      Text(
-                        '${value.customerPhone}',
-                        style: TextStyle(
-                          fontSize: 13,
-                          letterSpacing: 0.7,
+                        Text(
+                          '${value.customerPhone}',
+                          style: TextStyle(
+                            fontSize: 11,
+                            letterSpacing: 0.7,
+                          ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 5),
+                          child: Text(
+                            '${value.car.itemModel}',
+                            style: TextStyle(
+                              fontSize: 13,
+                              letterSpacing: 0.7,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
