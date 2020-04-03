@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/catalog_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 
 class CatalogReviewView extends StatefulWidget {
+  final CatalogModel data;
+
+  const CatalogReviewView({Key key, this.data}) : super(key: key);
   @override
-  _CatalogReviewViewState createState() => _CatalogReviewViewState();
+  _CatalogReviewViewState createState() => _CatalogReviewViewState(this.data);
 }
 
 class _CatalogReviewViewState extends State<CatalogReviewView> {
+  final CatalogModel data;
+
+  _CatalogReviewViewState(this.data);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +35,7 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
         Padding(
           padding: const EdgeInsets.only(top: 20, left: 15),
           child: Text(
-            "2019 Toyota Camry Review",
+            "${data.itemModel} ${data.itemType}",
             style: TextStyle(
               fontWeight: FontWeight.w700,
               letterSpacing: 1.0,
@@ -39,10 +46,7 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
         Padding(
           padding: const EdgeInsets.only(left: 15, top: 5, right: 15),
           child: Text(
-            "What Is the 2019 Toyota Camry? The five-seat Toyota Camry is a "
-            "best-selling mid-size sedan with a standard 203-horsepower, "
-            "2.5-liter four-cylinder engine and an available 301-hp, 3.5-liter V-6. "
-            "Both engines work with an eight-speed automatic transmission.",
+           "${data.descriptionReview}",
             style: TextStyle(
               fontSize: 13,
               letterSpacing: 0.7,

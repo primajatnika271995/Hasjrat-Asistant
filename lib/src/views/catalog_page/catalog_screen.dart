@@ -150,7 +150,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                         color: Color(0xffe5e6ea),
                                       ),
                                       child: Image.network(
-                                          "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png"),
+                                          "https://www.toyota.astra.co.id/files/thumb/92b0e7104a1238b/872/617/fit"),
                                     ),
                                   ),
                                 ),

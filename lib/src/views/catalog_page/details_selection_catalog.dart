@@ -115,7 +115,9 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           },
           body: TabBarView(
             children: <Widget>[
-              CatalogReviewView(),
+              CatalogReviewView(
+                data: data,
+              ),
               CatalogGalleryView(),
               CatalogSpecificationsView(),
               CatalogAccessoriesView(),
@@ -224,7 +226,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                     ),
                   ),
                   child: Image.network(
-                      "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png"),
+                      "https://www.toyota.astra.co.id/files/thumb/92b0e7104a1238b/872/617/fit"),
                 ),
               ),
             ),
@@ -246,7 +248,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                           ),
                         ),
                         Text(
-                          "Rp 800.000.000",
+                          "Rp 143.800.000",
                           style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 1.0,
