@@ -352,6 +352,11 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                   type: AlertType.success,
                   title: 'Success',
                   desc: "Created Prospect!",
+                  style: AlertStyle(
+                    animationDuration: Duration(milliseconds: 500),
+                    overlayColor: Colors.black54,
+                    animationType: AnimationType.grow,
+                  ),
                   buttons: [
                     DialogButton(
                       child: Text(
@@ -372,6 +377,11 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                   type: AlertType.error,
                   title: 'Error',
                   desc: "Failed to Create Prospect!",
+                  style: AlertStyle(
+                    animationDuration: Duration(milliseconds: 500),
+                    overlayColor: Colors.black54,
+                    animationType: AnimationType.grow,
+                  ),
                   buttons: [
                     DialogButton(
                       child: Text(

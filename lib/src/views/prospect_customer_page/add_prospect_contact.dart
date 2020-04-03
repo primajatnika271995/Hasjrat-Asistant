@@ -475,6 +475,11 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                   type: AlertType.success,
                   title: 'Success',
                   desc: "Created Lead!",
+                  style: AlertStyle(
+                    animationDuration: Duration(milliseconds: 500),
+                    overlayColor: Colors.black54,
+                    animationType: AnimationType.grow,
+                  ),
                   buttons: [
                     DialogButton(
                       child: Text(
@@ -498,6 +503,11 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 type: AlertType.error,
                 title: 'Error',
                 desc: "Failed to Create Lead!",
+                style: AlertStyle(
+                  animationDuration: Duration(milliseconds: 500),
+                  overlayColor: Colors.black54,
+                  animationType: AnimationType.grow,
+                ),
                 buttons: [
                   DialogButton(
                     child: Text(

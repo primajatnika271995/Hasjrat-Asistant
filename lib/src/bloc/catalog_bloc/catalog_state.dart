@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:salles_tools/src/models/banner_model.dart';
 import 'package:salles_tools/src/models/catalog_model.dart';
 
 class CatalogState extends Equatable {
@@ -24,4 +25,23 @@ class CatalogListSuccess extends CatalogState {
   @override
   // TODO: implement props
   List<Object> get props => [_data];
+}
+
+class BannerPromotionFailed extends CatalogState {
+
+}
+
+class BannerPromotionError extends CatalogState {
+
+}
+
+class BannerPromotionSuccess extends CatalogState {
+  final _data;
+
+  BannerPromotionSuccess(this._data);
+  BannerModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [this._data];
 }
