@@ -4,6 +4,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
+import 'package:salles_tools/src/models/catalog_model.dart';
 import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
@@ -18,14 +19,18 @@ import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
 
 class DetailsCatalogView extends StatefulWidget {
   final String heroName;
-  DetailsCatalogView({this.heroName});
+  final CatalogModel data;
+  DetailsCatalogView({this.heroName, this.data});
 
   @override
-  _DetailsCatalogViewState createState() => _DetailsCatalogViewState();
+  _DetailsCatalogViewState createState() => _DetailsCatalogViewState(this.data);
 }
 
 class _DetailsCatalogViewState extends State<DetailsCatalogView> {
+  final CatalogModel data;
   int _tabLength = 4;
+
+  _DetailsCatalogViewState(this.data);
 
   void _onBookTestDrive() {
     Navigator.of(context).push(
@@ -35,8 +40,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           child: BookTestDriveAddView(),
         ),
         transitionDuration: Duration(milliseconds: 150),
-        transitionsBuilder:
-            (_, Animation<double> animation, __, Widget child) {
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
             opacity: animation.value,
             child: child,
@@ -54,8 +58,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           child: CalculatorScreen(),
         ),
         transitionDuration: Duration(milliseconds: 150),
-        transitionsBuilder:
-            (_, Animation<double> animation, __, Widget child) {
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
             opacity: animation.value,
             child: child,
@@ -70,8 +73,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => PriceListCatalogView(),
         transitionDuration: Duration(milliseconds: 150),
-        transitionsBuilder:
-            (_, Animation<double> animation, __, Widget child) {
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
             opacity: animation.value,
             child: child,
@@ -92,7 +94,8 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           elevation: 1,
           titleSpacing: 0,
           title: Text(
-            "Toyota Camry",
+            "${data.itemClass}",
+            // "test data",
             style: TextStyle(
               color: Colors.black,
               letterSpacing: 0.5,
@@ -105,6 +108,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
             return <Widget>[
               MainViewDetailsVehicle(
                 heroName: widget.heroName,
+                dataCatalog: data,
               ),
               TabViewDetailsVehicle(),
             ];
@@ -149,7 +153,8 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
                   onPressed: () {
                     _onCalculate();
                   },
-                  child: Icon(FontAwesome.calculator, color: Colors.white, size: 30),
+                  child: Icon(FontAwesome.calculator,
+                      color: Colors.white, size: 30),
                   color: HexColor('#212120'),
                 ),
               ),
@@ -162,7 +167,8 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
                   onPressed: () {
                     _onCheckPriceList();
                   },
-                  child: Icon(FontAwesome5.money_bill_alt, color: Colors.white, size: 30),
+                  child: Icon(FontAwesome5.money_bill_alt,
+                      color: Colors.white, size: 30),
                   color: HexColor('#212120'),
                 ),
               ),
@@ -175,14 +181,18 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
 }
 
 class MainViewDetailsVehicle extends StatefulWidget {
+  final CatalogModel dataCatalog;
   final String heroName;
-  MainViewDetailsVehicle({this.heroName});
+  MainViewDetailsVehicle({this.heroName, this.dataCatalog});
 
   @override
-  _MainViewDetailsVehicleState createState() => _MainViewDetailsVehicleState();
+  _MainViewDetailsVehicleState createState() => _MainViewDetailsVehicleState(this.dataCatalog);
 }
 
 class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
+  final CatalogModel data;
+
+  _MainViewDetailsVehicleState(this.data);
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -228,7 +238,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Camry LE Auto",
+                          "${data.itemModel} ${data.itemType}",
                           style: TextStyle(
                             fontSize: 16,
                             letterSpacing: 1.0,
@@ -401,7 +411,6 @@ class _TabViewDetailsVehicleState extends State<TabViewDetailsVehicle> {
     );
   }
 }
-
 
 class VehicleType {
   String type;
