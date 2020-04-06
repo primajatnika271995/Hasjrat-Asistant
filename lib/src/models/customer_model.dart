@@ -53,7 +53,7 @@ class Datum {
   int salesCode;
   dynamic officeBranchCode;
   String officeCode;
-  String pricelistCode;
+  dynamic pricelistCode;
   String gender;
   String phone1;
   String phone2;
@@ -77,7 +77,7 @@ class Datum {
   String companyName;
   String frozenfor;
   String validfor;
-  List<dynamic> vins;
+  List<Vin> vins;
 
   Datum({
     this.cardCode,
@@ -124,7 +124,7 @@ class Datum {
     salesCode: json["sales_code"] == null ? null : json["sales_code"],
     officeBranchCode: json["office_branch_code"],
     officeCode: json["office_code"] == null ? null : json["office_code"],
-    pricelistCode: json["pricelist_code"] == null ? null : json["pricelist_code"],
+    pricelistCode: json["pricelist_code"],
     gender: json["gender"] == null ? null : json["gender"],
     phone1: json["phone1"] == null ? null : json["phone1"],
     phone2: json["phone2"] == null ? null : json["phone2"],
@@ -148,7 +148,7 @@ class Datum {
     companyName: json["company_name"] == null ? null : json["company_name"],
     frozenfor: json["frozenfor"] == null ? null : json["frozenfor"],
     validfor: json["validfor"] == null ? null : json["validfor"],
-    vins: json["vins"] == null ? null : List<dynamic>.from(json["vins"].map((x) => x)),
+    vins: json["vins"] == null ? null : List<Vin>.from(json["vins"].map((x) => Vin.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -160,7 +160,7 @@ class Datum {
     "sales_code": salesCode == null ? null : salesCode,
     "office_branch_code": officeBranchCode,
     "office_code": officeCode == null ? null : officeCode,
-    "pricelist_code": pricelistCode == null ? null : pricelistCode,
+    "pricelist_code": pricelistCode,
     "gender": gender == null ? null : gender,
     "phone1": phone1 == null ? null : phone1,
     "phone2": phone2 == null ? null : phone2,
@@ -184,6 +184,82 @@ class Datum {
     "company_name": companyName == null ? null : companyName,
     "frozenfor": frozenfor == null ? null : frozenfor,
     "validfor": validfor == null ? null : validfor,
-    "vins": vins == null ? null : List<dynamic>.from(vins.map((x) => x)),
+    "vins": vins == null ? null : List<dynamic>.from(vins.map((x) => x.toJson())),
+  };
+}
+
+class Vin {
+  String itemCode;
+  String itemName;
+  String nomorRangka;
+  String nomorMesin;
+  String whsCode;
+  int quantity;
+  String nomorRegister;
+  String nomorKunci;
+  dynamic nomorRrn;
+  dynamic kodeTahun;
+  dynamic tahun;
+  dynamic kodeWarna;
+  dynamic namaWarna;
+  String officeCode;
+  dynamic whsName;
+  String officeName;
+
+  Vin({
+    this.itemCode,
+    this.itemName,
+    this.nomorRangka,
+    this.nomorMesin,
+    this.whsCode,
+    this.quantity,
+    this.nomorRegister,
+    this.nomorKunci,
+    this.nomorRrn,
+    this.kodeTahun,
+    this.tahun,
+    this.kodeWarna,
+    this.namaWarna,
+    this.officeCode,
+    this.whsName,
+    this.officeName,
+  });
+
+  factory Vin.fromJson(Map<String, dynamic> json) => Vin(
+    itemCode: json["item_code"] == null ? null : json["item_code"],
+    itemName: json["item_name"] == null ? null : json["item_name"],
+    nomorRangka: json["nomor_rangka"] == null ? null : json["nomor_rangka"],
+    nomorMesin: json["nomor_mesin"] == null ? null : json["nomor_mesin"],
+    whsCode: json["whs_code"] == null ? null : json["whs_code"],
+    quantity: json["quantity"] == null ? null : json["quantity"],
+    nomorRegister: json["nomor_register"] == null ? null : json["nomor_register"],
+    nomorKunci: json["nomor_kunci"] == null ? null : json["nomor_kunci"],
+    nomorRrn: json["nomor_rrn"],
+    kodeTahun: json["kode_tahun"],
+    tahun: json["tahun"],
+    kodeWarna: json["kode_warna"],
+    namaWarna: json["nama_warna"],
+    officeCode: json["office_code"] == null ? null : json["office_code"],
+    whsName: json["whs_name"],
+    officeName: json["office_name"] == null ? null : json["office_name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "item_code": itemCode == null ? null : itemCode,
+    "item_name": itemName == null ? null : itemName,
+    "nomor_rangka": nomorRangka == null ? null : nomorRangka,
+    "nomor_mesin": nomorMesin == null ? null : nomorMesin,
+    "whs_code": whsCode == null ? null : whsCode,
+    "quantity": quantity == null ? null : quantity,
+    "nomor_register": nomorRegister == null ? null : nomorRegister,
+    "nomor_kunci": nomorKunci == null ? null : nomorKunci,
+    "nomor_rrn": nomorRrn,
+    "kode_tahun": kodeTahun,
+    "tahun": tahun,
+    "kode_warna": kodeWarna,
+    "nama_warna": namaWarna,
+    "office_code": officeCode == null ? null : officeCode,
+    "whs_name": whsName,
+    "office_name": officeName == null ? null : officeName,
   };
 }

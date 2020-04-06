@@ -25,6 +25,24 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
 
   @override
   Stream<CustomerState> mapEventToState(CustomerEvent event) async* {
+    if (event is FetchCustomerBirthDay) {
+      yield CustomerLoading();
+
+      try {
+        CustomerModel value = await _customerService.customerDMS(event.value);
+
+        if (value.data.isEmpty || value.data == null) {
+          yield CustomerFailed();
+        } else {
+          yield CustomerDisposeLoading();
+          yield CustomerSuccess(value);
+        }
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
+        yield CustomerError();
+      }
+    }
+
     if (event is FetchCustomer) {
       yield CustomerLoading();
       var cache = await SharedPreferencesHelper.getListCustomer();

@@ -7,6 +7,16 @@ class CustomerEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class FetchCustomerBirthDay extends CustomerEvent {
+  final CustomerPost value;
+
+  FetchCustomerBirthDay(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
 class FetchCustomer extends CustomerEvent {
   final CustomerPost value;
 

@@ -31,20 +31,15 @@ class _VehicleCustomerDetailsListViewState
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  right: BorderSide(color: Colors.grey),
-                  left: BorderSide(color: Colors.grey),
-                  top: BorderSide(color: Colors.grey),
-                  bottom: BorderSide(color: Colors.grey),
-                ),
-                borderRadius: BorderRadius.circular(5),
+            child: Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
+                    padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
                     child: Row(
                       children: <Widget>[
                         Padding(
@@ -54,27 +49,32 @@ class _VehicleCustomerDetailsListViewState
                             height: 70,
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              '${widget.datum.vins[index].itemName}',
-                              style: TextStyle(
-                                letterSpacing: 1.0,
-                                fontWeight: FontWeight.w700,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                '${widget.datum.vins[index].itemName}',
+                                style: TextStyle(
+                                  letterSpacing: 1.0,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13,
+                                ),
                               ),
-                            ),
-                            Text(
-                              '${widget.datum.vins[index].whsCode}',
-                              style: TextStyle(
-                                letterSpacing: 1.0,
+                              Text(
+                                '${widget.datum.vins[index].whsCode}',
+                                style: TextStyle(
+                                  letterSpacing: 1.0,
+                                  fontSize: 12,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
+                  Divider(),
                   vehicleColor(widget.datum.vins[index].namaWarna),
                   vehicleYear(widget.datum.vins[index].tahun),
                   vehicleChasis(widget.datum.vins[index].nomorRangka),
@@ -113,7 +113,7 @@ class _VehicleCustomerDetailsListViewState
           Expanded(
             flex: 6,
             child: Text(
-              "$data",
+              data == null ? "-" : data,
               style: TextStyle(
                 fontSize: 14,
                 letterSpacing: 1.0,
@@ -145,7 +145,7 @@ class _VehicleCustomerDetailsListViewState
           Expanded(
             flex: 6,
             child: Text(
-              "$data",
+              data == null ? "-" : data,
               style: TextStyle(
                 fontSize: 14,
                 letterSpacing: 1.0,
@@ -230,7 +230,7 @@ class _VehicleCustomerDetailsListViewState
           Expanded(
             flex: 4,
             child: Text(
-              "Nomor Regitrasi",
+              "No. Registrasi",
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
