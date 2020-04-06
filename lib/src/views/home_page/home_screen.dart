@@ -363,6 +363,13 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Stack(
           children: <Widget>[
             Positioned(
+              top: paddingTop(context),
+              child: Image.asset(
+                "assets/icons/new_header_icon.jpg",
+                height: 210,
+              ),
+            ),
+            Positioned(
               top: paddingTop(context) + 10,
               left: 20,
               child: Image.asset(
@@ -378,60 +385,38 @@ class _HomeScreenState extends State<HomeScreen> {
                 "Hasjrat Abadi $_branchName",
                 style: TextStyle(
                   fontSize: 11,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ),
             Positioned(
-              bottom: 0,
-              left: 0,
-              child: Container(
-                height: 75,
-                width: 75,
-                decoration: BoxDecoration(
-                  color: HexColor('#C61818'),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(100),
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: paddingTop(context) + 70, left: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 80),
-                          child: Text(
-                            "Selamat Datang",
-                            style: AppTheme.selamatDatangStyle,
+              right: 30,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: paddingTop(context) + 70),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(top: 80),
+                            child: Text(
+                              "Selamat Datang",
+                              style: AppTheme.selamatDatangStyle,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Text(
+                          Text(
                             "$_salesName",
                             style: AppTheme.namaSalesStyle,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: paddingTop(context),
-              right: 0,
-              child: Image.asset(
-                "assets/icons/new_header_icon.png",
-                height: 170,
+                  ],
+                ),
               ),
             ),
           ],

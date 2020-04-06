@@ -14,14 +14,14 @@ class AppTheme {
 
   static const TextStyle selamatDatangStyle = TextStyle(
     fontFamily: fontName,
-    color: Colors.black,
+    color: Colors.white,
     fontSize: 16,
     letterSpacing: 1.5,
   );
 
   static const TextStyle namaSalesStyle = TextStyle(
     fontFamily: fontName,
-    color: Colors.black,
+    color: Colors.white,
     fontWeight: FontWeight.w700,
     fontSize: 16,
     letterSpacing: 1.5,
