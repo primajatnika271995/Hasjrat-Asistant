@@ -56,14 +56,14 @@ class _HomeScreenState extends State<HomeScreen> {
     "Catalog",
     "Calculator",
     "Reminder",
-    "Book Service",
-    "Book Test Drive",
+    "Book\nService",
+    "Book\nTest Drive",
     "More",
   ];
 
   List<String> _moreMenuName = [
-    "Knowledge Base",
-    "Activity Report",
+    "Knowledge\nBase",
+    "Activity\nReport",
     "Price List",
     "Promotion",
   ];
