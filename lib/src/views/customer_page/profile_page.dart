@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
 import 'package:salles_tools/src/models/customer_model.dart';
+import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_service_page/add_book_service.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
@@ -15,11 +19,16 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final Datum datum;
   _ProfileScreenState(this.datum);
+  
+  var formatDob = DateFormat("yyyy-MM-dd");
 
   void _onBookTestDrive() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => BookTestDriveAddView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => BookingDriveBloc(BookingDriveService()),
+          child: BookTestDriveAddView(),
+        ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -161,7 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             flex: 4,
             child: Text(
-              "Jenis Kelamin",
+              "Jenis\nKelamin",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -172,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             flex: 6,
             child: Text(
-              "${datum.gender}",
+              datum.gender == "L" ? "LAKI-LAKI" : "PEREMPUAN",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -300,7 +309,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             flex: 6,
             child: Text(
-              "${datum.location}",
+              datum.location == "DK" ? "DALAM KOTA" : "LUAR KOTA",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -332,7 +341,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             flex: 6,
             child: Text(
-              "${datum.dob}",
+              "${formatDob.format(datum.dob)}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
