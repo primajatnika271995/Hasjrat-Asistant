@@ -14,6 +14,9 @@ class AuthenticationModel {
   String refreshToken;
   int expiresIn;
   String scope;
+  String branchCode;
+  String employeeId;
+  String outletCode;
   String jti;
 
   AuthenticationModel({
@@ -22,6 +25,9 @@ class AuthenticationModel {
     this.refreshToken,
     this.expiresIn,
     this.scope,
+    this.branchCode,
+    this.employeeId,
+    this.outletCode,
     this.jti,
   });
 
@@ -31,6 +37,9 @@ class AuthenticationModel {
     refreshToken: json["refresh_token"] == null ? null : json["refresh_token"],
     expiresIn: json["expires_in"] == null ? null : json["expires_in"],
     scope: json["scope"] == null ? null : json["scope"],
+    branchCode: json["branchCode"] == null ? null : json["branchCode"],
+    employeeId: json["employeeId"] == null ? null : json["employeeId"],
+    outletCode: json["outletCode"] == null ? null : json["outletCode"],
     jti: json["jti"] == null ? null : json["jti"],
   );
 
@@ -40,6 +49,9 @@ class AuthenticationModel {
     "refresh_token": refreshToken == null ? null : refreshToken,
     "expires_in": expiresIn == null ? null : expiresIn,
     "scope": scope == null ? null : scope,
+    "branchCode": branchCode == null ? null : branchCode,
+    "employeeId": employeeId == null ? null : employeeId,
+    "outletCode": outletCode == null ? null : outletCode,
     "jti": jti == null ? null : jti,
   };
 }

@@ -1,9 +1,9 @@
 class UriApi {
   UriApi._();
-  // static const String baseApi = "http://tabeldata.ip-dynamic.com/hasjrat-sales-tools";
+   static const String baseApi = "http://tabeldata.ip-dynamic.com/hasjrat-sales-tools";
 
   // Azure IP
- static const String baseApi = "http://cvktoyota.southeastasia.cloudapp.azure.com:8090/hasjrat-sales-tools";
+// static const String baseApi = "http://cvktoyota.southeastasia.cloudapp.azure.com:8090/hasjrat-sales-tools";
 
   static const String loginUri = "/sales-tools-auth-service/oauth/token";
 

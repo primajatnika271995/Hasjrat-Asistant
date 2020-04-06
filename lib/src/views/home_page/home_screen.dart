@@ -6,8 +6,6 @@ import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
 import 'package:salles_tools/src/bloc/knowledge_base_bloc/knowledge_base_bloc.dart';
-import 'package:salles_tools/src/bloc/lead_bloc/lead_bloc.dart';
-import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_bloc.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_event.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_state.dart';
@@ -21,7 +19,6 @@ import 'package:salles_tools/src/utils/app_theme.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
-import 'package:salles_tools/src/views/activity_report_page/add_activity_report.dart';
 import 'package:salles_tools/src/views/activity_report_page/list_activity_report.dart';
 import 'package:salles_tools/src/views/book_service_page/list_book_service.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/list_book_test_drive.dart';
@@ -33,7 +30,6 @@ import 'package:salles_tools/src/views/home_page/list_banner.dart';
 import 'package:salles_tools/src/views/knowledge_base_page/knowledge_base_screen.dart';
 import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
 import 'package:salles_tools/src/views/promotion_page/list_promotion.dart';
-import 'package:salles_tools/src/views/prospect_customer_page/list_prospect_contact.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/sales_input.dart';
 import 'package:salles_tools/src/views/reminder_page/list_reminder.dart';
 
@@ -50,6 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var _salesName;
   var _branchName;
+
+  var _outletId;
+  var _branchId;
 
   List<String> _menuName = [
     "Costumer",
@@ -199,17 +198,20 @@ class _HomeScreenState extends State<HomeScreen> {
   void _getPreferences() async {
     _salesName = await SharedPreferencesHelper.getSalesName();
     _branchName = await SharedPreferencesHelper.getSalesBrach();
+    _outletId = await SharedPreferencesHelper.getSalesOutletId();
+    _branchId = await SharedPreferencesHelper.getSalesBrachId();
     setState(() {});
+
+    // ignore: close_sinks
+    final salesMonthBloc = BlocProvider.of<SalesMonthBloc>(context);
+    salesMonthBloc.add(FetchSalesMonth(
+        SalesMonthPost(branchCode: _branchId, outletCode: _outletId)));
   }
 
   @override
   void initState() {
     // TODO: implement initState
     _getPreferences();
-    // ignore: close_sinks
-    final salesMonthBloc = BlocProvider.of<SalesMonthBloc>(context);
-    salesMonthBloc.add(FetchSalesMonth(
-        SalesMonthPost(branchCode: "10100", outletCode: "10104")));
     super.initState();
   }
 

@@ -44,7 +44,7 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
         pageBuilder: (_, __, ___) => BannerDetailsView(
           data: value,
         ),
-        transitionDuration: Duration(milliseconds: 150),
+        transitionDuration: Duration(milliseconds: 250),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
             opacity: animation.value,
