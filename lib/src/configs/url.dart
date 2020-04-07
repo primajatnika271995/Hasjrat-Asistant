@@ -15,6 +15,8 @@ class UriApi {
 
   static const String createActivityReportUri = "/sales-tools-employees-service/api/v2/activities/sales/new";
 
+  static const String uploadMediaFileUri = "/sales-tools-employees-service/api/v2/media/upload/image";
+
   static const String registerUri = "/sales-tools-auth-service/api/v2/account/sales/register";
 
   static const String checkCustomerDMSUri = "/sales-tools-dealer-service/api/v2/dms/customer/list";

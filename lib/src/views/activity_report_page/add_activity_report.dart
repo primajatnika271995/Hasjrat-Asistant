@@ -53,10 +53,6 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
 
     if (image1 == null) {
       image1 = croppedImg;
-      String dir = path.dirname(image1.path);
-      String rename = path.join(dir, 'file-upload-1.jpg');
-
-      image1.renameSync(rename);
       uploadImgList.add(SourceImg(title: image1.path.split("/").last, size: "0MB"));
       setState(() {});
     } else if (image2 == null) {
@@ -126,17 +122,13 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
   }
 
   void onCreateActivityReport() {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState.validate() || image1 == null) {
       DateTime parseDate = DateTime.parse(dateSelected.text);
 
       // ignore: close_sinks
       final activityReportBloc = BlocProvider.of<ActivityReportBloc>(context);
-      activityReportBloc.add(CreateActivityReport(ActivityReportPost(
-        title: titleCtrl.text,
-        alamat: alamatCtrl.text,
-        description: notesCtrl.text,
-        createdInMillisecond: parseDate.millisecondsSinceEpoch,
-      )));
+      activityReportBloc.add(UploadActivityReport(image1));
+
     } else {
       log.warning("Please Complete Form!");
     }
@@ -203,6 +195,44 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                 type: AlertType.error,
                 title: 'Error',
                 desc: "Failed to Create Activity Report!",
+                style: AlertStyle(
+                  animationDuration: Duration(milliseconds: 500),
+                  overlayColor: Colors.black54,
+                  animationType: AnimationType.grow,
+                ),
+                buttons: [
+                  DialogButton(
+                    child: Text(
+                      "OK",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                    color: HexColor("#C61818"),
+                  ),
+                ]
+            ).show();
+          }
+
+          if (state is UploadActivityReportSuccess) {
+            DateTime parseDate = DateTime.parse(dateSelected.text);
+            // ignore: close_sinks
+            final activityReportBloc = BlocProvider.of<ActivityReportBloc>(context);
+            activityReportBloc.add(CreateActivityReport(ActivityReportPost(
+                title: titleCtrl.text,
+                alamat: alamatCtrl.text,
+                description: notesCtrl.text,
+                createdInMillisecond: parseDate.millisecondsSinceEpoch,
+                idContent: state.value.id,
+            )));
+          }
+
+          if (state is UploadActivityReportError) {
+            log.warning("Fail Upload Media");
+            Alert(
+                context: context,
+                type: AlertType.error,
+                title: 'Error',
+                desc: "Failed to Upload Media Content!",
                 style: AlertStyle(
                   animationDuration: Duration(milliseconds: 500),
                   overlayColor: Colors.black54,
@@ -303,7 +333,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                   child: Container(
                     width: screenWidth(context),
                     child: RaisedButton(
-                      onPressed: () {
+                      onPressed: image1 == null ? null : () {
                         onCreateActivityReport();
                       },
                       child: Text(
@@ -329,10 +359,9 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
       child: Container(
-        height: 30.0,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -349,7 +378,6 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
               child: TextFormField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 17),
                   hintText: "Masukan Judul Aktivitas",
                   hintStyle: TextStyle(
                     color: Colors.grey,
@@ -358,6 +386,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                   ),
                 ),
                 controller: titleCtrl,
+                maxLines: null,
               ),
             ),
           ),

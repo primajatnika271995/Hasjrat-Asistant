@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:salles_tools/src/models/activity_report_model.dart';
+import 'package:salles_tools/src/utils/screen_size.dart';
 
 class ActivityReportDetailsView extends StatefulWidget {
   final Datum data;
@@ -33,6 +34,12 @@ class _ActivityReportDetailsViewState extends State<ActivityReportDetailsView> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          widget.data.files.isNotEmpty ? Image.network(
+            "${widget.data.files[0].url}",
+            height: 250,
+            fit: BoxFit.cover,
+            width: screenWidth(context),
+          ) : SizedBox(),
           Padding(
             padding: const EdgeInsets.only(top: 20, left: 20),
             child: Text(

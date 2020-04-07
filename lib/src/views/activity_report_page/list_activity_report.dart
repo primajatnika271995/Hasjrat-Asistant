@@ -81,6 +81,10 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
           ),
         ),
         iconTheme: IconThemeData(color: Colors.black),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(45),
+          child: searchContent(),
+        ),
       ),
       body: BlocListener<ActivityReportBloc, ActivityReportState>(
         listener: (context, state) {
@@ -97,16 +101,12 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              searchContent(),
               SizedBox(
                 height: 20,
               ),
               BlocBuilder<ActivityReportBloc, ActivityReportState>(
                 builder: (context, state) {
                   if (state is ActivityReportFailed) {
-                    Future.delayed(Duration(seconds: 3), () {
-                      Navigator.of(context, rootNavigator: true).pop();
-                    });
                     return Center(
                       child: Image.asset(
                         "assets/icons/empty_icon.png",
@@ -147,20 +147,27 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("${data.title.toUpperCase()}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
+                              Expanded(
+                                child: Text("${data.title.toUpperCase()}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                               Text("${dateFormat.format(DateTime.parse(data.createdDate))}",
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 10,
                                   letterSpacing: 0.6,
                                 ),
                               ),
                             ],
                           ),
-                          subtitle: Text(data.description.isEmpty ? "-" : "${data.description}"),
+                          subtitle: Text(data.description.isEmpty ? "-" : "${data.description}",
+                            style: TextStyle(
+                              fontSize: 11,
+                            ),
+                          ),
                         );
                       },
                       itemCount: state.value.data.length,
