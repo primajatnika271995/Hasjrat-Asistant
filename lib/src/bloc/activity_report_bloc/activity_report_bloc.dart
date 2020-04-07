@@ -34,6 +34,7 @@ class ActivityReportBloc extends Bloc<ActivityReportEvent, ActivityReportState> 
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");
+        yield ActivityReportDisposeLoading();
         yield ActivityReportError();
       }
     }

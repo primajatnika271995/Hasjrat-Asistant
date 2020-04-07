@@ -28,7 +28,7 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
           create: (context) => ActivityReportBloc(ActivityReportService()),
           child: AddActivityReportView(),
         ),
-        transitionDuration: Duration(milliseconds: 150),
+        transitionDuration: Duration(milliseconds: 450),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
             opacity: animation.value,
@@ -108,18 +108,18 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
                 builder: (context, state) {
                   if (state is ActivityReportFailed) {
                     return Center(
-                      child: Image.asset(
-                        "assets/icons/empty_icon.png",
-                        height: 100,
-                        color: HexColor('#C61818'),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 100),
+                        child: Column(
+                          children: <Widget>[
+                            Image.asset("assets/icons/no_data.png", height: 200),
+                          ],
+                        ),
                       ),
                     );
                   }
 
                   if (state is ActivityReportError) {
-                    Future.delayed(Duration(seconds: 3), () {
-                      Navigator.of(context, rootNavigator: true).pop();
-                    });
                     return Center(
                       child: Padding(
                         padding: EdgeInsets.only(top: 50),
