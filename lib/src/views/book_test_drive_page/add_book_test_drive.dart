@@ -146,12 +146,13 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   }
 
   void onSaveBooking() {
-    var dateAndTime = "${dateFormatConvert.format(_dateTime).toString()} ${timeOfDay.hour}:${timeOfDay.minute}:00";
+    var dateAndTime =
+        "${dateFormatConvert.format(_dateTime).toString()} ${timeOfDay.hour}:${timeOfDay.minute}:00";
     DateTime parseDate = DateTime.parse(dateAndTime);
     log.info(parseDate.millisecondsSinceEpoch);
     log.info(dateAndTime);
     log.info(DateTime.now());
-    
+
     if (_formKey.currentState.validate()) {
       // ignore: close_sinks
       final dmsBloc = BlocProvider.of<BookingDriveBloc>(context);
@@ -206,7 +207,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             }
 
             if (state is BookingDriveDisposeLoading) {
-              Navigator.of(context).pop();
+              Navigator.of(context, rootNavigator: false).pop();
             }
 
             if (state is CarListSuccess) {
@@ -513,8 +514,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: GestureDetector(
-                onTap: () {
-                },
+                onTap: () {},
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
