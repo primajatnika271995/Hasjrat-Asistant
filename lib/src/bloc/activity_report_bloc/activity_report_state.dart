@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/activity_report_model.dart';
+import 'package:salles_tools/src/models/upload_media_model.dart';
 
 class ActivityReportState extends Equatable {
   @override
@@ -35,4 +36,35 @@ class ActivityReportSuccess extends ActivityReportState {
 
   @override
   List<Object> get props => [_data];
+}
+
+class UploadActivityReportFailed extends ActivityReportState {
+
+}
+
+class UploadActivityReportError extends ActivityReportState {
+
+}
+
+class UploadActivityReportSuccess extends ActivityReportState {
+  final _data;
+
+  UploadActivityReportSuccess(this._data);
+  UploadMediaModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
+class CreateActivityReportSuccess extends ActivityReportState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class CreateActivityReportError extends ActivityReportState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
 }

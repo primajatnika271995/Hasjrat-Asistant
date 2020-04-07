@@ -1,9 +1,9 @@
 class UriApi {
   UriApi._();
-   static const String baseApi = "http://tabeldata.ip-dynamic.com/hasjrat-sales-tools";
+//   static const String baseApi = "http://tabeldata.ip-dynamic.com/hasjrat-sales-tools";
 
   // Azure IP
-// static const String baseApi = "http://cvktoyota.southeastasia.cloudapp.azure.com:8090/hasjrat-sales-tools";
+ static const String baseApi = "http://cvktoyota.southeastasia.cloudapp.azure.com:8090/hasjrat-sales-tools";
 
   static const String loginUri = "/sales-tools-auth-service/oauth/token";
 
@@ -12,6 +12,10 @@ class UriApi {
   static const String checkLastSalesOfTheMonth = "/sales-tools-employees-service/api/v2/employee-of-the-month/lastEmployeeOfTheMonth";
 
   static const String activityReportListUri = "/sales-tools-employees-service/api/v2/activities/sales/datatables";
+
+  static const String createActivityReportUri = "/sales-tools-employees-service/api/v2/activities/sales/new";
+
+  static const String uploadMediaFileUri = "/sales-tools-employees-service/api/v2/media/upload/image";
 
   static const String registerUri = "/sales-tools-auth-service/api/v2/account/sales/register";
 

@@ -180,9 +180,6 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
               BlocBuilder<BookingDriveBloc, BookingDriveState>(
                 builder: (context, state) {
                   if (state is ListBookingDriveFailed) {
-                    Future.delayed(Duration(seconds: 3), () {
-                      Navigator.of(context, rootNavigator: true).pop();
-                    });
                     return Center(
                       child: Padding(
                         padding: EdgeInsets.only(top: 100),

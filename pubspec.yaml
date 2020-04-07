@@ -65,6 +65,12 @@ dependencies:
   # The Font Awesome Icon pack
   font_awesome_flutter: ^8.5.0
 
+  # A Flutter geolocation plugin which provides easy access to the platform specific location
+  geolocator: ^5.3.0
+
+  # This plugin for Flutter handles getting location on Android and iOS.
+  location: ^3.0.2
+
   # Customizable Icons for Flutter
   flutter_icons: ^1.0.0+1
 

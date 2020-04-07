@@ -51,6 +51,7 @@ class BookingDriveBloc extends Bloc<BookingDriveEvent, BookingDriveState> {
       try {
         List<BookingDriveScheduleModel> value = await _bookingDriveService.fetchListSchedule(event.value);
         if (value == null || value.isEmpty) {
+          yield BookingDriveDisposeLoading();
           yield ListBookingDriveFailed();
         } else {
           yield BookingDriveDisposeLoading();

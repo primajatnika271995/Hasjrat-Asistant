@@ -4,8 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_bloc.dart';
 import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_event.dart';
 import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_state.dart';
+import 'package:salles_tools/src/models/activity_report_model.dart';
+import 'package:salles_tools/src/services/activity_report_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/activity_report_page/add_activity_report.dart';
+import 'package:salles_tools/src/views/activity_report_page/details_activity_report.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 
 class ActivityReportListView extends StatefulWidget {
@@ -21,7 +24,27 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
   void _onAddActivityReport() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => AddActivityReportView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => ActivityReportBloc(ActivityReportService()),
+          child: AddActivityReportView(),
+        ),
+        transitionDuration: Duration(milliseconds: 450),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onViewDetailsActivityReport(Datum value) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => ActivityReportDetailsView(
+          data: value,
+        ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
@@ -58,6 +81,10 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
           ),
         ),
         iconTheme: IconThemeData(color: Colors.black),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(45),
+          child: searchContent(),
+        ),
       ),
       body: BlocListener<ActivityReportBloc, ActivityReportState>(
         listener: (context, state) {
@@ -74,29 +101,25 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              searchContent(),
               SizedBox(
                 height: 20,
               ),
               BlocBuilder<ActivityReportBloc, ActivityReportState>(
                 builder: (context, state) {
                   if (state is ActivityReportFailed) {
-                    Future.delayed(Duration(seconds: 3), () {
-                      Navigator.of(context, rootNavigator: true).pop();
-                    });
                     return Center(
-                      child: Image.asset(
-                        "assets/icons/empty_icon.png",
-                        height: 100,
-                        color: HexColor('#C61818'),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 100),
+                        child: Column(
+                          children: <Widget>[
+                            Image.asset("assets/icons/no_data.png", height: 200),
+                          ],
+                        ),
                       ),
                     );
                   }
 
                   if (state is ActivityReportError) {
-                    Future.delayed(Duration(seconds: 3), () {
-                      Navigator.of(context, rootNavigator: true).pop();
-                    });
                     return Center(
                       child: Padding(
                         padding: EdgeInsets.only(top: 50),
@@ -113,27 +136,38 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
                   if (state is ActivityReportSuccess) {
                     return ListView.separated(
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       separatorBuilder: (BuildContext context, int index) => Divider(),
                       itemBuilder: (context, index) {
                         var data = state.value.data[index];
                         return ListTile(
+                          onTap: () {
+                            _onViewDetailsActivityReport(data);
+                          },
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("${data.title.toUpperCase()}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
+                              Expanded(
+                                child: Text("${data.title.toUpperCase()}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                               Text("${dateFormat.format(DateTime.parse(data.createdDate))}",
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 10,
                                   letterSpacing: 0.6,
                                 ),
                               ),
                             ],
                           ),
-                          subtitle: Text(data.description.isEmpty ? "-" : "${data.description}"),
+                          subtitle: Text(data.description.isEmpty ? "-" : "${data.description}",
+                            style: TextStyle(
+                              fontSize: 11,
+                            ),
+                          ),
                         );
                       },
                       itemCount: state.value.data.length,
