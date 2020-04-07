@@ -28,7 +28,7 @@ class DetailsCatalogView extends StatefulWidget {
 
 class _DetailsCatalogViewState extends State<DetailsCatalogView> {
   final CatalogModel data;
-  int _tabLength = 4;
+  int _tabLength = 3;
 
   _DetailsCatalogViewState(this.data);
 
@@ -120,7 +120,6 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
               ),
               CatalogGalleryView(),
               CatalogSpecificationsView(),
-              CatalogAccessoriesView(),
             ],
           ),
         ),
@@ -188,7 +187,8 @@ class MainViewDetailsVehicle extends StatefulWidget {
   MainViewDetailsVehicle({this.heroName, this.dataCatalog});
 
   @override
-  _MainViewDetailsVehicleState createState() => _MainViewDetailsVehicleState(this.dataCatalog);
+  _MainViewDetailsVehicleState createState() =>
+      _MainViewDetailsVehicleState(this.dataCatalog);
 }
 
 class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
@@ -230,88 +230,43 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
               children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 80),
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          "${data.itemModel} ${data.itemType}",
-                          style: TextStyle(
-                            fontSize: 16,
-                            letterSpacing: 1.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Text(
-                          "Rp 143.800.000",
-                          style: TextStyle(
-                            fontSize: 14,
-                            letterSpacing: 1.0,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "●",
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.red,
-                                ),
-                              ),
-                              Text(
-                                "●",
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Text(
-                                "●",
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                Text(
+                  "${data.itemModel} ${data.itemType}",
+                  style: TextStyle(
+                    fontSize: 16,
+                    letterSpacing: 1.0,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Stock",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 11,
-                            color: Colors.grey,
-                            letterSpacing: 0.8,
-                          ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "●",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.red,
                         ),
-                        Text(
-                          "15 Unit",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.2,
-                          ),
+                      ),
+                      Text(
+                        "●",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.grey,
                         ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        "●",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -389,9 +344,8 @@ class _TabViewDetailsVehicleState extends State<TabViewDetailsVehicle> {
             Tab(text: 'Review'),
             Tab(text: 'Gallery'),
             Tab(text: 'Specifications'),
-            Tab(text: 'Accessories'),
           ],
-          isScrollable: true,
+          isScrollable: false,
           indicator: UnderlineTabIndicator(
             borderSide: BorderSide(width: 4.0, color: HexColor('#C61818')),
           ),

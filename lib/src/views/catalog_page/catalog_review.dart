@@ -22,7 +22,6 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           descriptionReview(),
-          featureReview(),
         ],
       ),
     );
