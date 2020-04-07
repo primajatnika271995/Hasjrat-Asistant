@@ -1,0 +1,85 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:salles_tools/src/models/activity_report_model.dart';
+
+class ActivityReportDetailsView extends StatefulWidget {
+  final Datum data;
+  ActivityReportDetailsView({this.data});
+
+  @override
+  _ActivityReportDetailsViewState createState() => _ActivityReportDetailsViewState();
+}
+
+class _ActivityReportDetailsViewState extends State<ActivityReportDetailsView> {
+  var dateFormat = DateFormat("yyyy/MM/dd");
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        titleSpacing: 0,
+        title: Text(
+          "Activity Report",
+          style: TextStyle(
+            color: Colors.black,
+            letterSpacing: 0.5,
+          ),
+        ),
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 20, left: 20),
+            child: Text(
+              "${widget.data.title}",
+              style: TextStyle(
+                letterSpacing: 1.0,
+                fontSize: 17,
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 20, top: 2),
+                child: Icon(Icons.date_range, size: 14),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 2, left: 5),
+                child: Text(
+                  "Dibuat tanggal ${dateFormat.format(DateTime.parse(widget.data.createdDate.toString()))}",
+                  style: TextStyle(
+                    letterSpacing: 1.0,
+                    fontSize: 11,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "${widget.data.description}",
+                  style: TextStyle(
+                    letterSpacing: 0.8,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

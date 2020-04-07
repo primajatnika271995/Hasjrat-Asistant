@@ -32,5 +32,19 @@ class ActivityReportBloc extends Bloc<ActivityReportEvent, ActivityReportState> 
         yield ActivityReportError();
       }
     }
+
+    if (event is CreateActivityReport) {
+      yield ActivityReportFailed();
+
+      try {
+        await _activityReportService.createActivityReport(event.value);
+
+        yield CreateActivityReportSuccess();
+      } catch(error) {
+        yield ActivityReportDisposeLoading();
+        yield CreateActivityReportError();
+        log.warning("Error : ${error.toString()}");
+      }
+    }
   }
 }

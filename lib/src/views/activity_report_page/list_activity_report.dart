@@ -4,8 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_bloc.dart';
 import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_event.dart';
 import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_state.dart';
+import 'package:salles_tools/src/models/activity_report_model.dart';
+import 'package:salles_tools/src/services/activity_report_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/activity_report_page/add_activity_report.dart';
+import 'package:salles_tools/src/views/activity_report_page/details_activity_report.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 
 class ActivityReportListView extends StatefulWidget {
@@ -21,7 +24,27 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
   void _onAddActivityReport() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => AddActivityReportView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => ActivityReportBloc(ActivityReportService()),
+          child: AddActivityReportView(),
+        ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onViewDetailsActivityReport(Datum value) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => ActivityReportDetailsView(
+          data: value,
+        ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
@@ -113,10 +136,14 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
                   if (state is ActivityReportSuccess) {
                     return ListView.separated(
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       separatorBuilder: (BuildContext context, int index) => Divider(),
                       itemBuilder: (context, index) {
                         var data = state.value.data[index];
                         return ListTile(
+                          onTap: () {
+                            _onViewDetailsActivityReport(data);
+                          },
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[

@@ -1,13 +1,23 @@
 import 'dart:io';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 import 'package:path/path.dart' as path;
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_bloc.dart';
+import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_event.dart';
+import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_state.dart';
+import 'package:salles_tools/src/services/activity_report_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 
 class AddActivityReportView extends StatefulWidget {
   @override
@@ -15,13 +25,18 @@ class AddActivityReportView extends StatefulWidget {
 }
 
 class _AddActivityReportViewState extends State<AddActivityReportView> {
+  Location location = new Location();
+
+  var _formKey = GlobalKey<FormState>();
+
   var titleCtrl = new TextEditingController();
-
-  final dateFormat = DateFormat("dd MMMM yyyy");
-  DateTime _dateTime = DateTime.now();
-
   var dateSelected = new TextEditingController();
   var notesCtrl = new TextEditingController();
+  var latitudeCtrl = new TextEditingController();
+  var longitudeCtrl = new TextEditingController();
+  var alamatCtrl = new TextEditingController();
+
+  DateTime _dateTime = DateTime.now();
 
   var dateSelectedFocus = new FocusNode();
   var noteFocus = new FocusNode();
@@ -83,8 +98,55 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
       setState(() {
         _dateTime = picked;
         dateSelected.value =
-            TextEditingValue(text: dateFormat.format(picked).toString());
+            TextEditingValue(text: picked.toString());
       });
+  }
+
+  Future getCurrentLocation() async {
+    location.getLocation().then((LocationData value) async {
+      List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(
+          value.latitude,
+          value.longitude
+      );
+
+      var locationName = ""
+          "${placemark[0].name}, "
+          "${placemark[0].locality}, "
+          "${placemark[0].subAdministrativeArea}, "
+          "${placemark[0].administrativeArea}";
+
+      latitudeCtrl.value = TextEditingValue(text: value.latitude.toString());
+      longitudeCtrl.value = TextEditingValue(text: value.longitude.toString());
+      alamatCtrl.value = TextEditingValue(text: locationName);
+
+      log.info("Location : $locationName");
+
+      setState(() {});
+    });
+  }
+
+  void onCreateActivityReport() {
+    if (_formKey.currentState.validate()) {
+      DateTime parseDate = DateTime.parse(dateSelected.text);
+
+      // ignore: close_sinks
+      final activityReportBloc = BlocProvider.of<ActivityReportBloc>(context);
+      activityReportBloc.add(CreateActivityReport(ActivityReportPost(
+        title: titleCtrl.text,
+        alamat: alamatCtrl.text,
+        description: notesCtrl.text,
+        createdInMillisecond: parseDate.millisecondsSinceEpoch,
+      )));
+    } else {
+      log.warning("Please Complete Form!");
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getCurrentLocation();
+    super.initState();
   }
 
   @override
@@ -104,89 +166,160 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: 15,
-            ),
-            selectPhoto(),
-            uploadImgList.length < 1 ? SizedBox() : listPhoto(),
-            SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "Judul",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.0,
+      body: BlocListener<ActivityReportBloc, ActivityReportState>(
+        listener: (context, state) {
+          if (state is CreateActivityReportSuccess) {
+            log.info("Success Create Activity Report");
+            Alert(
+                context: context,
+                type: AlertType.success,
+                title: 'Success',
+                desc: "Created Activity Report!",
+                style: AlertStyle(
+                  animationDuration: Duration(milliseconds: 500),
+                  overlayColor: Colors.black54,
+                  animationType: AnimationType.grow,
                 ),
-              ),
-            ),
-            formTitle(),
-            SizedBox(
-              height: 5,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "Tanggal",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.0,
+                buttons: [
+                  DialogButton(
+                    child: Text(
+                      "OK",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                      Navigator.pop(context, true);
+                    },
+                    color: HexColor("#C61818"),
+                  ),
+                ]
+            ).show();
+          }
+
+          if (state is CreateActivityReportError) {
+            log.warning("Fail Create Activity Report");
+            Alert(
+                context: context,
+                type: AlertType.error,
+                title: 'Error',
+                desc: "Failed to Create Activity Report!",
+                style: AlertStyle(
+                  animationDuration: Duration(milliseconds: 500),
+                  overlayColor: Colors.black54,
+                  animationType: AnimationType.grow,
                 ),
-              ),
-            ),
-            formDatePicker(),
-            SizedBox(
-              height: 5,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "Lokasi Kejadian",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.0,
+                buttons: [
+                  DialogButton(
+                    child: Text(
+                      "OK",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                    color: HexColor("#C61818"),
+                  ),
+                ]
+            ).show();
+          }
+
+          if (state is ActivityReportLoading) {
+            onLoading(context);
+          }
+
+          if (state is ActivityReportDisposeLoading) {
+            Navigator.of(context, rootNavigator: false).pop();
+          }
+        },
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 15,
                 ),
-              ),
-            ),
-            formLocation(),
-            SizedBox(
-              height: 5,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "Deskripsi",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.0,
+                selectPhoto(),
+                uploadImgList.length < 1 ? SizedBox() : listPhoto(),
+                SizedBox(
+                  height: 15,
                 ),
-              ),
-            ),
-            formNote(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Container(
-                width: screenWidth(context),
-                child: RaisedButton(
-                  onPressed: () {},
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "Create",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  color: HexColor('#C61818'),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    "Judul",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.0,
+                    ),
                   ),
                 ),
-              ),
+                formTitle(),
+                SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Tanggal",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                ),
+                formDatePicker(),
+                SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Lokasi Kejadian",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                ),
+                formLatitude(),
+                formLongitude(),
+                formLocation(),
+                SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Deskripsi",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                ),
+                formNote(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Container(
+                    width: screenWidth(context),
+                    child: RaisedButton(
+                      onPressed: () {
+                        onCreateActivityReport();
+                      },
+                      child: Text(
+                        "Create",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      color: HexColor('#C61818'),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -217,7 +350,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 17),
-                  hintText: "Tulis Judul",
+                  hintText: "Masukan Judul Aktivitas",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -294,7 +427,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
     );
   }
 
-  Widget formLocation() {
+  Widget formLatitude() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
       child: Container(
@@ -316,16 +449,102 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                readOnly: true,
+                enabled: false,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 17),
-                  hintText: "Masukan Lokasi",
+                  hintText: "Latitude Kejadian",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
                     fontSize: 13,
                   ),
                 ),
+                controller: latitudeCtrl,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formLongitude() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                readOnly: true,
+                enabled: false,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 17),
+                  hintText: "Longitude Kejadian",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: longitudeCtrl,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formLocation() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "Alamat Kejadian",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: alamatCtrl,
+                maxLines: null,
               ),
             ),
           ),
@@ -462,7 +681,17 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                           ],
                         ),
                       ),
-                      Icon(Icons.cancel, color: Colors.red),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            uploadImgList.removeAt(index);
+                          });
+                        },
+                        child: Icon(
+                          Icons.cancel,
+                          color: Colors.red,
+                        ),
+                      ),
                     ],
                   ),
                 ),

@@ -36,3 +36,15 @@ class ActivityReportSuccess extends ActivityReportState {
   @override
   List<Object> get props => [_data];
 }
+
+class CreateActivityReportSuccess extends ActivityReportState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class CreateActivityReportError extends ActivityReportState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
