@@ -11,6 +11,8 @@ class UriApi {
 
   static const String checkLastSalesOfTheMonth = "/sales-tools-employees-service/api/v2/employee-of-the-month/lastEmployeeOfTheMonth";
 
+  static const String activityReportListUri = "/sales-tools-employees-service/api/v2/activities/sales/datatables";
+
   static const String registerUri = "/sales-tools-auth-service/api/v2/account/sales/register";
 
   static const String checkCustomerDMSUri = "/sales-tools-dealer-service/api/v2/dms/customer/list";

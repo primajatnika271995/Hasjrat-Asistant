@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_bloc.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_bloc.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:salles_tools/src/bloc/knowledge_base_bloc/knowledge_base_bloc.da
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_bloc.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_event.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_state.dart';
+import 'package:salles_tools/src/services/activity_report_service.dart';
 import 'package:salles_tools/src/services/catalog_service.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
@@ -113,7 +115,10 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => KnowledgeBaseBloc(KnowledgeBaseService()),
       child: KnowledgeBaseScreen(),
     ),
-    ActivityReportListView(),
+    BlocProvider(
+      create: (context) => ActivityReportBloc(ActivityReportService()),
+      child: ActivityReportListView(),
+    ),
     BlocProvider(
       create: (context) => DmsBloc(DmsService()),
       child: PriceListView(),
