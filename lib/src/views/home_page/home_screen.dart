@@ -138,7 +138,12 @@ class _HomeScreenState extends State<HomeScreen> {
           height: screenHeight(context) / 2,
           child: GridView.builder(
             gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+                SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  childAspectRatio: 0.8,
+                  mainAxisSpacing: 4.0,
+                  crossAxisSpacing: 1.0,
+                ),
             itemCount: 4,
             itemBuilder: (context, index) {
               return Material(
@@ -171,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: <Widget>[
                         Image.asset(
                           _assetsMoreMenu[index],
-                          height: 50,
+                          height: 70,
                         ),
                         Flexible(
                           child: Text(
@@ -431,6 +436,9 @@ class _HomeScreenState extends State<HomeScreen> {
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
+          childAspectRatio: 0.9,
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 1.0,
         ),
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -463,7 +471,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       Image.asset(
                         _assetsMenu[index],
-                        height: 50,
+                        height: 70,
                       ),
                       Flexible(
                         child: Text(
