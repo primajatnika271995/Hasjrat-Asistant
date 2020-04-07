@@ -15,7 +15,7 @@ class ActivityReportBloc extends Bloc<ActivityReportEvent, ActivityReportState> 
 
   @override
   Stream<ActivityReportState> mapEventToState(ActivityReportEvent event) async* {
-    if (state is FetchActivityReport) {
+    if (event is FetchActivityReport) {
       yield ActivityReportLoading();
 
       try {
