@@ -40,6 +40,7 @@ class _BannerDetailsViewState extends State<BannerDetailsView> {
             child: Image.network(
               "${widget.data.url}",
               width: screenWidth(context),
+              height: 200,
             ),
           ),
           Padding(

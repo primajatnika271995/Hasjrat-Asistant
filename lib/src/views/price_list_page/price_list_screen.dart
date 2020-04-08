@@ -41,7 +41,7 @@ class _PriceListViewState extends State<PriceListView> {
   void _showListClass1() {
     SelectDialog.showModal<String>(
       context,
-      label: "Class 1",
+      label: "Jenis Kendaraan",
       selectedValue: currentSelectClass1,
       items: class1List,
       onChange: (String selected) {
@@ -52,12 +52,7 @@ class _PriceListViewState extends State<PriceListView> {
 
           // ignore: close_sinks
           final dmsBloc = BlocProvider.of<DmsBloc>(context);
-          dmsBloc.add(FetchItemModel(ItemModelPost(
-              itemType: "",
-              itemModel: "",
-              itemClass1: class1Ctrl.text,
-              itemClass: ""
-          )));
+          dmsBloc.add(FetchItemModel(ItemModelPost(itemType: "", itemModel: "", itemClass1: class1Ctrl.text, itemClass: "")));
         });
       },
     );
@@ -66,7 +61,7 @@ class _PriceListViewState extends State<PriceListView> {
   void _showListItemModel() {
     SelectDialog.showModal<String>(
       context,
-      label: "Item Model",
+      label: "Model Kendaraan",
       selectedValue: currentSelectItemModel,
       items: itemModelList.toSet().toList(),
       onChange: (String selected) {
@@ -81,8 +76,7 @@ class _PriceListViewState extends State<PriceListView> {
               itemType: "",
               itemModel: itemModelCtrl.text,
               itemClass1: class1Ctrl.text,
-              itemClass: ""
-          )));
+              itemClass: "")));
         });
       },
     );
@@ -91,7 +85,7 @@ class _PriceListViewState extends State<PriceListView> {
   void _showListItemType() {
     SelectDialog.showModal<String>(
       context,
-      label: "Item Type",
+      label: "Tipe Kendaraan",
       selectedValue: currentSelectItemType,
       items: itemTypeList,
       onChange: (String selected) {
@@ -114,7 +108,7 @@ class _PriceListViewState extends State<PriceListView> {
   void _showListItemCode() {
     SelectDialog.showModal<SelectorPriceListModel>(
       context,
-      label: "Item Code",
+      label: "Nama Kode",
       selectedValue: currentSelectPriceList,
       items: priceList,
       itemBuilder: (context, SelectorPriceListModel item, bool isSelected) {
@@ -122,12 +116,12 @@ class _PriceListViewState extends State<PriceListView> {
           decoration: !isSelected
               ? null
               : BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.white,
-            border: Border.all(
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
           child: ListTile(
             selected: isSelected,
             title: Text("${item.itemModel} ${item.itemType}"),
@@ -170,7 +164,7 @@ class _PriceListViewState extends State<PriceListView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Price List",
+          "Price List & Stock",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -210,7 +204,8 @@ class _PriceListViewState extends State<PriceListView> {
 
             if (state is PriceListSuccess) {
               state.value.data.forEach((f) {
-                if (f.itemModel == currentSelectItemModel && f.itemType == currentSelectItemType) {
+                if (f.itemModel == currentSelectItemModel &&
+                    f.itemType == currentSelectItemType) {
                   priceList.add(SelectorPriceListModel(
                     itemCode: f.itemCode,
                     itemModel: f.itemModel,
@@ -232,7 +227,7 @@ class _PriceListViewState extends State<PriceListView> {
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Text(
-                      "Item Class 1 (*)",
+                      "Jenis Kendaraan (*)",
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         letterSpacing: 1.0,
@@ -243,7 +238,7 @@ class _PriceListViewState extends State<PriceListView> {
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Text(
-                      "Item Model (*)",
+                      "Model Kendaraan (*)",
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         letterSpacing: 1.0,
@@ -254,7 +249,7 @@ class _PriceListViewState extends State<PriceListView> {
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Text(
-                      "Item Type (*)",
+                      "Tipe Kendaraan (*)",
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         letterSpacing: 1.0,
@@ -265,7 +260,7 @@ class _PriceListViewState extends State<PriceListView> {
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Text(
-                      "Item Code",
+                      "Nama Kode",
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         letterSpacing: 1.0,
@@ -321,7 +316,7 @@ class _PriceListViewState extends State<PriceListView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Class 1",
+                      hintText: "Pilih Jenis",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -376,7 +371,7 @@ class _PriceListViewState extends State<PriceListView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Item Model",
+                      hintText: "Pilih Model",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -431,7 +426,7 @@ class _PriceListViewState extends State<PriceListView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Item Type",
+                      hintText: "Pilih Tipe",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -486,7 +481,7 @@ class _PriceListViewState extends State<PriceListView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Item Code",
+                      hintText: "Pilih Kode",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -533,7 +528,7 @@ class _PriceListViewState extends State<PriceListView> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 10),
                     child: Text(
-                      "Data Stock",
+                      "Data Price List",
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         letterSpacing: 1.0,
@@ -544,7 +539,7 @@ class _PriceListViewState extends State<PriceListView> {
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      var value = state.value.data[0].stocks[index];
+                      var value = state.value.data[0].pricelists[index];
                       return Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
@@ -557,11 +552,13 @@ class _PriceListViewState extends State<PriceListView> {
                             title: Text("${state.value.data[0].itemName}"),
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 3),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Text("Item Code"),
+                                    Text("Kode Item"),
                                     Text(
                                       "${state.value.data[0].itemCode}",
                                       style: TextStyle(
@@ -572,65 +569,21 @@ class _PriceListViewState extends State<PriceListView> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 3),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Text("Item Model"),
+                                    Text("Model Kendaraan"),
                                     Text("${state.value.data[0].itemModel}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text("Year"),
-                                    Text("${value.tahun}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text("Color"),
-                                    Text("${value.namaWarna}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text("Off The Road"),
-                                    Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].offtr)}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text("On The Road"),
-                                    Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text("Stock"),
-                                    Text("${value.quantity}"),
                                   ],
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 15),
                                 child: Text(
-                                  "Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}",
+                                  "Rp ${CurrencyFormat().data.format(value.ontr)}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     letterSpacing: 1.0,
@@ -638,12 +591,98 @@ class _PriceListViewState extends State<PriceListView> {
                                   ),
                                 ),
                               ),
+                              Divider(),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Data Stock",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              state.value.data[0].stocks.isEmpty
+                                  ? Padding(
+                                    padding: const EdgeInsets.only(bottom: 20),
+                                    child: Text("Tidak Tersedia"),
+                                  )
+                                  : ListView.separated(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      separatorBuilder: (BuildContext context, int index) => Divider(),
+                                      itemBuilder: (context, iStock) {
+                                        var stock = state.value.data[0].stocks[iStock];
+                                        return Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: <Widget>[
+                                                  Text("Nomor Rangka"),
+                                                  Text(
+                                                    "${stock.nomorRangka}",
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: <Widget>[
+                                                  Text("Tahun Pembuatan"),
+                                                  Text("${stock.tahun}"),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: <Widget>[
+                                                  Text("Warna"),
+                                                  Text("${stock.namaWarna}"),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: <Widget>[
+                                                  Text("Quantity"),
+                                                  Text("${stock.quantity}"),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      itemCount: state.value.data[0].stocks.length,
+                                    ),
+                              SizedBox(
+                                height: 10,
+                              ),
                             ],
                           ),
                         ),
                       );
                     },
-                    itemCount: state.value.data[0].stocks.length,
+                    itemCount: state.value.data[0].pricelists.length,
                   ),
                 ],
               );
