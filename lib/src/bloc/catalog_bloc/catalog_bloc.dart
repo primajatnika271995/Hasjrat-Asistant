@@ -19,7 +19,7 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
       yield CatalogLoading();
 
       try {
-        List<CatalogModel> value = await _catalogService.fetchCatalogList();
+        CatalogModel value = await _catalogService.fetchCatalogList();
         if (value == null) {
           yield CatalogListFailed();
         } else {

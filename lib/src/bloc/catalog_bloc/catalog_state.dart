@@ -20,20 +20,16 @@ class CatalogListSuccess extends CatalogState {
   final _data;
 
   CatalogListSuccess(this._data);
-  List<CatalogModel> get value => _data;
+  CatalogModel get value => _data;
 
   @override
   // TODO: implement props
   List<Object> get props => [_data];
 }
 
-class BannerPromotionFailed extends CatalogState {
+class BannerPromotionFailed extends CatalogState {}
 
-}
-
-class BannerPromotionError extends CatalogState {
-
-}
+class BannerPromotionError extends CatalogState {}
 
 class BannerPromotionSuccess extends CatalogState {
   final _data;

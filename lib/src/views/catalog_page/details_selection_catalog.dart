@@ -4,7 +4,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
-import 'package:salles_tools/src/models/catalog_model.dart';
+import 'package:salles_tools/src/models/catalog_model.dart' as catalogModel;
 import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
@@ -19,7 +19,7 @@ import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
 
 class DetailsCatalogView extends StatefulWidget {
   final String heroName;
-  final CatalogModel data;
+  final catalogModel.Datum data;
   DetailsCatalogView({this.heroName, this.data});
 
   @override
@@ -27,7 +27,7 @@ class DetailsCatalogView extends StatefulWidget {
 }
 
 class _DetailsCatalogViewState extends State<DetailsCatalogView> {
-  final CatalogModel data;
+  final catalogModel.Datum data;
   int _tabLength = 3;
 
   _DetailsCatalogViewState(this.data);
@@ -94,7 +94,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           elevation: 1,
           titleSpacing: 0,
           title: Text(
-            "${data.itemClass}",
+            "${data.itemClass1}",
             // "test data",
             style: TextStyle(
               color: Colors.black,
@@ -118,8 +118,12 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
               CatalogReviewView(
                 data: data,
               ),
-              CatalogGalleryView(),
-              CatalogSpecificationsView(),
+              CatalogGalleryView(
+                data: data,
+              ),
+              CatalogSpecificationsView(
+                data: data,
+              ),
             ],
           ),
         ),
@@ -182,7 +186,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
 }
 
 class MainViewDetailsVehicle extends StatefulWidget {
-  final CatalogModel dataCatalog;
+  final catalogModel.Datum dataCatalog;
   final String heroName;
   MainViewDetailsVehicle({this.heroName, this.dataCatalog});
 
@@ -192,7 +196,7 @@ class MainViewDetailsVehicle extends StatefulWidget {
 }
 
 class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
-  final CatalogModel data;
+  final catalogModel.Datum data;
 
   _MainViewDetailsVehicleState(this.data);
   @override
@@ -217,7 +221,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
             ),
             Expanded(
               child: Hero(
-                tag: "${widget.heroName}",
+                tag: "${data.itemClass1}",
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -226,7 +230,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                     ),
                   ),
                   child: Image.network(
-                      "https://www.toyota.astra.co.id/files/thumb/92b0e7104a1238b/872/617/fit"),
+                      "${data.colours[0].image}"),
                 ),
               ),
             ),

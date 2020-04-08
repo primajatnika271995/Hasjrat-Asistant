@@ -3,7 +3,7 @@ import 'package:salles_tools/src/models/catalog_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 
 class CatalogReviewView extends StatefulWidget {
-  final CatalogModel data;
+  final Datum data;
 
   const CatalogReviewView({Key key, this.data}) : super(key: key);
   @override
@@ -11,7 +11,7 @@ class CatalogReviewView extends StatefulWidget {
 }
 
 class _CatalogReviewViewState extends State<CatalogReviewView> {
-  final CatalogModel data;
+  final Datum data;
 
   _CatalogReviewViewState(this.data);
   @override
@@ -33,25 +33,43 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(top: 20, left: 15),
-          child: Text(
-            "${data.itemModel} ${data.itemType}",
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.0,
-              fontSize: 16,
-            ),
-          ),
+          child: data.titleReview == null
+              ? Text(
+                  "Review Kendaraan",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                    fontSize: 16,
+                  ),
+                )
+              : Text(
+                  "${data.titleReview}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                    fontSize: 16,
+                  ),
+                ),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 15, top: 5, right: 15),
-          child: Text(
-           "${data.descriptionReview}",
-            style: TextStyle(
-              fontSize: 13,
-              letterSpacing: 0.7,
-              color: Colors.grey,
-            ),
-          ),
+          child: data.descriptionReview == null
+              ? Text(
+                  "Belum ada review kendaraan ini",
+                  style: TextStyle(
+                    fontSize: 13,
+                    letterSpacing: 0.7,
+                    color: Colors.grey,
+                  ),
+                )
+              : Text(
+                  "${data.descriptionReview}",
+                  style: TextStyle(
+                    fontSize: 13,
+                    letterSpacing: 0.7,
+                    color: Colors.grey,
+                  ),
+                ),
         )
       ],
     );
@@ -79,7 +97,10 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Icon(Icons.not_interested, color: Colors.grey,),
+                  Icon(
+                    Icons.not_interested,
+                    color: Colors.grey,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Text(
@@ -94,7 +115,10 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
               ),
               Row(
                 children: <Widget>[
-                  Icon(Icons.not_interested, color: Colors.grey,),
+                  Icon(
+                    Icons.not_interested,
+                    color: Colors.grey,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Text(
@@ -109,7 +133,10 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
               ),
               Row(
                 children: <Widget>[
-                  Icon(Icons.not_interested, color: Colors.grey,),
+                  Icon(
+                    Icons.not_interested,
+                    color: Colors.grey,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Text(
@@ -124,7 +151,10 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
               ),
               Row(
                 children: <Widget>[
-                  Icon(Icons.not_interested, color: Colors.grey,),
+                  Icon(
+                    Icons.not_interested,
+                    color: Colors.grey,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Text(

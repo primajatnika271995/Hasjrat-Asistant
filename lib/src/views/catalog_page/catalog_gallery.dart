@@ -1,12 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/catalog_model.dart' as catalogModel;
 
 class CatalogGalleryView extends StatefulWidget {
+  final catalogModel.Datum data;
+
+  const CatalogGalleryView({Key key, this.data}) : super(key: key);
   @override
-  _CatalogGalleryViewState createState() => _CatalogGalleryViewState();
+  _CatalogGalleryViewState createState() => _CatalogGalleryViewState(this.data);
 }
 
 class _CatalogGalleryViewState extends State<CatalogGalleryView> {
+  final catalogModel.Datum data;
   int _currentImage = 0;
 
   List<String> _imgInterior = [
@@ -14,6 +19,8 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
     'https://www.peruzzi.com/assets/stock/expanded/white/640/2020toc02_640/2020toc020065_640_28.jpg?height=400',
     'https://static.tcimg.net/vehicles/oem/56cdc6d21886d2c3/2020-Toyota-Camry.jpg',
   ];
+
+  _CatalogGalleryViewState(this.data);
 
   void _onShowFullImage(String tag, String img) {
     Navigator.of(context).push(
@@ -68,7 +75,76 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 5),
-              child: sliderContent(),
+              child: CarouselSlider.builder(
+                initialPage: 1,
+                autoPlay: false,
+                enlargeCenterPage: true,
+                viewportFraction: 0.9,
+                autoPlayCurve: Curves.bounceIn,
+                reverse: false,
+                height: 180,
+                enableInfiniteScroll: false,
+                aspectRatio: 2.0,
+                itemCount: data.galleriesInterior.length,
+                itemBuilder: (context, index) {
+                  var valueData = data.galleriesInterior[index];
+                  return Container(
+                    margin: EdgeInsets.all(5.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      child: Stack(children: <Widget>[
+                        Hero(
+                          tag: "promotion-tag${data.id}",
+                          child: Image.network("${valueData.image}",
+                              fit: BoxFit.cover, width: 1000.0),
+                        ),
+                      ]),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 15),
+              child: Text(
+                "Exterior",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.0,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: CarouselSlider.builder(
+                initialPage: 1,
+                autoPlay: false,
+                enlargeCenterPage: true,
+                viewportFraction: 0.9,
+                autoPlayCurve: Curves.bounceIn,
+                reverse: false,
+                height: 180,
+                enableInfiniteScroll: false,
+                aspectRatio: 2.0,
+                itemCount: data.galleriesExterior.length,
+                itemBuilder: (context, index) {
+                  var valueData = data.galleriesExterior[index];
+                  return Container(
+                    margin: EdgeInsets.all(5.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      child: Stack(children: <Widget>[
+                        Hero(
+                          tag: "promotion-tag${data.id}",
+                          child: Image.network("${valueData.image}",
+                              fit: BoxFit.cover, width: 1000.0),
+                        ),
+                      ]),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
