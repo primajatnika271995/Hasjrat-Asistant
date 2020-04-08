@@ -197,7 +197,8 @@ class MainViewDetailsVehicle extends StatefulWidget {
 
 class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
   final catalogModel.Datum data;
-
+  List<String> _colorList = [];
+  String _currentColor = "";
   _MainViewDetailsVehicleState(this.data);
   @override
   Widget build(BuildContext context) {
@@ -229,8 +230,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                       topRight: Radius.circular(9.0),
                     ),
                   ),
-                  child: Image.network(
-                      "${data.colours[0].image}"),
+                  child: Image.network("${data.colours[0].image}"),
                 ),
               ),
             ),
@@ -244,35 +244,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "●",
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.red,
-                        ),
-                      ),
-                      Text(
-                        "●",
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Text(
-                        "●",
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                SizedBox(height: 15),
               ],
             ),
           ],
@@ -282,6 +254,9 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
   }
 
   Widget dropdownMenu() {
+    data.colours.forEach((val) {
+      _colorList.add(val.colorNameIn);
+    });
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 10),
       child: Container(
@@ -303,23 +278,40 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
               ),
               child: DropdownButtonHideUnderline(
                 child: ButtonTheme(
-                  child: DropdownButton<VehicleType>(
+                  child: DropdownButton<String>(
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,
                     ),
-                    hint: Text('Type'),
+                    hint: Text('Warna'),
                     iconSize: 15,
                     isExpanded: true,
-                    onChanged: (VehicleType newVal) {
-                      state.didChange(newVal.type);
+                    onChanged: (String newVal) {
+                      setState(() {
+                        _currentColor = newVal;
+                        state.didChange(newVal);
+                      });
                     },
-                    items: VehicleType.getType().map((VehicleType val) {
-                      return DropdownMenuItem<VehicleType>(
-                        value: val,
-                        child: Text(val.type),
-                      );
-                    }).toList(),
+                    items: _colorList == null
+                        ? null
+                        : _colorList.toSet().toList().map((String val) {
+                            return DropdownMenuItem<String>(
+                              value: val,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    val,
+                                    style: TextStyle(
+                                      fontSize: 11.5,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
                   ),
                 ),
               ),
