@@ -17,7 +17,7 @@ class CatalogService {
   }
 
   Future fetchCatalogList() async {
-    final response = await _dio.get(
+    final response = await _dio.post(
       UriApi.catalogListUri,
       options: Options(
         headers: {
@@ -33,7 +33,8 @@ class CatalogService {
   }
 
   Future bannerPromotion() async {
-    final response = await _dio.post(UriApi.bannerPromotionUri,
+    final response = await _dio.post(
+      UriApi.bannerPromotionUri,
       options: Options(
         headers: {
           'Content-Type': 'application/json',
@@ -45,4 +46,9 @@ class CatalogService {
       return compute(bannerModelFromJson, json.encode(response.data));
     }
   }
+}
+
+class DetailCatalogPost {
+  String id;
+  DetailCatalogPost({this.id});
 }

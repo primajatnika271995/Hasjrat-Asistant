@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/models/catalog_model.dart' as catalogModel;
 
 class CatalogSpecificationsView extends StatefulWidget {
+  final catalogModel.Datum data;
+
+  const CatalogSpecificationsView({Key key, this.data}) : super(key: key);
   @override
   _CatalogSpecificationsViewState createState() =>
-      _CatalogSpecificationsViewState();
+      _CatalogSpecificationsViewState(this.data);
 }
 
 class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
+  final catalogModel.Datum data;
   bool dimensionIsExpanded = false;
   bool engineIsExpanded = false;
   bool performanceIsExpanded = false;
   bool safetyIsExpanded = false;
   bool capacityIsExpanded = false;
+
+  _CatalogSpecificationsViewState(this.data);
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +34,30 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                 "Dimension and Weight",
                 style: TextStyle(
                   letterSpacing: 1.0,
-                  color: dimensionIsExpanded ? HexColor('#C61818') : Colors.black,
+                  color:
+                      dimensionIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 17, bottom: 5, right: 17),
+                        child: Text(
+                          "${data.features[1].description}",
+                          style: TextStyle(
+                            letterSpacing: 0.7,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
               onExpansionChanged: (bool val) {
                 setState(() => this.dimensionIsExpanded = val);
               },
@@ -42,6 +70,26 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                   color: engineIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 17, bottom: 5, right: 17),
+                        child: Text(
+                          "${data.features[0].description}",
+                          style: TextStyle(
+                            letterSpacing: 0.7,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
               onExpansionChanged: (bool val) {
                 setState(() => this.engineIsExpanded = val);
               },
@@ -51,9 +99,31 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                 "Performance",
                 style: TextStyle(
                   letterSpacing: 1.0,
-                  color: performanceIsExpanded ? HexColor('#C61818') : Colors.black,
+                  color: performanceIsExpanded
+                      ? HexColor('#C61818')
+                      : Colors.black,
                 ),
               ),
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 17, bottom: 5, right: 17),
+                        child: Text(
+                          "${data.features[2].description}",
+                          style: TextStyle(
+                            letterSpacing: 0.7,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
               onExpansionChanged: (bool val) {
                 setState(() => this.performanceIsExpanded = val);
               },
@@ -66,6 +136,26 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                   color: safetyIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 17, bottom: 5, right: 17),
+                        child: Text(
+                          "${data.features[3].description}",
+                          style: TextStyle(
+                            letterSpacing: 0.7,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
               onExpansionChanged: (bool val) {
                 setState(() => this.safetyIsExpanded = val);
               },
@@ -75,9 +165,30 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                 "Capacity",
                 style: TextStyle(
                   letterSpacing: 1.0,
-                  color: capacityIsExpanded ? HexColor('#C61818') : Colors.black,
+                  color:
+                      capacityIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
               ),
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 17, bottom: 5, right: 17),
+                        child: Text(
+                          "${data.features[4].description}",
+                          style: TextStyle(
+                            letterSpacing: 0.7,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
               onExpansionChanged: (bool val) {
                 setState(() => this.capacityIsExpanded = val);
               },

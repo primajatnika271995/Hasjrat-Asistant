@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_bloc.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_event.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_state.dart';
+import 'package:salles_tools/src/services/catalog_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/catalog_page/details_selection_catalog.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
@@ -33,8 +34,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
 
   @override
   void initState() {
-    final bookingDriveBloc = BlocProvider.of<CatalogBloc>(context);
-    bookingDriveBloc.add(FetchCatalogList());
+    final catalogBLoc = BlocProvider.of<CatalogBloc>(context);
+    catalogBLoc.add(FetchCatalogList());
     super.initState();
   }
 
@@ -114,7 +115,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 13),
                       child: GridView.builder(
-                        itemCount: state.value.length,
+                        itemCount: state.value.data.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 3 / 4,
@@ -122,7 +123,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
                           mainAxisSpacing: 17,
                         ),
                         itemBuilder: (context, i) {
-                          var data = state.value[i];
+                          var data = state.value.data[i];
+
                           return Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -142,16 +144,17 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                   child: Hero(
                                     tag: "catalog-image$i",
                                     child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(9.0),
-                                          topRight: Radius.circular(9.0),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(9.0),
+                                            topRight: Radius.circular(9.0),
+                                          ),
+                                          color: Color(0xffe5e6ea),
                                         ),
-                                        color: Color(0xffe5e6ea),
-                                      ),
-                                      child: Image.network(
-                                          "https://www.toyota.astra.co.id/files/thumb/92b0e7104a1238b/872/617/fit"),
-                                    ),
+                                        child: data.colours[0].image == null
+                                            ? Image.network(
+                                                "https://www.toyota.astra.co.id/files/thumb/92b0e7104a1238b/872/617/fit")
+                                            : Image.network("${data.colours[0].image}")),
                                   ),
                                 ),
                                 Padding(
@@ -185,11 +188,21 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                             onTap: () {
                                               Navigator.of(context).push(
                                                 PageRouteBuilder(
-                                                  pageBuilder: (_, __, ___) => DetailsCatalogView(
-                                                    data: data,
+                                                  pageBuilder: (_, __, ___) =>
+                                                      BlocProvider(
+                                                    create: (context) =>
+                                                        CatalogBloc(
+                                                            CatalogService()),
+                                                    child: DetailsCatalogView(
+                                                        data: data),
                                                   ),
-                                                  transitionDuration: Duration(milliseconds: 750),
-                                                  transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                                  transitionDuration: Duration(
+                                                      milliseconds: 750),
+                                                  transitionsBuilder: (_,
+                                                      Animation<double>
+                                                          animation,
+                                                      __,
+                                                      Widget child) {
                                                     return Opacity(
                                                       opacity: animation.value,
                                                       child: child,
