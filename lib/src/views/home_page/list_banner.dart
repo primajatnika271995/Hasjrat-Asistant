@@ -132,9 +132,10 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
                           Hero(
                             tag: "promotion-tag${data.id}",
                             child: Image.network(
-                                "https://www.mistercarz.com.my/images/promo/2017/toyota.jpg",
+                                "${data.url}",
                                 fit: BoxFit.cover,
-                                width: 1000.0),
+                                width: 1000.0,
+                            ),
                           ),
                           Positioned(
                             bottom: 0.0,
