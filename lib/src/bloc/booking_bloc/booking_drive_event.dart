@@ -10,8 +10,11 @@ class BookingDriveEvent extends Equatable {
 }
 
 class FetchTestDriveCar extends BookingDriveEvent {
+  final ListCarBookingPost value;
+
+  FetchTestDriveCar(this.value);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [value];
 }
 
 class BookingTestDriveRegister extends BookingDriveEvent {

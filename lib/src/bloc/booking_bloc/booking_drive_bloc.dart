@@ -21,7 +21,7 @@ class BookingDriveBloc extends Bloc<BookingDriveEvent, BookingDriveState> {
       yield BookingDriveLoading();
 
       try {
-        List<TestDriveVehicleModel> value = await _bookingDriveService.fetchCarList();
+        List<TestDriveVehicleModel> value = await _bookingDriveService.fetchCarList(event.value);
         yield BookingDriveDisposeLoading();
         yield CarListSuccess(value);
       } catch (e) {

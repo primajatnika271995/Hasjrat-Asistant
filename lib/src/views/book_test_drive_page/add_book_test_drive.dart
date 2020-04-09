@@ -139,10 +139,17 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     _outletName = await SharedPreferencesHelper.getSalesOutlet();
     _outletId = await SharedPreferencesHelper.getSalesOutletId();
 
+    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
+    bookingDriveBloc.add(FetchTestDriveCar(ListCarBookingPost(
+      branchCode: _branchId,
+      outletCode: _outletId,
+    )));
+
     setState(() {
       branchNameCtrl.text = _branchName;
       outletNameCtrl.text = _outletName;
     });
+
   }
 
   void onSaveBooking() {
@@ -177,10 +184,9 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   void initState() {
     // TODO: implement initState
     // ignore: close_sinks
-    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
-    bookingDriveBloc.add(FetchTestDriveCar());
 
     _getSharedPrefferences();
+    
     super.initState();
   }
 
