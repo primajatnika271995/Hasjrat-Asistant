@@ -135,57 +135,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           flexibleSpace: Padding(
-            padding: const EdgeInsets.only(top: 70),
-            child: Row(
+            padding: const EdgeInsets.only(top: 80),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 50, top: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "$_salesName",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                            letterSpacing: 1.0,
-                          ),
-                        ),
-                        Text(
-                          "$_salesNIK",
-                          style: TextStyle(
-                            fontSize: 13,
-                            letterSpacing: 0.8,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15, bottom: 5),
-                          child: LinearPercentIndicator(
-                            percent: 0.6,
-                            width: 150,
-                            lineHeight: 17,
-                            backgroundColor: Colors.grey.withOpacity(0.3),
-                            progressColor: HexColor('#C61818'),
-                          ),
-                        ),
-                        Text(
-                          "60% Complete Profile",
-                          style: TextStyle(
-                            fontSize: 10,
-                            letterSpacing: 0.8,
-                          ),
-                        ),
-                      ],
-                    ),
+                Text(
+                  "$_salesName",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                    letterSpacing: 1.0,
                   ),
                 ),
-                Column(
-                  children: <Widget>[
-                    profileImage(),
-                  ],
+                Text(
+                  "$_salesNIK",
+                  style: TextStyle(
+                    fontSize: 13,
+                    letterSpacing: 0.8,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15, bottom: 5),
+                  child: LinearPercentIndicator(
+                    percent: 0.6,
+                    width: 150,
+                    alignment: MainAxisAlignment.center,
+                    lineHeight: 17,
+                    backgroundColor: Colors.grey.withOpacity(0.3),
+                    progressColor: HexColor('#C61818'),
+                  ),
+                ),
+                Text(
+                  "60% Complete Profile",
+                  style: TextStyle(
+                    fontSize: 10,
+                    letterSpacing: 0.8,
+                  ),
+                ),
+                ButtonTheme(
+                  height: 20,
+                  child: OutlineButton(
+                    onPressed: () {
+                      _onEditProfile();
+                    },
+                    highlightElevation: 3,
+                    highlightedBorderColor: HexColor('#C61818'),
+                    borderSide: BorderSide(
+                      color: HexColor('#C61818'),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      "Detail Profile",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: HexColor('#212120'),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -112,7 +112,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            profileImage(),
+//            profileImage(),
             namaField(),
             tmptTglLahirField(),
             jenisKelaminField(),
