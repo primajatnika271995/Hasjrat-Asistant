@@ -11,6 +11,13 @@ class KnowledgeBaseScreen extends StatefulWidget {
 }
 
 class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
+  var searchCtrl = new TextEditingController();
+
+  void searchQnA(String query) {
+    // ignore: close_sinks
+    final qnaBloc = BlocProvider.of<KnowledgeBaseBloc>(context);
+    qnaBloc.add(SearchKnowledgeBase(query));
+  }
 
   @override
   void initState() {
@@ -109,7 +116,10 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        var data = state.salesData.data.where((f) => f.publish == true && f.draft == false).toList()[index];
+                        var data = searchCtrl == null
+                            ? state.salesData.data.where((f) => f.publish == true && f.draft == false).toList()[index]
+                            : state.salesData.data.where((f) => f.publish == true && f.draft == false && f.question.toLowerCase().contains(searchCtrl.text.toLowerCase())).toList()[index];
+
                         return ExpansionTile(
                           title: Text("${data.question}",
                             style: TextStyle(
@@ -137,7 +147,9 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                           ],
                         );
                       },
-                      itemCount: state.salesData.data.where((f) => f.publish == true && f.draft == false).toList().length,
+                      itemCount: searchCtrl == null
+                          ? state.salesData.data.where((f) => f.publish == true && f.draft == false).toList().length
+                          : state.salesData.data.where((f) => f.publish == true && f.draft == false && f.question.toLowerCase().contains(searchCtrl.text.toLowerCase())).toList().length,
                     );
                   }
 
@@ -189,6 +201,10 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                     fontSize: 13,
                   ),
                 ),
+                controller: searchCtrl,
+                onEditingComplete: () {
+                  searchQnA(searchCtrl.text);
+                },
               ),
             ),
           ),

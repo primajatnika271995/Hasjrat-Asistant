@@ -31,5 +31,24 @@ class KnowledgeBaseBloc extends Bloc<KnowledgeBaseEvent, KnowledgeBaseState> {
         yield KnowledgeBaseError();
       }
     }
+
+    if (event is SearchKnowledgeBase) {
+      yield KnowledgeBaseLoading();
+
+      try {
+        KnowladgeBaseModel value = await _knowledgeBaseService.questionAsk();
+
+        if (value.data == null || value.data.isEmpty) {
+          yield KnowledgeBaseFailed();
+        } else {
+
+          yield KnowledgeBaseDisposeLoading();
+          yield KnowledgeBaseSuccess(value);
+        }
+      } catch(err) {
+        yield KnowledgeBaseDisposeLoading();
+        yield KnowledgeBaseError();
+      }
+    }
   }
 }
