@@ -47,17 +47,18 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
 
   Future<Null> _selectedDate(BuildContext context) async {
     final List<DateTime> picked = await DateRagePicker.showDatePicker(
-        context: context,
-        initialFirstDate: new DateTime.now(),
-        initialLastDate: (new DateTime.now()).add(new Duration(days: 14)),
-        firstDate: DateTime(1900, 1),
-        lastDate: DateTime(2100),
+      context: context,
+      initialFirstDate: new DateTime.now(),
+      initialLastDate: (new DateTime.now()).add(new Duration(days: 14)),
+      firstDate: DateTime(1900, 1),
+      lastDate: DateTime(2100),
     );
 
     if (picked != null) {
       log.info(picked);
-      dateSelectedCtrl.value =
-          TextEditingValue(text: '${dateFormater.format(picked[0]).toString()} s.d ${dateFormater.format(picked[1]).toString()}');
+      dateSelectedCtrl.value = TextEditingValue(
+          text:
+              '${dateFormater.format(picked[0]).toString()} s.d ${dateFormater.format(picked[1]).toString()}');
 
       // ignore: close_sinks
       final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
@@ -185,7 +186,8 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
                         padding: EdgeInsets.only(top: 100),
                         child: Column(
                           children: <Widget>[
-                            Image.asset("assets/icons/no_data.png", height: 200),
+                            Image.asset("assets/icons/no_data.png",
+                                height: 200),
                           ],
                         ),
                       ),
@@ -308,33 +310,47 @@ class SlidableBookTestDriveView extends StatelessWidget {
                           child: Container(
                             height: 18,
                             width: 70,
-                            decoration: value.approve == false
+                            decoration: value.approve == null
                                 ? BoxDecoration(
-                                    color: Colors.redAccent,
+                                    color: Colors.brown,
                                     borderRadius: BorderRadius.circular(5),
                                   )
-                                : BoxDecoration(
-                                    color: Colors.blueAccent,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
+                                : value.approve == false
+                                    ? BoxDecoration(
+                                        color: Colors.redAccent,
+                                        borderRadius: BorderRadius.circular(5),
+                                      )
+                                    : BoxDecoration(
+                                        color: Colors.blueAccent,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
                             child: Center(
-                              child: value.approve == false
+                              child: value.approve == null
                                   ? Text(
-                                      'Rejected',
+                                      'New',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 9,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     )
-                                  : Text(
-                                      'Approved',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 9,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
+                                  : value.approve == false
+                                      ? Text(
+                                          'Rejected',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        )
+                                      : Text(
+                                          'Approved',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
                             ),
                           ),
                         ),
