@@ -389,18 +389,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Positioned(
-              top: paddingTop(context) + 44,
+              top: paddingTop(context) + 80,
               left: 20,
               child: Text(
-                "Hasjrat Abadi $_branchName",
-                style: TextStyle(
-                  fontSize: 11,
-                  color: Colors.white,
-                ),
+                "Selamat Datang",
+                style: AppTheme.selamatDatangStyle,
               ),
             ),
             Positioned(
-              right: 30,
+              left: 20,
+              top: 75,
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -411,16 +409,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(top: 80),
-                            child: Text(
-                              "Selamat Datang",
-                              style: AppTheme.selamatDatangStyle,
-                            ),
-                          ),
                           Text(
                             "$_salesName",
                             style: AppTheme.namaSalesStyle,
+                          ),
+                          Text(
+                            "Hasjrat Abadi $_branchName",
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
