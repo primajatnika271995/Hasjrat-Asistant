@@ -7,6 +7,15 @@ class KnowledgeBaseEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class SearchKnowledgeBase extends KnowledgeBaseEvent {
+  final String query;
+  SearchKnowledgeBase(this.query);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [query];
+}
+
 class FetchKnowledgeBase extends KnowledgeBaseEvent {
   @override
   // TODO: implement props
