@@ -83,7 +83,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   void _showListClass1() {
     SelectDialog.showModal<String>(
       context,
-      label: "Class 1",
+      label: "Jenis Kendaraan",
       selectedValue: currentSelectClass1,
       items: class1List,
       onChange: (String selected) {
@@ -108,7 +108,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   void _showListItemModel() {
     SelectDialog.showModal<String>(
       context,
-      label: "Item Model",
+      label: "Model Kendaraan",
       selectedValue: currentSelectItemModel,
       items: itemModelList.toSet().toList(),
       onChange: (String selected) {
@@ -133,7 +133,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   void _showListItemType() {
     SelectDialog.showModal<String>(
       context,
-      label: "Item Type",
+      label: "Tipe Kendaraan",
       selectedValue: currentSelectItemType,
       items: itemTypeList,
       onChange: (String selected) {
@@ -171,7 +171,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   void _showListSource() {
     SelectDialog.showModal<SelectorProspectSourceModel>(
       context,
-      label: "Prospect Source",
+      label: "Sumber Prospek",
       selectedValue: currentSelectProspectSource,
       items: sourceList,
       onChange: (SelectorProspectSourceModel selected) {
@@ -187,7 +187,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   void _showListItemCode() {
     SelectDialog.showModal<SelectorPriceListModel>(
       context,
-      label: "Item Code",
+      label: "Kode Kendaraan",
       selectedValue: currentSelectPriceList,
       items: priceList,
       itemBuilder: (context, SelectorPriceListModel item, bool isSelected) {
@@ -204,7 +204,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
           child: ListTile(
             selected: isSelected,
             title: Text("${item.itemModel} ${item.itemType}"),
-            subtitle: Text("Item Code : ${item.itemCode}"),
+            subtitle: Text("Kode Item : ${item.itemCode}"),
           ),
         );
       },
@@ -432,7 +432,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Prospect Date",
+                            "Tanggal Prospek",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -440,7 +440,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                           formDateProspect(),
                           Text(
-                            "Lead Code",
+                            "Kode Lead",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -448,7 +448,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                           formLeadCode(),
                           Text(
-                            "Lead Name",
+                            "Nama Lead",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -456,7 +456,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                           formLeadName(),
                           Text(
-                            "Sales Name",
+                            "Nama Sales",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -464,7 +464,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                           formSalesName(),
                           Text(
-                            "Prospect Source (*)",
+                            "Sumber Prospek (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -490,7 +490,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Item Class 1 (*)",
+                            "Jenis Kendaraan (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -498,7 +498,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                           formSelectItemClass1(),
                           Text(
-                            "Item Model (*)",
+                            "Model Kendaraan (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -506,7 +506,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                           formSelectItemModel(),
                           Text(
-                            "Item Type (*)",
+                            "Tipe Kendaraan (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -514,7 +514,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                           formSelectItemType(),
                           Text(
-                            "Item Code",
+                            "Kode Kendaraan",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -871,7 +871,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Source",
+                      hintText: "Pilih Sumber",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -926,7 +926,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Class 1",
+                      hintText: "Pilih Jenis",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -981,7 +981,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Item Model",
+                      hintText: "Pilih Model",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1036,7 +1036,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Item Type",
+                      hintText: "Pilih Tipe",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1091,7 +1091,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Item Code",
+                      hintText: "Pilih Kode",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1142,7 +1142,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Item Code"),
+                              Text("Kode Kendaraan"),
                               Text(
                                 "${state.value.data[0].itemCode}",
                                 style: TextStyle(
@@ -1156,7 +1156,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
                           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Item Model"),
+                              Text("Model Kendaraan"),
                               Text("${state.value.data[0].itemModel}"),
                             ],
                           ),
@@ -1165,7 +1165,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
                           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Year"),
+                              Text("Tahun"),
                               Text("${value.tahun}"),
                             ],
                           ),
@@ -1174,7 +1174,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
                           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Color"),
+                              Text("Warna"),
                               Text("${value.namaWarna}"),
                             ],
                           ),
@@ -1184,7 +1184,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Off The Road"),
+                              Text("Harga Off The Road"),
                               Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].offtr)}"),
                             ],
                           ),
@@ -1194,7 +1194,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("On The Road"),
+                              Text("Harga On The Road"),
                               Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}"),
                             ],
                           ),
@@ -1203,7 +1203,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
                           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Stock"),
+                              Text("Stok "),
                               Text("${value.quantity}"),
                             ],
                           ),
