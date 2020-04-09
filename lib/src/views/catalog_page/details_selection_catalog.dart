@@ -11,9 +11,11 @@ import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
+import 'package:salles_tools/src/views/calculator_page/calculator_screen.dart';
 import 'package:salles_tools/src/views/calculator_page/calculator_stepper.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_accessories.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_gallery.dart';
+import 'package:salles_tools/src/views/catalog_page/catalog_price_list.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_review.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_specifications.dart';
 import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
@@ -132,58 +134,54 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
             ],
           ),
         ),
-        bottomNavigationBar: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 6,
-              child: ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {
-                    _onBookTestDrive();
-                  },
-                  child: Text(
-                    'Booking Test Drive',
-                    style: TextStyle(
-                      color: Colors.white,
-                      letterSpacing: 1.0,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  _onBookTestDrive();
+                },
+                child: new Container(
+                  width: MediaQuery.of(context).size.width / 1.6,
+                  height: 40.0,
+                  decoration: new BoxDecoration(
+                    color: HexColor('#C61818'),
+                    borderRadius: new BorderRadius.circular(18.0),
+                  ),
+                  child: new Center(
+                    child: new Text(
+                      'Booking Test Drive',
+                      style: new TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700),
                     ),
                   ),
-                  color: HexColor('#C61818'),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {
-                    _onCalculate();
-                  },
-                  child: Icon(FontAwesome.calculator,
-                      color: Colors.white, size: 30),
-                  color: HexColor('#212120'),
+              SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  _onCalculate();
+                },
+                child: Container(
+                  height: 60,
+                  child: Image.asset("assets/icons/calculator_icon.png"),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: ButtonTheme(
-                height: 60,
-                child: RaisedButton(
-                  onPressed: () {
-                    _onCheckPriceList();
-                  },
-                  child: Icon(FontAwesome5.money_bill_alt,
-                      color: Colors.white, size: 30),
-                  color: HexColor('#212120'),
+              GestureDetector(
+                onTap: () {
+                  _onCheckPriceList();
+                },
+                child: Container(
+                  height: 60,
+                  child: Image.asset("assets/icons/price_list_icon.png"),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
