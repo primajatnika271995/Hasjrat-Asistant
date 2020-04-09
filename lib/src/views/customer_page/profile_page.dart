@@ -67,6 +67,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: <Widget>[
             cardCode(),
             Divider(),
+            cardName(),
+            Divider(),
             emailCustomer(),
             Divider(),
             nikCustomer(),
@@ -150,6 +152,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
             flex: 6,
             child: Text(
               "${datum.cardCode}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget cardName() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Nama",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${datum.cardName}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,

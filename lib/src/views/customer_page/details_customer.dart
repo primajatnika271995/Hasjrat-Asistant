@@ -21,49 +21,41 @@ class _CustomerDetailsViewState extends State<CustomerDetailsView> {
       length: _tabLength,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(250),
-          child: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 1,
-            titleSpacing: 0,
-            title: Text(
-              "Detail Customer",
-              style: TextStyle(
-                color: Colors.black,
-                letterSpacing: 0.5,
-              ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 1,
+          titleSpacing: 0,
+          title: Text(
+            "Detail Customer",
+            style: TextStyle(
+              color: Colors.black,
+              letterSpacing: 0.5,
             ),
-            iconTheme: IconThemeData(color: Colors.black),
-            flexibleSpace: Column(
-              children: <Widget>[
-                profileImage(),
-              ],
-            ),
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  text: "Profile",
-                ),
-                Tab(
-                  text: "Vehicle",
-                ),
-              ],
-              indicatorColor: HexColor('#C61818'),
-              labelColor: HexColor('#C61818'),
-              labelStyle: TextStyle(
-                letterSpacing: 1.0,
-                fontSize: 15,
-                color: HexColor('#C61818'),
+          ),
+          iconTheme: IconThemeData(color: Colors.black),
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                text: "Profile",
               ),
-              unselectedLabelColor: HexColor('#212120'),
-              unselectedLabelStyle: TextStyle(
-                color: HexColor('#212120'),
-                letterSpacing: 1.0,
-                fontSize: 15,
+              Tab(
+                text: "Vehicle",
               ),
-              isScrollable: false,
+            ],
+            indicatorColor: HexColor('#C61818'),
+            labelColor: HexColor('#C61818'),
+            labelStyle: TextStyle(
+              letterSpacing: 1.0,
+              fontSize: 15,
+              color: HexColor('#C61818'),
             ),
+            unselectedLabelColor: HexColor('#212120'),
+            unselectedLabelStyle: TextStyle(
+              color: HexColor('#212120'),
+              letterSpacing: 1.0,
+              fontSize: 15,
+            ),
+            isScrollable: false,
           ),
         ),
         body: TabBarView(

@@ -414,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: AppTheme.namaSalesStyle,
                           ),
                           Text(
-                            "Hasjrat Abadi $_branchName",
+                            "Hasjrat Toyota $_branchName",
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.white,
@@ -440,7 +440,6 @@ class _HomeScreenState extends State<HomeScreen> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
           childAspectRatio: 0.7,
-          mainAxisSpacing: 4.0,
           crossAxisSpacing: 1.0,
         ),
         delegate: SliverChildBuilderDelegate(
