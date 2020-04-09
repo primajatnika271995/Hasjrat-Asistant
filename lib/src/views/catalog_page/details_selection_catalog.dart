@@ -3,19 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
+import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
 import 'package:salles_tools/src/models/catalog_model.dart' as catalogModel;
 import 'package:salles_tools/src/services/booking_drive_service.dart';
+import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
-import 'package:salles_tools/src/views/calculator_page/calculator_screen.dart';
+import 'package:salles_tools/src/views/calculator_page/calculator_stepper.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_accessories.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_gallery.dart';
-import 'package:salles_tools/src/views/catalog_page/catalog_price_list.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_review.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_specifications.dart';
 import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
+import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
 
 class DetailsCatalogView extends StatefulWidget {
   final String heroName;
@@ -53,9 +55,9 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
   void _onCalculate() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => BlocProvider<FinanceBloc>(
+        pageBuilder: (_, __, ___) => BlocProvider(
           create: (context) => FinanceBloc(FinanceService()),
-          child: CalculatorScreen(),
+          child: CalculatorStepperScreen(),
         ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
@@ -71,7 +73,10 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
   void _onCheckPriceList() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => PriceListCatalogView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => DmsBloc(DmsService()),
+          child: PriceListView(),
+        ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
