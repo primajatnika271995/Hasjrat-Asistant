@@ -8,7 +8,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_bloc.dart';
 import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_event.dart';
@@ -18,6 +17,9 @@ import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class AddActivityReportView extends StatefulWidget {
   @override
@@ -25,6 +27,14 @@ class AddActivityReportView extends StatefulWidget {
 }
 
 class _AddActivityReportViewState extends State<AddActivityReportView> {
+  bool _hasSpeech = false;
+  double level = 0.0;
+  String lastWords = "";
+  String lastError = "";
+  String lastStatus = "";
+  String _currentLocaleId = "in_ID";
+  final SpeechToText speech = SpeechToText();
+
   Location location = new Location();
 
   var _formKey = GlobalKey<FormState>();
@@ -121,6 +131,79 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
     });
   }
 
+  Future<void> initSpeechState() async {
+    bool hasSpeech = await speech.initialize(
+        onError: errorListener, onStatus: statusListener);
+    if (hasSpeech) {
+      _currentLocaleId = "in_ID";
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _hasSpeech = hasSpeech;
+    });
+  }
+
+  void startListening() {
+    lastWords = "";
+    lastError = "";
+    speech.listen(
+        onResult: resultListener,
+        listenFor: Duration(seconds: 10),
+        localeId: _currentLocaleId,
+        onSoundLevelChange: soundLevelListener,
+        cancelOnError: true,
+        partialResults: true);
+    setState(() {});
+  }
+
+  void stopListening() {
+    speech.stop();
+    setState(() {
+      level = 0.0;
+    });
+  }
+
+  void cancelListening() {
+    speech.cancel();
+    setState(() {
+      level = 0.0;
+    });
+  }
+
+  void resultListener(SpeechRecognitionResult result) {
+    setState(() {
+      lastWords = "${result.recognizedWords} - ${result.finalResult}";
+      notesCtrl.value = TextEditingValue(text: result.recognizedWords);
+    });
+  }
+
+  void soundLevelListener(double level) {
+    setState(() {
+      this.level = level;
+    });
+  }
+
+  void errorListener(SpeechRecognitionError error) {
+    setState(() {
+      lastError = "${error.errorMsg} - ${error.permanent}";
+    });
+  }
+
+  void statusListener(String status) {
+    setState(() {
+      lastStatus = "$status";
+    });
+  }
+
+  _switchLang(selectedVal) {
+    setState(() {
+      _currentLocaleId = selectedVal;
+    });
+    print(selectedVal);
+  }
+
   void onCreateActivityReport() {
     if (_formKey.currentState.validate() || image1 == null) {
       DateTime parseDate = DateTime.parse(dateSelected.text);
@@ -138,6 +221,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
   void initState() {
     // TODO: implement initState
     getCurrentLocation();
+    initSpeechState();
     super.initState();
   }
 
@@ -328,6 +412,12 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                   ),
                 ),
                 formNote(),
+                speech.isListening
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Text("I'm listening..."),
+                    )
+                    : SizedBox(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Container(
@@ -583,43 +673,65 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
   }
 
   Widget formNote() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 15.0,
-              spreadRadius: 0.0,
-            )
-          ],
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
-            child: Theme(
-              data: ThemeData(hintColor: Colors.transparent),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Notes",
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 13,
+    return Stack(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 15.0,
+                  spreadRadius: 0.0,
+                )
+              ],
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+                child: Theme(
+                  data: ThemeData(hintColor: Colors.transparent),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Notes",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: notesCtrl,
+                    maxLines: 6,
+                    focusNode: noteFocus,
                   ),
                 ),
-                controller: notesCtrl,
-                maxLines: 6,
-                focusNode: noteFocus,
               ),
             ),
           ),
         ),
-      ),
+        Positioned(
+          right: 15,
+          bottom: 10,
+          child: IconButton(
+            onPressed: !_hasSpeech || speech.isListening
+                ? null
+                : startListening,
+            icon: Icon(Icons.mic),
+          ),
+        ),
+        speech.isListening ? Positioned(
+          right: 15,
+          bottom: 40,
+          child: IconButton(
+            onPressed: cancelListening,
+            icon: Icon(Icons.mic_off),
+          ),
+        ) : SizedBox(),
+      ],
     );
   }
 
