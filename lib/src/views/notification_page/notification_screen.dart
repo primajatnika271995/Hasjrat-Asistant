@@ -128,25 +128,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 onPressed: () {},
               ),
             ),
-            ListTile(
-              onTap: null,
-              title: Text("Activity"),
-              subtitle: Text(
-                "Aktivitas Customer-mu!",
-                style: TextStyle(
-                  fontSize: 11,
-                ),
-              ),
-              leading: Icon(
-                Icons.notifications_none,
-                size: 35,
-                color: Colors.blueAccent,
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.navigate_next),
-                onPressed: () {},
-              ),
-            ),
           ],
         ),
       ),
