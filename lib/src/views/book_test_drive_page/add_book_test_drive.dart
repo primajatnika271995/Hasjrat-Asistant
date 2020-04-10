@@ -149,7 +149,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
       branchNameCtrl.text = _branchName;
       outletNameCtrl.text = _outletName;
     });
-
   }
 
   void onSaveBooking() {
@@ -184,9 +183,13 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   void initState() {
     // TODO: implement initState
     // ignore: close_sinks
-
     _getSharedPrefferences();
-    
+    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
+    bookingDriveBloc.add(FetchTestDriveCar(ListCarBookingPost(
+      branchCode: _branchId,
+      outletCode: _outletId,
+    )));
+
     super.initState();
   }
 
@@ -220,6 +223,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             }
 
             if (state is CarListSuccess) {
+              print("car list booking success");
               state.value.forEach((f) {
                 vehicleList.add(SelectorVehicleModel(
                   itemModel: f.itemModel,

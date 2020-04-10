@@ -19,13 +19,17 @@ class BookingDriveBloc extends Bloc<BookingDriveEvent, BookingDriveState> {
   Stream<BookingDriveState> mapEventToState(BookingDriveEvent event) async* {
     if (event is FetchTestDriveCar) {
       yield BookingDriveLoading();
-
       try {
         List<TestDriveVehicleModel> value = await _bookingDriveService.fetchCarList(event.value);
-        yield BookingDriveDisposeLoading();
-        yield CarListSuccess(value);
+        if (value == null || value.isEmpty) {
+          yield BookingDriveDisposeLoading();
+          yield CarListFailed();
+        } else {
+          yield BookingDriveDisposeLoading();
+          yield CarListSuccess(value);
+        }
       } catch (e) {
-        log.warning(e.toString());
+        log.warning("Error : ${e.toString()}");
         yield CarListFailed();
       }
     }

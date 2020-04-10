@@ -35,7 +35,6 @@ class BookingDriveService {
     );
 
     log.info(response.statusCode);
-    log.info(response.realUri);
     if (response.statusCode == 200) {
       return compute(testDriveVehicleModelFromJson, json.encode(response.data));
     }
