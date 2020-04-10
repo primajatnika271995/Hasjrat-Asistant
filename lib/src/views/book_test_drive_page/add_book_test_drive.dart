@@ -152,15 +152,14 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   }
 
   void onSaveBooking() {
-    DateTime date = DateFormat.jm().parse(timeOfDay.format(context));
+    DateTime date = DateFormat.Hm().parse(timeOfDay.format(context));
     log.info(DateFormat("HH:mm:ss").format(date));
 
     var dateAndTime =
         "${dateFormatConvert.format(_dateTime).toString()} ${DateFormat("HH:mm:ss").format(date)}";
+    log.info("tanggal booking = $dateAndTime");
     DateTime parseDate = DateTime.parse(dateAndTime);
-    log.info(parseDate.millisecondsSinceEpoch);
-    log.info(dateAndTime);
-    log.info(DateTime.now());
+    log.info("konversi tanggal = ${parseDate.millisecondsSinceEpoch}");
 
     if (_formKey.currentState.validate()) {
       // ignore: close_sinks
