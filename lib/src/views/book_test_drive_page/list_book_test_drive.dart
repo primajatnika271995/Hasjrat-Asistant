@@ -42,7 +42,9 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
           );
         },
       ),
-    );
+    ).then((f) {
+      _getPreferences();
+    });
   }
 
   Future<Null> _selectedDate(BuildContext context) async {
@@ -81,7 +83,7 @@ class _BookTestDriveListViewState extends State<BookTestDriveListView> {
     bookingDriveBloc.add(FetchListBookingDrive(ListBookingDrivePost(
       branchCode: salesBranchCode,
       outletCode: salesOutletCode,
-      dateAfter: dateFormat.format(DateTime.now()).toString(),
+      dateAfter: dateFormat.format(DateTime.now().add(Duration(days: 7))).toString(),
       dateBefore: dateFormat.format(DateTime.now()).toString(),
     )));
   }

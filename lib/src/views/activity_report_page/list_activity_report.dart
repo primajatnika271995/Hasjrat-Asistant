@@ -40,7 +40,9 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
           );
         },
       ),
-    );
+    ).then((f) {
+      getListActivityReport();
+    });
   }
 
   void _onViewDetailsActivityReport(Datum value) {
