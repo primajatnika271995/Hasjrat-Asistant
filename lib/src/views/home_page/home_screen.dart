@@ -349,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SliverToBoxAdapter(
               child: Container(
-                margin: EdgeInsets.only(top: 20, left: 8, right: 8),
+                margin: EdgeInsets.only(top: 10, left: 8, right: 8, bottom: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -358,20 +358,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 0.7,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Text(
-                        'See All',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: HexColor('#C61818'),
-                          letterSpacing: 0.7,
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),
