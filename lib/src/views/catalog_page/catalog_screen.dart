@@ -18,9 +18,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
   void _onSeeDetails(String heroName) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => DetailsCatalogView(
-          heroName: heroName,
-        ),
+        pageBuilder: (_, __, ___) => DetailsCatalogView(),
         transitionDuration: Duration(milliseconds: 750),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
@@ -152,10 +150,11 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                           ),
                                           color: Color(0xffe5e6ea),
                                         ),
-                                        child: data.colours[0].image == null
-                                            ? Image.network(
-                                                "https://www.toyota.astra.co.id/files/thumb/92b0e7104a1238b/872/617/fit")
-                                            : Image.network("${data.colours[0].image}")),
+                                        child: data.colours.isEmpty
+                                            ? Image.asset(
+                                                "assets/icons/no_data.png")
+                                            : Image.network(
+                                                "${data.colours[0].image}")),
                                   ),
                                 ),
                                 Padding(

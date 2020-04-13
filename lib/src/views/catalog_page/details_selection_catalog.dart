@@ -22,9 +22,8 @@ import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
 import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
 
 class DetailsCatalogView extends StatefulWidget {
-  final String heroName;
   final catalogModel.Datum data;
-  DetailsCatalogView({this.heroName, this.data});
+  DetailsCatalogView({this.data});
 
   @override
   _DetailsCatalogViewState createState() => _DetailsCatalogViewState(this.data);
@@ -114,7 +113,6 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           headerSliverBuilder: (context, bool innerBoxIsScrolled) {
             return <Widget>[
               MainViewDetailsVehicle(
-                heroName: widget.heroName,
                 dataCatalog: data,
               ),
               TabViewDetailsVehicle(),
@@ -190,8 +188,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
 
 class MainViewDetailsVehicle extends StatefulWidget {
   final catalogModel.Datum dataCatalog;
-  final String heroName;
-  MainViewDetailsVehicle({this.heroName, this.dataCatalog});
+  MainViewDetailsVehicle({this.dataCatalog});
 
   @override
   _MainViewDetailsVehicleState createState() =>
@@ -233,7 +230,9 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                       topRight: Radius.circular(9.0),
                     ),
                   ),
-                  child: Image.network("${data.colours[0].image}"),
+                  child: data.colours.isEmpty
+                      ? Image.asset("assets/icons/no_data.png")
+                      : Image.network("${data.colours[0].image}"),
                 ),
               ),
             ),
@@ -295,7 +294,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                         state.didChange(newVal);
                       });
                     },
-                    items: _colorList == null
+                    items: _colorList == null || _colorList.isEmpty
                         ? null
                         : _colorList.toSet().toList().map((String val) {
                             return DropdownMenuItem<String>(
