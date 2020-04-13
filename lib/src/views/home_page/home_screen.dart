@@ -60,7 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
     "Reminder",
     "Book\nService",
     "Book\nTest Drive",
-    "More",
+    "Knowledge\nBase",
+    "Activity\nReport",
+    "Price List",
+    "Promotion",
   ];
 
   List<String> _moreMenuName = [
@@ -78,7 +81,10 @@ class _HomeScreenState extends State<HomeScreen> {
     "assets/icons/reminder_icon.png",
     "assets/icons/book_service_icon.png",
     "assets/icons/book_test_drive_icon.png",
-    "assets/icons/more_icon.png",
+    "assets/icons/knowledge_base_icon.png",
+    "assets/icons/activity_report_icon.png",
+    "assets/icons/price_list_icon.png",
+    "assets/icons/promotion_icon.png",
   ];
 
   List<String> _assetsMoreMenu = [
@@ -107,6 +113,22 @@ class _HomeScreenState extends State<HomeScreen> {
     BlocProvider(
       create: (context) => BookingDriveBloc(BookingDriveService()),
       child: BookTestDriveListView(),
+    ),
+    BlocProvider(
+      create: (context) => KnowledgeBaseBloc(KnowledgeBaseService()),
+      child: KnowledgeBaseScreen(),
+    ),
+    BlocProvider(
+      create: (context) => ActivityReportBloc(ActivityReportService()),
+      child: ActivityReportListView(),
+    ),
+    BlocProvider(
+      create: (context) => DmsBloc(DmsService()),
+      child: PriceListView(),
+    ),
+    BlocProvider(
+      create: (context) => DmsBloc(DmsService()),
+      child: PromotionListScreen(),
     ),
   ];
 
@@ -439,7 +461,7 @@ class _HomeScreenState extends State<HomeScreen> {
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
-          childAspectRatio: 0.8,
+          childAspectRatio: 0.9,
           crossAxisSpacing: 1.0,
         ),
         delegate: SliverChildBuilderDelegate(
@@ -448,23 +470,19 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white,
               child: InkWell(
                 onTap: () {
-                  if (index == 7) {
-                    _showMoreMenu();
-                  } else {
-                    Navigator.of(context).push(
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => _menuNavigation[index],
-                        transitionDuration: Duration(milliseconds: 150),
-                        transitionsBuilder:
-                            (_, Animation<double> animation, __, Widget child) {
-                          return Opacity(
-                            opacity: animation.value,
-                            child: child,
-                          );
-                        },
-                      ),
-                    );
-                  }
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => _menuNavigation[index],
+                      transitionDuration: Duration(milliseconds: 150),
+                      transitionsBuilder:
+                          (_, Animation<double> animation, __, Widget child) {
+                        return Opacity(
+                          opacity: animation.value,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 5),
@@ -473,7 +491,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       Image.asset(
                         _assetsMenu[index],
-                        height: 70,
+                        height: 60,
                       ),
                       Flexible(
                         child: Text(
@@ -491,7 +509,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           },
-          childCount: 8,
+          childCount: 11,
         ),
       ),
     );
