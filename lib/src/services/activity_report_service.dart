@@ -20,9 +20,14 @@ class ActivityReportService {
     _dio.interceptors.add(DioLoggingInterceptors(_dio));
   }
 
-  Future activityReport() async {
+  Future activityReport(String branchCode, String outletCode) async {
     try {
-      final response = await _dio.post(UriApi.activityReportListUri);
+      final response = await _dio.post(UriApi.activityReportListUri,
+          data: {
+            "branchCode": branchCode,
+            "outletCode": outletCode,
+          },
+      );
 
       log.info(response.statusCode);
       return compute(activityReportModelFromJson, json.encode(response.data));
@@ -42,6 +47,8 @@ class ActivityReportService {
         "longitude": 0,
         "alamat": value.alamat,
         "description": value.description,
+        "branchCode": value.branchCode,
+        "outletCode": value.outletCode,
         "files": [
           value.idContent,
         ],
@@ -80,11 +87,13 @@ class ActivityReportService {
 class ActivityReportPost {
   String title;
   String idContent;
+  String branchCode;
+  String outletCode;
   dynamic latitude;
   dynamic longitude;
   String alamat;
   String description;
   int createdInMillisecond;
 
-  ActivityReportPost({this.title, this.idContent, this.latitude, this.longitude, this.alamat, this.description, this.createdInMillisecond});
+  ActivityReportPost({this.title, this.idContent, this.branchCode, this.outletCode, this.latitude, this.longitude, this.alamat, this.description, this.createdInMillisecond});
 }

@@ -10,8 +10,12 @@ class ActivityReportEvent extends Equatable {
 }
 
 class FetchActivityReport extends ActivityReportEvent {
+  final String branchCode;
+  final String outletCode;
+  FetchActivityReport(this.branchCode, this.outletCode);
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [branchCode, outletCode];
 }
 
 class UploadActivityReport extends ActivityReportEvent {

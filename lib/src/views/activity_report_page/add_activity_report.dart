@@ -15,6 +15,7 @@ import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_state
 import 'package:salles_tools/src/services/activity_report_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
@@ -34,6 +35,9 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
   String lastStatus = "";
   String _currentLocaleId = "in_ID";
   final SpeechToText speech = SpeechToText();
+
+  String branchCode;
+  String outletCode;
 
   Location location = new Location();
 
@@ -197,11 +201,10 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
     });
   }
 
-  _switchLang(selectedVal) {
-    setState(() {
-      _currentLocaleId = selectedVal;
-    });
-    print(selectedVal);
+  void getPreferences() async {
+    outletCode = await SharedPreferencesHelper.getSalesOutletId();
+    branchCode = await SharedPreferencesHelper.getSalesBrachId();
+    setState(() {});
   }
 
   void onCreateActivityReport() {
@@ -221,6 +224,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
   void initState() {
     // TODO: implement initState
     getCurrentLocation();
+    getPreferences();
     initSpeechState();
     super.initState();
   }
@@ -307,6 +311,8 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                 description: notesCtrl.text,
                 createdInMillisecond: parseDate.millisecondsSinceEpoch,
                 idContent: state.value.id,
+                outletCode: outletCode,
+                branchCode: branchCode,
             )));
           }
 

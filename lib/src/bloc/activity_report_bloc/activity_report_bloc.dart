@@ -23,7 +23,7 @@ class ActivityReportBloc extends Bloc<ActivityReportEvent, ActivityReportState> 
       yield ActivityReportLoading();
 
       try {
-        ActivityReportModel value = await _activityReportService.activityReport();
+        ActivityReportModel value = await _activityReportService.activityReport(event.branchCode, event.outletCode);
 
         if (value.data.isEmpty || value.data == null) {
           yield ActivityReportDisposeLoading();

@@ -7,6 +7,7 @@ import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_state
 import 'package:salles_tools/src/models/activity_report_model.dart';
 import 'package:salles_tools/src/services/activity_report_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/activity_report_page/add_activity_report.dart';
 import 'package:salles_tools/src/views/activity_report_page/details_activity_report.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
@@ -20,6 +21,9 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
   var searchCtrl = new TextEditingController();
   
   var dateFormat = DateFormat("yyyy/MM/dd");
+
+  String outletCode;
+  String branchCode;
 
   void _onAddActivityReport() {
     Navigator.of(context).push(
@@ -56,12 +60,23 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
     );
   }
 
+  void getListActivityReport() async {
+    branchCode = await SharedPreferencesHelper.getSalesBrachId();
+    outletCode = await SharedPreferencesHelper.getSalesOutletId();
+    setState(() {});
+
+    // ignore: close_sinks
+    final activityReportBloc = BlocProvider.of<ActivityReportBloc>(context);
+    activityReportBloc.add(FetchActivityReport(
+      branchCode,
+      outletCode,
+    ));
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    // ignore: close_sinks
-    final activityReportBloc = BlocProvider.of<ActivityReportBloc>(context);
-    activityReportBloc.add(FetchActivityReport());
+    getListActivityReport();
     super.initState();
   }
   
