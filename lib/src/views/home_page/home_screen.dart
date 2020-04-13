@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
             gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
-                  childAspectRatio: 0.6,
+                  childAspectRatio: 0.8,
                   mainAxisSpacing: 4.0,
                   crossAxisSpacing: 1.0,
                 ),
@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: <Widget>[
                         Image.asset(
                           _assetsMoreMenu[index],
-                          height: 100,
+                          height: 70,
                         ),
                         Flexible(
                           child: Text(
@@ -439,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> {
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
-          childAspectRatio: 0.7,
+          childAspectRatio: 0.8,
           crossAxisSpacing: 1.0,
         ),
         delegate: SliverChildBuilderDelegate(
@@ -473,7 +473,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       Image.asset(
                         _assetsMenu[index],
-                        height: 100,
+                        height: 70,
                       ),
                       Flexible(
                         child: Text(

@@ -34,6 +34,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
 
   @override
   void initState() {
+    // ignore: close_sinks
     final catalogBLoc = BlocProvider.of<CatalogBloc>(context);
     catalogBLoc.add(FetchCatalogList());
     super.initState();

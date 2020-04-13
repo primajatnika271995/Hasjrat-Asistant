@@ -168,7 +168,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
                 },
                 child: Container(
                   height: 60,
-                  child: Image.asset("assets/icons/calculator_icon.png"),
+                  child: Image.asset("assets/icons/old_calculator_icon.png"),
                 ),
               ),
               GestureDetector(
@@ -177,7 +177,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
                 },
                 child: Container(
                   height: 60,
-                  child: Image.asset("assets/icons/price_list_icon.png"),
+                  child: Image.asset("assets/icons/old_price_list_icon.png"),
                 ),
               ),
             ],
