@@ -139,6 +139,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     _outletName = await SharedPreferencesHelper.getSalesOutlet();
     _outletId = await SharedPreferencesHelper.getSalesOutletId();
 
+    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
+    bookingDriveBloc.add(FetchTestDriveCar(ListCarBookingPost(
+      branchCode: _branchId,
+      outletCode: _outletId,
+    )));
+
     setState(() {
       branchNameCtrl.text = _branchName;
       outletNameCtrl.text = _outletName;
@@ -146,15 +152,14 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   }
 
   void onSaveBooking() {
-    DateTime date = DateFormat.jm().parse(timeOfDay.format(context));
+    DateTime date = DateFormat.Hm().parse(timeOfDay.format(context));
     log.info(DateFormat("HH:mm:ss").format(date));
 
     var dateAndTime =
         "${dateFormatConvert.format(_dateTime).toString()} ${DateFormat("HH:mm:ss").format(date)}";
+    log.info("tanggal booking = $dateAndTime");
     DateTime parseDate = DateTime.parse(dateAndTime);
-    log.info(parseDate.millisecondsSinceEpoch);
-    log.info(dateAndTime);
-    log.info(DateTime.now());
+    log.info("konversi tanggal = ${parseDate.millisecondsSinceEpoch}");
 
     if (_formKey.currentState.validate()) {
       // ignore: close_sinks
@@ -177,10 +182,13 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   void initState() {
     // TODO: implement initState
     // ignore: close_sinks
-    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
-    bookingDriveBloc.add(FetchTestDriveCar());
-
     _getSharedPrefferences();
+    final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
+    bookingDriveBloc.add(FetchTestDriveCar(ListCarBookingPost(
+      branchCode: _branchId,
+      outletCode: _outletId,
+    )));
+
     super.initState();
   }
 
@@ -214,6 +222,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             }
 
             if (state is CarListSuccess) {
+              print("car list booking success");
               state.value.forEach((f) {
                 vehicleList.add(SelectorVehicleModel(
                   itemModel: f.itemModel,

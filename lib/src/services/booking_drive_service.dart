@@ -20,7 +20,7 @@ class BookingDriveService {
     _dio.interceptors.add(DioLoggingInterceptors(_dio));
   }
 
-  Future fetchCarList() async {
+  Future fetchCarList(ListCarBookingPost value) async {
     final response = await _dio.get(
       UriApi.testDriveCarUri,
       options: Options(
@@ -28,6 +28,10 @@ class BookingDriveService {
           'Content-Type': 'application/json',
         },
       ),
+      queryParameters: {
+        "branch" : value.branchCode,
+        "outlet" : value.outletCode,
+      }
     );
 
     log.info(response.statusCode);
@@ -79,7 +83,8 @@ class BookingDriveService {
     );
     log.info(response.statusCode);
     if (response.statusCode == 200) {
-      return compute(bookingDriveScheduleModelFromJson, json.encode(response.data));
+      return compute(
+          bookingDriveScheduleModelFromJson, json.encode(response.data));
     }
   }
 }
@@ -101,6 +106,16 @@ class BookingTestDrivePost {
     this.outletCode,
     this.carId,
     this.schedule,
+  });
+}
+
+class ListCarBookingPost {
+  String branchCode;
+  String outletCode;
+
+  ListCarBookingPost({
+    this.branchCode,
+    this.outletCode,
   });
 }
 

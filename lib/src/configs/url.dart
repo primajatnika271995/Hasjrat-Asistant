@@ -69,7 +69,7 @@ class UriApi {
 
   static const String registerBookingTestDriveUri = "/sales-tools-booking-service/api/v2/test-drive/booking/register";
 
-  static const String testDriveCarUri = "/sales-tools-booking-service/api/v2/test-drive/cars/list";
+  static const String testDriveCarUri = "/sales-tools-booking-service/api/v2/test-drive/cars/list/ByBranchCodeAndOutletOutlet";
 
   static const String listScheduleBookingDriveUri = "/sales-tools-booking-service/api/v2/test-drive/booking/listSchedule";
 

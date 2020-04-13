@@ -229,7 +229,7 @@ class SlidableBookTestDriveView extends StatelessWidget {
   final Function callback;
   final BookingDriveScheduleModel value;
   final int index;
-  final dateFormat = DateFormat("dd-MM-yyyy");
+  final dateFormat = DateFormat("dd-MM-yyyy hh:mm");
   SlidableBookTestDriveView({Key key, this.callback, this.index, this.value})
       : super(key: key);
 
