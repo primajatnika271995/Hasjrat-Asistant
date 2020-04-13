@@ -54,7 +54,11 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
             kecamatanCustomer(),
             Divider(),
             locationCustomer(),
+            Divider(),
             dropdownContext(),
+            SizedBox(
+              height: 20,
+            ),
             spkButton(),
             callButton(),
           ],
@@ -259,7 +263,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 6,
             child: Text(
-              "${widget.value.address1}",
+              widget.value.address1.isNotEmpty ? "${widget.value.address1}" : "-",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -291,7 +295,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 6,
             child: Text(
-              "${widget.value.address2}",
+              widget.value.address2.isNotEmpty ? "${widget.value.address2}" : "-",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -323,7 +327,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 6,
             child: Text(
-              "${widget.value.address3}",
+              widget.value.address3.isNotEmpty ? "${widget.value.address3}" : "-",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -355,7 +359,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 6,
             child: Text(
-              "${widget.value.location}",
+              widget.value.location == "DK" ? "Dalam Kota" : "Luar Kota",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -369,44 +373,32 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget dropdownContext() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-      child: FormField(
-        builder: (FormFieldState state) {
-          return InputDecorator(
-            decoration: InputDecoration(
-              hintText: 'Context Type',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              contentPadding:
-              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: _currentContextType,
-                hint: Text('Context Type'),
-                isDense: true,
-                onChanged: (String newVal) {
-                  setState(() {
-                    _currentContextType = newVal;
-                    state.didChange(newVal);
-                  });
-                },
-                items: ["Prospect", "Hot Prospect", "Context"].map((String val) {
-                  return DropdownMenuItem<String>(
-                    value: val,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(val),
-                      ],
-                    ),
-                  );
-                }).toList(),
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Status",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
               ),
             ),
-          );
-        },
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "$_currentContextType",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

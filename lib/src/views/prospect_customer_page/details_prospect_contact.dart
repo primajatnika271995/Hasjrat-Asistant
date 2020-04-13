@@ -77,7 +77,11 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
             locationCustomer(),
             Divider(),
             jobCustomer(),
+            Divider(),
             dropdownContext(),
+            SizedBox(
+              height: 20,
+            ),
             prospectButton(),
             callButton(),
           ],
@@ -186,7 +190,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 6,
             child: Text(
-              "${widget.value.noKtp}",
+              widget.value.noKtp != null ? "${widget.value.noKtp}" : "-",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -424,44 +428,32 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
 
   Widget dropdownContext() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-      child: FormField(
-        builder: (FormFieldState state) {
-          return InputDecorator(
-            decoration: InputDecoration(
-              hintText: 'Context Type',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              contentPadding:
-              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: _currentContextType,
-                hint: Text('Context Type'),
-                isDense: true,
-                onChanged: (String newVal) {
-                  setState(() {
-                    _currentContextType = newVal;
-                    state.didChange(newVal);
-                  });
-                },
-                items: ["Prospect", "Hot Prospect", "Context"].map((String val) {
-                  return DropdownMenuItem<String>(
-                    value: val,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(val),
-                      ],
-                    ),
-                  );
-                }).toList(),
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Status",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
               ),
             ),
-          );
-        },
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "$_currentContextType",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
