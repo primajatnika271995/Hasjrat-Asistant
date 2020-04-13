@@ -134,6 +134,7 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
                             child: Image.network(
                                 "${data.url}",
                                 fit: BoxFit.cover,
+                                height: 200,
                                 width: 1000.0,
                             ),
                           ),

@@ -94,7 +94,7 @@ class _NotificationBirthdayViewState extends State<NotificationBirthdayView> {
             }
 
             if (state is CustomerSuccess) {
-              if (state.value.data.where((f) => f.dob.month == dateNow.month && f.dob.day == dateNow.day).toList().isEmpty) {
+              if (state.value.data.where((f) => f.dob.month == dateNow.month).toList().isEmpty) {
                 return Center(
                   child: Padding(
                     padding: EdgeInsets.only(top: 100),
@@ -108,7 +108,7 @@ class _NotificationBirthdayViewState extends State<NotificationBirthdayView> {
               } else {
                 return ListView.builder(
                   itemBuilder: (context, index) {
-                    var data = state.value.data.where((f) => f.dob.month == dateNow.month && f.dob.day == dateNow.day).toList()[index];
+                    var data = state.value.data.where((f) => f.dob.month == dateNow.month).toList()[index];
                     return ListTile(
                       title: Text("${data.cardName}"),
                       subtitle: Text("${formatDob.format(data.dob)}"),
@@ -123,7 +123,7 @@ class _NotificationBirthdayViewState extends State<NotificationBirthdayView> {
                       ),
                     );
                   },
-                  itemCount: state.value.data.where((f) => f.dob.month == dateNow.month && f.dob.day == dateNow.day).toList().length,
+                  itemCount: state.value.data.where((f) => f.dob.month == dateNow.month).toList().length,
                 );
               }
             }

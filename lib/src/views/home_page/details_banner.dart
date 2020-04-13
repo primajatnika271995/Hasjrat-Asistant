@@ -41,6 +41,7 @@ class _BannerDetailsViewState extends State<BannerDetailsView> {
               "${widget.data.url}",
               width: screenWidth(context),
               height: 200,
+              fit: BoxFit.cover,
             ),
           ),
           Padding(
