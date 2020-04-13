@@ -318,11 +318,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const EdgeInsets.only(top: 15),
                                           child: CircleAvatar(
                                             radius: 65,
-                                            backgroundColor:
-                                                Colors.indigoAccent,
+                                            backgroundColor: Colors.transparent,
                                             foregroundColor: Colors.white,
                                             backgroundImage: NetworkImage(
-                                                "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
+                                                "${state.salesData.imageUrl}",
+                                            ),
                                           ),
                                         ),
                                       ),
