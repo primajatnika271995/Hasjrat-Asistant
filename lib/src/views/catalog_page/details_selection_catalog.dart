@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
@@ -11,29 +9,29 @@ import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/add_book_test_drive.dart';
-import 'package:salles_tools/src/views/calculator_page/calculator_screen.dart';
 import 'package:salles_tools/src/views/calculator_page/calculator_stepper.dart';
-import 'package:salles_tools/src/views/catalog_page/catalog_accessories.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_gallery.dart';
-import 'package:salles_tools/src/views/catalog_page/catalog_price_list.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_review.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_specifications.dart';
 import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
 import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
 
 class DetailsCatalogView extends StatefulWidget {
+  final String heroName;
   final catalogModel.Datum data;
-  DetailsCatalogView({this.data});
+  DetailsCatalogView({this.heroName, this.data});
 
   @override
-  _DetailsCatalogViewState createState() => _DetailsCatalogViewState(this.data);
+  _DetailsCatalogViewState createState() =>
+      _DetailsCatalogViewState(this.heroName, this.data);
 }
 
 class _DetailsCatalogViewState extends State<DetailsCatalogView> {
+  final String heroName;
   final catalogModel.Datum data;
   int _tabLength = 3;
 
-  _DetailsCatalogViewState(this.data);
+  _DetailsCatalogViewState(this.heroName, this.data);
 
   void _onBookTestDrive() {
     Navigator.of(context).push(
@@ -114,6 +112,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
             return <Widget>[
               MainViewDetailsVehicle(
                 dataCatalog: data,
+                heroName: heroName,
               ),
               TabViewDetailsVehicle(),
             ];
@@ -137,45 +136,48 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              InkWell(
-                onTap: () {
-                  _onBookTestDrive();
-                },
-                child: new Container(
-                  width: MediaQuery.of(context).size.width / 1.6,
-                  height: 40.0,
-                  decoration: new BoxDecoration(
-                    color: HexColor('#C61818'),
-                    borderRadius: new BorderRadius.circular(18.0),
-                  ),
-                  child: new Center(
-                    child: new Text(
-                      'Booking Test Drive',
-                      style: new TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700),
+              Expanded(
+                flex: 6,
+                child: RaisedButton(
+                  onPressed: () {
+                    _onBookTestDrive();
+                  },
+                  child: Text(
+                    'Booking Test Drive',
+                    style: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
                     ),
                   ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  color: HexColor('#C61818'),
                 ),
               ),
-              SizedBox(width: 10),
-              GestureDetector(
-                onTap: () {
-                  _onCalculate();
-                },
-                child: Container(
-                  height: 60,
-                  child: Image.asset("assets/icons/old_calculator_icon.png"),
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    _onCalculate();
+                  },
+                  child: Container(
+                    height: 60,
+                    child: Image.asset("assets/icons/old_calculator_icon.png"),
+                  ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  _onCheckPriceList();
-                },
-                child: Container(
-                  height: 60,
-                  child: Image.asset("assets/icons/old_price_list_icon.png"),
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    _onCheckPriceList();
+                  },
+                  child: Container(
+                    height: 60,
+                    child: Image.asset("assets/icons/old_price_list_icon.png"),
+                  ),
                 ),
               ),
             ],
@@ -187,19 +189,23 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
 }
 
 class MainViewDetailsVehicle extends StatefulWidget {
+  final String heroName;
   final catalogModel.Datum dataCatalog;
-  MainViewDetailsVehicle({this.dataCatalog});
+  MainViewDetailsVehicle({this.heroName, this.dataCatalog});
 
   @override
   _MainViewDetailsVehicleState createState() =>
-      _MainViewDetailsVehicleState(this.dataCatalog);
+      _MainViewDetailsVehicleState(this.heroName, this.dataCatalog);
 }
 
 class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
+  final String heroName;
   final catalogModel.Datum data;
   List<String> _colorList = [];
   String _currentColor = "";
-  _MainViewDetailsVehicleState(this.data);
+
+  _MainViewDetailsVehicleState(this.heroName, this.data);
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -222,7 +228,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
             ),
             Expanded(
               child: Hero(
-                tag: "${data.itemClass1}",
+                tag: "$heroName",
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -231,7 +237,13 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                     ),
                   ),
                   child: data.colours.isEmpty
-                      ? Image.asset("assets/icons/no_data.png")
+                      ? Center(
+                          child: Icon(
+                            Icons.broken_image,
+                            size: 100,
+                            color: Colors.grey,
+                          ),
+                        )
                       : Image.network("${data.colours[0].image}"),
                 ),
               ),
@@ -349,7 +361,6 @@ class _TabViewDetailsVehicleState extends State<TabViewDetailsVehicle> {
           ),
           labelColor: HexColor('#C61818'),
           labelStyle: TextStyle(
-            letterSpacing: 1.0,
             fontSize: 15,
             color: HexColor('#C61818'),
             fontWeight: FontWeight.w700,
@@ -357,24 +368,10 @@ class _TabViewDetailsVehicleState extends State<TabViewDetailsVehicle> {
           unselectedLabelColor: HexColor('#212120'),
           unselectedLabelStyle: TextStyle(
             color: HexColor('#212120'),
-            letterSpacing: 1.0,
             fontSize: 15,
           ),
         ),
       ),
     );
-  }
-}
-
-class VehicleType {
-  String type;
-
-  VehicleType({this.type});
-
-  static List<VehicleType> getType() {
-    return <VehicleType>[
-      VehicleType(type: 'LE Auto'),
-      VehicleType(type: 'LE Manual'),
-    ];
   }
 }

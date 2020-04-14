@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_bloc.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_event.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_state.dart';
+import 'package:salles_tools/src/models/catalog_model.dart';
 import 'package:salles_tools/src/services/catalog_service.dart';
-import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/catalog_page/details_selection_catalog.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/trusty_horizontal_menu.dart';
@@ -15,10 +15,16 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
-  void _onSeeDetails(String heroName) {
+  void _onSeeDetails(String heroName, Datum data) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => DetailsCatalogView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => CatalogBloc(CatalogService()),
+          child: DetailsCatalogView(
+            data: data,
+            heroName: heroName,
+          ),
+        ),
         transitionDuration: Duration(milliseconds: 750),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
@@ -107,7 +113,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
             }
 
             if (state is CatalogListSuccess) {
-              print("CATALOG LIST DATA OK");
               return Column(
                 children: <Widget>[
                   Expanded(
@@ -123,26 +128,22 @@ class _CatalogScreenState extends State<CatalogScreen> {
                         ),
                         itemBuilder: (context, i) {
                           var data = state.value.data[i];
-
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(9.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey[300],
-                                  offset: Offset(0, 3),
-                                  blurRadius: 3.0,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Hero(
-                                    tag: "catalog-image$i",
-                                    child: Container(
+                          return GestureDetector(
+                            onTap: () {
+                              _onSeeDetails("catalog-image$i", data);
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9.0),
+                              ),
+                              elevation: 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Hero(
+                                      tag: "catalog-image$i",
+                                      child: Container(
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(9.0),
@@ -151,91 +152,48 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                           color: Color(0xffe5e6ea),
                                         ),
                                         child: data.colours.isEmpty
-                                            ? Image.asset(
-                                                "assets/icons/no_data.png")
+                                            ? Center(
+                                                child: Icon(
+                                                  Icons.broken_image,
+                                                  size: 60,
+                                                  color: Colors.white,
+                                                ),
+                                              )
                                             : Image.network(
-                                                "${data.colours[0].image}")),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(9.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        "${data.itemModel}",
-                                        style: TextStyle(
-                                          letterSpacing: 0.8,
-                                          fontSize: 18,
-                                        ),
+                                                "${data.colours[0].image}",
+                                              ),
                                       ),
-                                      Text(
-                                        "${data.itemType}",
-                                        style: TextStyle(
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(9.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          "${data.itemModel}",
+                                          style: TextStyle(
+                                            letterSpacing: 0.8,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        Text(
+                                          "${data.itemType}",
+                                          style: TextStyle(
                                             letterSpacing: 0.8,
                                             fontSize: 13,
-                                            color: Colors.grey),
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: <Widget>[
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                PageRouteBuilder(
-                                                  pageBuilder: (_, __, ___) =>
-                                                      BlocProvider(
-                                                    create: (context) =>
-                                                        CatalogBloc(
-                                                            CatalogService()),
-                                                    child: DetailsCatalogView(
-                                                        data: data),
-                                                  ),
-                                                  transitionDuration: Duration(
-                                                      milliseconds: 750),
-                                                  transitionsBuilder: (_,
-                                                      Animation<double>
-                                                          animation,
-                                                      __,
-                                                      Widget child) {
-                                                    return Opacity(
-                                                      opacity: animation.value,
-                                                      child: child,
-                                                    );
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.all(5.0),
-                                              decoration: BoxDecoration(
-                                                color: HexColor('#C61818'),
-                                                shape: BoxShape.circle,
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.grey[400],
-                                                    blurRadius: 5.0,
-                                                    offset: Offset(0, 3),
-                                                  ),
-                                                ],
-                                              ),
-                                              child: Icon(
-                                                Icons.visibility,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
