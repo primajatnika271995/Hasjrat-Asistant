@@ -90,10 +90,10 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
           if (state is CatalogListFailed) {
             return Center(
               child: Padding(
-                padding: EdgeInsets.only(top: 50, bottom: 10),
+                padding: EdgeInsets.only(bottom: 10),
                 child: Column(
                   children: <Widget>[
-                    Image.asset("assets/icons/error_banner.jpg", height: 150),
+                    Image.asset("assets/icons/error_banner.jpg", height: 120),
                     Text(
                       "Promotion Not Available",
                       style: TextStyle(
@@ -114,7 +114,7 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
                 viewportFraction: 0.9,
                 autoPlayCurve: Curves.bounceIn,
                 reverse: false,
-                height: 180,
+                height: 150,
                 enableInfiniteScroll: false,
                 aspectRatio: 2.0,
                 itemCount: state.value.data.length,
@@ -133,8 +133,7 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
                             tag: "promotion-tag${data.id}",
                             child: Image.network(
                                 "${data.url}",
-                                fit: BoxFit.cover,
-                                height: 200,
+                                fit: BoxFit.fitWidth,
                                 width: 1000.0,
                             ),
                           ),
@@ -156,10 +155,10 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
                               padding: EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 20.0),
                               child: Text(
-                                '${data.title}',
+                                '${data.title.toUpperCase()}',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20.0,
+                                  fontSize: 14.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

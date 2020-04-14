@@ -47,7 +47,7 @@ class _BannerDetailsViewState extends State<BannerDetailsView> {
           Padding(
             padding: const EdgeInsets.only(top: 10, left: 20),
             child: Text(
-              "${widget.data.title}",
+              "${widget.data.title.toUpperCase()}",
               style: TextStyle(
                 letterSpacing: 1.0,
                 fontSize: 17,

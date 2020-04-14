@@ -344,12 +344,12 @@ class _HomeScreenState extends State<HomeScreen> {
           slivers: <Widget>[
             sliverAppBar(),
             sliverGridMenu(),
-            SliverToBoxAdapter(
-              child: Divider(),
-            ),
+//            SliverToBoxAdapter(
+//              child: Divider(),
+//            ),
             SliverToBoxAdapter(
               child: Container(
-                margin: EdgeInsets.only(top: 10, left: 8, right: 8, bottom: 5),
+                margin: EdgeInsets.only(left: 8, right: 8, bottom: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -380,66 +380,61 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget sliverAppBar() {
     return SliverToBoxAdapter(
-      child: Container(
-        height: 240,
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: paddingTop(context),
-              child: Image.asset(
-                "assets/icons/new_header_icon.jpg",
-                height: 210,
-              ),
+      child: Padding(
+        padding: EdgeInsets.only(top: paddingTop(context)),
+        child: Container(
+          height: 150,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/icons/new_header_icon.jpg"),
+              fit: BoxFit.cover,
             ),
-            Positioned(
-              top: paddingTop(context) + 10,
-              left: 20,
-              child: Image.asset(
-                "assets/icons/hasjrat_toyota_logo.png",
-                height: 50,
-                width: 130,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Image.asset(
+                  "assets/icons/hasjrat_toyota_logo.png",
+                  height: 50,
+                  width: 130,
+                ),
               ),
-            ),
-            Positioned(
-              top: paddingTop(context) + 80,
-              left: 20,
-              child: Text(
-                "Selamat Datang",
-                style: AppTheme.selamatDatangStyle,
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(
+                  "Selamat Datang",
+                  style: AppTheme.selamatDatangStyle,
+                ),
               ),
-            ),
-            Positioned(
-              left: 20,
-              top: 75,
-              child: Center(
+              Padding(
+                padding: const EdgeInsets.only(left: 20, bottom: 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: paddingTop(context) + 70),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "$_salesName",
-                            style: AppTheme.namaSalesStyle,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "$_salesName",
+                          style: AppTheme.namaSalesStyle,
+                        ),
+                        Text(
+                          "Hasjrat Toyota $_branchName",
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.white,
                           ),
-                          Text(
-                            "Hasjrat Toyota $_branchName",
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -447,12 +442,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget sliverGridMenu() {
     return SliverPadding(
-      padding: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: 10),
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          childAspectRatio: 0.9,
-          crossAxisSpacing: 1.0,
+          crossAxisCount: 5,
+          childAspectRatio: 0.80,
+          mainAxisSpacing: 10.0,
         ),
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -481,13 +476,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       Image.asset(
                         _assetsMenu[index],
-                        height: 60,
+                        height: 55,
                       ),
                       Flexible(
                         child: Text(
                           _menuName[index],
                           style: TextStyle(
-                            letterSpacing: 0.7,
                             fontSize: 13,
                           ),
                           textAlign: TextAlign.center,
