@@ -247,34 +247,34 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "New User ?",
-                      style: TextStyle(
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                    FlatButton(
-                      onPressed: () {
-//                        _onRegister();
-                      },
-                      child: Text(
-                        "Registration",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.0,
-                          color: HexColor('#C61818'),
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+//              Padding(
+//                padding: const EdgeInsets.only(top: 25),
+//                child: Row(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text(
+//                      "New User ?",
+//                      style: TextStyle(
+//                        letterSpacing: 0.5,
+//                      ),
+//                    ),
+//                    FlatButton(
+//                      onPressed: () {
+////                        _onRegister();
+//                      },
+//                      child: Text(
+//                        "Registration",
+//                        style: TextStyle(
+//                          fontWeight: FontWeight.w700,
+//                          letterSpacing: 1.0,
+//                          color: HexColor('#C61818'),
+//                          decoration: TextDecoration.underline,
+//                        ),
+//                      ),
+//                    ),
+//                  ],
+//                ),
+//              ),
             ],
           ),
         ),

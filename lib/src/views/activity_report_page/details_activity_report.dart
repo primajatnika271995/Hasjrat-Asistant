@@ -52,6 +52,18 @@ class _ActivityReportDetailsViewState extends State<ActivityReportDetailsView> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(top: 2, left: 20),
+            child: Text(
+              "${widget.data.alamat}",
+              style: TextStyle(
+                letterSpacing: 1.0,
+                fontSize: 11,
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
           Row(
             children: <Widget>[
               Padding(

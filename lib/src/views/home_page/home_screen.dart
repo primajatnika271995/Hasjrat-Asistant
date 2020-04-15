@@ -383,7 +383,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
         padding: EdgeInsets.only(top: paddingTop(context)),
         child: Container(
-          height: 150,
+          height: 200,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/icons/new_header_icon.jpg"),
