@@ -183,6 +183,7 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
         ProgramPenjualanModel value =
             await _dmsService.fetchListProgramPenjualan(event.value);
         if (value.data.isEmpty) {
+          yield DmsDisposeLoading();
           yield ListProgramPenjualanError();
         } else {
           yield DmsDisposeLoading();

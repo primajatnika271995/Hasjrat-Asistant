@@ -323,12 +323,41 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
           if (state is OutletSuccess) {
             state.value.result.forEach((f) {
-              outletList.add(
-                SelectorOutletModel(
-                  id: f.id,
-                  outletName: f.text,
-                ),
-              );
+              if (f.text == "Manado"
+                  || f.text == "Tandean"
+                  || f.text == "Bitung 3S"
+                  || f.text == "Bitung 3S"
+                  || f.text == "Kotamobagu"
+                  || f.text == "Bitung 3S"
+                  || f.text == "Gorontalo"
+                  || f.text == "Bitung 3S"
+                  || f.text == "Palu"
+                  || f.text == "Parigi"
+                  || f.text == "Mutiara"
+                  || f.text == "Luwuk"
+                  || f.text == "Toili"
+                  || f.text == "Ambon"
+                  || f.text == "Tual"
+                  || f.text == "Sorong"
+                  || f.text == "Bitung 3S"
+                  || f.text == "Jayapura"
+                  || f.text == "Bitung 3S"
+                  || f.text == "Merauke"
+                  || f.text == "Timika"
+                  || f.text == "Bitung 3S"
+                  || f.text == "Nabire"
+                  || f.text == "Biak"
+                  || f.text == "Serui"
+                  || f.text == "Ternate"
+                  || f.text == "Tobelo") {
+
+                outletList.add(
+                  SelectorOutletModel(
+                    id: f.id,
+                    outletName: f.text,
+                  ),
+                );
+              }
             });
           }
 
