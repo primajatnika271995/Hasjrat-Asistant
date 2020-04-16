@@ -1,14 +1,23 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_event.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_state.dart';
 import 'package:salles_tools/src/models/asset_price_model.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
+import 'package:salles_tools/src/models/simulation_model.dart' as simulation;
+import 'package:salles_tools/src/utils/currency_format.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class CalculatorStepperScreen extends StatefulWidget {
   @override
@@ -273,6 +282,80 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         });
       },
     );
+  }
+
+  void exportPdf(List<simulation.Result> value) async {
+    final pdf = pw.Document();
+
+    pdf.addPage(pw.MultiPage(
+        pageFormat: PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        header: (pw.Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return pw.Container(
+            alignment: pw.Alignment.centerRight,
+            margin: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+            padding: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+            decoration: const pw.BoxDecoration(
+                border: pw.BoxBorder(
+                    bottom: true, width: 0.5, color: PdfColors.grey)),
+            child: pw.Text('Tenor List',
+              style: pw.Theme.of(context)
+                  .defaultTextStyle
+                  .copyWith(color: PdfColors.grey),
+            ),
+          );
+        },
+        footer: (pw.Context context) {
+          return pw.Container(
+            alignment: pw.Alignment.centerRight,
+            margin: const pw.EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+            child: pw.Text(
+              'Page ${context.pageNumber} of ${context.pagesCount}',
+              style: pw.Theme.of(context)
+                  .defaultTextStyle
+                  .copyWith(color: PdfColors.grey),
+            ),
+          );
+        },
+        build: (pw.Context context) {
+          return <pw.Widget>[
+            pw.Header(
+              level: 0,
+              child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: <pw.Widget>[
+                    pw.Text(' Data Tenor', textScaleFactor: 2),
+                  ]),
+            ),
+            pw.Paragraph(
+                text: 'Tenor List'
+            ),
+            pw.ListView.builder(
+                itemBuilder: (pw.Context contex, index) {
+                  return pw.Table.fromTextArray(
+                    context: context,
+                    data: <List<String>>[
+                      <String>['Nama Tenor', 'Lama Tenor', 'Uang Muka', 'Pembayaran Bulanan'],
+                      <String>['${value[index].tenorName}', '${value[index].tenorVale}', 'Rp ${value[index].downPayment}', 'Rp ${value[index].installment} / Bulan'],
+                    ],
+                  );
+                },
+                itemCount: value.length
+            ),
+            pw.Padding(padding: const pw.EdgeInsets.all(10)),
+          ];
+        }
+    ));
+    final directory = await getExternalStorageDirectory();
+    log.info(directory.path);
+
+    final file = File('${directory.path}/tenor.pdf');
+    file.writeAsBytesSync(pdf.save());
+
+    OpenFile.open('${directory.path}/tenor.pdf');
   }
 
   Widget _createEventControlBuilder(BuildContext context, {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
@@ -1244,6 +1327,17 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                       );
                     },
                     itemCount: state.value.result.length,
+                  ),
+                  Center(
+                    child: IconButton(
+                      onPressed: () {
+                        exportPdf(state.value.result);
+                      },
+                      icon: Icon(Icons.file_download),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
                   ),
                 ],
               );
