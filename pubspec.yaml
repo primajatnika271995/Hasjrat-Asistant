@@ -117,6 +117,9 @@ dependencies:
   # A Flutter plugin for finding commonly used locations on the filesystem.
   path_provider: ^1.6.1
 
+  # A plug-in that can call native APP to open files with string result in flutter,support iOS(UTI) and android(intent)
+  open_file: ^3.0.1
+
   # A Flutter plugin to use the ML Kit Vision for Firebase API.
   firebase_ml_vision: ^0.9.3+5
 
@@ -131,6 +134,9 @@ dependencies:
 
   # RFlutter Alert is super customizable and easy-to-use alert/popup dialogs for Flutter.
   rflutter_alert: ^1.0.3
+
+  # Pdf creation library
+  pdf: ^1.6.0
 
   # A library that exposes device specific speech recognition capability.
   speech_to_text: ^2.1.0

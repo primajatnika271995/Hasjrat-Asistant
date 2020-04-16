@@ -1,13 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
+import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/utils/currency_format.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class PriceListView extends StatefulWidget {
   @override
@@ -144,6 +152,76 @@ class _PriceListViewState extends State<PriceListView> {
         });
       },
     );
+  }
+
+  void exportPdf(List<Pricelist> value) async {
+    final pdf = pw.Document();
+
+    pdf.addPage(pw.MultiPage(
+      pageFormat: PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      header: (pw.Context context) {
+        if (context.pageNumber == 1) {
+          return null;
+        }
+        return pw.Container(
+            alignment: pw.Alignment.centerRight,
+            margin: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+            padding: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+            decoration: const pw.BoxDecoration(
+                border: pw.BoxBorder(
+                    bottom: true, width: 0.5, color: PdfColors.grey)),
+            child: pw.Text('Price List',
+                style: pw.Theme.of(context)
+                    .defaultTextStyle
+                    .copyWith(color: PdfColors.grey),
+            ),
+        );
+      },
+      footer: (pw.Context context) {
+        return pw.Container(
+            alignment: pw.Alignment.centerRight,
+            margin: const pw.EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+            child: pw.Text(
+                'Page ${context.pageNumber} of ${context.pagesCount}',
+                style: pw.Theme.of(context)
+                    .defaultTextStyle
+                    .copyWith(color: PdfColors.grey),
+            ),
+        );
+      },
+      build: (pw.Context context) {
+        return <pw.Widget>[
+          pw.Header(
+              level: 0,
+              child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: <pw.Widget>[
+                    pw.Text('Price List & Stock', textScaleFactor: 2),
+                  ]),
+          ),
+          pw.ListView.builder(
+            itemBuilder: (pw.Context contex, index) {
+              return pw.Table.fromTextArray(
+                context: context,
+                data: <List<String>>[
+                  <String>['Kode Item', 'Model Kendaraan', 'Dalam Kota', 'Tanggal', 'Harga'],
+                  <String>['${value[index].itemCode}', '${value[index].itemModel}', '${value[index].dalamKota}', '${value[index].pricelistTanggal}', 'Rp ${CurrencyFormat().data.format(value[index].ontr)}'],
+                ],
+              );
+            },
+           itemCount: value.length
+          ),
+        ];
+    }
+    ));
+    final directory = await getExternalStorageDirectory();
+    log.info(directory.path);
+
+    final file = File('${directory.path}/price-list.pdf');
+    file.writeAsBytesSync(pdf.save());
+
+    OpenFile.open('${directory.path}/price-list.pdf');
   }
 
   @override
@@ -499,6 +577,7 @@ class _PriceListViewState extends State<PriceListView> {
     );
   }
 
+
   Widget itemList() {
     return Container(
       child: Padding(
@@ -683,6 +762,14 @@ class _PriceListViewState extends State<PriceListView> {
                       );
                     },
                     itemCount: state.value.data[0].pricelists.length,
+                  ),
+                  Center(
+                    child: IconButton(
+                      onPressed: () {
+                        exportPdf(state.value.data[0].pricelists);
+                      },
+                      icon: Icon(Icons.file_download),
+                    ),
                   ),
                 ],
               );
