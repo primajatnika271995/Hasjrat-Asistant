@@ -101,6 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 color: HexColor('#C61818'),
               ),

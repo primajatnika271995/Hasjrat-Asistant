@@ -81,6 +81,12 @@ class _ReminderAddViewState extends State<ReminderAddView> {
 
   Future<Null> _selectedTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child,
+        );
+      },
       context: context,
       initialTime: timeOfDay,
     );

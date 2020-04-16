@@ -73,7 +73,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     "Jangan lupa ucapkan Ulang Tahun ya!",
                     style: TextStyle(
                       fontSize: 11,
-                    ),
+                    \
+                      v,
                   ),
                 ],
               ),
