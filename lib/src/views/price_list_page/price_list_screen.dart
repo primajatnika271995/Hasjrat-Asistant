@@ -154,7 +154,7 @@ class _PriceListViewState extends State<PriceListView> {
     );
   }
 
-  void exportPdf(List<Pricelist> value) async {
+  void exportPdf(Datum value) async {
     final pdf = pw.Document();
 
     pdf.addPage(pw.MultiPage(
@@ -197,8 +197,11 @@ class _PriceListViewState extends State<PriceListView> {
               child: pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: <pw.Widget>[
-                    pw.Text('Price List & Stock', textScaleFactor: 2),
+                    pw.Text(' Data Price List & Stock', textScaleFactor: 2),
                   ]),
+          ),
+          pw.Paragraph(
+            text: 'Price List'
           ),
           pw.ListView.builder(
             itemBuilder: (pw.Context contex, index) {
@@ -206,11 +209,27 @@ class _PriceListViewState extends State<PriceListView> {
                 context: context,
                 data: <List<String>>[
                   <String>['Kode Item', 'Model Kendaraan', 'Dalam Kota', 'Tanggal', 'Harga'],
-                  <String>['${value[index].itemCode}', '${value[index].itemModel}', '${value[index].dalamKota}', '${value[index].pricelistTanggal}', 'Rp ${CurrencyFormat().data.format(value[index].ontr)}'],
+                  <String>['${value.pricelists[index].itemCode}', '${value.pricelists[index].itemModel}', '${value.pricelists[index].dalamKota}', '${value.pricelists[index].pricelistTanggal}', 'Rp ${CurrencyFormat().data.format(value.pricelists[index].ontr)}'],
                 ],
               );
             },
-           itemCount: value.length
+           itemCount: value.pricelists.length
+          ),
+          pw.Padding(padding: const pw.EdgeInsets.all(10)),
+          pw.Paragraph(
+              text: 'Stock'
+          ),
+          pw.ListView.builder(
+              itemBuilder: (pw.Context contex, index) {
+                return pw.Table.fromTextArray(
+                  context: context,
+                  data: <List<String>>[
+                    <String>['No. Rangka', 'Tahun', 'Jumlah', 'Warna'],
+                    <String>['${value.stocks[index].nomorRangka}', '${value.stocks[index].tahun}', '${value.stocks[index].quantity}', '${value.stocks[index].kodeWarna}'],
+                  ],
+                );
+              },
+              itemCount: value.stocks.length
           ),
         ];
     }
@@ -766,7 +785,7 @@ class _PriceListViewState extends State<PriceListView> {
                   Center(
                     child: IconButton(
                       onPressed: () {
-                        exportPdf(state.value.data[0].pricelists);
+                        exportPdf(state.value.data[0]);
                       },
                       icon: Icon(Icons.file_download),
                     ),
