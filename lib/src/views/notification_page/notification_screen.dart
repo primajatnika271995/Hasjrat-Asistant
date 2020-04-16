@@ -75,26 +75,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       fontSize: 11,
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: HexColor('#C61818'),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 2, horizontal: 5),
-                        child: Text(
-                          "1",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
               leading: Icon(
