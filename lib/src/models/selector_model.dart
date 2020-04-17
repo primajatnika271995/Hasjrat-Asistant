@@ -305,3 +305,22 @@ class SelectorVehicleModel {
   // TODO: implement hashCode
   int get hashCode => itemModel.hashCode^itemType.hashCode^id.hashCode;
 }
+
+class SelectorStation {
+  String name;
+  String address;
+  String email;
+
+  SelectorStation({this.name, this.address, this.email});
+
+  @override
+  String toString() => name;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorStation && other.name == name;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => name.hashCode^address.hashCode^email.hashCode;
+}

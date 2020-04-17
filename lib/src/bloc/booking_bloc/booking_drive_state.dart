@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:salles_tools/src/models/service_station_model.dart';
 import 'package:salles_tools/src/models/test_drive_vehicle_model.dart';
 import 'package:salles_tools/src/models/list_booking_drive_model.dart';
 
@@ -16,6 +17,19 @@ class BookingDriveDisposeLoading extends BookingDriveState {}
 
 class BookingDriveFailed extends BookingDriveState {}
 
+class StationListFailed extends BookingDriveState {}
+
+class StationListSuccess extends BookingDriveState{
+  final _data;
+
+  StationListSuccess(this._data);
+  List<ServiceStationModel> get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
 class CarListFailed extends BookingDriveState {}
 
 class CarListSuccess extends BookingDriveState {
@@ -26,6 +40,18 @@ class CarListSuccess extends BookingDriveState {
 
   @override
   List<Object> get props => [_data];
+}
+
+class AddBookingServiceVieEmailSuccess extends BookingDriveState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class AddBookingServiceVieEmailError extends BookingDriveState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
 }
 
 class RegisterBookingTestDriveSuccess extends BookingDriveState {

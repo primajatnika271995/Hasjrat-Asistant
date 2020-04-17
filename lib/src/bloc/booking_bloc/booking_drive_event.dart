@@ -9,11 +9,24 @@ class BookingDriveEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class FetchStation extends BookingDriveEvent {
+
+}
+
 class FetchTestDriveCar extends BookingDriveEvent {
   final ListCarBookingPost value;
 
   FetchTestDriveCar(this.value);
   @override
+  List<Object> get props => [value];
+}
+
+class AddBookingServiceViaEmail extends BookingDriveEvent {
+  final BookingServicePost value;
+  AddBookingServiceViaEmail(this.value);
+
+  @override
+  // TODO: implement props
   List<Object> get props => [value];
 }
 

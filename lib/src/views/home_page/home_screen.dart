@@ -22,6 +22,7 @@ import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/activity_report_page/list_activity_report.dart';
+import 'package:salles_tools/src/views/book_service_page/add_book_service.dart';
 import 'package:salles_tools/src/views/book_service_page/list_book_service.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/list_book_test_drive.dart';
 import 'package:salles_tools/src/views/calculator_page/calculator_stepper.dart';
@@ -109,7 +110,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: CalculatorStepperScreen(),
     ),
     ReminderListView(),
-    BookServiceListView(),
+//    BookServiceListView(),
+    BlocProvider(
+      create: (context) => BookingDriveBloc(BookingDriveService()),
+      child: BookServiceAddView(),
+    ),
     BlocProvider(
       create: (context) => BookingDriveBloc(BookingDriveService()),
       child: BookTestDriveListView(),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
+import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/book_service_page/add_book_service.dart';
 
@@ -13,7 +16,10 @@ class _BookServiceListViewState extends State<BookServiceListView> {
   void _onAddBookService() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => BookServiceAddView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => BookingDriveBloc(BookingDriveService()),
+          child: BookServiceAddView(),
+        ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {

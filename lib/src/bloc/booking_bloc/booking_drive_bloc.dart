@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_event.dart';
 import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_state.dart';
+import 'package:salles_tools/src/models/service_station_model.dart';
 import 'package:salles_tools/src/models/test_drive_vehicle_model.dart';
 import 'package:salles_tools/src/models/list_booking_drive_model.dart';
 import 'package:salles_tools/src/services/booking_drive_service.dart';
@@ -17,6 +18,24 @@ class BookingDriveBloc extends Bloc<BookingDriveEvent, BookingDriveState> {
 
   @override
   Stream<BookingDriveState> mapEventToState(BookingDriveEvent event) async* {
+    if (event is FetchStation) {
+      yield BookingDriveLoading();
+
+      try {
+        List<ServiceStationModel> value = await _bookingDriveService.fetchListStation();
+        if (value == null || value.isEmpty) {
+          yield BookingDriveDisposeLoading();
+          yield StationListFailed();
+        } else {
+          yield BookingDriveDisposeLoading();
+          yield StationListSuccess(value);
+        }
+      } catch(e) {
+        log.warning("Error : ${e.toString()}");
+        yield StationListFailed();
+      }
+    }
+
     if (event is FetchTestDriveCar) {
       yield BookingDriveLoading();
       try {
@@ -31,6 +50,21 @@ class BookingDriveBloc extends Bloc<BookingDriveEvent, BookingDriveState> {
       } catch (e) {
         log.warning("Error : ${e.toString()}");
         yield CarListFailed();
+      }
+    }
+
+    if (event is AddBookingServiceViaEmail) {
+      yield BookingDriveLoading();
+
+      try {
+        await _bookingDriveService.addBookingServiceViaEmail(event.value);
+
+        yield BookingDriveDisposeLoading();
+        yield AddBookingServiceVieEmailSuccess();
+      } catch (error) {
+        log.warning("Error : ${error.toString()}");
+        yield BookingDriveDisposeLoading();
+        yield AddBookingServiceVieEmailError();
       }
     }
 

@@ -139,6 +139,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     _outletName = await SharedPreferencesHelper.getSalesOutlet();
     _outletId = await SharedPreferencesHelper.getSalesOutletId();
 
+    // ignore: close_sinks
     final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
     bookingDriveBloc.add(FetchTestDriveCar(ListCarBookingPost(
       branchCode: _branchId,
@@ -183,6 +184,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     // TODO: implement initState
     // ignore: close_sinks
     _getSharedPrefferences();
+    // ignore: close_sinks
     final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
     bookingDriveBloc.add(FetchTestDriveCar(ListCarBookingPost(
       branchCode: _branchId,
