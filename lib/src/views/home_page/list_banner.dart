@@ -114,7 +114,7 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
                 viewportFraction: 0.9,
                 autoPlayCurve: Curves.bounceIn,
                 reverse: false,
-                height: 150,
+                height: 180,
                 enableInfiniteScroll: false,
                 aspectRatio: 2.0,
                 itemCount: state.value.data.length,

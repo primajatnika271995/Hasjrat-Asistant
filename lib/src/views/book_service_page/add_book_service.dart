@@ -26,7 +26,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final dateFormat = DateFormat("yyyy-MM-dd");
-  final timeFormat = DateFormat("hh:mm");
+  final timeFormat = DateFormat("Hms");
 
   DateTime _dateTime = DateTime.now();
   TimeOfDay timeOfDay = TimeOfDay.now();
@@ -86,13 +86,20 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
   Future<Null> _selectedTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
       context: context,
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child,
+        );
+      },
       initialTime: timeOfDay,
     );
 
     if (picked != null)
       setState(() {
         timeOfDay = picked;
-        timeSelected.value = TextEditingValue(text: timeOfDay.format(context));
+        DateTime date = DateFormat.Hm().parse(timeOfDay.format(context));
+        timeSelected.value = TextEditingValue(text: timeFormat.format(date));
       });
   }
 
@@ -159,7 +166,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
         customerPhone: customerContactCtrl.text,
         bookingTypeName: currentSelectBookCategory,
         bookingDate: dateSelected.text,
-        bookingTime: timeSelected.text + ":00",
+        bookingTime: timeSelected.text,
         dealerAddress: dealerAddressCtrl.text,
         dealerEmail: dealerEmailCtrl.text,
         dealerName: dealerNameCtrl.text,
