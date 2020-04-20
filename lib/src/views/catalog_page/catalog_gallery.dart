@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/models/catalog_model.dart' as catalogModel;
+import 'package:salles_tools/src/models/detail_catalog_model.dart';
 
 class CatalogGalleryView extends StatefulWidget {
-  final catalogModel.Datum data;
+  final DetailCatalogModel data;
 
   const CatalogGalleryView({Key key, this.data}) : super(key: key);
   @override
@@ -11,7 +12,7 @@ class CatalogGalleryView extends StatefulWidget {
 }
 
 class _CatalogGalleryViewState extends State<CatalogGalleryView> {
-  final catalogModel.Datum data;
+  final DetailCatalogModel data;
   int _currentImage = 0;
 
   List<String> _imgInterior = [

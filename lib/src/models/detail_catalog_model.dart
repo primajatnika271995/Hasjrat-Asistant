@@ -1,14 +1,14 @@
 // To parse this JSON data, do
 //
-//     final catalogModel = catalogModelFromJson(jsonString);
+//     final detailCatalogModel = detailCatalogModelFromJson(jsonString);
 
 import 'dart:convert';
 
-List<CatalogModel> catalogModelFromJson(String str) => List<CatalogModel>.from(json.decode(str).map((x) => CatalogModel.fromJson(x)));
+DetailCatalogModel detailCatalogModelFromJson(String str) => DetailCatalogModel.fromJson(json.decode(str));
 
-String catalogModelToJson(List<CatalogModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String detailCatalogModelToJson(DetailCatalogModel data) => json.encode(data.toJson());
 
-class CatalogModel {
+class DetailCatalogModel {
     String id;
     String itemModel;
     String itemType;
@@ -23,16 +23,16 @@ class CatalogModel {
     String createdDate;
     dynamic lastUpdateBy;
     dynamic lastUpdateDate;
-    dynamic enabled;
-    dynamic archive;
-    dynamic draft;
+    bool enabled;
+    bool archive;
+    bool draft;
     List<Colour> colours;
-    List<dynamic> galleriesInterior;
-    List<dynamic> galleriesExterior;
+    List<Feature> galleriesInterior;
+    List<Feature> galleriesExterior;
     List<dynamic> accessories;
-    List<dynamic> features;
+    List<Feature> features;
 
-    CatalogModel({
+    DetailCatalogModel({
         this.id,
         this.itemModel,
         this.itemType,
@@ -57,7 +57,7 @@ class CatalogModel {
         this.features,
     });
 
-    factory CatalogModel.fromJson(Map<String, dynamic> json) => CatalogModel(
+    factory DetailCatalogModel.fromJson(Map<String, dynamic> json) => DetailCatalogModel(
         id: json["id"] == null ? null : json["id"],
         itemModel: json["itemModel"] == null ? null : json["itemModel"],
         itemType: json["itemType"] == null ? null : json["itemType"],
@@ -72,14 +72,14 @@ class CatalogModel {
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
         lastUpdateBy: json["lastUpdateBy"],
         lastUpdateDate: json["lastUpdateDate"],
-        enabled: json["enabled"],
-        archive: json["archive"],
-        draft: json["draft"],
+        enabled: json["enabled"] == null ? null : json["enabled"],
+        archive: json["archive"] == null ? null : json["archive"],
+        draft: json["draft"] == null ? null : json["draft"],
         colours: json["colours"] == null ? null : List<Colour>.from(json["colours"].map((x) => Colour.fromJson(x))),
-        galleriesInterior: json["galleriesInterior"] == null ? null : List<dynamic>.from(json["galleriesInterior"].map((x) => x)),
-        galleriesExterior: json["galleriesExterior"] == null ? null : List<dynamic>.from(json["galleriesExterior"].map((x) => x)),
+        galleriesInterior: json["galleriesInterior"] == null ? null : List<Feature>.from(json["galleriesInterior"].map((x) => Feature.fromJson(x))),
+        galleriesExterior: json["galleriesExterior"] == null ? null : List<Feature>.from(json["galleriesExterior"].map((x) => Feature.fromJson(x))),
         accessories: json["accessories"] == null ? null : List<dynamic>.from(json["accessories"].map((x) => x)),
-        features: json["features"] == null ? null : List<dynamic>.from(json["features"].map((x) => x)),
+        features: json["features"] == null ? null : List<Feature>.from(json["features"].map((x) => Feature.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -97,14 +97,14 @@ class CatalogModel {
         "createdDate": createdDate == null ? null : createdDate,
         "lastUpdateBy": lastUpdateBy,
         "lastUpdateDate": lastUpdateDate,
-        "enabled": enabled,
-        "archive": archive,
-        "draft": draft,
+        "enabled": enabled == null ? null : enabled,
+        "archive": archive == null ? null : archive,
+        "draft": draft == null ? null : draft,
         "colours": colours == null ? null : List<dynamic>.from(colours.map((x) => x.toJson())),
-        "galleriesInterior": galleriesInterior == null ? null : List<dynamic>.from(galleriesInterior.map((x) => x)),
-        "galleriesExterior": galleriesExterior == null ? null : List<dynamic>.from(galleriesExterior.map((x) => x)),
+        "galleriesInterior": galleriesInterior == null ? null : List<dynamic>.from(galleriesInterior.map((x) => x.toJson())),
+        "galleriesExterior": galleriesExterior == null ? null : List<dynamic>.from(galleriesExterior.map((x) => x.toJson())),
         "accessories": accessories == null ? null : List<dynamic>.from(accessories.map((x) => x)),
-        "features": features == null ? null : List<dynamic>.from(features.map((x) => x)),
+        "features": features == null ? null : List<dynamic>.from(features.map((x) => x.toJson())),
     };
 }
 
@@ -137,5 +137,33 @@ class Colour {
         "colorNameEn": colorNameEn == null ? null : colorNameEn,
         "colorNameIn": colorNameIn == null ? null : colorNameIn,
         "image": image == null ? null : image,
+    };
+}
+
+class Feature {
+    String id;
+    String image;
+    String title;
+    String description;
+
+    Feature({
+        this.id,
+        this.image,
+        this.title,
+        this.description,
+    });
+
+    factory Feature.fromJson(Map<String, dynamic> json) => Feature(
+        id: json["id"] == null ? null : json["id"],
+        image: json["image"] == null ? null : json["image"],
+        title: json["title"] == null ? null : json["title"],
+        description: json["description"] == null ? null : json["description"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id == null ? null : id,
+        "image": image == null ? null : image,
+        "title": title == null ? null : title,
+        "description": description == null ? null : description,
     };
 }

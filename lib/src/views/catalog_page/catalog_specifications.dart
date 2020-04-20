@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/detail_catalog_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/models/catalog_model.dart' as catalogModel;
 
 class CatalogSpecificationsView extends StatefulWidget {
-  final catalogModel.Datum data;
-
-  const CatalogSpecificationsView({Key key, this.data}) : super(key: key);
+  final DetailCatalogModel data;
+  const CatalogSpecificationsView({
+    Key key,
+    this.data,
+  }) : super(key: key);
   @override
   _CatalogSpecificationsViewState createState() =>
       _CatalogSpecificationsViewState(this.data);
 }
 
 class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
-  final catalogModel.Datum data;
+  final DetailCatalogModel data;
   bool dimensionIsExpanded = false;
   bool engineIsExpanded = false;
   bool performanceIsExpanded = false;
