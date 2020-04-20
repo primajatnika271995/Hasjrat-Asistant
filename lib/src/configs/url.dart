@@ -84,4 +84,6 @@ class UriApi {
   static const String serviceStationListUri = "/hasjrat-resource-server/hcare-api/api/service-station/list";
 
   static const String bookingServiceUri = "/hasjrat-resource-server/hcare-api/api/emailBookingService/send";
+
+  static const String spkUri = "/sales-tools-dealer-service/api/v2/dms/spk/list";
 }

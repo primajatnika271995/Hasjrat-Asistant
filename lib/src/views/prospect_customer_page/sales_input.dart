@@ -4,11 +4,15 @@ import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_bloc.dart';
 import 'package:salles_tools/src/bloc/lead_bloc/lead_event.dart';
+import 'package:salles_tools/src/bloc/spk_bloc/spk_bloc.dart';
+import 'package:salles_tools/src/bloc/spk_bloc/spk_event.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
+import 'package:salles_tools/src/services/spk_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/list_prospect_contact.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/list_prospect_customer.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/list_spk.dart';
 
 class SalesInputView extends StatefulWidget {
   @override
@@ -48,6 +52,32 @@ class _SalesInputViewState extends State<SalesInputView> {
             leadName: "",
           ))),
           child: ProspectCustomerListView(),
+        ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onViewSpk() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => SpkBloc(SpkService())..add(FetchSpk(SpkFilterPost(
+            cardCode: "",
+            cardName: "",
+            endDate: "",
+            spkBlanko: "",
+            spkNum: "",
+            startDate: "",
+          ))),
+          child: SpkListView(),
         ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
@@ -108,6 +138,21 @@ class _SalesInputViewState extends State<SalesInputView> {
               ),
               title: Text("Data Prospect"),
               subtitle: Text("List Customer yang telah di Prospect"),
+            ),
+          ),
+          Card(
+            elevation: 4,
+            child: ListTile(
+              dense: true,
+              onTap: () {
+                _onViewSpk();
+              },
+              leading: Icon(Icons.note,
+                size: 35,
+                color: HexColor("#C61818"),
+              ),
+              title: Text("Data SPK"),
+              subtitle: Text("List SPK Mobil"),
             ),
           ),
         ],
