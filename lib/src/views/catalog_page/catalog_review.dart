@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:salles_tools/src/models/catalog_model.dart';
+import 'package:salles_tools/src/models/detail_catalog_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 
 class CatalogReviewView extends StatefulWidget {
-  final Datum data;
+  final DetailCatalogModel valueCatalog;
 
-  const CatalogReviewView({Key key, this.data}) : super(key: key);
+  const CatalogReviewView({
+    Key key,
+    this.valueCatalog,
+  }) : super(key: key);
   @override
-  _CatalogReviewViewState createState() => _CatalogReviewViewState(this.data);
+  _CatalogReviewViewState createState() =>
+      _CatalogReviewViewState(this.valueCatalog);
 }
 
 class _CatalogReviewViewState extends State<CatalogReviewView> {
-  final Datum data;
+  final DetailCatalogModel valueCatalog;
 
-  _CatalogReviewViewState(this.data);
+  _CatalogReviewViewState(this.valueCatalog);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +39,7 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(top: 20, left: 15),
-          child: data.titleReview == null
+          child: valueCatalog.titleReview == null
               ? Text(
                   "Review Kendaraan",
                   style: TextStyle(
@@ -43,7 +49,7 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
                   ),
                 )
               : Text(
-                  "${data.titleReview}",
+                  "${valueCatalog.titleReview}",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -53,7 +59,7 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 15, top: 5, right: 15),
-          child: data.descriptionReview == null
+          child: valueCatalog.descriptionReview == null
               ? Text(
                   "Belum ada review kendaraan ini",
                   style: TextStyle(
@@ -63,7 +69,7 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
                   ),
                 )
               : Text(
-                  "${data.descriptionReview}",
+                  "${valueCatalog.descriptionReview}",
                   style: TextStyle(
                     fontSize: 13,
                     letterSpacing: 0.7,

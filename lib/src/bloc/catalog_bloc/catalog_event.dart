@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../services/catalog_service.dart';
+
 class CatalogEvent extends Equatable {
   @override
   // TODO: implement props
@@ -9,6 +11,14 @@ class CatalogEvent extends Equatable {
 class FetchCatalogList extends CatalogEvent {
   @override
   List<Object> get props => [];
+}
+
+class FetchDetailCatalog extends CatalogEvent {
+  final DetailCatalogPost value;
+
+  FetchDetailCatalog(this.value);
+  @override
+  List<Object> get props => [value];
 }
 
 class FetchBannerPromotionList extends CatalogEvent {

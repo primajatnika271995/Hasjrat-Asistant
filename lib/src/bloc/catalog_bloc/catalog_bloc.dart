@@ -3,6 +3,7 @@ import 'package:salles_tools/src/bloc/catalog_bloc/catalog_event.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_state.dart';
 import 'package:salles_tools/src/models/banner_model.dart';
 import 'package:salles_tools/src/models/catalog_model.dart';
+import 'package:salles_tools/src/models/detail_catalog_model.dart';
 import 'package:salles_tools/src/services/catalog_service.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -19,7 +20,7 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
       yield CatalogLoading();
 
       try {
-        CatalogModel value = await _catalogService.fetchCatalogList();
+        List<CatalogModel> value = await _catalogService.fetchCatalogList();
         if (value == null) {
           yield CatalogListFailed();
         } else {
@@ -29,6 +30,24 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
       } catch (e) {
         log.warning("Error : ${e.toString()}");
         yield CatalogListFailed();
+      }
+    }
+
+    if (event is FetchDetailCatalog) {
+      yield CatalogLoading();
+
+      try {
+        DetailCatalogModel value = await _catalogService.detailCatalog(event.value);
+        if (value == null) {
+          yield CatalogDisposeLoading();
+          yield DetailCatalogFailed();
+        } else {
+          yield CatalogDisposeLoading();
+          yield DetailCatalogSuccess(value);
+        }
+      } catch (e) {
+        log.warning("Error Bloc Detail Catalog : ${e.toString()}");
+        yield DetailCatalogFailed();
       }
     }
 

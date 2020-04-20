@@ -79,7 +79,9 @@ class UriApi {
 
   static const String knowledgeBaseUri = "/sales-tools-qna-service/api/v2/qna/datatables";
 
-  static const String catalogListUri = "/sales-tools-catalog-service/api/v2/catalog/datatables";
+  static const String catalogListUri = "/sales-tools-catalog-service/api/v2/catalog/list";
+
+  static const String detailCatalogUri = "/sales-tools-catalog-service/api/v2/catalog";
 
   static const String serviceStationListUri = "/hasjrat-resource-server/hcare-api/api/service-station/list";
 

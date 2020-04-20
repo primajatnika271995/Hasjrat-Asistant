@@ -15,14 +15,14 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
-  void _onSeeDetails(String heroName, Datum data) {
+  void _onSeeDetails(String heroName, CatalogModel data) {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => BlocProvider(
           create: (context) => CatalogBloc(CatalogService()),
           child: DetailsCatalogView(
-            data: data,
             heroName: heroName,
+            data: data,
           ),
         ),
         transitionDuration: Duration(milliseconds: 750),
@@ -119,7 +119,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 13),
                       child: GridView.builder(
-                        itemCount: state.value.data.length,
+                        itemCount: state.value.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 3 / 4,
@@ -127,7 +127,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                           mainAxisSpacing: 17,
                         ),
                         itemBuilder: (context, i) {
-                          var data = state.value.data[i];
+                          var data = state.value[i];
                           return GestureDetector(
                             onTap: () {
                               _onSeeDetails("catalog-image$i", data);
@@ -151,7 +151,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                           ),
                                           color: Color(0xffe5e6ea),
                                         ),
-                                        child: data.colours.isEmpty
+                                        child: data.colours[0].image == null || data.colours[0].image.isEmpty
                                             ? Center(
                                                 child: Icon(
                                                   Icons.broken_image,

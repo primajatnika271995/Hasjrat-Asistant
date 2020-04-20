@@ -4,6 +4,7 @@ import 'package:salles_tools/src/bloc/booking_bloc/booking_drive_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
 import 'package:salles_tools/src/models/catalog_model.dart' as catalogModel;
+import 'package:salles_tools/src/models/detail_catalog_model.dart';
 import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
@@ -16,9 +17,24 @@ import 'package:salles_tools/src/views/catalog_page/catalog_specifications.dart'
 import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
 import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
 
+import '../../bloc/catalog_bloc/catalog_bloc.dart';
+import '../../bloc/catalog_bloc/catalog_bloc.dart';
+import '../../bloc/catalog_bloc/catalog_bloc.dart';
+import '../../bloc/catalog_bloc/catalog_event.dart';
+import '../../bloc/catalog_bloc/catalog_state.dart';
+import '../../bloc/catalog_bloc/catalog_state.dart';
+import '../../bloc/catalog_bloc/catalog_state.dart';
+import '../../bloc/catalog_bloc/catalog_state.dart';
+import '../../bloc/catalog_bloc/catalog_state.dart';
+import '../../models/catalog_model.dart';
+import '../../models/catalog_model.dart';
+import '../../services/catalog_service.dart';
+import '../../services/catalog_service.dart';
+import '../components/loading_content.dart';
+
 class DetailsCatalogView extends StatefulWidget {
   final String heroName;
-  final catalogModel.Datum data;
+  final CatalogModel data;
   DetailsCatalogView({this.heroName, this.data});
 
   @override
@@ -28,7 +44,7 @@ class DetailsCatalogView extends StatefulWidget {
 
 class _DetailsCatalogViewState extends State<DetailsCatalogView> {
   final String heroName;
-  final catalogModel.Datum data;
+  final CatalogModel data;
   int _tabLength = 3;
 
   _DetailsCatalogViewState(this.heroName, this.data);
@@ -88,6 +104,14 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    final catalogBloc = BlocProvider.of<CatalogBloc>(context);
+    catalogBloc.add(FetchDetailCatalog(DetailCatalogPost(id: data.id)));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: _tabLength,
@@ -98,7 +122,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           elevation: 1,
           titleSpacing: 0,
           title: Text(
-            "${data.itemClass1}",
+            "${data.itemModel} ${data.itemType}",
             // "test data",
             style: TextStyle(
               color: Colors.black,
@@ -107,28 +131,61 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           ),
           iconTheme: IconThemeData(color: Colors.black),
         ),
-        body: NestedScrollView(
-          headerSliverBuilder: (context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              MainViewDetailsVehicle(
-                dataCatalog: data,
-                heroName: heroName,
-              ),
-              TabViewDetailsVehicle(),
-            ];
+        body: BlocListener<CatalogBloc, CatalogState>(
+          listener: (context, state) {
+            if (state is CatalogLoading) {
+              onLoading(context);
+            }
+            if (state is CatalogDisposeLoading) {
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.of(context, rootNavigator: false).pop();
+              });
+            }
           },
-          body: TabBarView(
-            children: <Widget>[
-              CatalogReviewView(
-                data: data,
-              ),
-              CatalogGalleryView(
-                data: data,
-              ),
-              CatalogSpecificationsView(
-                data: data,
-              ),
-            ],
+          child: BlocBuilder<CatalogBloc, CatalogState>(
+            builder: (context, state) {
+              if (state is DetailCatalogFailed) {
+                print("DETAIL KATALOG GAGAL");
+                Future.delayed(Duration(seconds: 3), () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                });
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset("assets/icons/error_banner.jpg",
+                            height: 200),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              if (state is DetailCatalogSuccess) {
+                print("DETAIL KATALOG SUKSES");
+                return NestedScrollView(
+                  headerSliverBuilder: (context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      MainViewDetailsVehicle(
+                        dataCatalog: state.value,
+                      ),
+                      TabViewDetailsVehicle(),
+                    ];
+                  },
+                  body: TabBarView(
+                    children: <Widget>[
+                      CatalogReviewView(
+                        valueCatalog: state.value,
+                      ),
+                      CatalogGalleryView(data: state.value),
+                      CatalogSpecificationsView(data: state.value),
+                    ],
+                  ),
+                );
+              }
+              return SizedBox();
+            },
           ),
         ),
         bottomNavigationBar: Padding(
@@ -145,9 +202,9 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
                   child: Text(
                     'Booking Test Drive',
                     style: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
+                      fontSize: 15.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   shape: RoundedRectangleBorder(
@@ -190,7 +247,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
 
 class MainViewDetailsVehicle extends StatefulWidget {
   final String heroName;
-  final catalogModel.Datum dataCatalog;
+  final DetailCatalogModel dataCatalog;
   MainViewDetailsVehicle({this.heroName, this.dataCatalog});
 
   @override
@@ -200,11 +257,11 @@ class MainViewDetailsVehicle extends StatefulWidget {
 
 class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
   final String heroName;
-  final catalogModel.Datum data;
+  final DetailCatalogModel dataCatalog;
   List<String> _colorList = [];
   String _currentColor = "";
 
-  _MainViewDetailsVehicleState(this.heroName, this.data);
+  _MainViewDetailsVehicleState(this.heroName, this.dataCatalog);
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +293,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                       topRight: Radius.circular(9.0),
                     ),
                   ),
-                  child: data.colours.isEmpty
+                  child: dataCatalog.colours.isEmpty
                       ? Center(
                           child: Icon(
                             Icons.broken_image,
@@ -244,14 +301,14 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                             color: Colors.grey,
                           ),
                         )
-                      : Image.network("${data.colours[0].image}"),
+                      : Image.network("${dataCatalog.colours[0].image}"),
                 ),
               ),
             ),
             Column(
               children: <Widget>[
                 Text(
-                  "${data.itemModel} ${data.itemType}",
+                  "${dataCatalog.itemModel} ${dataCatalog.itemType}",
                   style: TextStyle(
                     fontSize: 16,
                     letterSpacing: 1.0,
@@ -268,7 +325,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
   }
 
   Widget dropdownMenu() {
-    data.colours.forEach((val) {
+    dataCatalog.colours.forEach((val) {
       _colorList.add(val.colorNameIn);
     });
     return Padding(
@@ -305,6 +362,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                         _currentColor = newVal;
                         state.didChange(newVal);
                       });
+                      print("warna saat ini : $_currentColor");
                     },
                     items: _colorList == null || _colorList.isEmpty
                         ? null
