@@ -89,5 +89,7 @@ class UriApi {
 
   static const String spkUri = "/sales-tools-dealer-service/api/v2/dms/spk/list";
 
+  static const String dashboardUri = "/sales-tools-dealer-service/api/v2/dms/prospect/dashboard";
+
   static const String spkNumberUri = "/sales-tools-dealer-service/api/v2/dms/spk/number";
 }
