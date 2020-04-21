@@ -54,7 +54,7 @@ class Datum {
   int customerGroupId;
   int itemGroup;
   int salesCode;
-  DateTime prospectDate;
+  dynamic prospectDate;
   String prospectStatus;
   String prospectCanceled;
   String officeAreaCode;
@@ -67,7 +67,7 @@ class Datum {
   int prospectClassificationId;
   String prospectFirstVehicle;
   int prospectFollowup;
-  String prospectComment;
+  dynamic prospectComment;
   String sourceData;
   dynamic prospectCanceledDate;
   dynamic prospectCanceledComment;
@@ -76,13 +76,13 @@ class Datum {
   int createdUser;
   DateTime createdDate;
   String fromSuspect;
-  dynamic models;
-  dynamic followups;
+  List<Model> models;
+  List<Followup> followups;
   String salesName;
   String docStatus;
   String phone1;
-  dynamic phone2;
-  dynamic phone3;
+  String phone2;
+  String phone3;
   String location;
   String provinsiCode;
   String kabupatenCode;
@@ -93,7 +93,7 @@ class Datum {
   String zipcode;
   String pekerjaan;
   String prospectClassificationName;
-  dynamic prospectSourceName;
+  String prospectSourceName;
   dynamic canceledUser;
 
   Datum({
@@ -159,7 +159,7 @@ class Datum {
     customerGroupId: json["customer_group_id"] == null ? null : json["customer_group_id"],
     itemGroup: json["item_group"] == null ? null : json["item_group"],
     salesCode: json["sales_code"] == null ? null : json["sales_code"],
-    prospectDate: json["prospect_date"] == null ? null : DateTime.parse(json["prospect_date"]),
+    prospectDate: json["prospect_date"],
     prospectStatus: json["prospect_status"] == null ? null : json["prospect_status"],
     prospectCanceled: json["prospect_canceled"] == null ? null : json["prospect_canceled"],
     officeAreaCode: json["office_area_code"] == null ? null : json["office_area_code"],
@@ -172,7 +172,7 @@ class Datum {
     prospectClassificationId: json["prospect_classification_id"] == null ? null : json["prospect_classification_id"],
     prospectFirstVehicle: json["prospect_first_vehicle"] == null ? null : json["prospect_first_vehicle"],
     prospectFollowup: json["prospect_followup"] == null ? null : json["prospect_followup"],
-    prospectComment: json["prospect_comment"] == null ? null : json["prospect_comment"],
+    prospectComment: json["prospect_comment"],
     sourceData: json["source_data"] == null ? null : json["source_data"],
     prospectCanceledDate: json["prospect_canceled_date"],
     prospectCanceledComment: json["prospect_canceled_comment"],
@@ -181,13 +181,13 @@ class Datum {
     createdUser: json["created_user"] == null ? null : json["created_user"],
     createdDate: json["created_date"] == null ? null : DateTime.parse(json["created_date"]),
     fromSuspect: json["from_suspect"] == null ? null : json["from_suspect"],
-    models: json["models"],
-    followups: json["followups"],
+    models: json["models"] == null ? null : List<Model>.from(json["models"].map((x) => Model.fromJson(x))),
+    followups: json["followups"] == null ? null : List<Followup>.from(json["followups"].map((x) => Followup.fromJson(x))),
     salesName: json["sales_name"] == null ? null : json["sales_name"],
     docStatus: json["docStatus"] == null ? null : json["docStatus"],
     phone1: json["phone1"] == null ? null : json["phone1"],
-    phone2: json["phone2"],
-    phone3: json["phone3"],
+    phone2: json["phone2"] == null ? null : json["phone2"],
+    phone3: json["phone3"] == null ? null : json["phone3"],
     location: json["location"] == null ? null : json["location"],
     provinsiCode: json["provinsi_code"] == null ? null : json["provinsi_code"],
     kabupatenCode: json["kabupaten_code"] == null ? null : json["kabupaten_code"],
@@ -198,7 +198,7 @@ class Datum {
     zipcode: json["zipcode"] == null ? null : json["zipcode"],
     pekerjaan: json["pekerjaan"] == null ? null : json["pekerjaan"],
     prospectClassificationName: json["prospect_classification_name"] == null ? null : json["prospect_classification_name"],
-    prospectSourceName: json["prospect_source_name"],
+    prospectSourceName: json["prospect_source_name"] == null ? null : json["prospect_source_name"],
     canceledUser: json["canceled_user"],
   );
 
@@ -212,7 +212,7 @@ class Datum {
     "customer_group_id": customerGroupId == null ? null : customerGroupId,
     "item_group": itemGroup == null ? null : itemGroup,
     "sales_code": salesCode == null ? null : salesCode,
-    "prospect_date": prospectDate == null ? null : prospectDate.toIso8601String(),
+    "prospect_date": prospectDate,
     "prospect_status": prospectStatus == null ? null : prospectStatus,
     "prospect_canceled": prospectCanceled == null ? null : prospectCanceled,
     "office_area_code": officeAreaCode == null ? null : officeAreaCode,
@@ -225,7 +225,7 @@ class Datum {
     "prospect_classification_id": prospectClassificationId == null ? null : prospectClassificationId,
     "prospect_first_vehicle": prospectFirstVehicle == null ? null : prospectFirstVehicle,
     "prospect_followup": prospectFollowup == null ? null : prospectFollowup,
-    "prospect_comment": prospectComment == null ? null : prospectComment,
+    "prospect_comment": prospectComment,
     "source_data": sourceData == null ? null : sourceData,
     "prospect_canceled_date": prospectCanceledDate,
     "prospect_canceled_comment": prospectCanceledComment,
@@ -234,13 +234,13 @@ class Datum {
     "created_user": createdUser == null ? null : createdUser,
     "created_date": createdDate == null ? null : createdDate.toIso8601String(),
     "from_suspect": fromSuspect == null ? null : fromSuspect,
-    "models": models,
-    "followups": followups,
+    "models": models == null ? null : List<dynamic>.from(models.map((x) => x.toJson())),
+    "followups": followups == null ? null : List<dynamic>.from(followups.map((x) => x.toJson())),
     "sales_name": salesName == null ? null : salesName,
     "docStatus": docStatus == null ? null : docStatus,
     "phone1": phone1 == null ? null : phone1,
-    "phone2": phone2,
-    "phone3": phone3,
+    "phone2": phone2 == null ? null : phone2,
+    "phone3": phone3 == null ? null : phone3,
     "location": location == null ? null : location,
     "provinsi_code": provinsiCode == null ? null : provinsiCode,
     "kabupaten_code": kabupatenCode == null ? null : kabupatenCode,
@@ -251,7 +251,171 @@ class Datum {
     "zipcode": zipcode == null ? null : zipcode,
     "pekerjaan": pekerjaan == null ? null : pekerjaan,
     "prospect_classification_name": prospectClassificationName == null ? null : prospectClassificationName,
-    "prospect_source_name": prospectSourceName,
+    "prospect_source_name": prospectSourceName == null ? null : prospectSourceName,
     "canceled_user": canceledUser,
+  };
+}
+
+class Followup {
+  int prospectFollowupId;
+  int prospectId;
+  int lineNum;
+  DateTime followupPlanDate;
+  dynamic followupActualDate;
+  int followupNextDay;
+  dynamic prospectClassificationId;
+  dynamic prospectFollowupMethodId;
+  dynamic prospectRemarks;
+  int createdUser;
+  DateTime createdDate;
+  dynamic updatedUser;
+  dynamic updatedDate;
+  dynamic prospectClassificationName;
+  dynamic followupMethodName;
+
+  Followup({
+    this.prospectFollowupId,
+    this.prospectId,
+    this.lineNum,
+    this.followupPlanDate,
+    this.followupActualDate,
+    this.followupNextDay,
+    this.prospectClassificationId,
+    this.prospectFollowupMethodId,
+    this.prospectRemarks,
+    this.createdUser,
+    this.createdDate,
+    this.updatedUser,
+    this.updatedDate,
+    this.prospectClassificationName,
+    this.followupMethodName,
+  });
+
+  factory Followup.fromJson(Map<String, dynamic> json) => Followup(
+    prospectFollowupId: json["prospect_followup_id"] == null ? null : json["prospect_followup_id"],
+    prospectId: json["prospect_id"] == null ? null : json["prospect_id"],
+    lineNum: json["line_num"] == null ? null : json["line_num"],
+    followupPlanDate: json["followup_plan_date"] == null ? null : DateTime.parse(json["followup_plan_date"]),
+    followupActualDate: json["followup_actual_date"],
+    followupNextDay: json["followup_next_day"] == null ? null : json["followup_next_day"],
+    prospectClassificationId: json["prospect_classification_id"],
+    prospectFollowupMethodId: json["prospect_followup_method_id"],
+    prospectRemarks: json["prospect_remarks"],
+    createdUser: json["created_user"] == null ? null : json["created_user"],
+    createdDate: json["created_date"] == null ? null : DateTime.parse(json["created_date"]),
+    updatedUser: json["updated_user"],
+    updatedDate: json["updated_date"],
+    prospectClassificationName: json["prospect_classification_name"],
+    followupMethodName: json["followup_method_name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "prospect_followup_id": prospectFollowupId == null ? null : prospectFollowupId,
+    "prospect_id": prospectId == null ? null : prospectId,
+    "line_num": lineNum == null ? null : lineNum,
+    "followup_plan_date": followupPlanDate == null ? null : followupPlanDate.toIso8601String(),
+    "followup_actual_date": followupActualDate,
+    "followup_next_day": followupNextDay == null ? null : followupNextDay,
+    "prospect_classification_id": prospectClassificationId,
+    "prospect_followup_method_id": prospectFollowupMethodId,
+    "prospect_remarks": prospectRemarks,
+    "created_user": createdUser == null ? null : createdUser,
+    "created_date": createdDate == null ? null : createdDate.toIso8601String(),
+    "updated_user": updatedUser,
+    "updated_date": updatedDate,
+    "prospect_classification_name": prospectClassificationName,
+    "followup_method_name": followupMethodName,
+  };
+}
+
+class Model {
+  int prospectModelId;
+  int prospectId;
+  String itemCode;
+  String itemModel;
+  dynamic itemYear;
+  String itemType;
+  dynamic itemColour;
+  int lineNum;
+  dynamic kodeKaroseri;
+  int quantity;
+  int openQty;
+  dynamic price;
+  String status;
+  dynamic canceled;
+  int createdUser;
+  DateTime createdDate;
+  dynamic updatedUser;
+  dynamic updatedDate;
+  dynamic itemCodeColour;
+  dynamic namaKaroseri;
+
+  Model({
+    this.prospectModelId,
+    this.prospectId,
+    this.itemCode,
+    this.itemModel,
+    this.itemYear,
+    this.itemType,
+    this.itemColour,
+    this.lineNum,
+    this.kodeKaroseri,
+    this.quantity,
+    this.openQty,
+    this.price,
+    this.status,
+    this.canceled,
+    this.createdUser,
+    this.createdDate,
+    this.updatedUser,
+    this.updatedDate,
+    this.itemCodeColour,
+    this.namaKaroseri,
+  });
+
+  factory Model.fromJson(Map<String, dynamic> json) => Model(
+    prospectModelId: json["prospect_model_id"] == null ? null : json["prospect_model_id"],
+    prospectId: json["prospect_id"] == null ? null : json["prospect_id"],
+    itemCode: json["item_code"] == null ? null : json["item_code"],
+    itemModel: json["item_model"] == null ? null : json["item_model"],
+    itemYear: json["item_year"],
+    itemType: json["item_type"] == null ? null : json["item_type"],
+    itemColour: json["item_colour"],
+    lineNum: json["line_num"] == null ? null : json["line_num"],
+    kodeKaroseri: json["kode_karoseri"],
+    quantity: json["quantity"] == null ? null : json["quantity"],
+    openQty: json["open_qty"] == null ? null : json["open_qty"],
+    price: json["price"],
+    status: json["status"] == null ? null : json["status"],
+    canceled: json["canceled"],
+    createdUser: json["created_user"] == null ? null : json["created_user"],
+    createdDate: json["created_date"] == null ? null : DateTime.parse(json["created_date"]),
+    updatedUser: json["updated_user"],
+    updatedDate: json["updated_date"],
+    itemCodeColour: json["item_code_colour"],
+    namaKaroseri: json["nama_karoseri"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "prospect_model_id": prospectModelId == null ? null : prospectModelId,
+    "prospect_id": prospectId == null ? null : prospectId,
+    "item_code": itemCode == null ? null : itemCode,
+    "item_model": itemModel == null ? null : itemModel,
+    "item_year": itemYear,
+    "item_type": itemType == null ? null : itemType,
+    "item_colour": itemColour,
+    "line_num": lineNum == null ? null : lineNum,
+    "kode_karoseri": kodeKaroseri,
+    "quantity": quantity == null ? null : quantity,
+    "open_qty": openQty == null ? null : openQty,
+    "price": price,
+    "status": status == null ? null : status,
+    "canceled": canceled,
+    "created_user": createdUser == null ? null : createdUser,
+    "created_date": createdDate == null ? null : createdDate.toIso8601String(),
+    "updated_user": updatedUser,
+    "updated_date": updatedDate,
+    "item_code_colour": itemCodeColour,
+    "nama_karoseri": namaKaroseri,
   };
 }

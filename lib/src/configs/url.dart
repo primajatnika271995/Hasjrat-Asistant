@@ -89,7 +89,15 @@ class UriApi {
 
   static const String spkUri = "/sales-tools-dealer-service/api/v2/dms/spk/list";
 
-  static const String dashboardUri = "/sales-tools-dealer-service/api/v2/dms/prospect/dashboard";
-
   static const String spkNumberUri = "/sales-tools-dealer-service/api/v2/dms/spk/number";
+
+  static const String customerCriteriaUri = "/sales-tools-dealer-service/api/v2/dms/customer/criteria";
+
+  static const String leasingUri = "/sales-tools-dealer-service/api/v2/dms/leasing/list";
+
+  static const String leasingTenorUri = "/sales-tools-dealer-service/api/v2/dms/leasing/tenor/list";
+
+  static const String createSpkUri = "/sales-tools-dealer-service/api/v2/dms/spk/addCopySpkFromProspect";
+
+  static const String dashboardUri = "/sales-tools-dealer-service/api/v2/dms/prospect/dashboard";
 }

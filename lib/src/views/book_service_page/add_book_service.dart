@@ -164,7 +164,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
         customerName: customerNameCtrl.text,
         customerEmail: customerEmailCtrl.text,
         customerPhone: customerContactCtrl.text,
-        bookingTypeName: currentSelectBookCategory,
+        bookingTypeName: currentSelectTypeService,
         bookingDate: dateSelected.text,
         bookingTime: timeSelected.text,
         dealerAddress: dealerAddressCtrl.text,

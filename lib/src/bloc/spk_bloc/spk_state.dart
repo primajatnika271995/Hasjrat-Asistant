@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:salles_tools/src/models/customer_criteria_model.dart';
+import 'package:salles_tools/src/models/leasing_model.dart';
+import 'package:salles_tools/src/models/leasing_tenor_model.dart';
 import 'package:salles_tools/src/models/spk_model.dart' as spk;
 import 'package:salles_tools/src/models/spk_number_model.dart';
 
@@ -51,10 +54,52 @@ class SpkSuccess extends SpkState {
 
 }
 
+class CreateSpkSuccess extends SpkState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class CreateSpkError extends SpkState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
 class SpkNumberSuccess extends SpkState {
   final SpkNumberModel value;
 
   SpkNumberSuccess(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
+class CustomerCriteriaSuccess extends SpkState {
+  final CustomerCriteriaModel value;
+
+  CustomerCriteriaSuccess(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
+class LeasingSuccess extends SpkState {
+  final LeasingModel value;
+
+  LeasingSuccess(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
+class LeasingTenorSuccess extends SpkState {
+  final LeasingTenorModel value;
+
+  LeasingTenorSuccess(this.value);
 
   @override
   // TODO: implement props

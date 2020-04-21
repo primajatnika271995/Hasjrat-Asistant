@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/spk_bloc/spk_event.dart';
 import 'package:salles_tools/src/bloc/spk_bloc/spk_state.dart';
+import 'package:salles_tools/src/models/customer_criteria_model.dart';
+import 'package:salles_tools/src/models/leasing_model.dart';
+import 'package:salles_tools/src/models/leasing_tenor_model.dart';
 import 'package:salles_tools/src/models/spk_model.dart' as spkModel;
 import 'package:salles_tools/src/models/spk_number_model.dart';
 import 'package:salles_tools/src/services/spk_service.dart';
@@ -70,6 +73,21 @@ class SpkBloc extends Bloc<SpkEvent, SpkState> {
       );
     }
 
+    if (event is CreateSpk) {
+      yield SpkLoading();
+
+      try {
+        await _spkService.createSpk(event.value);
+
+        yield SpkDisposeLoading();
+        yield CreateSpkSuccess();
+      } catch (error) {
+        yield SpkDisposeLoading();
+        yield CreateSpkError();
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
     if (event is FetchSpkNumber) {
       yield SpkLoading();
 
@@ -81,6 +99,48 @@ class SpkBloc extends Bloc<SpkEvent, SpkState> {
       } else {
         yield SpkDisposeLoading();
         yield SpkNumberSuccess(value);
+      }
+    }
+
+    if (event is FetchCustomerCriteria) {
+      yield SpkLoading();
+
+      CustomerCriteriaModel value = await _spkService.customerCriteriaList();
+
+      if (value.data.isEmpty || value.data == null) {
+        yield SpkDisposeLoading();
+        yield SpkFailed();
+      } else {
+        yield SpkDisposeLoading();
+        yield CustomerCriteriaSuccess(value);
+      }
+    }
+
+    if (event is FetchLeasing) {
+      yield SpkLoading();
+
+      LeasingModel value = await _spkService.leasingList();
+
+      if (value.data.isEmpty || value.data == null) {
+        yield SpkDisposeLoading();
+        yield SpkFailed();
+      } else {
+        yield SpkDisposeLoading();
+        yield LeasingSuccess(value);
+      }
+    }
+
+    if (event is FetchLeasingTenor) {
+      yield SpkLoading();
+
+      LeasingTenorModel value = await _spkService.leasingTenorList();
+
+      if (value.data.isEmpty || value.data == null) {
+        yield SpkDisposeLoading();
+        yield SpkFailed();
+      } else {
+        yield SpkDisposeLoading();
+        yield LeasingTenorSuccess(value);
       }
     }
   }

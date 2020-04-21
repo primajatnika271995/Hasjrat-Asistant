@@ -7,6 +7,15 @@ class SpkEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class CreateSpk extends SpkEvent {
+  final SpkParams value;
+  CreateSpk(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
+}
+
 class FetchSpk extends SpkEvent {
   final SpkFilterPost value;
 
@@ -38,6 +47,18 @@ class FetchSpkFilter extends SpkEvent {
 }
 
 class FetchSpkNumber extends SpkEvent {
+
+}
+
+class FetchCustomerCriteria extends SpkEvent {
+
+}
+
+class FetchLeasing extends SpkEvent {
+
+}
+
+class FetchLeasingTenor extends SpkEvent {
 
 }
 

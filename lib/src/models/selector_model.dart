@@ -342,3 +342,58 @@ class SelectorSpkNumber {
   // TODO: implement hashCode
   int get hashCode => spkNumber.hashCode^spkBlanko.hashCode;
 }
+
+class SelectorCustomerCriteria {
+  int criteriaId;
+  String criteriaName;
+  String itemGroup;
+
+  SelectorCustomerCriteria({this.criteriaId, this.criteriaName, this.itemGroup});
+
+  @override
+  String toString() => criteriaName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorCustomerCriteria && other.criteriaName == criteriaName;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => criteriaId.hashCode^criteriaName.hashCode^itemGroup.hashCode;
+}
+
+class SelectorLeasing {
+  int leasingId;
+  String leasingName;
+
+  SelectorLeasing({this.leasingId, this.leasingName});
+
+  @override
+  String toString() => leasingName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorLeasing && other.leasingName == leasingName;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => leasingId.hashCode^leasingName.hashCode;
+}
+
+class SelectorLeasingTenor {
+  int leasingTenorId;
+  String leasingTenorName;
+
+  SelectorLeasingTenor({this.leasingTenorId, this.leasingTenorName});
+
+  @override
+  String toString() => leasingTenorName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorLeasingTenor && other.leasingTenorName == leasingTenorName;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => leasingTenorId.hashCode^leasingTenorName.hashCode;
+}

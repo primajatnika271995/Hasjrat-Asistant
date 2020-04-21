@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_event.dart';
 import 'package:salles_tools/src/bloc/dms_bloc/dms_state.dart';
@@ -411,7 +412,7 @@ class SlidableCustomerView extends StatelessWidget {
                     Text(
                       value.prospectDate == null
                           ? "No Date"
-                          : "${value.prospectDate.day}/${value.prospectDate.month}/${value.prospectDate.year}",
+                          : "${DateTime.parse(value.prospectDate).day}/${DateTime.parse(value.prospectDate).month}/${DateTime.parse(value.prospectDate).year}",
                       style: TextStyle(
                         letterSpacing: 1.0,
                         fontSize: 11,
