@@ -37,6 +37,10 @@ class FetchSpkFilter extends SpkEvent {
   List<Object> get props => [value];
 }
 
+class FetchSpkNumber extends SpkEvent {
+
+}
+
 class ResetSpk extends SpkEvent {
 
 }

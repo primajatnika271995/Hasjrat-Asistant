@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:salles_tools/src/models/spk_model.dart';
+import 'package:salles_tools/src/models/spk_model.dart' as spk;
+import 'package:salles_tools/src/models/spk_number_model.dart';
 
 class SpkState extends Equatable {
   @override
@@ -28,12 +29,12 @@ class SpkError extends SpkState {
 }
 
 class SpkSuccess extends SpkState {
-  final List<Datum> listSpk;
+  final List<spk.Datum> listSpk;
   final bool hasReachedMax;
 
   SpkSuccess({this.listSpk, this.hasReachedMax});
 
-  SpkSuccess copyWith({List<Datum> listSpk, bool hasReachedMax}) {
+  SpkSuccess copyWith({List<spk.Datum> listSpk, bool hasReachedMax}) {
     return SpkSuccess(
       listSpk: listSpk ?? this.listSpk,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
@@ -48,4 +49,14 @@ class SpkSuccess extends SpkState {
   String toString() =>
       'Spk Loaded { prospect: ${listSpk.length}, hasReachedMax: $hasReachedMax }';
 
+}
+
+class SpkNumberSuccess extends SpkState {
+  final SpkNumberModel value;
+
+  SpkNumberSuccess(this.value);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [value];
 }

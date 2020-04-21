@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/spk_bloc/spk_bloc.dart';
 import 'package:salles_tools/src/models/prospect_model.dart';
+import 'package:salles_tools/src/services/spk_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/add_spk.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProspectDetailsView extends StatefulWidget {
@@ -15,6 +19,24 @@ class ProspectDetailsView extends StatefulWidget {
 
 class _ProspectDetailsViewState extends State<ProspectDetailsView> {
   String _currentContextType = "Prospect";
+
+  void _onAddSpk() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => SpkBloc(SpkService()),
+          child: SpkAddView(widget.value),
+        ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -473,7 +495,9 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
       child: Container(
         width: screenWidth(context),
         child: RaisedButton(
-          onPressed: () {},
+          onPressed: () {
+            _onAddSpk();
+          },
           child: Text("Copy to SPK", style: TextStyle(color: Colors.white),),
           color: Colors.green,
           shape: RoundedRectangleBorder(

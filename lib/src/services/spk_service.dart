@@ -6,6 +6,7 @@ import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/error_token_expire_model.dart';
 import 'package:salles_tools/src/models/spk_model.dart';
+import 'package:salles_tools/src/models/spk_number_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -15,6 +16,22 @@ class SpkService {
   SpkService() {
     _dio.options.baseUrl = UriApi.baseApi;
     _dio.interceptors.add(DioLoggingInterceptors(_dio));
+  }
+
+  Future spkNumberList() async {
+    final response = await _dio.get(
+      UriApi.spkNumberUri,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(spkNumberModelFromJson, json.encode(response.data));
+    }
   }
 
   Future spkList(SpkFilterPost value, String start, String limit) async {

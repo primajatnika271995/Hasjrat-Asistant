@@ -324,3 +324,21 @@ class SelectorStation {
   // TODO: implement hashCode
   int get hashCode => name.hashCode^address.hashCode^email.hashCode;
 }
+
+class SelectorSpkNumber {
+  String spkNumber;
+  String spkBlanko;
+
+  SelectorSpkNumber({this.spkNumber, this.spkBlanko});
+
+  @override
+  String toString() => spkNumber;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorSpkNumber && other.spkNumber == spkNumber;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => spkNumber.hashCode^spkBlanko.hashCode;
+}
