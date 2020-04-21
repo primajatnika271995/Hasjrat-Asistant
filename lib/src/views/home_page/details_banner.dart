@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:salles_tools/src/models/banner_model.dart';
 import 'package:salles_tools/src/utils/currency_format.dart';
+import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 
 class BannerDetailsView extends StatefulWidget {
@@ -20,28 +22,35 @@ class _BannerDetailsViewState extends State<BannerDetailsView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor('#C61818'),
         elevation: 1,
         titleSpacing: 0,
         title: Text(
           "Banner",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             letterSpacing: 0.5,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Hero(
             tag: "promotion-tag${widget.data.id}",
-            child: Image.network(
-              "${widget.data.url}",
-              width: screenWidth(context),
-              height: 200,
-              fit: BoxFit.fill,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  image: DecorationImage(
+                    image: NetworkImage('${widget.data.url}'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
             ),
           ),
           Padding(
@@ -86,6 +95,7 @@ class _BannerDetailsViewState extends State<BannerDetailsView> {
                   style: TextStyle(
                     letterSpacing: 0.8,
                   ),
+                  textAlign: TextAlign.justify,
                 ),
                 SizedBox(
                   height: 5,
