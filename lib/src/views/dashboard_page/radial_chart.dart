@@ -11,14 +11,14 @@ class _RadialChartViewState extends State<RadialChartView> {
   List<RadialBarSeries<ChartSampleData, String>> getData() {
     final List<ChartSampleData> chartData = <ChartSampleData>[
       ChartSampleData(
-        x: 'On Track \n Rp 7.850.000',
+        x: 'On Track \n 10 Unit',
         y: 58,
         text: 'On Track',
         xValue: null,
         pointColor: Colors.yellowAccent,
       ),
       ChartSampleData(
-        x: 'Target \n Rp 10.000.000',
+        x: 'Target \n 17 Unit',
         y: 100,
         text: 'Target',
         xValue: null,

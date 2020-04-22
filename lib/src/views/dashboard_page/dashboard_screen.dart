@@ -18,6 +18,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    // ignore: close_sinks
     final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
     dashboardBloc.add(FetchDashboard());
     super.initState();
@@ -89,7 +90,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 15, top: 20),
                         child: Text(
-                          "Your Target",
+                          "Your Quantity",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -110,7 +111,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 10),
                             child: Text(
-                              "Rp 10.000.000",
+                              "20 Unit",
                               style: TextStyle(
                                 fontSize: 17,
                                 letterSpacing: 1.0,
