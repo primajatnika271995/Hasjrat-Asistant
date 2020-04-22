@@ -62,6 +62,12 @@ class FetchLeasingTenor extends SpkEvent {
 
 }
 
+class FetchProvince extends SpkEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
 class ResetSpk extends SpkEvent {
 
 }

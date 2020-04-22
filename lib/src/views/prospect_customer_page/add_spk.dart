@@ -16,6 +16,7 @@ import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
 
 enum TypePrice { otr, offTheRoad }
+enum Insurance { tlo, allRisk, kombinasi }
 
 class SpkAddView extends StatefulWidget {
   final Datum value;
@@ -38,6 +39,9 @@ class _SpkAddViewState extends State<SpkAddView> {
   TypePrice _typePrice = TypePrice.otr;
   var currentSelectTypePrice = 'OTR';
 
+  Insurance _typeInsurance = Insurance.tlo;
+  var currentSelectInsurance = 'TLO';
+
   var prospectIdCtrl = new TextEditingController();
   var customerNameCtrl = new TextEditingController();
   var dateNowCtrl = new TextEditingController();
@@ -45,11 +49,15 @@ class _SpkAddViewState extends State<SpkAddView> {
   var dateDecCtrl = new TextEditingController();
   var noKtpCtrl = new TextEditingController();
   var atasNamaCtrl = new TextEditingController();
-  var alamatCtrl = new TextEditingController();
+  var alamatFirstCtrl = new TextEditingController();
+  var alamatSecondCtrl = new TextEditingController();
+  var alamatThirdCtrl = new TextEditingController();
   var kecamatanCtrl = new TextEditingController();
   var kabupatenCtrl = new TextEditingController();
-  var provinsiCtrl = new TextEditingController();
+  var namaAsuransi = new TextEditingController();
   var spkPriceCtrl = MoneyMaskedTextController(leftSymbol: 'Rp ', precision: 0, decimalSeparator: '');
+  var jumlahAngsuranCtrl = MoneyMaskedTextController(leftSymbol: 'Rp ', precision: 0, decimalSeparator: '');
+  var dpConfirmationCtrl = MoneyMaskedTextController(leftSymbol: 'Rp ', precision: 0, decimalSeparator: '');
 
   var spkNumberCtrl = new TextEditingController();
   var currentSelectSpkNumber;
@@ -72,6 +80,11 @@ class _SpkAddViewState extends State<SpkAddView> {
   var currentSelectLeasingTenor;
   var tenorId;
   List<SelectorLeasingTenor> leasingTenorList = [];
+
+  var provinsiCtrl = new TextEditingController();
+  var currentSelectProvinsi;
+  var provinsiId;
+  List<SelectorProvinceModel> listProvinsi = [];
 
   void _showListSpkNumber() {
     SelectDialog.showModal<SelectorSpkNumber>(
@@ -139,6 +152,22 @@ class _SpkAddViewState extends State<SpkAddView> {
     );
   }
 
+  void _showListProvinsi() {
+    SelectDialog.showModal<SelectorProvinceModel>(
+      context,
+      label: "Province",
+      selectedValue: currentSelectProvinsi,
+      items: listProvinsi,
+      onChange: (SelectorProvinceModel selected) {
+        setState(() {
+          currentSelectProvinsi = selected;
+          provinsiCtrl.text = selected.provinceName;
+          provinsiId = selected.provinceCode;
+        });
+      },
+    );
+  }
+
   void checkBox() {
     if (isSameWithData) {
       noKtpCtrl.value = TextEditingValue(text: widget.value.cardCode);
@@ -147,6 +176,12 @@ class _SpkAddViewState extends State<SpkAddView> {
       kecamatanCtrl.value = TextEditingValue(text: widget.value.address2);
       provinsiCtrl.value = TextEditingValue(text: widget.value.address3);
       setState(() {});
+    } else {
+      noKtpCtrl.value = TextEditingValue(text: '');
+      atasNamaCtrl.value = TextEditingValue(text: '');
+      kabupatenCtrl.value = TextEditingValue(text: '');
+      kecamatanCtrl.value = TextEditingValue(text: '');
+      provinsiCtrl.value = TextEditingValue(text: '');
     }
   }
 
@@ -217,11 +252,11 @@ class _SpkAddViewState extends State<SpkAddView> {
       nomor_ktp : ${noKtpCtrl.text},
       nama1 : ${widget.value.cardName},
       address1 : ${widget.value.address1},
-      address1 : ${alamatCtrl.text},
-      address2 : ,
-      address3 : ,
+      address1 : ${alamatFirstCtrl.text},
+      address2 : ${alamatSecondCtrl.text},
+      address3 : ${alamatThirdCtrl.text},
       provinsi_name : ${provinsiCtrl.text},
-      province_code : ${widget.value.provinsiCode},
+      province_code : $provinsiId,
       kabupaten_name : ${kabupatenCtrl.text},
       kecamatan_name : ${kecamatanCtrl.text},
       zipcode : 40287,
@@ -242,17 +277,17 @@ class _SpkAddViewState extends State<SpkAddView> {
       spkDate: dateNowCtrl.text,
       isDalamKota: widget.value.location == "DK" ? "Y" : "N",
       insuranceAmountNonHmf: 0,
-      insuranceType: "TLO",
-      address1: alamatCtrl.text,
-      address2: "",
-      address3: "",
+      insuranceType: currentSelectInsurance,
+      address1: alamatFirstCtrl.text,
+      address2: alamatSecondCtrl.text,
+      address3: alamatThirdCtrl.text,
       itemCode: widget.value.models[0].itemCode,
       itemColour: widget.value.models[0].itemColour,
       itemYear: widget.value.models[0].itemYear,
       itemType: widget.value.models[0].itemType,
       itemModel: widget.value.models[0].itemModel,
-      angsuran: 3000000,
-      dpAmount: 60000000,
+      angsuran: jumlahAngsuranCtrl.numberValue,
+      dpAmount: dpConfirmationCtrl.numberValue,
       bonusAccAmount: 0.00,
       discAmount: 0.00,
       bonusAccDesc: "",
@@ -264,7 +299,7 @@ class _SpkAddViewState extends State<SpkAddView> {
       nama1: widget.value.cardName,
       nama2: "",
       nama3: "",
-      namaAsuransi: "ASURANSI HMF",
+      namaAsuransi: namaAsuransi.text,
       namaUser: widget.value.cardName,
       nomorKtp: noKtpCtrl.text,
       platId: 1,
@@ -308,6 +343,7 @@ class _SpkAddViewState extends State<SpkAddView> {
     spkBloc.add(FetchCustomerCriteria());
     spkBloc.add(FetchLeasing());
     spkBloc.add(FetchLeasingTenor());
+    spkBloc.add(FetchProvince());
     super.initState();
   }
 
@@ -316,7 +352,7 @@ class _SpkAddViewState extends State<SpkAddView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: HexColor("#C61818"),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
@@ -335,6 +371,10 @@ class _SpkAddViewState extends State<SpkAddView> {
           }
 
           if (state is SpkDisposeLoading) {
+            Navigator.of(context, rootNavigator: false).pop();
+          }
+
+          if (state is SpkError) {
             Navigator.of(context, rootNavigator: false).pop();
           }
 
@@ -375,6 +415,15 @@ class _SpkAddViewState extends State<SpkAddView> {
             });
           }
 
+          if (state is ProvinceSuccess) {
+            state.value.data.forEach((f) {
+              listProvinsi.add(SelectorProvinceModel(
+                provinceCode: f.provinsiCode,
+                provinceName: f.provinsiName,
+              ));
+            });
+          }
+
           if (state is CreateSpkSuccess) {
             log.info("Success Create SPK");
             Alert(
@@ -393,7 +442,10 @@ class _SpkAddViewState extends State<SpkAddView> {
                       "OK",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
-                    onPressed: () => Navigator.pop(context, false),
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                      Navigator.pop(context, false);
+                    },
                     color: HexColor("#C61818"),
                   ),
                 ]
@@ -429,7 +481,7 @@ class _SpkAddViewState extends State<SpkAddView> {
           children: <Widget>[
             Theme(
               data: ThemeData(
-                canvasColor: Colors.red,
+                canvasColor: HexColor("#C61818"),
               ),
               child: Stepper(
                 type: StepperType.horizontal,
@@ -540,7 +592,7 @@ class _SpkAddViewState extends State<SpkAddView> {
                         ),
                         formDatePicker(),
                         SizedBox(
-                          height: 20,
+                          height: 40,
                         ),
                       ],
                     ),
@@ -632,7 +684,9 @@ class _SpkAddViewState extends State<SpkAddView> {
                                         ),
                                       ),
                                     ),
-                                    formAlamat(),
+                                    formAlamatFirst(),
+                                    formAlamatSecond(),
+                                    formAlamatThird(),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 15),
@@ -671,7 +725,7 @@ class _SpkAddViewState extends State<SpkAddView> {
                                         ),
                                       ),
                                     ),
-                                    formProvinsi(),
+                                    formSelectProvinsi(),
                                   ],
                                 ),
                                 SizedBox(
@@ -772,6 +826,54 @@ class _SpkAddViewState extends State<SpkAddView> {
                                       ),
                                     ),
                                     formSelectLeasingTenor(),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                                      child: Text(
+                                        "Asuransi",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 13,
+                                          letterSpacing: 1.0,
+                                        ),
+                                      ),
+                                    ),
+                                    radioButtonInsurance(),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                                      child: Text(
+                                        "Nama Asuransi",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 13,
+                                          letterSpacing: 1.0,
+                                        ),
+                                      ),
+                                    ),
+                                    formInsurance(),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                                      child: Text(
+                                        "Jumlah Angsuran",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 13,
+                                          letterSpacing: 1.0,
+                                        ),
+                                      ),
+                                    ),
+                                    formJumlahAngsuran(),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                                      child: Text(
+                                        "DP yang disetujui",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 13,
+                                          letterSpacing: 1.0,
+                                        ),
+                                      ),
+                                    ),
+                                    formDpConfirmation(),
                                   ],
                                 ),
                                 SizedBox(
@@ -1370,7 +1472,7 @@ class _SpkAddViewState extends State<SpkAddView> {
     );
   }
 
-  Widget formAlamat() {
+  Widget formAlamatFirst() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       child: Container(
@@ -1401,14 +1503,108 @@ class _SpkAddViewState extends State<SpkAddView> {
                   border: InputBorder.none,
                   enabled: true,
                   contentPadding: EdgeInsets.only(bottom: 16),
-                  hintText: "Masukan Alamat",
+                  hintText: "Masukan Alamat 1",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
                     fontSize: 13,
                   ),
                 ),
-                controller: alamatCtrl,
+                controller: alamatFirstCtrl,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formAlamatSecond() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
+                readOnly: false,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabled: true,
+                  contentPadding: EdgeInsets.only(bottom: 16),
+                  hintText: "Masukan Alamat 2",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: alamatSecondCtrl,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formAlamatThird() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
+                readOnly: false,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabled: true,
+                  contentPadding: EdgeInsets.only(bottom: 16),
+                  hintText: "Masukan Alamat 3",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: alamatThirdCtrl,
               ),
             ),
           ),
@@ -1511,7 +1707,7 @@ class _SpkAddViewState extends State<SpkAddView> {
     );
   }
 
-  Widget formProvinsi() {
+  Widget formInsurance() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       child: Container(
@@ -1542,14 +1738,14 @@ class _SpkAddViewState extends State<SpkAddView> {
                   border: InputBorder.none,
                   enabled: true,
                   contentPadding: EdgeInsets.only(bottom: 16),
-                  hintText: "Masukan Provinsi",
+                  hintText: "Masukan Nama Asuransi",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
                     fontSize: 13,
                   ),
                 ),
-                controller: provinsiCtrl,
+                controller: namaAsuransi,
               ),
             ),
           ),
@@ -1602,6 +1798,70 @@ class _SpkAddViewState extends State<SpkAddView> {
               ),
               activeColor: HexColor('#C61818'),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget radioButtonInsurance() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+      child: Column(
+        children: <Widget>[
+          RadioListTile<Insurance>(
+            value: Insurance.tlo,
+            onChanged: (Insurance val) {
+              setState(() {
+                _typeInsurance = val;
+                currentSelectInsurance = "TLO";
+              });
+            },
+            groupValue: _typeInsurance,
+            title: Text(
+              "TLO",
+              style: TextStyle(
+                letterSpacing: 0.8,
+                fontSize: 13,
+              ),
+            ),
+            activeColor: HexColor('#C61818'),
+          ),
+          RadioListTile<Insurance>(
+            value: Insurance.allRisk,
+            onChanged: (Insurance val) {
+              setState(() {
+                _typeInsurance = val;
+                currentSelectInsurance = "All Risk";
+              });
+            },
+            groupValue: _typeInsurance,
+            title: Text(
+              "All Risk",
+              style: TextStyle(
+                letterSpacing: 0.8,
+                fontSize: 13,
+              ),
+            ),
+            activeColor: HexColor('#C61818'),
+          ),
+          RadioListTile<Insurance>(
+            value: Insurance.kombinasi,
+            onChanged: (Insurance val) {
+              setState(() {
+                _typeInsurance = val;
+                currentSelectInsurance = "Kombinasi";
+              });
+            },
+            groupValue: _typeInsurance,
+            title: Text(
+              "Kombinasi",
+              style: TextStyle(
+                letterSpacing: 0.8,
+                fontSize: 13,
+              ),
+            ),
+            activeColor: HexColor('#C61818'),
           ),
         ],
       ),
@@ -1766,6 +2026,161 @@ class _SpkAddViewState extends State<SpkAddView> {
                     controller: leasingTenorNameCtrl,
                   ),
                 ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formSelectProvinsi() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListProvinsi();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 17),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Pilih Provinsi",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: provinsiCtrl,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formJumlahAngsuran() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
+                readOnly: false,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabled: true,
+                  contentPadding: EdgeInsets.only(bottom: 16),
+                  hintText: "Masukan Jumlah Angsuran",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: jumlahAngsuranCtrl,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formDpConfirmation() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
+                readOnly: false,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabled: true,
+                  contentPadding: EdgeInsets.only(bottom: 16),
+                  hintText: "Masukan DP yang disetujui",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: dpConfirmationCtrl,
               ),
             ),
           ),

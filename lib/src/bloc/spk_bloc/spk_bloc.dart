@@ -4,6 +4,7 @@ import 'package:salles_tools/src/bloc/spk_bloc/spk_state.dart';
 import 'package:salles_tools/src/models/customer_criteria_model.dart';
 import 'package:salles_tools/src/models/leasing_model.dart';
 import 'package:salles_tools/src/models/leasing_tenor_model.dart';
+import 'package:salles_tools/src/models/province_model.dart';
 import 'package:salles_tools/src/models/spk_model.dart' as spkModel;
 import 'package:salles_tools/src/models/spk_number_model.dart';
 import 'package:salles_tools/src/services/spk_service.dart';
@@ -91,56 +92,65 @@ class SpkBloc extends Bloc<SpkEvent, SpkState> {
     if (event is FetchSpkNumber) {
       yield SpkLoading();
 
-      SpkNumberModel value = await _spkService.spkNumberList();
+      try {
+        SpkNumberModel value = await _spkService.spkNumberList();
 
-      if (value.data.isEmpty || value.data == null) {
-        yield SpkDisposeLoading();
-        yield SpkFailed();
-      } else {
-        yield SpkDisposeLoading();
-        yield SpkNumberSuccess(value);
+        if (value.data.isEmpty || value.data == null) {
+          yield SpkDisposeLoading();
+          yield SpkFailed();
+        } else {
+          yield SpkDisposeLoading();
+          yield SpkNumberSuccess(value);
+        }
+      } catch (err) {
+        log.warning("Error : ${err.toString()}");
+        yield SpkError();
       }
     }
 
     if (event is FetchCustomerCriteria) {
-      yield SpkLoading();
 
       CustomerCriteriaModel value = await _spkService.customerCriteriaList();
 
       if (value.data.isEmpty || value.data == null) {
-        yield SpkDisposeLoading();
         yield SpkFailed();
       } else {
-        yield SpkDisposeLoading();
         yield CustomerCriteriaSuccess(value);
       }
     }
 
     if (event is FetchLeasing) {
-      yield SpkLoading();
 
       LeasingModel value = await _spkService.leasingList();
 
       if (value.data.isEmpty || value.data == null) {
-        yield SpkDisposeLoading();
         yield SpkFailed();
       } else {
-        yield SpkDisposeLoading();
         yield LeasingSuccess(value);
       }
     }
 
     if (event is FetchLeasingTenor) {
-      yield SpkLoading();
-
       LeasingTenorModel value = await _spkService.leasingTenorList();
 
       if (value.data.isEmpty || value.data == null) {
-        yield SpkDisposeLoading();
         yield SpkFailed();
       } else {
-        yield SpkDisposeLoading();
         yield LeasingTenorSuccess(value);
+      }
+    }
+
+    if (event is FetchProvince) {
+      try {
+        ProvinceModel value = await _spkService.province();
+
+        if (value.data.isEmpty || value.data == null) {
+          yield SpkFailed();
+        } else {
+          yield ProvinceSuccess(value);
+        }
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
       }
     }
   }

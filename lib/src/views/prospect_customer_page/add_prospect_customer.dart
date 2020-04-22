@@ -291,17 +291,17 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor("#C61818"),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
           "Create Contact / Lead",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             letterSpacing: 0.5,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Form(
         key: _formKey,
@@ -399,8 +399,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
             children: <Widget>[
               Theme(
                 data: ThemeData(
-                  primarySwatch: Colors.orange,
-                  canvasColor: Colors.white,
+                  canvasColor: HexColor("#C61818"),
                 ),
                 child: Stepper(
                   type: StepperType.horizontal,
@@ -425,9 +424,11 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                   controlsBuilder: _createEventControlBuilder,
                   steps: [
                     Step(
-                      title: Text("Prospect Info"),
+                      title: Text(
+                        "Info Prospect",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       isActive: _currentStep == 0 ? true : false,
-                      state: StepState.editing,
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -472,7 +473,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                           formSelectProspectSource(),
                           Text(
-                            "Follow Up (*)",
+                            "Follow Up Pertama (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -483,9 +484,11 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                       ),
                     ),
                     Step(
-                      title: Text("Data Model"),
+                      title: Text(
+                        "Data Model",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       isActive: _currentStep == 1 ? true : false,
-                      state: StepState.editing,
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -620,16 +623,20 @@ class _ProspectAddViewState extends State<ProspectAddView> {
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
                 readOnly: true,
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   enabled: false,
-                  contentPadding: EdgeInsets.only(bottom: 17),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.date_range,
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: "Date",
+                  hintText: "Tanggal Prospect",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -668,11 +675,15 @@ class _ProspectAddViewState extends State<ProspectAddView> {
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
                 readOnly: true,
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   enabled: false,
-                  contentPadding: EdgeInsets.only(bottom: 17),
-                  hintText: "Lead Code",
+                  contentPadding: EdgeInsets.only(bottom: 16),
+                  hintText: "Kode Lead",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -711,11 +722,15 @@ class _ProspectAddViewState extends State<ProspectAddView> {
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
                 readOnly: true,
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   enabled: false,
-                  contentPadding: EdgeInsets.only(bottom: 17),
-                  hintText: "Lead Name",
+                  contentPadding: EdgeInsets.only(bottom: 16),
+                  hintText: "Nama Lead",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -754,16 +769,20 @@ class _ProspectAddViewState extends State<ProspectAddView> {
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
                 readOnly: true,
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   enabled: false,
-                  contentPadding: EdgeInsets.only(bottom: 17),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.perm_identity,
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: "Sales Name",
+                  hintText: "Nama Sales",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -807,16 +826,20 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Follow Up",
+                      hintText: "Pilih Follow Up Pertama",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -862,16 +885,20 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Pilih Sumber",
+                      hintText: "Pilih Sumber Contact",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -917,10 +944,14 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -972,10 +1003,14 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -1027,10 +1062,14 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -1082,10 +1121,14 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),

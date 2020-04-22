@@ -107,7 +107,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget prospectId() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -139,7 +139,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget namaCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -171,7 +171,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget leadCode() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -203,7 +203,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget contactCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -235,7 +235,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget emailCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -267,7 +267,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget provinceCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -299,7 +299,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget kotaCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -331,7 +331,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget kecamatanCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -363,7 +363,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget locationCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -395,7 +395,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget dropdownContext() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -427,7 +427,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget vehicleCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -459,7 +459,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
 
   Widget colorVehicleCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

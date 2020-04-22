@@ -398,17 +398,17 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor("#C61818"),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
           "Create Contact / Lead",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             letterSpacing: 0.5,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Form(
         key: _formKey,
@@ -533,8 +533,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
             children: <Widget>[
               Theme(
                 data: ThemeData(
-                  primarySwatch: Colors.orange,
-                  canvasColor: Colors.white,
+                  canvasColor: HexColor("#C61818"),
                 ),
                 child: Stepper(
                   type: StepperType.horizontal,
@@ -559,9 +558,11 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                   controlsBuilder: _createEventControlBuilder,
                   steps: [
                     Step(
-                      title: Text("Form Identity"),
+                      title: Text(
+                        "Identitas",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       isActive: _currentStep == 0 ? true : false,
-                      state: StepState.editing,
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -616,7 +617,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           ),
                           SizedBox(height: 20),
                           Text(
-                            "Customer NIK (*)",
+                            "NIK Customer (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -624,7 +625,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           ),
                           formCustomerNIK(),
                           Text(
-                            "Customer Name (*)",
+                            "Nama Customer (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -634,7 +635,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text(
-                              "Customer Contact (*)",
+                              "No. Telp (*)",
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 letterSpacing: 1.0,
@@ -656,7 +657,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text(
-                              "Gender (*)",
+                              "Jenis Kelamin (*)",
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 letterSpacing: 1.0,
@@ -689,7 +690,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text(
-                              "Customer Job (*)",
+                              "Pekerjaan (*)",
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 letterSpacing: 1.0,
@@ -700,7 +701,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text(
-                              "Customer Location (*)",
+                              "Lokasi Customer (*)",
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 letterSpacing: 1.0,
@@ -715,14 +716,16 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                       ),
                     ),
                     Step(
-                      title: Text("Location"),
+                      title: Text(
+                        "Lokasi",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       isActive: _currentStep == 1 ? true : false,
-                      state: StepState.editing,
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Province (*)",
+                            "Provinsi (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -847,7 +850,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: 'Input Name',
+                  hintText: 'Masukan Nama Customer',
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -889,16 +892,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 17),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.credit_card,
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: 'Input NIK',
+                  hintText: 'Masukan NIK',
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -940,16 +947,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.phone_android,
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: 'Input Contact',
+                  hintText: 'Masukan No. Telp',
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -997,16 +1008,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Select Customer Group',
+                      hintText: 'Pilih Group Customer',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1052,16 +1067,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Gender',
+                      hintText: 'Pilih Jenis Kelamin',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1107,16 +1126,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Select Prospect Source',
+                      hintText: 'Pilih Sumber Contact',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1162,16 +1185,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Follow Up",
+                      hintText: "Pilih Follow Up Pertama",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1217,16 +1244,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Select Customer Location',
+                      hintText: 'Pilih Lokasi Customer',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1272,16 +1303,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Select Customer Job',
+                      hintText: 'Pilih Pekerjaan',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1327,16 +1362,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Select Province',
+                      hintText: 'Pilih Provinsi',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1382,16 +1421,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Select District',
+                      hintText: 'Pilih Kabupaten',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1437,16 +1480,20 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Select Sub District',
+                      hintText: 'Pilih Kecamatan',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,

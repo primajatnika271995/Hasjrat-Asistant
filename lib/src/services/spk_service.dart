@@ -8,6 +8,7 @@ import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/error_token_expire_model.dart';
 import 'package:salles_tools/src/models/leasing_model.dart';
 import 'package:salles_tools/src/models/leasing_tenor_model.dart';
+import 'package:salles_tools/src/models/province_model.dart';
 import 'package:salles_tools/src/models/spk_model.dart';
 import 'package:salles_tools/src/models/spk_number_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
@@ -19,6 +20,25 @@ class SpkService {
   SpkService() {
     _dio.options.baseUrl = UriApi.baseApi;
     _dio.interceptors.add(DioLoggingInterceptors(_dio));
+  }
+
+  Future province() async {
+    final response = await _dio.post(UriApi.provinceUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        )
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(provinceModelFromJson, json.encode(response.data));
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
   }
 
   Future spkNumberList() async {

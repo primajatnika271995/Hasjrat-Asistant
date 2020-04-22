@@ -1,11 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/class1_item_model.dart';
-import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
-import 'package:salles_tools/src/models/program_penjualan_model.dart'
-    as programPenjualan;
 import 'package:salles_tools/src/models/program_penjualan_model.dart';
 import 'package:salles_tools/src/models/prospect_model.dart' as prospect;
 

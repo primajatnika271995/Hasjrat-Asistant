@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/customer_criteria_model.dart';
 import 'package:salles_tools/src/models/leasing_model.dart';
 import 'package:salles_tools/src/models/leasing_tenor_model.dart';
+import 'package:salles_tools/src/models/province_model.dart';
 import 'package:salles_tools/src/models/spk_model.dart' as spk;
 import 'package:salles_tools/src/models/spk_number_model.dart';
 
@@ -104,4 +105,15 @@ class LeasingTenorSuccess extends SpkState {
   @override
   // TODO: implement props
   List<Object> get props => [value];
+}
+
+class ProvinceSuccess extends SpkState {
+  final _data;
+
+  ProvinceSuccess(this._data);
+  ProvinceModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
 }
