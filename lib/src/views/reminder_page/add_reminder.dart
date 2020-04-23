@@ -30,7 +30,8 @@ class ReminderAddView extends StatefulWidget {
         this.customerName,
         this.dateReminder,
         this.timeReminder,
-        this.notes});
+        this.notes,
+      });
 
   @override
   _ReminderAddViewState createState() => _ReminderAddViewState();
