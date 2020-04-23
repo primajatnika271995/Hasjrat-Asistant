@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 
 class TrustyHorizontalMenu extends StatefulWidget {
+  final Function callback;
   final List<dynamic> list;
 
-  const TrustyHorizontalMenu({Key key, @required this.list}) : super(key: key);
+  const TrustyHorizontalMenu({Key key, this.callback,  @required this.list}) : super(key: key);
   @override
   _TrustyHorizontalMenuState createState() => _TrustyHorizontalMenuState();
 }
@@ -20,6 +21,7 @@ class _TrustyHorizontalMenuState extends State<TrustyHorizontalMenu> {
       itemBuilder: (ctx, id) {
         return GestureDetector(
           onTap: () {
+            widget.callback(id);
             setState(() {
               active = id;
             });

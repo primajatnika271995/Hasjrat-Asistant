@@ -7,6 +7,7 @@ import 'package:salles_tools/src/models/catalog_model.dart';
 import 'package:salles_tools/src/services/catalog_service.dart';
 import 'package:salles_tools/src/views/catalog_page/details_selection_catalog.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/components/trusty_horizontal_menu.dart';
 
 class CatalogScreen extends StatefulWidget {
@@ -15,6 +16,8 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
+  String catalogCategori = "MPV";
+
   void _onSeeDetails(String heroName, CatalogModel data) {
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -34,6 +37,45 @@ class _CatalogScreenState extends State<CatalogScreen> {
         },
       ),
     );
+  }
+
+  void tabFilter(int id) {
+    switch (id) {
+      case 0:
+        setState(() {
+          catalogCategori = "MPV";
+        });
+        break;
+      case 1:
+        setState(() {
+          catalogCategori = "Sedan";
+        });
+        break;
+      case 2:
+        setState(() {
+          catalogCategori = "Sport";
+        });
+        break;
+      case 3:
+        setState(() {
+          catalogCategori = "Hybrid";
+        });
+        break;
+      case 4:
+        setState(() {
+          catalogCategori = "Hatchback";
+        });
+        break;
+      case 5:
+        setState(() {
+          catalogCategori = "SUV";
+        });
+        break;
+    }
+
+    // ignore: close_sinks
+    final catalogBLoc = BlocProvider.of<CatalogBloc>(context);
+    catalogBLoc.add(FetchCatalogList());
   }
 
   @override
@@ -73,6 +115,10 @@ class _CatalogScreenState extends State<CatalogScreen> {
             padding: EdgeInsets.symmetric(vertical: 5.0),
             alignment: Alignment.center,
             child: TrustyHorizontalMenu(
+              callback: (id) {
+                log.info("id Tab : $id");
+                tabFilter(id);
+              },
               list: [
                 "MPV",
                 "Sedan",
@@ -113,95 +159,127 @@ class _CatalogScreenState extends State<CatalogScreen> {
             }
 
             if (state is CatalogListSuccess) {
-              return Column(
-                children: <Widget>[
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 13),
-                      child: GridView.builder(
-                        itemCount: state.value.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 3 / 4,
-                          crossAxisSpacing: 17,
-                          mainAxisSpacing: 17,
-                        ),
-                        itemBuilder: (context, i) {
-                          var data = state.value[i];
-                          return GestureDetector(
-                            onTap: () {
-                              _onSeeDetails("catalog-image$i", data);
-                            },
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(9.0),
+              return state.value
+                          .where((f) =>
+                              f.archive != true &&
+                              f.category == catalogCategori.toLowerCase())
+                          .toList()
+                          .length >=
+                      1
+                  ? Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 13),
+                            child: GridView.builder(
+                              itemCount: state.value
+                                  .where((f) =>
+                                      f.archive != true &&
+                                      f.category ==
+                                          catalogCategori.toLowerCase())
+                                  .toList()
+                                  .length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 3 / 4,
+                                crossAxisSpacing: 17,
+                                mainAxisSpacing: 17,
                               ),
-                              elevation: 3,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Hero(
-                                      tag: "catalog-image$i",
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(9.0),
-                                            topRight: Radius.circular(9.0),
-                                          ),
-                                          color: Color(0xffe5e6ea),
-                                        ),
-                                        child: data.colours[0].image == null || data.colours[0].image.isEmpty
-                                            ? Center(
-                                                child: Icon(
-                                                  Icons.broken_image,
-                                                  size: 60,
-                                                  color: Colors.white,
-                                                ),
-                                              )
-                                            : Image.network(
-                                                "${data.colours[0].image}",
-                                              ),
-                                      ),
+                              itemBuilder: (context, i) {
+                                var data = state.value
+                                    .where((f) => f.archive != true)
+                                    .toList()[i];
+                                return GestureDetector(
+                                  onTap: () {
+                                    _onSeeDetails("catalog-image$i", data);
+                                  },
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(9.0),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(9.0),
+                                    elevation: 3,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Text(
-                                          "${data.itemModel}",
-                                          style: TextStyle(
-                                            letterSpacing: 0.8,
-                                            fontSize: 18,
+                                        Expanded(
+                                          child: Hero(
+                                            tag: "catalog-image$i",
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(9.0),
+                                                  topRight:
+                                                      Radius.circular(9.0),
+                                                ),
+                                                color: Color(0xffe5e6ea),
+                                              ),
+                                              child: data.colours[0].image ==
+                                                          null ||
+                                                      data.colours[0].image
+                                                          .isEmpty
+                                                  ? Center(
+                                                      child: Icon(
+                                                        Icons.broken_image,
+                                                        size: 60,
+                                                        color: Colors.white,
+                                                      ),
+                                                    )
+                                                  : Image.network(
+                                                      "${data.colours[0].image}",
+                                                    ),
+                                            ),
                                           ),
                                         ),
-                                        Text(
-                                          "${data.itemType}",
-                                          style: TextStyle(
-                                            letterSpacing: 0.8,
-                                            fontSize: 13,
-                                            color: Colors.grey,
+                                        Padding(
+                                          padding: const EdgeInsets.all(9.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "${data.itemModel}",
+                                                style: TextStyle(
+                                                  letterSpacing: 0.8,
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                              Text(
+                                                "${data.itemType}",
+                                                style: TextStyle(
+                                                  letterSpacing: 0.8,
+                                                  fontSize: 13,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 5.0,
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
                                         ),
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
+                                );
+                              },
                             ),
-                          );
-                        },
+                          ),
+                        ),
+                      ],
+                    )
+                  : Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 100),
+                        child: Column(
+                          children: <Widget>[
+                            Image.asset("assets/icons/no_data.png",
+                                height: 200),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                ],
-              );
+                    );
             }
             return SizedBox();
           },

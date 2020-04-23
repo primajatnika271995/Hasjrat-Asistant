@@ -106,6 +106,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
   @override
   void initState() {
     // TODO: implement initState
+    // ignore: close_sinks
     final catalogBloc = BlocProvider.of<CatalogBloc>(context);
     catalogBloc.add(FetchDetailCatalog(DetailCatalogPost(id: data.id)));
     super.initState();
@@ -145,7 +146,6 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           child: BlocBuilder<CatalogBloc, CatalogState>(
             builder: (context, state) {
               if (state is DetailCatalogFailed) {
-                print("DETAIL KATALOG GAGAL");
                 Future.delayed(Duration(seconds: 3), () {
                   Navigator.of(context, rootNavigator: true).pop();
                 });
@@ -163,7 +163,6 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
               }
 
               if (state is DetailCatalogSuccess) {
-                print("DETAIL KATALOG SUKSES");
                 return NestedScrollView(
                   headerSliverBuilder: (context, bool innerBoxIsScrolled) {
                     return <Widget>[
@@ -283,6 +282,9 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                 dropdownMenu(),
               ],
             ),
+            SizedBox(
+              height: 20,
+            ),
             Expanded(
               child: Hero(
                 tag: "$heroName",
@@ -318,6 +320,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                 SizedBox(height: 15),
               ],
             ),
+            Divider(),
           ],
         ),
       ),
