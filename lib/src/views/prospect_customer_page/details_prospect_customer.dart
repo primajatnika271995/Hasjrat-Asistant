@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/followup_bloc/followup_bloc.dart';
 import 'package:salles_tools/src/bloc/spk_bloc/spk_bloc.dart';
 import 'package:salles_tools/src/models/prospect_model.dart';
+import 'package:salles_tools/src/services/followup_service.dart';
 import 'package:salles_tools/src/services/spk_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/add_spk.dart';
+import 'package:salles_tools/src/views/prospect_customer_page/update_follow_up.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProspectDetailsView extends StatefulWidget {
@@ -26,6 +29,24 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
         pageBuilder: (_, __, ___) => BlocProvider(
           create: (context) => SpkBloc(SpkService()),
           child: SpkAddView(widget.value),
+        ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onUpdateFollowUp() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => FollowupBloc(FollowupService()),
+          child: FollowUpUpdateView(widget.value),
         ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
@@ -81,6 +102,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
             SizedBox(
               height: 20,
             ),
+            followUpButton(),
             spkButton(),
             callButton(),
           ],
@@ -485,6 +507,25 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget followUpButton() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 30, right: 30),
+      child: Container(
+        width: screenWidth(context),
+        child: RaisedButton(
+          onPressed: () {
+            _onUpdateFollowUp();
+          },
+          child: Text("Follow-Up Reminder", style: TextStyle(color: Colors.white),),
+          color: Colors.red,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
       ),
     );
   }

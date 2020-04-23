@@ -397,3 +397,39 @@ class SelectorLeasingTenor {
   // TODO: implement hashCode
   int get hashCode => leasingTenorId.hashCode^leasingTenorName.hashCode;
 }
+
+class SelectorClassification {
+  int classificationId;
+  String classificationName;
+
+  SelectorClassification({this.classificationId, this.classificationName});
+
+  @override
+  String toString() => classificationName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorClassification && other.classificationName == classificationName;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => classificationId.hashCode^classificationName.hashCode;
+}
+
+class SelectorFollowupMethode {
+  int followupId;
+  String followupName;
+
+  SelectorFollowupMethode({this.followupId, this.followupName});
+
+  @override
+  String toString() => followupName;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorFollowupMethode && other.followupName == followupName;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => followupId.hashCode^followupName.hashCode;
+}
