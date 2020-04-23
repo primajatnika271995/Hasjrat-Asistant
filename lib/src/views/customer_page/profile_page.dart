@@ -27,7 +27,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => BlocProvider(
           create: (context) => BookingDriveBloc(BookingDriveService()),
-          child: BookTestDriveAddView(),
+          child: BookTestDriveAddView(
+            customerName: widget.datum.cardName,
+          ),
         ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
@@ -44,7 +46,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _onBookService() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => BookServiceAddView(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => BookingDriveBloc(BookingDriveService()),
+          child: BookServiceAddView(
+            customerName: widget.datum.cardName,
+          )
+        ),
         transitionDuration: Duration(milliseconds: 150),
         transitionsBuilder:
             (_, Animation<double> animation, __, Widget child) {
@@ -134,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget cardCode() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -166,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget cardName() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -198,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget genderCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -230,7 +237,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget emailCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -262,7 +269,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget nikCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -294,7 +301,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget contactCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -326,7 +333,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget alamatCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -358,7 +365,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget tanggalLahirCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

@@ -15,6 +15,9 @@ import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
 
 class BookTestDriveAddView extends StatefulWidget {
+  final String customerName;
+  BookTestDriveAddView({this.customerName});
+
   @override
   _BookTestDriveAddViewState createState() => _BookTestDriveAddViewState();
 }
@@ -182,7 +185,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   @override
   void initState() {
     // TODO: implement initState
-    // ignore: close_sinks
     _getSharedPrefferences();
     // ignore: close_sinks
     final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
@@ -191,6 +193,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
       outletCode: _outletId,
     )));
 
+    customerNameCtrl.text = widget.customerName;
     super.initState();
   }
 
@@ -426,8 +429,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(bottom: 17),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   border: InputBorder.none,
                   prefixIcon: Icon(
                     Icons.perm_identity,
@@ -478,8 +485,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(bottom: 17),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   border: InputBorder.none,
                   prefixIcon: Icon(
                     Icons.phone,
@@ -532,8 +543,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: new InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 17),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       border: InputBorder.none,
                       enabled: false,
                       prefixIcon: Icon(
@@ -587,8 +602,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: new InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 17),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       border: InputBorder.none,
                       enabled: false,
                       prefixIcon: Icon(
@@ -644,8 +663,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: new InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 17),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       border: InputBorder.none,
                       enabled: false,
                       suffixIcon: Icon(
@@ -701,8 +724,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: new InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 17),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       border: InputBorder.none,
                       enabled: false,
                       prefixIcon: Icon(
@@ -759,8 +786,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: new InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 17),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       border: InputBorder.none,
                       enabled: false,
                       prefixIcon: Icon(
@@ -810,6 +841,10 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                   border: InputBorder.none,

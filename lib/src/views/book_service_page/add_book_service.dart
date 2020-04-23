@@ -18,6 +18,9 @@ import 'package:select_dialog/select_dialog.dart';
 enum TypeService { perbaikanUmum, serviceBerkala }
 
 class BookServiceAddView extends StatefulWidget {
+  final String customerName;
+  BookServiceAddView({this.customerName});
+
   @override
   _BookServiceAddViewState createState() => _BookServiceAddViewState();
 }
@@ -136,7 +139,6 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
   }
 
   void createBokingService() async {
-
     var salesName = await SharedPreferencesHelper.getSalesName();
 
     if (dateSelected.text.isEmpty || timeSelected.text.isEmpty) {
@@ -186,6 +188,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
     bookingDriveBloc.add(FetchStation());
 
     bookingCategoryCtrl.text = "On Call In (BS)";
+    customerNameCtrl.text = widget.customerName;
     super.initState();
   }
 
@@ -488,9 +491,13 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.people,
                     color: Color(0xFF6991C7),
@@ -538,9 +545,13 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.chrome_reader_mode,
                     color: Color(0xFF6991C7),
@@ -588,10 +599,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.phone,
                     color: Color(0xFF6991C7),
@@ -639,10 +654,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.contact_mail,
                     color: Color(0xFF6991C7),
@@ -772,10 +791,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -828,9 +851,13 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                   child: TextFormField(
                     readOnly: true,
                     showCursor: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -879,6 +906,10 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
                 readOnly: true,
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(
@@ -927,9 +958,13 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
                 readOnly: true,
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.alternate_email,
                     color: Color(0xFF6991C7),
@@ -979,10 +1014,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.calendar_today,
                         color: Color(0xFF6991C7),
@@ -1042,10 +1081,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.access_time,
                         color: Color(0xFF6991C7),

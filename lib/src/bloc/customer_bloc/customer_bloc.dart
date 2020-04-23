@@ -45,36 +45,53 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
 
     if (event is FetchCustomer) {
       yield CustomerLoading();
-      var cache = await SharedPreferencesHelper.getListCustomer();
 
-      if (cache == null) {
-        log.info("Customer Cache Null Data");
+      try {
+        CustomerModel value = await _customerService.customerDMS(event.value);
 
-        try {
-          CustomerModel value = await _customerService.customerDMS(event.value);
+        if (value.data.isEmpty || value.data == null) {
+          yield CustomerFailed();
+        } else {
+          await SharedPreferencesHelper.setListCustomer(json.encode(value));
 
-          if (value.data.isEmpty || value.data == null) {
-            yield CustomerFailed();
-          } else {
-            await SharedPreferencesHelper.setListCustomer(json.encode(value));
-
-            yield CustomerDisposeLoading();
-            yield CustomerSuccess(value);
-          }
-
-        } catch(error) {
-          log.warning("Error : ${error.toString()}");
-          yield CustomerError();
+          yield CustomerDisposeLoading();
+          yield CustomerSuccess(value);
         }
-      } else {
-        log.info("Customer Cache on Data");
-        var cacheData = await SharedPreferencesHelper.getListCustomer();
-        log.info(cacheData);
 
-        CustomerModel value = customerModelFromJson(cacheData);
-        yield CustomerDisposeLoading();
-        yield CustomerSuccess(value);
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
+        yield CustomerError();
       }
+//      var cache = await SharedPreferencesHelper.getListCustomer();
+//
+//      if (cache == null) {
+//        log.info("Customer Cache Null Data");
+//
+//        try {
+//          CustomerModel value = await _customerService.customerDMS(event.value);
+//
+//          if (value.data.isEmpty || value.data == null) {
+//            yield CustomerFailed();
+//          } else {
+//            await SharedPreferencesHelper.setListCustomer(json.encode(value));
+//
+//            yield CustomerDisposeLoading();
+//            yield CustomerSuccess(value);
+//          }
+//
+//        } catch(error) {
+//          log.warning("Error : ${error.toString()}");
+//          yield CustomerError();
+//        }
+//      } else {
+//        log.info("Customer Cache on Data");
+//        var cacheData = await SharedPreferencesHelper.getListCustomer();
+//        log.info(cacheData);
+//
+//        CustomerModel value = customerModelFromJson(cacheData);
+//        yield CustomerDisposeLoading();
+//        yield CustomerSuccess(value);
+//      }
     }
 
     if (event is FetchGender) {
