@@ -654,10 +654,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.local_convenience_store,
                         color: Color(0xFF6991C7),
@@ -709,10 +713,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.location_on,
                         color: Color(0xFF6991C7),
@@ -764,10 +772,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.merge_type,
                         color: Color(0xFF6991C7),
@@ -874,10 +886,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.group_work,
                         color: Color(0xFF6991C7),
@@ -929,10 +945,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.directions_car,
                         color: Color(0xFF6991C7),

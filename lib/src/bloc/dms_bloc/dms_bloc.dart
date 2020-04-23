@@ -191,6 +191,7 @@ class DmsBloc extends Bloc<DmsEvent, DmsState> {
         }
       } catch (e) {
         log.warning("Error : ${e.toString()}");
+        yield DmsDisposeLoading();
         yield ListProgramPenjualanError();
       }
     }

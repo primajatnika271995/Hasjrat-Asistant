@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
@@ -18,8 +19,12 @@ class _ProfileEditViewState extends State<ProfileEditView> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  final dateFormat = DateFormat("yyyy-MM-dd");
+
   var namaCtrl = new TextEditingController();
+  var nikCtrl = new TextEditingController();
   var tglLahirCtrl = new TextEditingController();
+  var joinDateCtrl = new TextEditingController();
   var jenisKelaminCtrl = new TextEditingController();
   var branchCtrl = new TextEditingController();
   var outletCtrl = new TextEditingController();
@@ -75,8 +80,13 @@ class _ProfileEditViewState extends State<ProfileEditView> {
   }
 
   void getPreferences() async {
+      var joinDate = await SharedPreferencesHelper.getSalesJoinDate();
+      DateTime date = DateTime.parse(joinDate);
+
       namaCtrl.text = await SharedPreferencesHelper.getSalesName();
+      nikCtrl.text = await SharedPreferencesHelper.getSalesNIK();
       tglLahirCtrl.text = await SharedPreferencesHelper.getSalesBirthday();
+      joinDateCtrl.text = dateFormat.format(date).toString();
       jenisKelaminCtrl.text = await SharedPreferencesHelper.getSalesGender();
       branchCtrl.text = await SharedPreferencesHelper.getSalesBrach();
       outletCtrl.text = await SharedPreferencesHelper.getSalesOutlet();
@@ -101,7 +111,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Edit Profile",
+          "Details Profile",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -114,6 +124,8 @@ class _ProfileEditViewState extends State<ProfileEditView> {
           children: <Widget>[
 //            profileImage(),
             namaField(),
+            nikField(),
+            joinDateField(),
             tmptTglLahirField(),
             jenisKelaminField(),
             contactField(),
@@ -127,7 +139,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                 child: RaisedButton(
                   onPressed: () {},
                   child: Text(
-                    "Save",
+                    "Done",
                     style: TextStyle(color: Colors.white),
                   ),
                   color: HexColor('#C61818'),
@@ -199,6 +211,54 @@ class _ProfileEditViewState extends State<ProfileEditView> {
           ),
         ),
         controller: namaCtrl,
+      ),
+    );
+  }
+
+  Widget nikField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextField(
+        style: TextStyle(
+          fontWeight: FontWeight.w700,
+        ),
+        cursorColor: HexColor('#C61818'),
+        decoration: InputDecoration(
+          labelText: 'NIK',
+          labelStyle: TextStyle(
+            color: HexColor('#C61818'),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: HexColor('#C61818'),
+            ),
+          ),
+        ),
+        controller: nikCtrl,
+      ),
+    );
+  }
+
+  Widget joinDateField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextField(
+        style: TextStyle(
+          fontWeight: FontWeight.w700,
+        ),
+        cursorColor: HexColor('#C61818'),
+        decoration: InputDecoration(
+          labelText: 'Tanggal Bergabung',
+          labelStyle: TextStyle(
+            color: HexColor('#C61818'),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: HexColor('#C61818'),
+            ),
+          ),
+        ),
+        controller: joinDateCtrl,
       ),
     );
   }
