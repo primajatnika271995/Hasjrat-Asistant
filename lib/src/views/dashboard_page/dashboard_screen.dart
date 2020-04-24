@@ -145,114 +145,114 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               dataDashboard: state.value,
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Card(
-                                elevation: 7,
-                                child: Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Image.asset(
-                                          "assets/icons/sad-icon.png",
-                                          height: 40,
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                left: 10,
-                                                right: 10,
-                                                top: 15,
-                                                bottom: 2,
-                                              ),
-                                              child: Text(
-                                                "Penjualan Terendah",
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                left: 10,
-                                                bottom: 15,
-                                              ),
-                                              child: Text(
-                                                "3 orang",
-                                                style: TextStyle(
-                                                  letterSpacing: 0.8,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Card(
-                                elevation: 7,
-                                child: Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Image.asset(
-                                          "assets/icons/happy-icon.png",
-                                          color: Colors.red,
-                                          height: 40,
-                                        ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 10,
-                                              right: 10,
-                                              top: 15,
-                                              bottom: 2,
-                                            ),
-                                            child: Text(
-                                              "Penjualan Tertinggi",
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 10,
-                                              bottom: 15,
-                                            ),
-                                            child: Text(
-                                              "102 orang",
-                                              style: TextStyle(
-                                                letterSpacing: 0.8,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.center,
+                          //   children: <Widget>[
+                          //     Card(
+                          //       elevation: 7,
+                          //       child: Container(
+                          //         child: Row(
+                          //           children: <Widget>[
+                          //             Padding(
+                          //               padding:
+                          //                   const EdgeInsets.only(left: 10),
+                          //               child: Image.asset(
+                          //                 "assets/icons/sad-icon.png",
+                          //                 height: 40,
+                          //               ),
+                          //             ),
+                          //             Container(
+                          //               child: Column(
+                          //                 crossAxisAlignment:
+                          //                     CrossAxisAlignment.start,
+                          //                 children: <Widget>[
+                          //                   Padding(
+                          //                     padding: const EdgeInsets.only(
+                          //                       left: 10,
+                          //                       right: 10,
+                          //                       top: 15,
+                          //                       bottom: 2,
+                          //                     ),
+                          //                     child: Text(
+                          //                       "Penjualan Terendah",
+                          //                       style: TextStyle(
+                          //                         fontSize: 10,
+                          //                       ),
+                          //                     ),
+                          //                   ),
+                          //                   Padding(
+                          //                     padding: const EdgeInsets.only(
+                          //                       left: 10,
+                          //                       bottom: 15,
+                          //                     ),
+                          //                     child: Text(
+                          //                       "3 orang",
+                          //                       style: TextStyle(
+                          //                         letterSpacing: 0.8,
+                          //                         fontWeight: FontWeight.w700,
+                          //                       ),
+                          //                     ),
+                          //                   ),
+                          //                 ],
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     Card(
+                          //       elevation: 7,
+                          //       child: Container(
+                          //         child: Row(
+                          //           children: <Widget>[
+                          //             Padding(
+                          //               padding:
+                          //                   const EdgeInsets.only(left: 10),
+                          //               child: Image.asset(
+                          //                 "assets/icons/happy-icon.png",
+                          //                 color: Colors.red,
+                          //                 height: 40,
+                          //               ),
+                          //             ),
+                          //             Column(
+                          //               crossAxisAlignment:
+                          //                   CrossAxisAlignment.start,
+                          //               children: <Widget>[
+                          //                 Padding(
+                          //                   padding: const EdgeInsets.only(
+                          //                     left: 10,
+                          //                     right: 10,
+                          //                     top: 15,
+                          //                     bottom: 2,
+                          //                   ),
+                          //                   child: Text(
+                          //                     "Penjualan Tertinggi",
+                          //                     style: TextStyle(
+                          //                       fontSize: 10,
+                          //                     ),
+                          //                   ),
+                          //                 ),
+                          //                 Padding(
+                          //                   padding: const EdgeInsets.only(
+                          //                     left: 10,
+                          //                     bottom: 15,
+                          //                   ),
+                          //                   child: Text(
+                          //                     "102 orang",
+                          //                     style: TextStyle(
+                          //                       letterSpacing: 0.8,
+                          //                       fontWeight: FontWeight.w700,
+                          //                     ),
+                          //                   ),
+                          //                 ),
+                          //               ],
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ),

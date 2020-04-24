@@ -33,6 +33,23 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
       }
     }
 
+    if (event is FetchCatalogByCategory) {
+      yield CatalogLoading();
+
+      try {
+        List<CatalogModel> value = await _catalogService.fetchCatalogByCategoryList(event.value);
+        if (value == null) {
+          yield CatalogByCategoryFailed();
+        } else {
+          yield CatalogDisposeLoading();
+          yield CatalogByCategorySuccess(value);
+        }
+      } catch (e) {
+        log.warning("Error : ${e.toString()}");
+        yield CatalogByCategoryFailed();
+      }
+    }
+
     if (event is FetchDetailCatalog) {
       yield CatalogLoading();
 

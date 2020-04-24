@@ -38,6 +38,22 @@ class CatalogService {
     }
   }
 
+  Future fetchCatalogByCategoryList(CategoryCatalogPost value) async {
+    final response = await _dio.get(
+      UriApi.catalogByCategoriUri + '${value.category}/findByCategory',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      log.info("SUCCESS GET CATALOG BY CATEGORY");
+      return compute(catalogModelFromJson, json.encode(response.data));
+    }
+  }
+
   Future detailCatalog(DetailCatalogPost value) async {
     final response = await _dio.get(
       "${UriApi.detailCatalogUri}/${value.id}/findById",
@@ -72,4 +88,9 @@ class CatalogService {
 class DetailCatalogPost {
   String id;
   DetailCatalogPost({this.id});
+}
+
+class CategoryCatalogPost {
+  String category;
+  CategoryCatalogPost({this.category});
 }

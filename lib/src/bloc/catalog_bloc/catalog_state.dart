@@ -28,6 +28,19 @@ class CatalogListSuccess extends CatalogState {
   List<Object> get props => [_data];
 }
 
+class CatalogByCategoryFailed extends CatalogState {}
+
+class CatalogByCategorySuccess extends CatalogState {
+  final _data;
+
+  CatalogByCategorySuccess(this._data);
+  List<CatalogModel> get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
 class DetailCatalogFailed extends CatalogState {}
 
 class DetailCatalogSuccess extends CatalogState {

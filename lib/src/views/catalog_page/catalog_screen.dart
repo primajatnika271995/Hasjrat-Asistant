@@ -16,7 +16,7 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
-  String catalogCategori = "MPV";
+  String catalogCategori = "mpv";
 
   void _onSeeDetails(String heroName, CatalogModel data) {
     Navigator.of(context).push(
@@ -43,46 +43,48 @@ class _CatalogScreenState extends State<CatalogScreen> {
     switch (id) {
       case 0:
         setState(() {
-          catalogCategori = "MPV";
+          catalogCategori = "mpv";
         });
         break;
       case 1:
         setState(() {
-          catalogCategori = "Sedan";
+          catalogCategori = "hatchback";
         });
         break;
       case 2:
         setState(() {
-          catalogCategori = "Sport";
+          catalogCategori = "suv";
         });
         break;
       case 3:
         setState(() {
-          catalogCategori = "Hybrid";
+          catalogCategori = "sedan";
         });
         break;
       case 4:
         setState(() {
-          catalogCategori = "Hatchback";
+          catalogCategori = "sport";
         });
         break;
       case 5:
         setState(() {
-          catalogCategori = "SUV";
+          catalogCategori = "hybrid";
         });
         break;
     }
 
     // ignore: close_sinks
     final catalogBLoc = BlocProvider.of<CatalogBloc>(context);
-    catalogBLoc.add(FetchCatalogList());
+    catalogBLoc.add(
+        FetchCatalogByCategory(CategoryCatalogPost(category: catalogCategori)));
   }
 
   @override
   void initState() {
     // ignore: close_sinks
     final catalogBLoc = BlocProvider.of<CatalogBloc>(context);
-    catalogBLoc.add(FetchCatalogList());
+    catalogBLoc.add(
+        FetchCatalogByCategory(CategoryCatalogPost(category: catalogCategori)));
     super.initState();
   }
 
@@ -121,11 +123,11 @@ class _CatalogScreenState extends State<CatalogScreen> {
               },
               list: [
                 "MPV",
+                "HatchBack",
+                "SUV",
                 "Sedan",
                 "Sport",
                 "Hybrid",
-                "Hatchback",
-                "SUV",
               ],
             ),
           ),
@@ -142,7 +144,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
         },
         child: BlocBuilder<CatalogBloc, CatalogState>(
           builder: (context, state) {
-            if (state is CatalogListFailed) {
+            if (state is CatalogByCategoryFailed) {
               Future.delayed(Duration(seconds: 3), () {
                 Navigator.of(context, rootNavigator: true).pop();
               });
@@ -158,10 +160,10 @@ class _CatalogScreenState extends State<CatalogScreen> {
               );
             }
 
-            if (state is CatalogListSuccess) {
+            if (state is CatalogByCategorySuccess) {
               return state.value
                           .where((f) =>
-                              f.archive != true &&
+                              // f.archive != true &&
                               f.category == catalogCategori.toLowerCase())
                           .toList()
                           .length >=

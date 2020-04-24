@@ -81,6 +81,8 @@ class UriApi {
 
   static const String catalogListUri = "/sales-tools-catalog-service/api/v2/catalog/list";
 
+  static const String catalogByCategoriUri = "/sales-tools-catalog-service/api/v2/catalog/";
+
   static const String detailCatalogUri = "/sales-tools-catalog-service/api/v2/catalog";
 
   static const String serviceStationListUri = "/hasjrat-resource-server/hcare-api/api/service-station/list";

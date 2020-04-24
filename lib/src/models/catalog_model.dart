@@ -21,11 +21,11 @@ class CatalogModel {
     String category;
     String createdBy;
     String createdDate;
-    dynamic lastUpdateBy;
-    dynamic lastUpdateDate;
-    dynamic enabled;
-    dynamic archive;
-    dynamic draft;
+    String lastUpdateBy;
+    String lastUpdateDate;
+    bool enabled;
+    bool archive;
+    bool draft;
     List<Colour> colours;
     List<dynamic> galleriesInterior;
     List<dynamic> galleriesExterior;
@@ -70,11 +70,11 @@ class CatalogModel {
         category: json["category"] == null ? null : json["category"],
         createdBy: json["createdBy"] == null ? null : json["createdBy"],
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
-        lastUpdateBy: json["lastUpdateBy"],
-        lastUpdateDate: json["lastUpdateDate"],
-        enabled: json["enabled"],
-        archive: json["archive"],
-        draft: json["draft"],
+        lastUpdateBy: json["lastUpdateBy"] == null ? null : json["lastUpdateBy"],
+        lastUpdateDate: json["lastUpdateDate"] == null ? null : json["lastUpdateDate"],
+        enabled: json["enabled"] == null ? null : json["enabled"],
+        archive: json["archive"] == null ? null : json["archive"],
+        draft: json["draft"] == null ? null : json["draft"],
         colours: json["colours"] == null ? null : List<Colour>.from(json["colours"].map((x) => Colour.fromJson(x))),
         galleriesInterior: json["galleriesInterior"] == null ? null : List<dynamic>.from(json["galleriesInterior"].map((x) => x)),
         galleriesExterior: json["galleriesExterior"] == null ? null : List<dynamic>.from(json["galleriesExterior"].map((x) => x)),
@@ -95,11 +95,11 @@ class CatalogModel {
         "category": category == null ? null : category,
         "createdBy": createdBy == null ? null : createdBy,
         "createdDate": createdDate == null ? null : createdDate,
-        "lastUpdateBy": lastUpdateBy,
-        "lastUpdateDate": lastUpdateDate,
-        "enabled": enabled,
-        "archive": archive,
-        "draft": draft,
+        "lastUpdateBy": lastUpdateBy == null ? null : lastUpdateBy,
+        "lastUpdateDate": lastUpdateDate == null ? null : lastUpdateDate,
+        "enabled": enabled == null ? null : enabled,
+        "archive": archive == null ? null : archive,
+        "draft": draft == null ? null : draft,
         "colours": colours == null ? null : List<dynamic>.from(colours.map((x) => x.toJson())),
         "galleriesInterior": galleriesInterior == null ? null : List<dynamic>.from(galleriesInterior.map((x) => x)),
         "galleriesExterior": galleriesExterior == null ? null : List<dynamic>.from(galleriesExterior.map((x) => x)),

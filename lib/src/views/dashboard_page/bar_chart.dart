@@ -49,9 +49,10 @@ class _BarChartViewState extends State<BarChartView> {
           majorTickLines: MajorTickLines(width: 0),
           majorGridLines: MajorGridLines(width: 0),
         ),
-        primaryYAxis: NumericAxis(isVisible: false, minimum: 0, maximum: 50),
+        primaryYAxis: NumericAxis(isVisible: false, minimum: 0, maximum: 30),
         series: getData(dataDashboard),
-        tooltipBehavior: TooltipBehavior(
+        tooltipBehavior: 
+        TooltipBehavior(
           enable: true,
           canShowMarker: false,
           format: 'point.x : point.y',
@@ -67,7 +68,7 @@ class _BarChartViewState extends State<BarChartView> {
       ChartSampleData(
           x: 'Jan',
           y: value.contacts[0].total,
-          yValue2: value.prospects[0].total,
+          yValue2: value.prospects[0].total, 
           yValue3: value.hotprospects[0].total),
       ChartSampleData(
           x: 'Feb',
@@ -129,11 +130,11 @@ class _BarChartViewState extends State<BarChartView> {
     return <ColumnSeries<ChartSampleData, String>>[
       ColumnSeries<ChartSampleData, String>(
         enableTooltip: true,
-        width: 0.8,
+        width: 0.95,
         animationDuration: 0,
-        spacing: 0.3,
+        spacing: 0.2,
         legendIconType: LegendIconType.rectangle,
-        legendItemText: 'Context',
+        legendItemText: 'Contact',
         dataLabelSettings: DataLabelSettings(
             isVisible: false, labelAlignment: ChartDataLabelAlignment.top),
         dataSource: chartData,
@@ -144,8 +145,8 @@ class _BarChartViewState extends State<BarChartView> {
       ),
       ColumnSeries<ChartSampleData, String>(
         enableTooltip: true,
-        width: 0.8,
-        spacing: 0.3,
+        width: 0.95,
+        spacing: 0.2,
         animationDuration: 0,
         legendIconType: LegendIconType.rectangle,
         legendItemText: 'Prospect',
@@ -159,8 +160,8 @@ class _BarChartViewState extends State<BarChartView> {
       ),
       ColumnSeries<ChartSampleData, String>(
         enableTooltip: true,
-        width: 0.8,
-        spacing: 0.3,
+        width: 0.95,
+        spacing: 0.2,
         animationDuration: 0,
         legendIconType: LegendIconType.rectangle,
         legendItemText: 'Hot Prospect',
