@@ -168,7 +168,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 4,
             child: Text(
-              "Customer Name",
+              "Customer\nName",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -200,7 +200,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 4,
             child: Text(
-              "Customer Code",
+              "Customer\nCode",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,

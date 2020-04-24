@@ -57,7 +57,7 @@ class FollowupService {
   }
 
   Future updateFollowup(FollowUpParams value) async {
-    final response = await _dio.post(UriApi.createSpkUri,
+    final response = await _dio.post(UriApi.updateFollowUpUri,
       options: Options(headers: {
         'Content-Type': 'application/json',
       }),

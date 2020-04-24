@@ -54,8 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
   var _branchId;
 
   List<String> _menuName = [
-    "Custumer",
-    "Prospect Custumer",
+    "Customer",
+    "Prospect Customer",
     "Catalog",
     "Calculator",
     "Reminder",
