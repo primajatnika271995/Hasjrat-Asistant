@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/banner_model.dart';
+import 'package:salles_tools/src/models/catalog_brochure_model.dart';
 import 'package:salles_tools/src/models/catalog_model.dart';
 import 'package:salles_tools/src/models/detail_catalog_model.dart';
 
@@ -48,6 +49,18 @@ class DetailCatalogSuccess extends CatalogState {
 
   DetailCatalogSuccess(this._data);
   DetailCatalogModel get value => _data;
+
+  @override
+  List<Object> get props => [_data];
+}
+
+class BrosurCatalogFailed extends CatalogState {}
+
+class BrosurCatalogSuccess extends CatalogState {
+  final _data;
+
+  BrosurCatalogSuccess(this._data);
+  BrochureModel get value => _data;
 
   @override
   List<Object> get props => [_data];

@@ -5,6 +5,8 @@ import 'package:salles_tools/src/bloc/catalog_bloc/catalog_event.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_state.dart';
 import 'package:salles_tools/src/models/catalog_model.dart';
 import 'package:salles_tools/src/services/catalog_service.dart';
+import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/views/catalog_page/catalog_brochure_screen.dart';
 import 'package:salles_tools/src/views/catalog_page/details_selection_catalog.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -27,6 +29,24 @@ class _CatalogScreenState extends State<CatalogScreen> {
             heroName: heroName,
             data: data,
           ),
+        ),
+        transitionDuration: Duration(milliseconds: 750),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onSeeBrochure() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => CatalogBloc(CatalogService()),
+          child: CatalogBrochureScreen(),
         ),
         transitionDuration: Duration(milliseconds: 750),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
@@ -104,9 +124,35 @@ class _CatalogScreenState extends State<CatalogScreen> {
           ),
         ),
         actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.share),
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 20),
+            child: RaisedButton(
+              onPressed: () {
+                print("go to Brosur catalog");
+                _onSeeBrochure();
+              },
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    'Brochure',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Icon(
+                    Icons.file_download,
+                    color: Colors.black,
+                    size: 20.0,
+                  ),
+                ],
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              color: HexColor('#C61818'),
+            ),
           ),
         ],
         iconTheme: IconThemeData(color: Colors.black),

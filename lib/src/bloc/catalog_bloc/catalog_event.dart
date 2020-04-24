@@ -34,3 +34,8 @@ class FetchBannerPromotionList extends CatalogEvent {
   // TODO: implement props
   List<Object> get props => [];
 }
+
+class FetchBrosurList extends CatalogEvent {
+  @override
+  List<Object> get props => [];
+}

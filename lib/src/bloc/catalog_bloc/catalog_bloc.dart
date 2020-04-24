@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_event.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_state.dart';
 import 'package:salles_tools/src/models/banner_model.dart';
+import 'package:salles_tools/src/models/catalog_brochure_model.dart';
 import 'package:salles_tools/src/models/catalog_model.dart';
 import 'package:salles_tools/src/models/detail_catalog_model.dart';
 import 'package:salles_tools/src/services/catalog_service.dart';
@@ -37,7 +38,8 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
       yield CatalogLoading();
 
       try {
-        List<CatalogModel> value = await _catalogService.fetchCatalogByCategoryList(event.value);
+        List<CatalogModel> value =
+            await _catalogService.fetchCatalogByCategoryList(event.value);
         if (value == null) {
           yield CatalogByCategoryFailed();
         } else {
@@ -54,7 +56,8 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
       yield CatalogLoading();
 
       try {
-        DetailCatalogModel value = await _catalogService.detailCatalog(event.value);
+        DetailCatalogModel value =
+            await _catalogService.detailCatalog(event.value);
         if (value == null) {
           yield CatalogDisposeLoading();
           yield DetailCatalogFailed();
@@ -83,6 +86,24 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
       } catch (err) {
         log.warning("Error : ${err.toString()}");
         yield CatalogListFailed();
+      }
+    }
+
+    if (event is FetchBrosurList) {
+      yield CatalogLoading();
+
+      try {
+        BrochureModel value = await _catalogService.brochureCatalog();
+
+        if (value.data.isEmpty || value.data == null) {
+          yield BrosurCatalogFailed();
+        } else {
+          yield CatalogDisposeLoading();
+          yield BrosurCatalogSuccess(value);
+        }
+      } catch (err) {
+        log.warning("Error : ${err.toString()}");
+        yield BrosurCatalogFailed();
       }
     }
   }

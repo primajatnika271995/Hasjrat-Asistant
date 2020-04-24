@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/banner_model.dart';
+import 'package:salles_tools/src/models/catalog_brochure_model.dart';
 import 'package:salles_tools/src/models/catalog_model.dart';
 import 'package:salles_tools/src/models/detail_catalog_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
@@ -81,6 +82,21 @@ class CatalogService {
     log.info(response.statusCode);
     if (response.statusCode == 200) {
       return compute(bannerModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future brochureCatalog() async {
+    final response = await _dio.post(
+      UriApi.catalogBrosurUri,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(brochureModelFromJson, json.encode(response.data));
     }
   }
 }

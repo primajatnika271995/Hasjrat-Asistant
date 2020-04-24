@@ -85,6 +85,8 @@ class UriApi {
 
   static const String detailCatalogUri = "/sales-tools-catalog-service/api/v2/catalog";
 
+  static const String catalogBrosurUri = "/sales-tools-catalog-service/api/v2/brosur/datatables";
+
   static const String serviceStationListUri = "/hasjrat-resource-server/hcare-api/api/service-station/list";
 
   static const String bookingServiceUri = "/hasjrat-resource-server/hcare-api/api/emailBookingService/send";
@@ -101,11 +103,13 @@ class UriApi {
 
   static const String createSpkUri = "/sales-tools-dealer-service/api/v2/dms/spk/addCopySpkFromProspect";
 
-  static const String classificationFollowUpUri = "/sales-tools-dealer-service/api/v2/dms/prospect/classification";
+  static const String classificationFollowUpUri = "/sales-tools-dealer-service/api/v2/dms/prospect/classification"; 
 
   static const String followUpMethodeUri = "/sales-tools-dealer-service/api/v2/dms/prospect/follow-up-method";
 
   static const String updateFollowUpUri = "/sales-tools-dealer-service/api/v2/dms/prospect/follow-up";
 
   static const String dashboardUri = "/sales-tools-dealer-service/api/v2/dms/prospect/dashboard";
+
+  static const String summaryDashboardUri = "/sales-tools-employees-service/api/v2/dashboard/head-officer/prospect/findByBranchAndOutletCode";
 }
