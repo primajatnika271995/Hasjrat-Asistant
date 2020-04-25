@@ -268,7 +268,7 @@ class _SpkAddViewState extends State<SpkAddView> {
     spkBloc.add(CreateSpk(SpkParams(
       leasingId: leasingId,
       itemGroup: widget.value.itemGroup,
-      cardCode: widget.value.cardCode,
+      cardCode: widget.value.leadCode,
       cardName: widget.value.cardName,
       cardType: "L",
       customerCriteria: customerCriteriaId,
