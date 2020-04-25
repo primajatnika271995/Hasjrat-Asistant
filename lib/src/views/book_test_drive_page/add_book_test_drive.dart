@@ -227,13 +227,14 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             }
 
             if (state is CarListSuccess) {
-              print("car list booking success");
               state.value.forEach((f) {
-                vehicleList.add(SelectorVehicleModel(
-                  itemModel: f.itemModel,
-                  id: f.id,
-                  itemType: f.itemType,
-                ));
+                if (f.enabled == true) {
+                  vehicleList.add(SelectorVehicleModel(
+                    itemModel: f.itemModel,
+                    id: f.id,
+                    itemType: f.itemType,
+                  ));
+                }
               });
             }
 
