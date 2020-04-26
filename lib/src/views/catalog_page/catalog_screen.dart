@@ -123,7 +123,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
             letterSpacing: 0.5,
           ),
         ),
-       
         iconTheme: IconThemeData(color: Colors.black),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(55),
@@ -302,33 +301,14 @@ class _CatalogScreenState extends State<CatalogScreen> {
           },
         ),
       ),
-      bottomNavigationBar: RaisedButton(
-              onPressed: () {
-                print("go to Brosur catalog");
-                _onSeeBrochure();
-              },
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    'Brochure',
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Icon(
-                    Icons.file_download,
-                    color: Colors.black,
-                    size: 20.0,
-                  ),
-                ],
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              color: HexColor('#C61818'),
-            ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          _onSeeBrochure();
+        },
+        label: Text("Brochure"),
+        icon: Icon(Icons.picture_as_pdf),
+        backgroundColor: HexColor('#C61818'),
+      ),
     );
   }
 }
