@@ -141,6 +141,9 @@ dependencies:
   # A library that exposes device specific speech recognition capability.
   speech_to_text: ^2.1.0
 
+  #A plugin for creating and managing download tasks. Supports iOS and Android.
+  flutter_downloader: ^1.4.4
+
   # A cross platform plugin for displaying local notifications.
   flutter_local_notifications: ^1.2.0+3
 

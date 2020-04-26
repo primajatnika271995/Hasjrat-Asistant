@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:salles_tools/src/models/dashboard_target_model.dart';
 import 'package:salles_tools/src/models/example_radial_chart_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class RadialChartView extends StatefulWidget {
+  final TargetDashboardModel data;
+
+  const RadialChartView({Key key, this.data}) : super(key: key);
   @override
-  _RadialChartViewState createState() => _RadialChartViewState();
+  _RadialChartViewState createState() => _RadialChartViewState(this.data);
 }
 
 class _RadialChartViewState extends State<RadialChartView> {
+  final TargetDashboardModel data;
+
+  _RadialChartViewState(this.data);
   List<RadialBarSeries<ChartSampleData, String>> getData() {
+    var percentTotalSold = (data.totalSoldCar / data.targetSoldCar) * 100;
     final List<ChartSampleData> chartData = <ChartSampleData>[
       ChartSampleData(
-        x: 'On Track \n 10 Unit',
-        y: 58,
-        text: 'On Track',
+        x: 'Total Sold Car \n ${data.totalSoldCar} Unit',
+        y: percentTotalSold.toDouble(),
+        text: 'Total Sold Car',
         xValue: null,
         pointColor: Colors.yellowAccent,
       ),
       ChartSampleData(
-        x: 'Target \n 17 Unit',
+        x: 'Target Sales \n ${data.targetSoldCar} Unit',
         y: 100,
         text: 'Target',
         xValue: null,
@@ -50,6 +58,7 @@ class _RadialChartViewState extends State<RadialChartView> {
 
   @override
   Widget build(BuildContext context) {
+     var percentTotalSold = (data.totalSoldCar / data.targetSoldCar) * 100;
     return Container(
       height: 170,
       child: SfCircularChart(
@@ -58,12 +67,11 @@ class _RadialChartViewState extends State<RadialChartView> {
             angle: 0,
             radius: '0%',
             widget: Text(
-              "58%",
+              "${percentTotalSold.toStringAsFixed(2)} %",
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 19,
-                fontWeight: FontWeight.w700
-              ),
+                  color: Colors.white,
+                  fontSize: 19,
+                  fontWeight: FontWeight.w700),
             ),
           ),
         ],
