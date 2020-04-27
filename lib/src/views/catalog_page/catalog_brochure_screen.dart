@@ -5,6 +5,7 @@ import 'package:salles_tools/src/bloc/catalog_bloc/catalog_bloc.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_event.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_state.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CatalogBrochureScreen extends StatefulWidget {
   CatalogBrochureScreen({Key key}) : super(key: key);
@@ -125,6 +126,7 @@ class _CatalogBrochureScreenState extends State<CatalogBrochureScreen> {
                                         onTap: () {
                                           print(
                                               "Download Brosur => ${data.title}");
+                                          launch("${data.url}");
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(

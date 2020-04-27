@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/dashboard_model.dart';
+import 'package:salles_tools/src/models/dashboard_target_model.dart';
 
 class DashboardState extends Equatable {
   @override
@@ -20,6 +21,19 @@ class DashboardSuccess extends DashboardState {
 
   DashboardSuccess(this._data);
   DashboardModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
+class TargetDashboardFailed extends DashboardState {}
+
+class TargetDashboardSuccess extends DashboardState {
+  final _data;
+
+  TargetDashboardSuccess(this._data);
+  TargetDashboardModel get value => _data;
 
   @override
   // TODO: implement props

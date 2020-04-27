@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_event.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_state.dart';
 import 'package:salles_tools/src/models/dashboard_model.dart';
+import 'package:salles_tools/src/models/dashboard_target_model.dart';
 import 'package:salles_tools/src/services/dashboard_service.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -28,6 +29,23 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } catch (e) {
         log.warning("Error Bloc Dashboard : ${e.toString()}");
         yield DashboardFailed();
+      }
+    }
+
+    if (event is FetchTargetDashboard) {
+      yield DashboardLoading();
+
+      try {
+        TargetDashboardModel value = await _dashboardService.fetchTargetDashboard(event.value);
+        if (value == null) {
+          yield TargetDashboardFailed();
+        } else {
+          yield DashboardDisposeLoading();
+          yield TargetDashboardSuccess(value);
+        }
+      } catch (e) {
+        log.warning("Error Bloc Target Dashboard : ${e.toString()}");
+        yield TargetDashboardFailed();
       }
     }
   }

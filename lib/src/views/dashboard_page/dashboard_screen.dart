@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_event.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_state.dart';
+import 'package:salles_tools/src/services/dashboard_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/dashboard_page/bar_chart.dart';
 import 'package:salles_tools/src/views/dashboard_page/radial_chart.dart';
@@ -15,10 +17,22 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  var _employeeId;
+
+  void _getTargetDashboard() async {
+    _employeeId = await SharedPreferencesHelper.getSalesNIK();
+    // ignore: close_sinks
+    final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
+    dashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+      employeeId: _employeeId,
+    )));
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     // ignore: close_sinks
+    _getTargetDashboard();
     final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
     dashboardBloc.add(FetchDashboard());
     super.initState();
@@ -39,7 +53,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Navigator.of(context, rootNavigator: false).pop();
             });
           }
-
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(
             builder: (context, state) {
