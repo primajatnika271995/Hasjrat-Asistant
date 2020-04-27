@@ -165,6 +165,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
                 child: BlocBuilder<DashboardBloc, DashboardState>(builder: (context, dashboardState) {
+                  if (dashboardState is DashboardLoading) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(35),
+                          topRight: Radius.circular(35),
+                        ),
+                        boxShadow: [
+                          BoxShadow(blurRadius: 13.0, color: Colors.black26),
+                        ],
+                      ),
+                      height: 200,
+                    );
+                  }
+
                   if (dashboardState is DashboardSuccess) {
                     return SingleChildScrollView(
                       child: Column(

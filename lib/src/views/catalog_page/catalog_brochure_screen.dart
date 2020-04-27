@@ -17,6 +17,7 @@ class CatalogBrochureScreen extends StatefulWidget {
 class _CatalogBrochureScreenState extends State<CatalogBrochureScreen> {
   @override
   void initState() {
+    // ignore: close_sinks
     final catalogBloc = BlocProvider.of<CatalogBloc>(context);
     catalogBloc.add(FetchBrosurList());
     super.initState();
@@ -51,6 +52,22 @@ class _CatalogBrochureScreenState extends State<CatalogBrochureScreen> {
         child: BlocBuilder<CatalogBloc, CatalogState>(
           builder: (context, state) {
             if (state is CatalogByCategoryFailed) {
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.of(context, rootNavigator: true).pop();
+              });
+              return Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 100),
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset("assets/icons/no_data.png", height: 200),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            if (state is BrosurCatalogFailed) {
               Future.delayed(Duration(seconds: 3), () {
                 Navigator.of(context, rootNavigator: true).pop();
               });
