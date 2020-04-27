@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_state.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/target_dashboard_event.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/target_dashboard_state.dart';
 import 'package:salles_tools/src/models/dashboard_target_model.dart';

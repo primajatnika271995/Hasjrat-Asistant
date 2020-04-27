@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_event.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_state.dart';
+import 'package:salles_tools/src/bloc/dashboard_bloc/target_dashboard_bloc.dart';
+import 'package:salles_tools/src/bloc/dashboard_bloc/target_dashboard_event.dart';
+import 'package:salles_tools/src/bloc/dashboard_bloc/target_dashboard_state.dart';
 import 'package:salles_tools/src/services/dashboard_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
@@ -22,10 +25,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void _getTargetDashboard() async {
     _employeeId = await SharedPreferencesHelper.getSalesNIK();
     // ignore: close_sinks
+    final targetDashboardBloc = BlocProvider.of<TargetDashboardBloc>(context);
+    targetDashboardBloc.add(
+        FetchTargetDashboard(TargetDashboardPost(employeeId: _employeeId)));
+  }
+
+  void _getDashboardBar() async {
     final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
-    dashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
-      employeeId: _employeeId,
-    )));
+    dashboardBloc.add(FetchDashboard());
   }
 
   @override
@@ -33,8 +40,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // TODO: implement initState
     // ignore: close_sinks
     _getTargetDashboard();
-    final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
-    dashboardBloc.add(FetchDashboard());
+    _getDashboardBar();
     super.initState();
   }
 
@@ -42,43 +48,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: HexColor('#C61818'),
-      body: BlocListener<DashboardBloc, DashboardState>(
-        listener: (context, state) {
-          if (state is DashboardLoading) {
-            onLoading(context);
-          }
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<TargetDashboardBloc, TargetDashboardState>(
+            listener: (context, state) {
+              if (state is TargetDashboardLoading) {
+                onLoading(context);
+              }
 
-          if (state is DashboardDisposeLoading) {
-            Future.delayed(Duration(seconds: 3), () {
-              Navigator.of(context, rootNavigator: false).pop();
-            });
-          }
-        },
-        child: BlocBuilder<DashboardBloc, DashboardState>(
-            builder: (context, state) {
-          if (state is DashboardFailed) {
-            print("DASHBOARD WIDGET FAILED");
-            Future.delayed(Duration(seconds: 3), () {
-              Navigator.of(context, rootNavigator: true).pop();
-            });
-            return Center(
-              child: Padding(
-                padding: EdgeInsets.only(top: 50),
-                child: Column(
-                  children: <Widget>[
-                    Image.asset("assets/icons/error_banner.jpg", height: 200),
-                  ],
-                ),
-              ),
-            );
-          }
+              if (state is TargetDashboardDisposeLoading) {
+                Future.delayed(Duration(seconds: 3), () {
+                  Navigator.of(context, rootNavigator: false).pop();
+                });
+              }
+            },
+          ),
+          BlocListener<DashboardBloc, DashboardState>(
+            listener: (context, state) {
+              if (state is DashboardLoading) {
+                onLoading(context);
+              }
 
-          if (state is DashboardSuccess) {
-            print("DASHBOARD WIDGET OK");
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
+              if (state is DashboardDisposeLoading) {
+                Future.delayed(Duration(seconds: 3), () {
+                  Navigator.of(context, rootNavigator: false).pop();
+                });
+              }
+            },
+          ),
+        ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            BlocBuilder<TargetDashboardBloc, TargetDashboardState>(
+                builder: (context, targetState) {
+              if (targetState is TargetDashboardSuccess) {
+                return Container(
                   height: 340,
                   color: HexColor('#C61818'),
                   child: Column(
@@ -103,7 +108,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 15, top: 20),
                         child: Text(
-                          "Your Quantity",
+                          "Total Profit Amount",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -124,7 +129,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 10),
                             child: Text(
-                              "20 Unit",
+                              "Rp. ${targetState.value.totalProfitAmount}",
                               style: TextStyle(
                                 fontSize: 17,
                                 letterSpacing: 1.0,
@@ -133,11 +138,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ),
                       ),
-                      RadialChartView(),
+                      RadialChartView(
+                        data: targetState.value,
+                      ),
                     ],
                   ),
-                ),
-                Expanded(
+                );
+              }
+              return SizedBox();
+            }),
+            BlocBuilder<DashboardBloc, DashboardState>(
+                builder: (context, dashboardState) {
+              if (dashboardState is DashboardSuccess) {
+                return Expanded(
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -155,127 +168,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 15),
                             child: BarChartView(
-                              dataDashboard: state.value,
+                              dataDashboard: dashboardState.value,
                             ),
                           ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: <Widget>[
-                          //     Card(
-                          //       elevation: 7,
-                          //       child: Container(
-                          //         child: Row(
-                          //           children: <Widget>[
-                          //             Padding(
-                          //               padding:
-                          //                   const EdgeInsets.only(left: 10),
-                          //               child: Image.asset(
-                          //                 "assets/icons/sad-icon.png",
-                          //                 height: 40,
-                          //               ),
-                          //             ),
-                          //             Container(
-                          //               child: Column(
-                          //                 crossAxisAlignment:
-                          //                     CrossAxisAlignment.start,
-                          //                 children: <Widget>[
-                          //                   Padding(
-                          //                     padding: const EdgeInsets.only(
-                          //                       left: 10,
-                          //                       right: 10,
-                          //                       top: 15,
-                          //                       bottom: 2,
-                          //                     ),
-                          //                     child: Text(
-                          //                       "Penjualan Terendah",
-                          //                       style: TextStyle(
-                          //                         fontSize: 10,
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                   Padding(
-                          //                     padding: const EdgeInsets.only(
-                          //                       left: 10,
-                          //                       bottom: 15,
-                          //                     ),
-                          //                     child: Text(
-                          //                       "3 orang",
-                          //                       style: TextStyle(
-                          //                         letterSpacing: 0.8,
-                          //                         fontWeight: FontWeight.w700,
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                 ],
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     Card(
-                          //       elevation: 7,
-                          //       child: Container(
-                          //         child: Row(
-                          //           children: <Widget>[
-                          //             Padding(
-                          //               padding:
-                          //                   const EdgeInsets.only(left: 10),
-                          //               child: Image.asset(
-                          //                 "assets/icons/happy-icon.png",
-                          //                 color: Colors.red,
-                          //                 height: 40,
-                          //               ),
-                          //             ),
-                          //             Column(
-                          //               crossAxisAlignment:
-                          //                   CrossAxisAlignment.start,
-                          //               children: <Widget>[
-                          //                 Padding(
-                          //                   padding: const EdgeInsets.only(
-                          //                     left: 10,
-                          //                     right: 10,
-                          //                     top: 15,
-                          //                     bottom: 2,
-                          //                   ),
-                          //                   child: Text(
-                          //                     "Penjualan Tertinggi",
-                          //                     style: TextStyle(
-                          //                       fontSize: 10,
-                          //                     ),
-                          //                   ),
-                          //                 ),
-                          //                 Padding(
-                          //                   padding: const EdgeInsets.only(
-                          //                     left: 10,
-                          //                     bottom: 15,
-                          //                   ),
-                          //                   child: Text(
-                          //                     "102 orang",
-                          //                     style: TextStyle(
-                          //                       letterSpacing: 0.8,
-                          //                       fontWeight: FontWeight.w700,
-                          //                     ),
-                          //                   ),
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
                         ],
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
-          }
-          return SizedBox();
-        }),
+                );
+              }
+              return SizedBox();
+            })
+          ],
+        ),
       ),
     );
   }
