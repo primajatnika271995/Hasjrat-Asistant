@@ -117,10 +117,14 @@ class _CustomerListViewState extends State<CustomerListView> {
                       child: Theme(
                         data: ThemeData(hintColor: Colors.transparent),
                         child: TextFormField(
+                          style: TextStyle(
+                            fontSize: 13,
+                            letterSpacing: 0.7,
+                          ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             enabled: false,
-                            contentPadding: EdgeInsets.only(bottom: 18),
+                            contentPadding: EdgeInsets.only(bottom: 16),
                             suffixIcon: Icon(
                               Icons.search,
                               color: Color(0xFF6991C7),

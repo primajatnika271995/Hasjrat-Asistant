@@ -436,10 +436,14 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -485,9 +489,13 @@ class _ReminderAddViewState extends State<ReminderAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 17),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.title,
                     color: Color(0xFF6991C7),
@@ -537,10 +545,14 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.calendar_today,
                         color: Color(0xFF6991C7),
@@ -598,10 +610,14 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.access_time,
                         color: Color(0xFF6991C7),
@@ -652,6 +668,10 @@ class _ReminderAddViewState extends State<ReminderAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: "Notes",
