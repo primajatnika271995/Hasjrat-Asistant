@@ -11,6 +11,7 @@ import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/utils/currency_format.dart';
+import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
@@ -404,10 +405,14 @@ class _PriceListViewState extends State<PriceListView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -459,10 +464,14 @@ class _PriceListViewState extends State<PriceListView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -514,10 +523,14 @@ class _PriceListViewState extends State<PriceListView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -569,10 +582,14 @@ class _PriceListViewState extends State<PriceListView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -678,21 +695,7 @@ class _PriceListViewState extends State<PriceListView> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 15),
-                                child: Text(
-                                  "Rp ${CurrencyFormat().data.format(value.ontr)}",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 1.0,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
                               Divider(),
-                              SizedBox(
-                                height: 5,
-                              ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 3),
@@ -722,21 +725,6 @@ class _PriceListViewState extends State<PriceListView> {
                                         return Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: <Widget>[
-                                                  Text("Nomor Rangka"),
-                                                  Text(
-                                                    "${stock.nomorRangka}",
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w700,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
                                             Padding(
                                               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
                                               child: Row(
@@ -783,11 +771,22 @@ class _PriceListViewState extends State<PriceListView> {
                     itemCount: state.value.data[0].pricelists.length,
                   ),
                   Center(
-                    child: IconButton(
+                    child: RaisedButton.icon(
                       onPressed: () {
                         exportPdf(state.value.data[0]);
                       },
-                      icon: Icon(Icons.file_download),
+                      icon: Icon(Icons.file_download,
+                        color: Colors.white,
+                      ),
+                      color: HexColor('#C61818'),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      label: Text("Export PDF",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],
