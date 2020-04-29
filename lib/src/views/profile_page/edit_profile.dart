@@ -111,7 +111,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Details Profile",
+          "Edit Profil",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -122,14 +122,21 @@ class _ProfileEditViewState extends State<ProfileEditView> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-//            profileImage(),
+            SizedBox(height: 15),
             namaField(),
+            SizedBox(height: 15),
             nikField(),
+            SizedBox(height: 15),
             joinDateField(),
+            SizedBox(height: 15),
             tmptTglLahirField(),
+            SizedBox(height: 15),
             jenisKelaminField(),
+            SizedBox(height: 15),
             contactField(),
+            SizedBox(height: 15),
             emailField(),
+            SizedBox(height: 15),
             alamatField(),
             Padding(
               padding: const EdgeInsets.only(
@@ -201,6 +208,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Nama',
+          contentPadding: EdgeInsets.only(bottom: 1),
           labelStyle: TextStyle(
             color: HexColor('#C61818'),
           ),
@@ -225,6 +233,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'NIK',
+          contentPadding: EdgeInsets.only(bottom: 1),
           labelStyle: TextStyle(
             color: HexColor('#C61818'),
           ),
@@ -249,6 +258,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Tanggal Bergabung',
+          contentPadding: EdgeInsets.only(bottom: 1),
           labelStyle: TextStyle(
             color: HexColor('#C61818'),
           ),
@@ -273,6 +283,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Tanggal Lahir',
+          contentPadding: EdgeInsets.only(bottom: 1),
           labelStyle: TextStyle(
             color: HexColor('#C61818'),
           ),
@@ -297,6 +308,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Jenis Kelamin',
+          contentPadding: EdgeInsets.only(bottom: 1),
           labelStyle: TextStyle(
             color: HexColor('#C61818'),
           ),
@@ -321,6 +333,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Nama Branch',
+          contentPadding: EdgeInsets.only(bottom: 1),
           labelStyle: TextStyle(
             color: HexColor('#C61818'),
           ),
@@ -345,6 +358,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Lokasi Penempatan',
+          contentPadding: EdgeInsets.only(bottom: 1),
           labelStyle: TextStyle(
             color: HexColor('#C61818'),
           ),
@@ -369,6 +383,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Posisi',
+          contentPadding: EdgeInsets.only(bottom: 1),
           labelStyle: TextStyle(
             color: HexColor('#C61818'),
           ),

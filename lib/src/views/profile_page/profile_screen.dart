@@ -30,10 +30,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProfileEditView(),
-        transitionDuration: Duration(milliseconds: 750),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return Opacity(
-            opacity: animation.value,
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(animation),
             child: child,
           );
         },
@@ -189,7 +191,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _onShowDialog();
+                  },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
                   ),
@@ -235,6 +239,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.only(right: 10),
                     child: CircleAvatar(
                       backgroundColor: Colors.grey[200],
+                      child: Icon(Icons.account_circle),
                     ),
                   ),
                   Column(
@@ -268,7 +273,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    _onEditProfile();
+                  },
                   child: Container(
                     width: screenWidth(context),
                     child: Column(
