@@ -26,7 +26,7 @@ class _CustomerDetailsViewState extends State<CustomerDetailsView> {
           elevation: 1,
           titleSpacing: 0,
           title: Text(
-            "Detail Customer",
+            "Detail Pelanggan",
             style: TextStyle(
               color: Colors.black,
               letterSpacing: 0.5,
@@ -36,10 +36,10 @@ class _CustomerDetailsViewState extends State<CustomerDetailsView> {
           bottom: TabBar(
             tabs: [
               Tab(
-                text: "Profile",
+                text: "Profil",
               ),
               Tab(
-                text: "Vehicle",
+                text: "Kendaraan",
               ),
             ],
             indicatorColor: HexColor('#C61818'),

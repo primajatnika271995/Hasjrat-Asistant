@@ -199,7 +199,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
                     _onBookTestDrive();
                   },
                   child: Text(
-                    'Booking Test Drive',
+                    'Layanan Uji Coba',
                     style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.white,
@@ -413,8 +413,8 @@ class _TabViewDetailsVehicleState extends State<TabViewDetailsVehicle> {
         TabBar(
           tabs: <Widget>[
             Tab(text: 'Review'),
-            Tab(text: 'Gallery'),
-            Tab(text: 'Specifications'),
+            Tab(text: 'Galeri'),
+            Tab(text: 'Spesifikasi'),
           ],
           isScrollable: false,
           indicator: UnderlineTabIndicator(

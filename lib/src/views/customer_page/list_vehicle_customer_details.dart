@@ -166,7 +166,7 @@ class _VehicleCustomerDetailsListViewState
           Expanded(
             flex: 4,
             child: Text(
-              "No. Chasis",
+              "No. Rangka",
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,

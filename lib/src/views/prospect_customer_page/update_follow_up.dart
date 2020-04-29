@@ -53,7 +53,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
   void _showListFollowUp() {
     SelectDialog.showModal<String>(
       context,
-      label: "Follow Up Next Day",
+      label: "Follow Up Selanjutnya",
       selectedValue: _currentSelectFollowUp,
       items: followUpList,
       onChange: (String selected) {
@@ -68,7 +68,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
   void _showListClassification() {
     SelectDialog.showModal<SelectorClassification>(
       context,
-      label: "Classification",
+      label: "Klasifikasi",
       selectedValue: currentSelectClassification,
       items: classificationList,
       onChange: (SelectorClassification selected) {
@@ -84,7 +84,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
   void _showListFollowUpMethode() {
     SelectDialog.showModal<SelectorFollowupMethode>(
       context,
-      label: "Follow-Up Methode",
+      label: "Metode Follow Up",
       selectedValue: currentSelectFollowUpMethode,
       items: followupMethodeList,
       onChange: (SelectorFollowupMethode selected) {
@@ -136,7 +136,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Update Follow-Up",
+          "Tambah Follow-Up",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -181,8 +181,8 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
             Alert(
                 context: context,
                 type: AlertType.success,
-                title: 'Success',
-                desc: "Updated Follow-UP!",
+                title: 'Berhasil Menambahkan Follow Up',
+                desc: 'Data Follow Up telah ditambahkan',
                 style: AlertStyle(
                   animationDuration: Duration(milliseconds: 500),
                   overlayColor: Colors.black54,
@@ -209,8 +209,8 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
             Alert(
                 context: context,
                 type: AlertType.error,
-                title: 'Error',
-                desc: "Failed to Update Follow-UP!",
+                title: 'Gagal Menambahkan Follow Up',
+                desc: "Silahkan cek kembali data yang dimasukan.",
                 style: AlertStyle(
                   animationDuration: Duration(milliseconds: 500),
                   overlayColor: Colors.black54,

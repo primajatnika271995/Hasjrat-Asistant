@@ -100,7 +100,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
         elevation: 3,
         titleSpacing: 0,
         title: Text(
-          "Prospect Customer",
+          "Data Prospek Pelanggan",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -238,7 +238,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
                           color: Color(0xFF6991C7),
                           size: 24.0,
                         ),
-                        hintText: "Search",
+                        hintText: "Cari",
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w400,

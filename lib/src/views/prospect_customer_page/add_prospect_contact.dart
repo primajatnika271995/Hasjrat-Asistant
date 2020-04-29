@@ -402,7 +402,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
         elevation: 0,
         titleSpacing: 0,
         title: Text(
-          "Create Contact / Lead",
+          "Tambah Contact / Lead",
           style: TextStyle(
             color: Colors.white,
             letterSpacing: 0.5,
@@ -473,8 +473,8 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
               Alert(
                   context: context,
                   type: AlertType.success,
-                  title: 'Success',
-                  desc: "Created Lead!",
+                  title: 'Berhasil Menambahkan Lead',
+                  desc: "Lead Telah ditambahkan",
                   style: AlertStyle(
                     animationDuration: Duration(milliseconds: 500),
                     overlayColor: Colors.black54,
@@ -501,8 +501,8 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
               Alert(
                 context: context,
                 type: AlertType.error,
-                title: 'Error',
-                desc: "Failed to Create Lead!",
+                title: 'Gagal Menambahkan Lead!',
+                desc: 'Silahkan cek kembali data yg dimasukan.',
                 style: AlertStyle(
                   animationDuration: Duration(milliseconds: 500),
                   overlayColor: Colors.black54,
@@ -538,6 +538,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                 child: Stepper(
                   type: StepperType.horizontal,
                   currentStep: _currentStep,
+                  physics: BouncingScrollPhysics(),
                   onStepContinue: () {
                     if (_currentStep >= 2) return;
                     setState(() {
@@ -617,7 +618,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           ),
                           SizedBox(height: 20),
                           Text(
-                            "NIK Customer (*)",
+                            "NIK Pelanggan (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -625,7 +626,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           ),
                           formCustomerNIK(),
                           Text(
-                            "Nama Customer (*)",
+                            "Nama Pelanggan (*)",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
@@ -646,7 +647,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text(
-                              "Group Customer (*)",
+                              "Group Pelanggan (*)",
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 letterSpacing: 1.0,
@@ -701,7 +702,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text(
-                              "Lokasi Customer (*)",
+                              "Lokasi Pelanggan (*)",
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 letterSpacing: 1.0,
@@ -763,7 +764,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                                   onCreateLead();
                                 },
                                 child: Text(
-                                  "Create",
+                                  "Buat Lead",
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 color: HexColor('#C61818'),
@@ -790,7 +791,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           : FlatButton(
                               onPressed: () => _onStepCancel(),
                               child: Text(
-                                'BACK',
+                                'Kembali',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   color: Colors.blueAccent,
@@ -802,7 +803,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           : FlatButton(
                               onPressed: () => _onStepContinue(),
                               child: Text(
-                                'NEXT',
+                                'Selanjutnya',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   color: Colors.blueAccent,
@@ -850,7 +851,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: 'Masukan Nama Customer',
+                  hintText: 'Masukan Nama Pelanggan',
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -1021,7 +1022,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Pilih Group Customer',
+                      hintText: 'Pilih Pelanggan Group',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1257,7 +1258,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Pilih Lokasi Customer',
+                      hintText: 'Pilih Lokasi Pelanggan',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,

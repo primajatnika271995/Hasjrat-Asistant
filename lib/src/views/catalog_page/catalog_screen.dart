@@ -117,7 +117,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
         elevation: 0,
         titleSpacing: 0,
         title: Text(
-          "Catalog",
+          "Katalog",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -305,7 +305,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
         onPressed: () {
           _onSeeBrochure();
         },
-        label: Text("Brochure"),
+        label: Text("Brosur"),
         icon: Icon(Icons.picture_as_pdf),
         backgroundColor: HexColor('#C61818'),
       ),

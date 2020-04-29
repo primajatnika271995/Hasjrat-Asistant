@@ -142,7 +142,7 @@ class _SpkListViewState extends State<SpkListView> {
         elevation: 3,
         titleSpacing: 0,
         title: Text(
-          "SPK",
+          "Data SPK",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -296,7 +296,7 @@ class _SpkListViewState extends State<SpkListView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Search Dec Date",
+                      hintText: "Cari berdasarkan tanggal Penyerahan",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -353,7 +353,7 @@ class _SpkListViewState extends State<SpkListView> {
                           color: Color(0xFF6991C7),
                           size: 24.0,
                         ),
-                        hintText: "Search",
+                        hintText: "Cari",
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w400,

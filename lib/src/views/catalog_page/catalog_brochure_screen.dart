@@ -29,10 +29,10 @@ class _CatalogBrochureScreenState extends State<CatalogBrochureScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Brochure",
+          "Brosur",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,

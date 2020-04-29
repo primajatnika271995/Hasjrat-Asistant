@@ -54,17 +54,17 @@ class _HomeScreenState extends State<HomeScreen> {
   var _branchId;
 
   List<String> _menuName = [
-    "Customer",
-    "Prospect Customer",
-    "Catalog",
-    "Calculator",
-    "Reminder",
-    "Book\nService",
-    "Book\nTest Drive",
-    "Knowledge\nBase",
-    "Activity\nReport",
-    "Price List",
-    "Promotion",
+    "Pelanggan",
+    "Prospek Pelanggan",
+    "Katalog",
+    "Kalkulator",
+    "Pengingat\nJadwal",
+    "Layanan\nPemesanan",
+    "Pemesanan\nUji Jalan",
+    "Q&A",
+    "Laporan\nAktifitas",
+    "Harga\nKendaraan",
+    "Promosi",
   ];
 
   List<String> _moreMenuName = [
@@ -346,12 +346,13 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         child: CustomScrollView(
+          physics: BouncingScrollPhysics(),
           slivers: <Widget>[
             sliverAppBar(),
             sliverGridMenu(),
-//            SliverToBoxAdapter(
-//              child: Divider(),
-//            ),
+            SliverToBoxAdapter(
+              child: Divider(),
+            ),
             SliverToBoxAdapter(
               child: Container(
                 margin: EdgeInsets.only(left: 8, right: 8, bottom: 5),
@@ -359,7 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Banner Promotion",
+                      "Promosi Spanduk",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,

@@ -46,7 +46,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Contact Details",
+          "Detail Lead",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -115,7 +115,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 4,
             child: Text(
-              "Lead Name",
+              "Nama Lead",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -147,7 +147,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 4,
             child: Text(
-              "Lead Code",
+              "Kode Lead",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -563,11 +563,12 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
       padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
       child: Container(
         width: screenWidth(context),
-        child: RaisedButton(
+        child: RaisedButton.icon(
           onPressed: () {
             launch('tel:${widget.value.phone1}');
           },
-          child: Text("Call", style: TextStyle(color: Colors.white),),
+          icon: Icon(Icons.call, color: Colors.white),
+          label: Text("Telepon Lead", style: TextStyle(color: Colors.white)),
           color: Colors.brown,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),

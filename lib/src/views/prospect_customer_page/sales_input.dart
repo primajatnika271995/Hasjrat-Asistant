@@ -121,8 +121,8 @@ class _SalesInputViewState extends State<SalesInputView> {
                 size: 35,
                 color: HexColor("#C61818"),
               ),
-              title: Text("Tambah Contact Baru"),
-              subtitle: Text("Hot Prospect"),
+              title: Text("Data Lead"),
+              subtitle: Text("List Data Lead"),
             ),
           ),
           Card(

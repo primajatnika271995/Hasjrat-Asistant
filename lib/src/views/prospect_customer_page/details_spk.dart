@@ -24,7 +24,7 @@ class _SpkDetailsViewState extends State<SpkDetailsView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "SPK Details",
+          "Detail SPK",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -33,6 +33,7 @@ class _SpkDetailsViewState extends State<SpkDetailsView> {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             SizedBox(

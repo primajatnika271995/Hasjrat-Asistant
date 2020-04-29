@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -101,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _onBookTestDrive();
                 },
                 child: Text(
-                  'Booking Test Drive',
+                  'Pemesanan\nUji Jalan',
                   style: TextStyle(
                     color: Colors.white,
                     letterSpacing: 1.0,
@@ -122,13 +123,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _onBookService();
                 },
                 child: Text(
-                  'Booking Service',
+                  'Layanan\nPemesanan',
                   style: TextStyle(
                     color: Colors.white,
                     letterSpacing: 1.0,
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 color: HexColor('#212120'),
               ),

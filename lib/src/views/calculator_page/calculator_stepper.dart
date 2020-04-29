@@ -597,7 +597,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                         : FlatButton(
                             onPressed: () => _onStepCancel(),
                             child: Text(
-                              'BACK',
+                              'Kembali',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.blueAccent,
@@ -609,7 +609,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                         : FlatButton(
                             onPressed: () => _onStepContinue(),
                             child: Text(
-                              'NEXT',
+                              'Selanjutnya',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.blueAccent,
@@ -1172,8 +1172,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                             elevation: 1,
                             child: Text(
                               priceSelection == index
-                                  ? "Selected"
-                                  : "Take it",
+                                  ? "Dipilih"
+                                  : "Pilih",
                               style: TextStyle(
                                 color: Colors.white,
                               ),
@@ -1249,7 +1249,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                           _onCalculateSimulator();
                         },
                         child: Text(
-                          "Calculate",
+                          "Hitung",
                           style: TextStyle(
                               color: Colors.white),
                         ),
