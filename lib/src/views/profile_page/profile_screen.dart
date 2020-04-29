@@ -9,6 +9,7 @@ import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/login_page/login_screen.dart';
+import 'package:salles_tools/src/views/profile_page/change_password_screen.dart';
 import 'package:salles_tools/src/views/profile_page/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -30,6 +31,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProfileEditView(),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onChangePassword() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => ChangePasswordView(),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return SlideTransition(
             position: Tween<Offset>(
@@ -331,7 +349,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                _onChangePassword();
+              },
               child: Container(
                 width: screenWidth(context),
                 child: Column(
