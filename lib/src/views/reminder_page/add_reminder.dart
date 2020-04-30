@@ -243,7 +243,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Add Reminder",
+          "Tambah Pengingat",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -285,7 +285,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                   child: Row(
                     children: <Widget>[
                       Text(
-                        "Customer Name : ",
+                        "Nama Pelanggan : ",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -308,7 +308,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Task Type (*)",
+                  "Tipe Tugas (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -327,7 +327,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                       icon: Icon(Icons.add),
                       color: HexColor('#C61818'),
                     ),
-                    Text("Add Customer"),
+                    Text("Tambah Pelanggan"),
                   ],
                 ),
               ),
@@ -335,7 +335,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Task Title (*)",
+                  "Judul Tugas (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -347,7 +347,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Date (*)",
+                  "Tanggal Tugas (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -359,7 +359,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Time (*)",
+                  "Jam Tugas (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -371,7 +371,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Note (*)",
+                  "Catatan (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -391,7 +391,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                           : _onUpdateReminder();
                     },
                     child: Text(
-                      widget.id == null ? "Create" : "Update",
+                      widget.id == null ? "Buat Tugas" : "Memperbaharui",
                       style: TextStyle(color: Colors.white),
                     ),
                     color: HexColor('#C61818'),
@@ -449,7 +449,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Task Type",
+                      hintText: "Pilih Tipe Tugas",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -501,7 +501,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: "Task Title",
+                  hintText: "Tulis Judul Tugas",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -674,7 +674,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: "Notes",
+                  hintText: "Silahkan Isi Catatan",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,

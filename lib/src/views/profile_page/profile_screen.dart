@@ -144,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (newElevation < 1) {
           titleName = "";
         } else {
-          titleName = "Profile";
+          titleName = "Profil";
         }
 
         _elevation = newElevation;
@@ -242,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(bottom: 10, top: 10),
-              child: Text("Profile",
+              child: Text("Profil",
                 style: TextStyle(
                   fontSize: 21,
                   fontWeight: FontWeight.w700,

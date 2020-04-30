@@ -238,7 +238,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Add Activity Report",
+          "Tambah Laporan",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,

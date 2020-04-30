@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -158,6 +159,19 @@ class _PriceListViewState extends State<PriceListView> {
   void exportPdf(Datum value) async {
     final pdf = pw.Document();
 
+    ByteData bytes = await rootBundle.load('assets/icons/hasjrat_logo_apps.png');
+    File imgLogo;
+    try {
+      imgLogo = await writeToFile(bytes); // <= returns File
+    } catch(e) {
+      // catch errors here
+    }
+
+    final image = PdfImage.file(
+      pdf.document,
+      bytes: imgLogo.readAsBytesSync(),
+    );
+
     pdf.addPage(pw.MultiPage(
       pageFormat: PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
       crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -199,13 +213,17 @@ class _PriceListViewState extends State<PriceListView> {
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: <pw.Widget>[
                     pw.Text(' Data Price List & Stock', textScaleFactor: 2),
+                    pw.Container(
+                      height: 50,
+                      child: pw.Image(image),
+                    ),
                   ]),
           ),
           pw.Paragraph(
             text: 'Price List'
           ),
           pw.ListView.builder(
-            itemBuilder: (pw.Context contex, index) {
+            itemBuilder: (pw.Context context, index) {
               return pw.Table.fromTextArray(
                 context: context,
                 data: <List<String>>[
@@ -221,12 +239,12 @@ class _PriceListViewState extends State<PriceListView> {
               text: 'Stock'
           ),
           pw.ListView.builder(
-              itemBuilder: (pw.Context contex, index) {
+              itemBuilder: (pw.Context context, index) {
                 return pw.Table.fromTextArray(
                   context: context,
                   data: <List<String>>[
-                    <String>['No. Rangka', 'Tahun', 'Jumlah', 'Warna'],
-                    <String>['${value.stocks[index].nomorRangka}', '${value.stocks[index].tahun}', '${value.stocks[index].quantity}', '${value.stocks[index].kodeWarna}'],
+                    <String>['Tahun', 'Jumlah', 'Warna'],
+                    <String>['${value.stocks[index].tahun}', '${value.stocks[index].quantity}', '${value.stocks[index].namaWarna}'],
                   ],
                 );
               },
@@ -242,6 +260,15 @@ class _PriceListViewState extends State<PriceListView> {
     file.writeAsBytesSync(pdf.save());
 
     OpenFile.open('${directory.path}/price-list.pdf');
+  }
+
+  Future<File> writeToFile(ByteData data) async {
+    final buffer = data.buffer;
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    var filePath = tempPath + '/file_logo.tmp'; // file_01.tmp is dump file, can be anything
+    return new File(filePath).writeAsBytes(
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
   }
 
   @override

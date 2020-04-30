@@ -52,7 +52,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         elevation: 7,
         automaticallyImplyLeading: false,
         title: Text(
-          "Notification",
+          "Notifikasi",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -65,7 +65,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           children: <Widget>[
             ListTile(
               onTap: null,
-              title: Text("Customers Birthday"),
+              title: Text("Ulang Tahun Pelanggan"),
               subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -91,9 +91,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
             ListTile(
               onTap: null,
-              title: Text("STNK Expired"),
+              title: Text("STNK Kadaluwarsa"),
               subtitle: Text(
-                "Ayo ingatkan Customer-mu sebelum STNKnya expired!",
+                "Ayo ingatkan Customer-mu sebelum STNKnya kadaluwarsa!",
                 style: TextStyle(
                   fontSize: 11,
                 ),

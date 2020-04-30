@@ -289,7 +289,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Add Book Service",
+          "Tambah Booking Service",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -319,7 +319,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             Alert(
                 context: context,
                 type: AlertType.success,
-                title: 'Success',
+                title: 'Berhasil',
                 desc:
                     "Terima Kasih telah melakukan Booking Service, data telah dikimkan ke Email Bengkel!",
                 style: AlertStyle(
@@ -347,8 +347,8 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             Alert(
                 context: context,
                 type: AlertType.error,
-                title: 'Error',
-                desc: "Failed to Create Booking Service!",
+                title: 'Gagal membuat Pemesanan',
+                desc: "Silahkan cek data yang dimasukan.",
                 style: AlertStyle(
                   animationDuration: Duration(milliseconds: 500),
                   overlayColor: Colors.black54,
@@ -374,7 +374,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Nama Customer (*)",
+                  "Nama Pelanggan (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -396,7 +396,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Nomor Telepon Customer (*)",
+                  "Nomor Telepon Pelanggan (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -407,7 +407,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Email Customer (*)",
+                  "Email Pelanggan (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,

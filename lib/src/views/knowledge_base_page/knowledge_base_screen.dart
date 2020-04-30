@@ -198,7 +198,7 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: "Search",
+                  hintText: "Cari",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
