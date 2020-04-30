@@ -13,7 +13,7 @@ import 'package:salles_tools/src/views/components/log.dart';
 
 class LoginService {
   final Dio _dio = new Dio();
-  final clientId = 'sales-tools-auth-service';
+  final clientId = 'sales-tools-mobile';
   final clientSecret = '123456';
 
   LoginService() {
