@@ -190,42 +190,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        controller: _controller,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            profileContent(),
-            SizedBox(height: 7),
-            keamananContent(),
-            SizedBox(height: 7),
-            tentangContent(),
-            SizedBox(height: 7),
-            versionContent(),
-            SizedBox(height: 10),
-            Container(
-              width: screenWidth(context),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: RaisedButton(
-                  onPressed: () {
-                    _onShowDialog();
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Text("Sign Out",
-                    style: TextStyle(
-                      color: Colors.white,
+      body: SafeArea(
+        child: Scrollbar(
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            controller: _controller,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                profileContent(),
+                SizedBox(height: 7),
+                keamananContent(),
+                SizedBox(height: 7),
+                tentangContent(),
+                SizedBox(height: 7),
+                versionContent(),
+                SizedBox(height: 10),
+                Container(
+                  width: screenWidth(context),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: RaisedButton(
+                      onPressed: () {
+                        _onShowDialog();
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Text("Sign Out",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      color: HexColor("#C61818"),
                     ),
                   ),
-                  color: HexColor("#C61818"),
                 ),
-              ),
+                SizedBox(height: 10),
+              ],
             ),
-            SizedBox(height: 10),
-          ],
+          ),
         ),
       ),
     );
