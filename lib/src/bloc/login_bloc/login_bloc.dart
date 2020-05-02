@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_event.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_state.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
+import 'package:salles_tools/src/models/changePasswordModel.dart';
 import 'package:salles_tools/src/models/employee_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/services/login_service.dart';
@@ -47,13 +48,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           await SharedPreferencesHelper.setSalesJoinDate(employee.joinDate);
 
           yield LoginSuccess(value);
+        } else {
+          log.warning(value.errorDescription);
+          yield LoginError(value);
         }
-
-        log.warning(value.errorDescription);
-        yield LoginError(value);
       } catch (err) {
         log.warning(err.toString());
         yield LoginFailed();
+      }
+    }
+
+    if (event is ChangePassword) {
+      yield LoginLoading();
+
+      try {
+        ChangePasswordModel value = await loginService.changePassword(event.username, event.password);
+
+        yield ChangePasswordSuccess(value);
+      } catch (err) {
+        log.warning(err.toString());
+        yield ChangePasswordFailed();
       }
     }
   }

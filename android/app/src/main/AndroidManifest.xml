@@ -8,7 +8,6 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Hasjrat Sales Tools"
-        android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon">
         <service
             android:name="io.flutter.plugins.androidalarmmanager.AlarmService"

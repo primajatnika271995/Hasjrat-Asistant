@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
+import 'package:salles_tools/src/models/changePasswordModel.dart';
 import 'package:salles_tools/src/models/employee_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
@@ -58,7 +59,7 @@ class LoginService {
 
   Future<EmployeeModel> checkNIK(String nik) async {
     try {
-      final response = await _dio.get(UriApi.baseApi + UriApi.checkEmployeeUri + '/$nik/findEmployeeMutationById',
+      final response = await _dio.get(UriApi.checkEmployeeUri + '/$nik/findEmployeeMutationById',
         queryParameters: {
         'isMutation': false,
         },
@@ -88,6 +89,29 @@ class LoginService {
 
       log.info(response.statusCode);
       return compute(employeeModelFromJson, json.encode(response.data));
+
+    } catch (error) {
+      log.warning("Err : ${error.toString()}");
+    }
+    return null;
+  }
+
+  Future changePassword(String username, String password) async {
+    try {
+      final response = await _dio.post(UriApi.changePasswordUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        data: {
+          "password": password,
+          "username": username
+        },
+      );
+
+      log.info(response.statusCode);
+      return compute(changePasswordModelFromJson, json.encode(response.data));
 
     } catch (error) {
       log.warning("Err : ${error.toString()}");

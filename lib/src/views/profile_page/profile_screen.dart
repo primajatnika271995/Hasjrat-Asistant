@@ -47,7 +47,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _onChangePassword() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => ChangePasswordView(),
+        pageBuilder: (_, __, ___) => BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(LoginService()),
+          child: ChangePasswordView(),
+        ),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return SlideTransition(
             position: Tween<Offset>(
