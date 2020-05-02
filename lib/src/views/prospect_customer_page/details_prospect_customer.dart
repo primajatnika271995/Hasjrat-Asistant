@@ -307,7 +307,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 6,
             child: Text(
-              widget.value.address1.isNotEmpty ? "${widget.value.address1}" : "-",
+              widget.value.address2.isNotEmpty ? "${widget.value.address2}" : "-",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
@@ -339,7 +339,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 6,
             child: Text(
-              widget.value.address2.isNotEmpty ? "${widget.value.address2}" : "-",
+              widget.value.address1.isNotEmpty ? "${widget.value.address1}" : "-",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,
