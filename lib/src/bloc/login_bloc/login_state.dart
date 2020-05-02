@@ -24,7 +24,7 @@ class LoginError extends LoginState {
   final _data;
 
   LoginError(this._data);
-  ErrorModel get error => _data;
+  AuthenticationModel get error => _data;
 
   @override
   // TODO: implement props

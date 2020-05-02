@@ -26,26 +26,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         AuthenticationModel value = await loginService.login(event.username, event.password);
 
-        await SharedPreferencesHelper.setAccessToken(value.accessToken);
-        await SharedPreferencesHelper.setUsername(event.username);
-        await SharedPreferencesHelper.setPassword(event.password);
+        if (value.accessToken != null) {
+          await SharedPreferencesHelper.setAccessToken(value.accessToken);
+          await SharedPreferencesHelper.setUsername(event.username);
+          await SharedPreferencesHelper.setPassword(event.password);
 
-        EmployeeModel employee = await loginService.checkNIK(event.username);
-        await SharedPreferencesHelper.setSalesName(employee.name);
-        await SharedPreferencesHelper.setSalesNIK(employee.id);
-        await SharedPreferencesHelper.setSalesBirthday(employee.birthDate.toString());
-        await SharedPreferencesHelper.setSalesGender(employee.jenisKelamin);
-        
-        await SharedPreferencesHelper.setSalesBrach(employee.branch.name);
-        await SharedPreferencesHelper.setSalesBrachId(employee.branch.id);
+          EmployeeModel employee = await loginService.checkNIK(event.username);
+          await SharedPreferencesHelper.setSalesName(employee.name);
+          await SharedPreferencesHelper.setSalesNIK(employee.id);
+          await SharedPreferencesHelper.setSalesBirthday(employee.birthDate.toString());
+          await SharedPreferencesHelper.setSalesGender(employee.jenisKelamin);
 
-        await SharedPreferencesHelper.setSalesOutlet(employee.outlet.name);
-        await SharedPreferencesHelper.setSalesOutletId(employee.outlet.id);
+          await SharedPreferencesHelper.setSalesBrach(employee.branch.name);
+          await SharedPreferencesHelper.setSalesBrachId(employee.branch.id);
 
-        await SharedPreferencesHelper.setSalesJob(employee.section.newName);
-        await SharedPreferencesHelper.setSalesJoinDate(employee.joinDate);
+          await SharedPreferencesHelper.setSalesOutlet(employee.outlet.name);
+          await SharedPreferencesHelper.setSalesOutletId(employee.outlet.id);
 
-        yield LoginSuccess(value);
+          await SharedPreferencesHelper.setSalesJob(employee.section.newName);
+          await SharedPreferencesHelper.setSalesJoinDate(employee.joinDate);
+
+          yield LoginSuccess(value);
+        }
+
+        log.warning(value.errorDescription);
+        yield LoginError(value);
       } catch (err) {
         log.warning(err.toString());
         yield LoginFailed();

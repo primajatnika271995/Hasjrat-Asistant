@@ -18,6 +18,8 @@ class AuthenticationModel {
   String employeeId;
   String outletCode;
   String jti;
+  String error;
+  String errorDescription;
 
   AuthenticationModel({
     this.accessToken,
@@ -29,6 +31,8 @@ class AuthenticationModel {
     this.employeeId,
     this.outletCode,
     this.jti,
+    this.error,
+    this.errorDescription,
   });
 
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) => AuthenticationModel(
@@ -41,6 +45,8 @@ class AuthenticationModel {
     employeeId: json["employeeId"] == null ? null : json["employeeId"],
     outletCode: json["outletCode"] == null ? null : json["outletCode"],
     jti: json["jti"] == null ? null : json["jti"],
+    error: json["error"] == null ? null : json["error"],
+    errorDescription: json["error_description"] == null ? null : json["error_description"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +59,7 @@ class AuthenticationModel {
     "employeeId": employeeId == null ? null : employeeId,
     "outletCode": outletCode == null ? null : outletCode,
     "jti": jti == null ? null : jti,
+    "error": error == null ? null : error,
+    "error_description": errorDescription == null ? null : errorDescription,
   };
 }
