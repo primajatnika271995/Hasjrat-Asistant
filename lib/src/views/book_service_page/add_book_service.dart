@@ -18,6 +18,9 @@ import 'package:select_dialog/select_dialog.dart';
 enum TypeService { perbaikanUmum, serviceBerkala }
 
 class BookServiceAddView extends StatefulWidget {
+  final String customerName;
+  BookServiceAddView({this.customerName});
+
   @override
   _BookServiceAddViewState createState() => _BookServiceAddViewState();
 }
@@ -40,6 +43,8 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
   var dealerEmailCtrl = new TextEditingController();
   var dateSelected = new TextEditingController();
   var timeSelected = new TextEditingController();
+  var servicePeriodeTypeCtrl = new TextEditingController();
+  var serviceBerkalaCtrl = new TextEditingController();
 
   var customerNameFocus = new FocusNode();
   var vehicleNumberFocus = new FocusNode();
@@ -63,7 +68,16 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
     "Walk In",
   ];
 
-  double _servicePriode = 10000.0;
+  double _servicePriodeMonth = 6.0;
+
+  var _currentSelectServicePeriodeType;
+  List<String> _servicePeriodeType = [
+    "Berdasarkan Jarak (KM)",
+    "Berdasarkan Waktu (bulan)"
+  ];
+
+  var _currentSelectServiceBerkala;
+  List<String> _serviceBerkalaList = [];
 
   TypeService _typeService = TypeService.perbaikanUmum;
 
@@ -103,6 +117,70 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
       });
   }
 
+  void _showListServicePeriodeType() {
+    SelectDialog.showModal<String>(
+      context,
+      label: "Tipe Service Periode",
+      selectedValue: _currentSelectServicePeriodeType,
+      items: _servicePeriodeType,
+      itemBuilder: (context, String item, bool isSelected) {
+        return Container(
+          decoration: !isSelected
+              ? null
+              : BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+          child: ListTile(
+            selected: isSelected,
+            title: Text(item),
+          ),
+        );
+      },
+      onChange: (String selected) {
+        setState(() {
+          _currentSelectServicePeriodeType = selected;
+          servicePeriodeTypeCtrl.text = selected;
+        });
+      },
+    );
+  }
+
+  void _showListServiceBerkala() {
+    SelectDialog.showModal<String>(
+      context,
+      label: "Service Berkala",
+      selectedValue: _currentSelectServiceBerkala,
+      items: _serviceBerkalaList,
+      itemBuilder: (context, String item, bool isSelected) {
+        return Container(
+          decoration: !isSelected
+              ? null
+              : BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+          child: ListTile(
+            selected: isSelected,
+            title: Text(item),
+          ),
+        );
+      },
+      onChange: (String selected) {
+        setState(() {
+          _currentSelectServiceBerkala = selected;
+          serviceBerkalaCtrl.text = selected;
+        });
+      },
+    );
+  }
+
   void _showListStation() {
     SelectDialog.showModal<SelectorStation>(
       context,
@@ -136,7 +214,6 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
   }
 
   void createBokingService() async {
-
     var salesName = await SharedPreferencesHelper.getSalesName();
 
     if (dateSelected.text.isEmpty || timeSelected.text.isEmpty) {
@@ -148,7 +225,9 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
       return;
     }
 
-    if (dealerEmailCtrl.text.isEmpty || dealerNameCtrl.text.isEmpty || dealerAddressCtrl.text.isEmpty) {
+    if (dealerEmailCtrl.text.isEmpty ||
+        dealerNameCtrl.text.isEmpty ||
+        dealerAddressCtrl.text.isEmpty) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text("Identitas Bengkel Tidak Lengkap"),
         backgroundColor: Colors.red,
@@ -170,7 +249,10 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
         dealerAddress: dealerAddressCtrl.text,
         dealerEmail: dealerEmailCtrl.text,
         dealerName: dealerNameCtrl.text,
-        periodService: _servicePriode.toString() + " Km",
+        periodService:
+            servicePeriodeTypeCtrl.text == "Berdasarkan Waktu (bulan)"
+                ? _servicePriodeMonth.toString() + " bulan"
+                : _currentSelectServiceBerkala,
         serviceCategoryName: currentSelectBookCategory,
         vehicleNumber: vehicleNumberCtrl.text,
         salesName: salesName,
@@ -185,7 +267,15 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
     final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
     bookingDriveBloc.add(FetchStation());
 
+    for (var data, i = 1; i < 36; i++) {
+      setState(() {
+        _serviceBerkalaList.add("SB $i");
+      });
+    }
+
     bookingCategoryCtrl.text = "On Call In (BS)";
+    servicePeriodeTypeCtrl.text = "Berdasarkan Waktu (bulan)";
+    customerNameCtrl.text = widget.customerName;
     super.initState();
   }
 
@@ -199,7 +289,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Add Book Service",
+          "Tambah Booking Service",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -229,8 +319,9 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             Alert(
                 context: context,
                 type: AlertType.success,
-                title: 'Success',
-                desc: "Terima Kasih telah melakukan Booking Service, data telah dikimkan ke Email Bengkel!",
+                title: 'Berhasil',
+                desc:
+                    "Terima Kasih telah melakukan Booking Service, data telah dikimkan ke Email Bengkel!",
                 style: AlertStyle(
                   animationDuration: Duration(milliseconds: 500),
                   overlayColor: Colors.black54,
@@ -248,8 +339,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                     },
                     color: HexColor("#C61818"),
                   ),
-                ]
-            ).show();
+                ]).show();
           }
 
           if (state is AddBookingServiceVieEmailError) {
@@ -257,8 +347,8 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             Alert(
                 context: context,
                 type: AlertType.error,
-                title: 'Error',
-                desc: "Failed to Create Booking Service!",
+                title: 'Gagal membuat Pemesanan',
+                desc: "Silahkan cek data yang dimasukan.",
                 style: AlertStyle(
                   animationDuration: Duration(milliseconds: 500),
                   overlayColor: Colors.black54,
@@ -273,8 +363,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                     onPressed: () => Navigator.pop(context),
                     color: HexColor("#C61818"),
                   ),
-                ]
-            ).show();
+                ]).show();
           }
         },
         child: SingleChildScrollView(
@@ -285,7 +374,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Nama Customer (*)",
+                  "Nama Pelanggan (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -307,7 +396,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Nomor Telepon Customer (*)",
+                  "Nomor Telepon Pelanggan (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -318,7 +407,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Email Customer (*)",
+                  "Email Pelanggan (*)",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -354,6 +443,42 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                   ),
                 ),
               ),
+              currentSelectTypeService != "Perbaikan Umum"
+                  ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      "Tipe Service Periode (*)",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                  ),
+                  formSelectServicePeriodeType(),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      "Service Periode (*)",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                  ),
+                  servicePeriodeTypeCtrl.text ==
+                      "Berdasarkan Waktu (bulan)"
+                      ? sliderPriodeServiceMonth()
+                      : formAddServiceBerkala(),
+                ],
+              )
+                  : SizedBox(),
+              SizedBox(
+                height: 10,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
@@ -365,17 +490,6 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 ),
               ),
               formAddBookCategori(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Service Periode (*)",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-              ),
-              sliderPriodeService(),
               Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -441,7 +555,8 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               ),
               formTimePicker(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                 child: Container(
                   width: screenWidth(context),
                   child: RaisedButton(
@@ -488,9 +603,13 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.people,
                     color: Color(0xFF6991C7),
@@ -538,9 +657,13 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.chrome_reader_mode,
                     color: Color(0xFF6991C7),
@@ -588,10 +711,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.phone,
                     color: Color(0xFF6991C7),
@@ -639,10 +766,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.contact_mail,
                     color: Color(0xFF6991C7),
@@ -772,10 +903,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -789,6 +924,65 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                       ),
                     ),
                     controller: bookingCategoryCtrl,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formSelectServicePeriodeType() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListServicePeriodeType();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 16),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Pilih Tipe Service Periode',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: servicePeriodeTypeCtrl,
                   ),
                 ),
               ),
@@ -828,9 +1022,13 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                   child: TextFormField(
                     readOnly: true,
                     showCursor: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -879,6 +1077,10 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
                 readOnly: true,
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(
@@ -927,9 +1129,13 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
                 readOnly: true,
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 18),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   prefixIcon: Icon(
                     Icons.alternate_email,
                     color: Color(0xFF6991C7),
@@ -979,10 +1185,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.calendar_today,
                         color: Color(0xFF6991C7),
@@ -1042,10 +1252,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.access_time,
                         color: Color(0xFF6991C7),
@@ -1077,7 +1291,66 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
     );
   }
 
-  Widget sliderPriodeService() {
+  Widget formAddServiceBerkala() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListServiceBerkala();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    showCursor: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.only(bottom: 16),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Pilih Service Berkala',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: serviceBerkalaCtrl,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget sliderPriodeServiceMonth() {
     return Column(
       children: <Widget>[
         Padding(
@@ -1085,21 +1358,21 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
           child: Slider(
             onChanged: (val) {
               setState(() {
-                _servicePriode = val;
+                _servicePriodeMonth = val;
               });
             },
             activeColor: HexColor('#C61818'),
             inactiveColor: Colors.grey,
-            max: 34000.0,
-            min: 10000.0,
-            divisions: 2,
-            value: _servicePriode,
-            label: _servicePriode.round().toString(),
+            max: 36.0,
+            min: 6.0,
+            divisions: 5,
+            value: _servicePriodeMonth,
+            label: _servicePriodeMonth.round().toString(),
           ),
         ),
         Center(
           child: Text(
-            "${_servicePriode.round().toString()} Km",
+            "${_servicePriodeMonth.round().toString()} bulan",
             style: TextStyle(
               fontSize: 16,
               letterSpacing: 1.0,

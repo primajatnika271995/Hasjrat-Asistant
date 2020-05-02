@@ -15,6 +15,9 @@ import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
 
 class BookTestDriveAddView extends StatefulWidget {
+  final String customerName;
+  BookTestDriveAddView({this.customerName});
+
   @override
   _BookTestDriveAddViewState createState() => _BookTestDriveAddViewState();
 }
@@ -182,7 +185,6 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
   @override
   void initState() {
     // TODO: implement initState
-    // ignore: close_sinks
     _getSharedPrefferences();
     // ignore: close_sinks
     final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
@@ -191,6 +193,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
       outletCode: _outletId,
     )));
 
+    customerNameCtrl.text = widget.customerName;
     super.initState();
   }
 
@@ -203,7 +206,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Add Book Test Drive",
+          "Tambah Book Test Drive",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -224,13 +227,14 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             }
 
             if (state is CarListSuccess) {
-              print("car list booking success");
               state.value.forEach((f) {
-                vehicleList.add(SelectorVehicleModel(
-                  itemModel: f.itemModel,
-                  id: f.id,
-                  itemType: f.itemType,
-                ));
+                if (f.enabled == true) {
+                  vehicleList.add(SelectorVehicleModel(
+                    itemModel: f.itemModel,
+                    id: f.id,
+                    itemType: f.itemType,
+                  ));
+                }
               });
             }
 
@@ -239,8 +243,8 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
               Alert(
                   context: context,
                   type: AlertType.success,
-                  title: 'Success',
-                  desc: "Created Booking Test Drive!",
+                  title: 'Berhasil',
+                  desc: "Terima kasih telah melakukan Booking Test Drive!",
                   style: AlertStyle(
                     animationDuration: Duration(milliseconds: 500),
                     overlayColor: Colors.black54,
@@ -263,8 +267,8 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
               Alert(
                   context: context,
                   type: AlertType.error,
-                  title: 'Error',
-                  desc: "Failed to Create Booking Test Drive!",
+                  title: 'Gagal',
+                  desc: "Silahkan cek kembali data yang dimasukan.",
                   style: AlertStyle(
                     animationDuration: Duration(milliseconds: 500),
                     overlayColor: Colors.black54,
@@ -289,7 +293,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
-                    "Nama Customer (*)",
+                    "Nama Pelanggan (*)",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
@@ -300,7 +304,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 20),
                   child: Text(
-                    "Nomer Telepon Customer (*)",
+                    "Nomer Telepon Pelanggan (*)",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
@@ -426,15 +430,19 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(bottom: 17),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   border: InputBorder.none,
                   prefixIcon: Icon(
                     Icons.perm_identity,
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: "Masukan Nama Customer",
+                  hintText: "Masukan Nama Pelanggan",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -478,8 +486,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(bottom: 17),
+                  contentPadding: EdgeInsets.only(bottom: 16),
                   border: InputBorder.none,
                   prefixIcon: Icon(
                     Icons.phone,
@@ -532,8 +544,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: new InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 17),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       border: InputBorder.none,
                       enabled: false,
                       prefixIcon: Icon(
@@ -541,7 +557,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Dealer",
+                      hintText: "Pilih Dealer",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -587,8 +603,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: new InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 17),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       border: InputBorder.none,
                       enabled: false,
                       prefixIcon: Icon(
@@ -596,7 +616,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Select Outlet",
+                      hintText: "Pilih Outlet",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -644,8 +664,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: new InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 17),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       border: InputBorder.none,
                       enabled: false,
                       suffixIcon: Icon(
@@ -701,8 +725,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: new InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 17),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       border: InputBorder.none,
                       enabled: false,
                       prefixIcon: Icon(
@@ -759,8 +787,12 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: new InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 17),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       border: InputBorder.none,
                       enabled: false,
                       prefixIcon: Icon(
@@ -810,6 +842,10 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                   border: InputBorder.none,

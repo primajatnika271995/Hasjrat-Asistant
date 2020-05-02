@@ -68,7 +68,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Prospect Details",
+          "Detail Prospek",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -136,7 +136,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 4,
             child: Text(
-              "Prospect Id",
+              "No. Prospek",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -168,7 +168,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 4,
             child: Text(
-              "Customer Name",
+              "Nama Pelanggan",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -200,7 +200,7 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
           Expanded(
             flex: 4,
             child: Text(
-              "Customer Code",
+              "Kode Pelanggan",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -571,11 +571,12 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
       padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
       child: Container(
         width: screenWidth(context),
-        child: RaisedButton(
+        child: RaisedButton.icon(
           onPressed: () {
             launch('tel:${widget.value.phone1}');
           },
-          child: Text("Call", style: TextStyle(color: Colors.white),),
+          icon: Icon(Icons.call, color: Colors.white),
+          label: Text("Telepon Pelanggan", style: TextStyle(color: Colors.white),),
           color: Colors.brown,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),

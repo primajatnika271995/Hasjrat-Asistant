@@ -34,84 +34,89 @@ class _BannerDetailsViewState extends State<BannerDetailsView> {
         ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Hero(
-            tag: "promotion-tag${widget.data.id}",
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              child: Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7),
-                  image: DecorationImage(
-                    image: NetworkImage('${widget.data.url}'),
-                    fit: BoxFit.fill,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Hero(
+              tag: "promotion-tag${widget.data.id}",
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    image: DecorationImage(
+                      image: NetworkImage('${widget.data.url}'),
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10, left: 20),
-            child: Text(
-              "${widget.data.title.toUpperCase()}",
-              style: TextStyle(
-                letterSpacing: 1.0,
-                fontSize: 17,
-                color: Colors.black,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 20, top: 2),
-                child: Icon(Icons.date_range, size: 14),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 2, left: 5),
-                child: Text(
-                  "Valid Until ${dateFormat.format(DateTime.parse(widget.data.expiredIn.toString()))}",
-                  style: TextStyle(
-                    letterSpacing: 1.0,
-                    fontSize: 11,
-                    color: Colors.black,
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, left: 20),
+              child: Text(
+                "${widget.data.title.toUpperCase()}",
+                style: TextStyle(
+                  letterSpacing: 1.0,
+                  fontSize: 17,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-            ],
-          ),
-          Divider(),
-          Padding(
-            padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            Row(
               children: <Widget>[
-                Text(
-                  "${widget.data.notes}",
-                  style: TextStyle(
-                    letterSpacing: 0.8,
-                  ),
-                  textAlign: TextAlign.justify,
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 2),
+                  child: Icon(Icons.date_range, size: 14),
                 ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  "*Syarat dan ketentuan berlaku.",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.5,
-                    fontSize: 11,
+                Padding(
+                  padding: const EdgeInsets.only(top: 2, left: 5),
+                  child: Text(
+                    "Valid Until ${dateFormat.format(DateTime.parse(widget.data.expiredIn.toString()))}",
+                    style: TextStyle(
+                      letterSpacing: 1.0,
+                      fontSize: 11,
+                      color: Colors.black,
+                    ),
                   ),
-                )
+                ),
               ],
             ),
-          ),
-        ],
+            Divider(),
+            Padding(
+              padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "${widget.data.notes}",
+                    style: TextStyle(
+                      letterSpacing: 0.8,
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    "*Syarat dan ketentuan berlaku.",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.5,
+                      fontSize: 11,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

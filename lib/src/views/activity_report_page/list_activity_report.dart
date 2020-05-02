@@ -91,7 +91,7 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
         elevation: 0,
         titleSpacing: 0,
         title: Text(
-          "Activity Report",
+          "Laporan Kegiatan",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -240,7 +240,7 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
                     color: Color(0xFF6991C7),
                     size: 24.0,
                   ),
-                  hintText: "Search",
+                  hintText: "Cari",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,

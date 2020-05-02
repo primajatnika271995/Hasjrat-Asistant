@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,6 +12,7 @@ import 'package:salles_tools/src/models/item_list_model.dart';
 import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/utils/currency_format.dart';
+import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
@@ -157,6 +159,19 @@ class _PriceListViewState extends State<PriceListView> {
   void exportPdf(Datum value) async {
     final pdf = pw.Document();
 
+    ByteData bytes = await rootBundle.load('assets/icons/hasjrat_logo_apps.png');
+    File imgLogo;
+    try {
+      imgLogo = await writeToFile(bytes); // <= returns File
+    } catch(e) {
+      // catch errors here
+    }
+
+    final image = PdfImage.file(
+      pdf.document,
+      bytes: imgLogo.readAsBytesSync(),
+    );
+
     pdf.addPage(pw.MultiPage(
       pageFormat: PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
       crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -198,13 +213,17 @@ class _PriceListViewState extends State<PriceListView> {
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: <pw.Widget>[
                     pw.Text(' Data Price List & Stock', textScaleFactor: 2),
+                    pw.Container(
+                      height: 50,
+                      child: pw.Image(image),
+                    ),
                   ]),
           ),
           pw.Paragraph(
             text: 'Price List'
           ),
           pw.ListView.builder(
-            itemBuilder: (pw.Context contex, index) {
+            itemBuilder: (pw.Context context, index) {
               return pw.Table.fromTextArray(
                 context: context,
                 data: <List<String>>[
@@ -220,12 +239,12 @@ class _PriceListViewState extends State<PriceListView> {
               text: 'Stock'
           ),
           pw.ListView.builder(
-              itemBuilder: (pw.Context contex, index) {
+              itemBuilder: (pw.Context context, index) {
                 return pw.Table.fromTextArray(
                   context: context,
                   data: <List<String>>[
-                    <String>['No. Rangka', 'Tahun', 'Jumlah', 'Warna'],
-                    <String>['${value.stocks[index].nomorRangka}', '${value.stocks[index].tahun}', '${value.stocks[index].quantity}', '${value.stocks[index].kodeWarna}'],
+                    <String>['Tahun', 'Jumlah', 'Warna'],
+                    <String>['${value.stocks[index].tahun}', '${value.stocks[index].quantity}', '${value.stocks[index].namaWarna}'],
                   ],
                 );
               },
@@ -241,6 +260,15 @@ class _PriceListViewState extends State<PriceListView> {
     file.writeAsBytesSync(pdf.save());
 
     OpenFile.open('${directory.path}/price-list.pdf');
+  }
+
+  Future<File> writeToFile(ByteData data) async {
+    final buffer = data.buffer;
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    var filePath = tempPath + '/file_logo.tmp'; // file_01.tmp is dump file, can be anything
+    return new File(filePath).writeAsBytes(
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
   }
 
   @override
@@ -404,10 +432,14 @@ class _PriceListViewState extends State<PriceListView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -459,10 +491,14 @@ class _PriceListViewState extends State<PriceListView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -514,10 +550,14 @@ class _PriceListViewState extends State<PriceListView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -569,10 +609,14 @@ class _PriceListViewState extends State<PriceListView> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       suffixIcon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xFF6991C7),
@@ -678,21 +722,7 @@ class _PriceListViewState extends State<PriceListView> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 15),
-                                child: Text(
-                                  "Rp ${CurrencyFormat().data.format(value.ontr)}",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 1.0,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
                               Divider(),
-                              SizedBox(
-                                height: 5,
-                              ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 3),
@@ -722,21 +752,6 @@ class _PriceListViewState extends State<PriceListView> {
                                         return Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: <Widget>[
-                                                  Text("Nomor Rangka"),
-                                                  Text(
-                                                    "${stock.nomorRangka}",
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w700,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
                                             Padding(
                                               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
                                               child: Row(
@@ -783,11 +798,22 @@ class _PriceListViewState extends State<PriceListView> {
                     itemCount: state.value.data[0].pricelists.length,
                   ),
                   Center(
-                    child: IconButton(
+                    child: RaisedButton.icon(
                       onPressed: () {
                         exportPdf(state.value.data[0]);
                       },
-                      icon: Icon(Icons.file_download),
+                      icon: Icon(Icons.file_download,
+                        color: Colors.white,
+                      ),
+                      color: HexColor('#C61818'),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      label: Text("Export PDF",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],

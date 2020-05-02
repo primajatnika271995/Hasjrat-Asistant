@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -6,7 +7,9 @@ import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/login_page/login_screen.dart';
+import 'package:salles_tools/src/views/profile_page/change_password_screen.dart';
 import 'package:salles_tools/src/views/profile_page/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -15,17 +18,42 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final double targetElevation = 3;
+  double _elevation = 0;
+  ScrollController _controller;
+
   var _salesName;
   var _salesNIK;
+
+  String titleName = "";
 
   void _onEditProfile() {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProfileEditView(),
-        transitionDuration: Duration(milliseconds: 750),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return Opacity(
-            opacity: animation.value,
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onChangePassword() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => ChangePasswordView(),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(animation),
             child: child,
           );
         },
@@ -109,168 +137,252 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
+  void _scrollListener() {
+    double newElevation = _controller.offset > 1 ? targetElevation : 0;
+    if (_elevation != newElevation) {
+      setState(() {
+        if (newElevation < 1) {
+          titleName = "";
+        } else {
+          titleName = "Profil";
+        }
+
+        _elevation = newElevation;
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     _getPreferences();
+    _controller = ScrollController();
+    _controller.addListener(_scrollListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller?.removeListener(_scrollListener);
+    _controller?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(200),
-        child: AppBar(
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          elevation: 5,
-          title: Text(
-            "My Profile",
-            style: TextStyle(
-              color: HexColor('#C61818'),
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.5,
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        elevation: _elevation,
+        centerTitle: true,
+        title: Text('$titleName',
+          style: TextStyle(color: Colors.black),
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.notifications,
+              color: Colors.black,
             ),
           ),
-          flexibleSpace: Padding(
-            padding: const EdgeInsets.only(top: 80),
+        ],
+      ),
+      body: SafeArea(
+        child: Scrollbar(
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            controller: _controller,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  "$_salesName",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-                Text(
-                  "$_salesNIK",
-                  style: TextStyle(
-                    fontSize: 13,
-                    letterSpacing: 0.8,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15, bottom: 5),
-                  child: LinearPercentIndicator(
-                    percent: 0.6,
-                    width: 150,
-                    alignment: MainAxisAlignment.center,
-                    lineHeight: 17,
-                    backgroundColor: Colors.grey.withOpacity(0.3),
-                    progressColor: HexColor('#C61818'),
-                  ),
-                ),
-                Text(
-                  "60% Complete Profile",
-                  style: TextStyle(
-                    fontSize: 10,
-                    letterSpacing: 0.8,
-                  ),
-                ),
-                ButtonTheme(
-                  height: 20,
-                  child: OutlineButton(
-                    onPressed: () {
-                      _onEditProfile();
-                    },
-                    highlightElevation: 3,
-                    highlightedBorderColor: HexColor('#C61818'),
-                    borderSide: BorderSide(
-                      color: HexColor('#C61818'),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Text(
-                      "Detail Profile",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: HexColor('#212120'),
+                profileContent(),
+                SizedBox(height: 7),
+                keamananContent(),
+                SizedBox(height: 7),
+                tentangContent(),
+                SizedBox(height: 7),
+                versionContent(),
+                SizedBox(height: 10),
+                Container(
+                  width: screenWidth(context),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: RaisedButton(
+                      onPressed: () {
+                        _onShowDialog();
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
                       ),
+                      child: Text("Sign Out",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      color: HexColor("#C61818"),
                     ),
                   ),
                 ),
+                SizedBox(height: 10),
               ],
             ),
           ),
         ),
       ),
-      body: SingleChildScrollView(
+    );
+  }
+
+  Widget profileContent() {
+    return Container(
+      width: screenWidth(context),
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-//            ListTile(
-//              onTap: null,
-//              title: Text("Change Password"),
-//              leading: Icon(Icons.lock_outline),
-//              trailing: IconButton(
-//                onPressed: () {},
-//                icon: Icon(Icons.navigate_next),
-//              ),
-//            ),
-//            Divider(),
-            ListTile(
-              onTap: null,
-              title: Text("Term of Service"),
-              leading: Icon(Icons.info_outline),
-              trailing: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.navigate_next),
-              ),
-            ),
-            Divider(),
-            ListTile(
-              onTap: null,
-              title: Text("Privacy Police"),
-              leading: Icon(Icons.security),
-              trailing: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.navigate_next),
-              ),
-            ),
-            Divider(),
-            ListTile(
-              onTap: null,
-              title: Text("About"),
-              leading: Icon(Icons.format_color_text),
-              trailing: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.navigate_next),
-              ),
-            ),
-            Divider(),
-            ListTile(
-              onTap: null,
-              title: Text("Rate App"),
-              leading: Icon(Icons.star_border),
-              trailing: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.navigate_next),
-              ),
-            ),
-            Divider(),
-            ListTile(
-              onTap: null,
-              title: Text(
-                "Logout",
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10, top: 10),
+              child: Text("Profil",
                 style: TextStyle(
-                  color: Colors.red,
+                  fontSize: 21,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              leading: Icon(
-                Icons.exit_to_app,
-                color: Colors.red,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.grey[200],
+                      child: Icon(Icons.account_circle),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("$_salesName",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text("$_salesNIK",
+                        style: TextStyle(
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              trailing: IconButton(
-                onPressed: () {
-//                  _onLogin();
-                  _onShowDialog();
-                },
-                icon: Icon(Icons.navigate_next),
+            ),
+            Divider(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Text("Akun",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _onEditProfile();
+                  },
+                  child: Container(
+                    width: screenWidth(context),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Icon(Icons.person),
+                                ),
+                                Text("Ubah Profil",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Icon(Icons.navigate_next),
+                          ],
+                        ),
+                        Divider(color: Colors.white),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget keamananContent() {
+    return Container(
+      width: screenWidth(context),
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 20),
+              child: Text("Keamanan",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                _onChangePassword();
+              },
+              child: Container(
+                width: screenWidth(context),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Icon(Icons.phonelink_lock),
+                            ),
+                            Text("Ubah Security Code",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            )
+                          ],
+                        ),
+                        Icon(Icons.navigate_next),
+                      ],
+                    ),
+                    Divider(color: Colors.white),
+                  ],
+                ),
               ),
             ),
           ],
@@ -279,44 +391,179 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget profileImage() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 40),
-      child: Column(
-        children: <Widget>[
-          Hero(
-            tag: "profile-image",
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 50,
-              backgroundImage: NetworkImage(
-                  "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
-            ),
-          ),
-          ButtonTheme(
-            height: 20,
-            child: OutlineButton(
-              onPressed: () {
-                _onEditProfile();
-              },
-              highlightElevation: 3,
-              highlightedBorderColor: HexColor('#C61818'),
-              borderSide: BorderSide(
-                color: HexColor('#C61818'),
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(
-                "Detail Profile",
+  Widget tentangContent() {
+    return Container(
+      width: screenWidth(context),
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 20),
+              child: Text("Tentang",
                 style: TextStyle(
-                  fontSize: 12,
-                  color: HexColor('#212120'),
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
-          ),
-        ],
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: screenWidth(context),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Icon(Icons.info),
+                              ),
+                              Text("Panduan Sales Tools",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+                          Icon(Icons.navigate_next),
+                        ],
+                      ),
+                    ),
+                    Divider(),
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: screenWidth(context),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Icon(Icons.bubble_chart),
+                              ),
+                              Text("Syarat dan Ketentuan",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+                          Icon(Icons.navigate_next),
+                        ],
+                      ),
+                    ),
+                    Divider(),
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: screenWidth(context),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Icon(Icons.beenhere),
+                              ),
+                              Text("Kebijakan Privasi",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+                          Icon(Icons.navigate_next),
+                        ],
+                      ),
+                    ),
+                    Divider(),
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: screenWidth(context),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Icon(Icons.info_outline),
+                              ),
+                              Text("Pusat Bantuan",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+                          Icon(Icons.navigate_next),
+                        ],
+                      ),
+                    ),
+                    Divider(color: Colors.white),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget versionContent() {
+    return Container(
+      width: screenWidth(context),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Row(
+          children: <Widget>[
+            Text("Version 1.0.0. buildVersion 1",
+              style: TextStyle(
+                fontSize: 12,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

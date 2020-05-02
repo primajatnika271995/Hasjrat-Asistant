@@ -117,6 +117,8 @@ class SpkService {
           "card_name": value.cardName,
           "end_date": value.endDate,
           "limit": limit,
+          "dec_start_date": value.decStartDate,
+          "dec_end_date": value.decEndDate,
           "spk_blanko": value.spkBlanko,
           "spk_num": value.spkNum,
           "start": start,
@@ -234,9 +236,11 @@ class SpkFilterPost {
   String endDate;
   String startDate;
   String spkBlanko;
+  String decStartDate;
+  String decEndDate;
   String spkNum;
 
-  SpkFilterPost({this.cardCode, this.cardName, this.endDate, this.startDate, this.spkBlanko, this.spkNum});
+  SpkFilterPost({this.cardCode, this.cardName, this.endDate, this.startDate, this.spkBlanko, this.decStartDate, this.decEndDate, this.spkNum});
 }
 
 class SpkParams {

@@ -89,7 +89,7 @@ class _SpkAddViewState extends State<SpkAddView> {
   void _showListSpkNumber() {
     SelectDialog.showModal<SelectorSpkNumber>(
       context,
-      label: "SPK Number",
+      label: "Nomor SPK",
       selectedValue: currentSelectSpkNumber,
       items: spkNumberList,
       onChange: (SelectorSpkNumber selected) {
@@ -106,7 +106,7 @@ class _SpkAddViewState extends State<SpkAddView> {
   void _showListCustomerCriteria() {
     SelectDialog.showModal<SelectorCustomerCriteria>(
       context,
-      label: "Customer Criteria",
+      label: "Kriteria Pelanggan",
       selectedValue: currentSelectCustomerCriteria,
       items: customerCriteriaList,
       onChange: (SelectorCustomerCriteria selected) {
@@ -155,7 +155,7 @@ class _SpkAddViewState extends State<SpkAddView> {
   void _showListProvinsi() {
     SelectDialog.showModal<SelectorProvinceModel>(
       context,
-      label: "Province",
+      label: "Pilih Provinsi",
       selectedValue: currentSelectProvinsi,
       items: listProvinsi,
       onChange: (SelectorProvinceModel selected) {
@@ -268,7 +268,7 @@ class _SpkAddViewState extends State<SpkAddView> {
     spkBloc.add(CreateSpk(SpkParams(
       leasingId: leasingId,
       itemGroup: widget.value.itemGroup,
-      cardCode: widget.value.cardCode,
+      cardCode: widget.value.leadCode,
       cardName: widget.value.cardName,
       cardType: "L",
       customerCriteria: customerCriteriaId,
@@ -515,7 +515,7 @@ class _SpkAddViewState extends State<SpkAddView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Kode Customer",
+                          "Kode Pelanggan",
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1.0,
@@ -523,7 +523,7 @@ class _SpkAddViewState extends State<SpkAddView> {
                         ),
                         formProspectId(),
                         Text(
-                          "Nama Customer",
+                          "Nama Pelanggan",
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1.0,
@@ -922,7 +922,7 @@ class _SpkAddViewState extends State<SpkAddView> {
                         : FlatButton(
                             onPressed: () => _onStepCancel(),
                             child: Text(
-                              'BACK',
+                              'Kembali',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.blueAccent,
@@ -934,7 +934,7 @@ class _SpkAddViewState extends State<SpkAddView> {
                         : FlatButton(
                             onPressed: () => _onStepContinue(),
                             child: Text(
-                              'NEXT',
+                              'Selanjutnya',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.blueAccent,
@@ -1199,7 +1199,7 @@ class _SpkAddViewState extends State<SpkAddView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Pilih Customer Kriteria",
+                      hintText: "Pilih Kriteria Pelanggan",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,

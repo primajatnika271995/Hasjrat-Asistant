@@ -50,6 +50,8 @@ class Data {
     List<Contact> contacts;
     List<Contact> prospects;
     List<Contact> hotprospects;
+    List<Contact> spks;
+    List<Contact> deliveries;
 
     Data({
         this.salesCode,
@@ -57,6 +59,8 @@ class Data {
         this.contacts,
         this.prospects,
         this.hotprospects,
+        this.spks,
+        this.deliveries,
     });
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -65,6 +69,8 @@ class Data {
         contacts: json["contacts"] == null ? null : List<Contact>.from(json["contacts"].map((x) => Contact.fromJson(x))),
         prospects: json["prospects"] == null ? null : List<Contact>.from(json["prospects"].map((x) => Contact.fromJson(x))),
         hotprospects: json["hotprospects"] == null ? null : List<Contact>.from(json["hotprospects"].map((x) => Contact.fromJson(x))),
+        spks: json["spks"] == null ? null : List<Contact>.from(json["spks"].map((x) => Contact.fromJson(x))),
+        deliveries: json["deliveries"] == null ? null : List<Contact>.from(json["deliveries"].map((x) => Contact.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -73,6 +79,8 @@ class Data {
         "contacts": contacts == null ? null : List<dynamic>.from(contacts.map((x) => x.toJson())),
         "prospects": prospects == null ? null : List<dynamic>.from(prospects.map((x) => x.toJson())),
         "hotprospects": hotprospects == null ? null : List<dynamic>.from(hotprospects.map((x) => x.toJson())),
+        "spks": spks == null ? null : List<dynamic>.from(spks.map((x) => x.toJson())),
+        "deliveries": deliveries == null ? null : List<dynamic>.from(deliveries.map((x) => x.toJson())),
     };
 }
 

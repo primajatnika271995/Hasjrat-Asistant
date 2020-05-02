@@ -128,7 +128,7 @@ class _ProspectContactListViewState extends State<ProspectContactListView> {
         elevation: 3,
         titleSpacing: 0,
         title: Text(
-          "Contact",
+          "Data Lead",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -207,6 +207,7 @@ class _ProspectContactListViewState extends State<ProspectContactListView> {
                 return ListView.builder(
                   shrinkWrap: true,
                   controller: _scrollController,
+                  physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return index >= state.leads.length
                         ? BottomLoader()
@@ -273,7 +274,7 @@ class _ProspectContactListViewState extends State<ProspectContactListView> {
                           color: Color(0xFF6991C7),
                           size: 24.0,
                         ),
-                        hintText: "Search",
+                        hintText: "Cari",
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w400,

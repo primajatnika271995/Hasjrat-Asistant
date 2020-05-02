@@ -71,7 +71,7 @@ class _CustomerListViewState extends State<CustomerListView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Customer",
+          "Daftar Pelanggan",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -83,7 +83,6 @@ class _CustomerListViewState extends State<CustomerListView> {
         listener: (context, state) {
           if (state is CustomerLoading) {
             _alphabet = [];
-            log.info("onLoading");
             onLoading(context);
           }
 
@@ -117,16 +116,20 @@ class _CustomerListViewState extends State<CustomerListView> {
                       child: Theme(
                         data: ThemeData(hintColor: Colors.transparent),
                         child: TextFormField(
+                          style: TextStyle(
+                            fontSize: 13,
+                            letterSpacing: 0.7,
+                          ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             enabled: false,
-                            contentPadding: EdgeInsets.only(bottom: 18),
+                            contentPadding: EdgeInsets.only(bottom: 16),
                             suffixIcon: Icon(
                               Icons.search,
                               color: Color(0xFF6991C7),
                               size: 24.0,
                             ),
-                            hintText: "Search",
+                            hintText: "Cari",
                             hintStyle: TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.w400,
@@ -176,7 +179,6 @@ class _CustomerListViewState extends State<CustomerListView> {
                   }
 
                   if (state is CustomerSuccess) {
-                    print("Its OK");
                     state.value.data.forEach((val) {
                       _alphabet.add(val.cardName.substring(0, 1).toUpperCase());
                     });

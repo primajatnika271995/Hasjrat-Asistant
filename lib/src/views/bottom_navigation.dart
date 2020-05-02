@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_bloc.dart';
+import 'package:salles_tools/src/bloc/dashboard_bloc/target_dashboard_bloc.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_bloc.dart';
 import 'package:salles_tools/src/services/dashboard_service.dart';
 import 'package:salles_tools/src/services/sales_month_service.dart';
@@ -25,10 +26,21 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
       child: HomeScreen(),
     ),
     NotificationScreen(),
-    BlocProvider(
-      create: (context) => DashboardBloc(DashboardService()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => TargetDashboardBloc(DashboardService()),
+        ),
+        BlocProvider(
+          create: (context) => DashboardBloc(DashboardService()),
+        ),
+      ],
       child: DashboardScreen(),
     ),
+    // BlocProvider(
+    //   create: (context) => DashboardBloc(DashboardService()),
+    //   child: DashboardScreen(),
+    // ),
     ProfileScreen(),
   ];
 
@@ -68,7 +80,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
                 height: 25,
                 color: HexColor('#C61818'),
               ),
-              title: Text("Home"),
+              title: Text("Beranda"),
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
@@ -81,7 +93,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
                 height: 25,
                 color: HexColor('#C61818'),
               ),
-              title: Text("Notification"),
+              title: Text("Notifikasi"),
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
@@ -91,7 +103,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
               ),
               activeIcon:
                   Image.asset('assets/icons/dashboard_icon.png', height: 25),
-              title: Text("Dashboard"),
+              title: Text("Dasbor"),
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
@@ -104,7 +116,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
                 height: 25,
                 color: HexColor('#C61818'),
               ),
-              title: Text("Profile"),
+              title: Text("Profil"),
             ),
           ],
           currentIndex: _selectedIndex,

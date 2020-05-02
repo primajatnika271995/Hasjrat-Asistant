@@ -56,7 +56,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     "5 Hari",
     "5 Hari",
     "6 Hari",
-    "7 Hari",
+  "7 Hari",
   ];
 
   var customerProspectSourceCtrl = new TextEditingController();

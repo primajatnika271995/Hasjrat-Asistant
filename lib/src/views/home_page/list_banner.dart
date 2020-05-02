@@ -133,7 +133,7 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
                             tag: "promotion-tag${data.id}",
                             child: Image.network(
                                 "${data.url}",
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                                 width: 1000.0,
                             ),
                           ),

@@ -17,6 +17,8 @@ class SharedPreferencesHelper {
   static const String kSalesOutlet = "salesOutlet";
   static const String kSalesOutletId = "salesOutletId";
   static const String kSalesJob = "salesJob";
+  static const String kSalesJoinDate = "salesJoinDate";
+  static const String kSalesStatus = "salesStatus";
 
   static const String kCustomerJSON = "customerList";
   static const String kLeadJSON = "leadList";
@@ -245,6 +247,42 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString(kSalesJob, value);
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the sales Join Date, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getSalesJoinDate() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kSalesJoinDate) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the Join Date
+  /// ----------------------------------------------------------
+  static Future<bool> setSalesJoinDate(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kSalesJoinDate, value);
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the sales Status Sales, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getSalesStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kSalesStatus) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the Status Sales
+  /// ----------------------------------------------------------
+  static Future<bool> setSalesStatus(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kSalesStatus, value);
   }
 
   /// ------------------------------------------------------------

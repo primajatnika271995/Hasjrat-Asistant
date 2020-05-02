@@ -24,11 +24,14 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          descriptionReview(),
-        ],
+      body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            descriptionReview(),
+          ],
+        ),
       ),
     );
   }
@@ -55,6 +58,7 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
                     letterSpacing: 1.0,
                     fontSize: 16,
                   ),
+                  textAlign: TextAlign.justify,
                 ),
         ),
         Padding(
@@ -75,6 +79,7 @@ class _CatalogReviewViewState extends State<CatalogReviewView> {
                     letterSpacing: 0.7,
                     color: Colors.grey,
                   ),
+            textAlign: TextAlign.justify,
                 ),
         )
       ],

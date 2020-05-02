@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:open_file/open_file.dart';
@@ -287,6 +288,19 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   void exportPdf(List<simulation.Result> value) async {
     final pdf = pw.Document();
 
+    ByteData bytes = await rootBundle.load('assets/icons/hasjrat_logo_apps.png');
+    File imgLogo;
+    try {
+      imgLogo = await writeToFile(bytes); // <= returns File
+    } catch(e) {
+      // catch errors here
+    }
+
+    final image = PdfImage.file(
+      pdf.document,
+      bytes: imgLogo.readAsBytesSync(),
+    );
+
     pdf.addPage(pw.MultiPage(
         pageFormat: PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
         crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -327,14 +341,18 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
               child: pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: <pw.Widget>[
-                    pw.Text(' Data Tenor', textScaleFactor: 2),
+                    pw.Text('Data Tenor', textScaleFactor: 2),
+                    pw.Container(
+                      height: 50,
+                      child: pw.Image(image),
+                    ),
                   ]),
             ),
             pw.Paragraph(
                 text: 'Tenor List'
             ),
             pw.ListView.builder(
-                itemBuilder: (pw.Context contex, index) {
+                itemBuilder: (pw.Context context, index) {
                   return pw.Table.fromTextArray(
                     context: context,
                     data: <List<String>>[
@@ -346,6 +364,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 itemCount: value.length
             ),
             pw.Padding(padding: const pw.EdgeInsets.all(10)),
+            pw.Bullet(
+                text: 'harga diatas adalah perkiraan, tidak mengikat sewaktu-waktu dapat berubah.'),
           ];
         }
     ));
@@ -356,6 +376,15 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     file.writeAsBytesSync(pdf.save());
 
     OpenFile.open('${directory.path}/tenor.pdf');
+  }
+
+  Future<File> writeToFile(ByteData data) async {
+    final buffer = data.buffer;
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    var filePath = tempPath + '/file_logo.tmp'; // file_01.tmp is dump file, can be anything
+    return new File(filePath).writeAsBytes(
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
   }
 
   Widget _createEventControlBuilder(BuildContext context, {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
@@ -379,17 +408,17 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor('#C61818'),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
           "Calculator",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             letterSpacing: 0.5,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: BlocListener<FinanceBloc, FinanceState>(
         listener: (context, state) {
@@ -506,8 +535,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           children: <Widget>[
             Theme(
               data: ThemeData(
-                primarySwatch: Colors.orange,
-                canvasColor: Colors.white,
+                canvasColor: HexColor('#C61818'),
               ),
               child: Stepper(
                 type: StepperType.horizontal,
@@ -533,8 +561,9 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 steps: [
                   Step(
                     isActive: _currentStep == 0 ? true : false,
-                    title: Text("Kendaraan"),
-                    state: StepState.editing,
+                    title: Text("Kendaraan",
+                      style: TextStyle(color: Colors.white),
+                    ),
                     content: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -573,13 +602,16 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                   ),
                   Step(
                     isActive: _currentStep == 1 ? true : false,
-                    title: Text("Kategori"),
-                    state: StepState.editing,
+                    title: Text("Kategori",
+                      style: TextStyle(color: Colors.white),
+                    ),
                     content: stepCategory(),
                   ),
                   Step(
                     isActive: _currentStep == 2 ? true : false,
-                    title: Text("Tenor"),
+                    title: Text("Tenor",
+                      style: TextStyle(color: Colors.white),
+                    ),
                     state: StepState.complete,
                     content: stepTenor(),
                   ),
@@ -597,7 +629,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                         : FlatButton(
                             onPressed: () => _onStepCancel(),
                             child: Text(
-                              'BACK',
+                              'Kembali',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.blueAccent,
@@ -609,7 +641,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                         : FlatButton(
                             onPressed: () => _onStepContinue(),
                             child: Text(
-                              'NEXT',
+                              'Selanjutnya',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.blueAccent,
@@ -654,10 +686,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.local_convenience_store,
                         color: Color(0xFF6991C7),
@@ -709,10 +745,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.location_on,
                         color: Color(0xFF6991C7),
@@ -764,10 +804,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.merge_type,
                         color: Color(0xFF6991C7),
@@ -874,10 +918,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.group_work,
                         color: Color(0xFF6991C7),
@@ -929,10 +977,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       enabled: false,
-                      contentPadding: EdgeInsets.only(bottom: 18),
+                      contentPadding: EdgeInsets.only(bottom: 16),
                       prefixIcon: Icon(
                         Icons.directions_car,
                         color: Color(0xFF6991C7),
@@ -1152,8 +1204,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                             elevation: 1,
                             child: Text(
                               priceSelection == index
-                                  ? "Selected"
-                                  : "Take it",
+                                  ? "Dipilih"
+                                  : "Pilih",
                               style: TextStyle(
                                 color: Colors.white,
                               ),
@@ -1229,7 +1281,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                           _onCalculateSimulator();
                         },
                         child: Text(
-                          "Calculate",
+                          "Hitung",
                           style: TextStyle(
                               color: Colors.white),
                         ),
@@ -1329,11 +1381,22 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                     itemCount: state.value.result.length,
                   ),
                   Center(
-                    child: IconButton(
+                    child: RaisedButton.icon(
                       onPressed: () {
                         exportPdf(state.value.result);
                       },
-                      icon: Icon(Icons.file_download),
+                      icon: Icon(Icons.file_download,
+                        color: Colors.white,
+                      ),
+                      color: HexColor('#C61818'),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      label: Text("Export PDF",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(

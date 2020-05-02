@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/spk_bloc/spk_bloc.dart';
 import 'package:salles_tools/src/bloc/spk_bloc/spk_event.dart';
 import 'package:salles_tools/src/bloc/spk_bloc/spk_state.dart';
@@ -11,6 +12,8 @@ import 'package:salles_tools/src/services/spk_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/bottom_loader_content.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
+import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:salles_tools/src/views/prospect_customer_page/details_spk.dart';
 
 class SpkListView extends StatefulWidget {
@@ -25,7 +28,37 @@ class _SpkListViewState extends State<SpkListView> {
   var searchCtrl = new TextEditingController();
   var _currentSelectFilter = "by Name";
 
+  var dateSelectedCtrl = new TextEditingController();
+  var beforeDateDec;
+  var afterDateDec;
+
+  final dateFormater = DateFormat("yyyy-MM-dd");
+
   Completer<void> _refreshCompleter;
+
+  Future<Null> _selectedFilterDecDate(BuildContext context) async {
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: new DateTime.now(),
+      initialLastDate: (new DateTime.now()).add(new Duration(days: 14)),
+      firstDate: DateTime(1900, 1),
+      lastDate: DateTime(2100),
+    );
+
+    if (picked != null) {
+      log.info(picked);
+      dateSelectedCtrl.value = TextEditingValue(
+          text:
+          '${dateFormater.format(picked[0]).toString()} s.d ${dateFormater.format(picked[1]).toString()}');
+
+      setState(() {
+        beforeDateDec = dateFormater.format(picked[0]).toString();
+        afterDateDec = dateFormater.format(picked[1]).toString();
+      });
+
+      onFilterSpk();
+    }
+  }
 
   void _onViewDetailsSpk(Datum value) {
     Navigator.of(context).push(
@@ -50,6 +83,8 @@ class _SpkListViewState extends State<SpkListView> {
         prospectBloc.add(FetchSpkFilter(SpkFilterPost(
           cardCode: "",
           cardName: searchCtrl.text,
+          decEndDate: afterDateDec,
+          decStartDate: beforeDateDec,
         )));
         break;
       case "by Code":
@@ -58,6 +93,8 @@ class _SpkListViewState extends State<SpkListView> {
         prospectBloc.add(FetchSpkFilter(SpkFilterPost(
           cardCode: searchCtrl.text,
           cardName: "",
+          decEndDate: afterDateDec,
+          decStartDate: beforeDateDec,
         )));
         break;
     }
@@ -75,6 +112,8 @@ class _SpkListViewState extends State<SpkListView> {
         endDate: "",
         spkBlanko: "",
         spkNum: "",
+        decEndDate: "",
+        decStartDate: "",
         startDate: "",
       )));
     }
@@ -103,15 +142,20 @@ class _SpkListViewState extends State<SpkListView> {
         elevation: 3,
         titleSpacing: 0,
         title: Text(
-          "SPK",
+          "Data SPK",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(45),
-          child: searchContent(),
+          preferredSize: Size.fromHeight(80),
+          child: Column(
+            children: <Widget>[
+              searchDecDateContent(),
+              searchContent(),
+            ],
+          ),
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
@@ -211,6 +255,65 @@ class _SpkListViewState extends State<SpkListView> {
     );
   }
 
+  Widget searchDecDateContent() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _selectedFilterDecDate(context);
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 16),
+                      prefixIcon: Icon(
+                        Icons.date_range,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Cari berdasarkan tanggal Penyerahan",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: dateSelectedCtrl,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget searchContent() {
     return Row(
       children: <Widget>[
@@ -237,16 +340,20 @@ class _SpkListViewState extends State<SpkListView> {
                   child: Theme(
                     data: ThemeData(hintColor: Colors.transparent),
                     child: TextFormField(
+                      style: TextStyle(
+                        fontSize: 13,
+                        letterSpacing: 0.7,
+                      ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         enabled: false,
-                        contentPadding: EdgeInsets.only(bottom: 18),
+                        contentPadding: EdgeInsets.only(bottom: 16),
                         suffixIcon: Icon(
                           Icons.search,
                           color: Color(0xFF6991C7),
                           size: 24.0,
                         ),
-                        hintText: "Search",
+                        hintText: "Cari",
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w400,

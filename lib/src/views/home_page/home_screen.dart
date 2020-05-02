@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/activity_report_bloc/activity_report_bloc.dart';
 import 'package:salles_tools/src/bloc/catalog_bloc/catalog_bloc.dart';
@@ -54,17 +55,17 @@ class _HomeScreenState extends State<HomeScreen> {
   var _branchId;
 
   List<String> _menuName = [
-    "Costumer",
-    "Prospect Costumer",
-    "Catalog",
-    "Calculator",
-    "Reminder",
-    "Book\nService",
-    "Book\nTest Drive",
-    "Knowledge\nBase",
-    "Activity\nReport",
-    "Price List",
-    "Promotion",
+    "Pelanggan",
+    "Prospek Pelanggan",
+    "Katalog",
+    "Kalkulator",
+    "Pengingat\nJadwal",
+    "Booking\nService",
+    "Booking\nTest Drive",
+    "Q&A",
+    "Laporan\nAktifitas",
+    "Harga\nKendaraan",
+    "Promosi",
   ];
 
   List<String> _moreMenuName = [
@@ -346,12 +347,13 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         child: CustomScrollView(
+          physics: BouncingScrollPhysics(),
           slivers: <Widget>[
             sliverAppBar(),
             sliverGridMenu(),
-//            SliverToBoxAdapter(
-//              child: Divider(),
-//            ),
+            SliverToBoxAdapter(
+              child: Divider(),
+            ),
             SliverToBoxAdapter(
               child: Container(
                 margin: EdgeInsets.only(left: 8, right: 8, bottom: 5),
@@ -359,7 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Banner Promotion",
+                      "Promo",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,

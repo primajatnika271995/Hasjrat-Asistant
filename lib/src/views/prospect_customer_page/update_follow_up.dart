@@ -26,6 +26,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
   var prospectFollowUpIdCtrl = new TextEditingController();
   var prospectIdCtrl = new TextEditingController();
   var prospectRemarkCtrl = new TextEditingController();
+  var followUpCtrl = new TextEditingController();
 
   var prospectClassificationNameCtrl = new TextEditingController();
   var currentSelectClassification;
@@ -37,10 +38,37 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
   var followUpMethodeId;
   List<SelectorFollowupMethode> followupMethodeList = [];
 
+  var _currentSelectFollowUp = "7";
+  List<String> followUpList = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "5",
+    "6",
+    "7",
+  ];
+
+  void _showListFollowUp() {
+    SelectDialog.showModal<String>(
+      context,
+      label: "Follow Up Selanjutnya",
+      selectedValue: _currentSelectFollowUp,
+      items: followUpList,
+      onChange: (String selected) {
+        setState(() {
+          _currentSelectFollowUp = selected;
+          followUpCtrl.text = selected;
+        });
+      },
+    );
+  }
+
   void _showListClassification() {
     SelectDialog.showModal<SelectorClassification>(
       context,
-      label: "Classification",
+      label: "Klasifikasi",
       selectedValue: currentSelectClassification,
       items: classificationList,
       onChange: (SelectorClassification selected) {
@@ -56,7 +84,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
   void _showListFollowUpMethode() {
     SelectDialog.showModal<SelectorFollowupMethode>(
       context,
-      label: "Follow-Up Methode",
+      label: "Metode Follow Up",
       selectedValue: currentSelectFollowUpMethode,
       items: followupMethodeList,
       onChange: (SelectorFollowupMethode selected) {
@@ -74,11 +102,11 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
     final followUpBloc = BlocProvider.of<FollowupBloc>(context);
     followUpBloc.add(UpdateFollowup(FollowUpParams(
       lineNum: 0,
-      followUpNextDay: 5,
+      followUpNextDay: int.parse(_currentSelectFollowUp),
       prospectClassificationId: classificationId,
-      prospectFollowUpId: widget.value.followups[0].prospectFollowupId,
+      prospectFollowUpId: widget.value.followups.last.prospectFollowupId,
       prospectFollowUpMethodeId: followUpMethodeId,
-      prospectId: widget.value.followups[0].prospectId,
+      prospectId: widget.value.followups.last.prospectId,
       prospectRemarks: prospectRemarkCtrl.text
     )));
   }
@@ -87,9 +115,10 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
   void initState() {
     // TODO: implement initState
 
-    prospectFollowUpIdCtrl.value = TextEditingValue(text: '${widget.value.followups[0].prospectFollowupId.toString()}');
-    prospectIdCtrl.value = TextEditingValue(text: '${widget.value.followups[0].prospectId.toString()}');
-    prospectRemarkCtrl.value = TextEditingValue(text: '${widget.value.followups[0].prospectRemarks}');
+    prospectFollowUpIdCtrl.value = TextEditingValue(text: '${widget.value.followups.last.prospectFollowupId.toString()}');
+    prospectIdCtrl.value = TextEditingValue(text: '${widget.value.followups.last.prospectId.toString()}');
+    prospectRemarkCtrl.value = TextEditingValue(text: '${widget.value.followups.last.prospectRemarks}');
+    followUpCtrl.value = TextEditingValue(text: '7');
 
     // ignore: close_sinks
     final followUpBloc = BlocProvider.of<FollowupBloc>(context);
@@ -107,7 +136,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Update Follow-Up",
+          "Tambah Follow-Up",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -152,8 +181,8 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
             Alert(
                 context: context,
                 type: AlertType.success,
-                title: 'Success',
-                desc: "Updated Follow-UP!",
+                title: 'Berhasil Menambahkan Follow Up',
+                desc: 'Data Follow Up telah ditambahkan',
                 style: AlertStyle(
                   animationDuration: Duration(milliseconds: 500),
                   overlayColor: Colors.black54,
@@ -180,8 +209,8 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
             Alert(
                 context: context,
                 type: AlertType.error,
-                title: 'Error',
-                desc: "Failed to Update Follow-UP!",
+                title: 'Gagal Menambahkan Follow Up',
+                desc: "Silahkan cek kembali data yang dimasukan.",
                 style: AlertStyle(
                   animationDuration: Duration(milliseconds: 500),
                   overlayColor: Colors.black54,
@@ -207,26 +236,26 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(height: 20),
+//                Text(
+//                  "Id Follow-Up",
+//                  style: TextStyle(
+//                    fontWeight: FontWeight.w700,
+//                    letterSpacing: 1.0,
+//                  ),
+//                ),
+//                formProspectFollowUpId(),
+//                SizedBox(height: 5),
+//                Text(
+//                  "Id Prospect",
+//                  style: TextStyle(
+//                    fontWeight: FontWeight.w700,
+//                    letterSpacing: 1.0,
+//                  ),
+//                ),
+//                formProspectId(),
+//                SizedBox(height: 5),
                 Text(
-                  "Id Follow-Up",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-                formProspectFollowUpId(),
-                SizedBox(height: 5),
-                Text(
-                  "Id Prospect",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-                formProspectId(),
-                SizedBox(height: 5),
-                Text(
-                  "Classification",
+                  "Klasifikasi",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -235,7 +264,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
                 formSelectClassification(),
                 SizedBox(height: 5),
                 Text(
-                  "Follow Up Methode",
+                  "Metode",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -244,7 +273,16 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
                 formSelectFollowupMethode(),
                 SizedBox(height: 5),
                 Text(
-                  "Prospect Remark",
+                  "Berikutnya",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+                formSelectFollowUpNextDay(),
+                SizedBox(height: 5),
+                Text(
+                  "Keterangan",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
@@ -413,7 +451,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   enabled: true,
-                  hintText: 'Silahkan isi Remark',
+                  hintText: 'Silahkan isi Keterangan',
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -471,7 +509,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Pilih Classification",
+                      hintText: "Pilih Klasifikasi",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -479,6 +517,65 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
                       ),
                     ),
                     controller: prospectClassificationNameCtrl,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formSelectFollowUpNextDay() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListFollowUp();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 16),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: "Pilih Berikutnya",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: followUpCtrl,
                   ),
                 ),
               ),
@@ -530,7 +627,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: "Pilih Follow-UP Methode",
+                      hintText: "Pilih Metode",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:salles_tools/src/models/spk_model.dart';
 import 'package:salles_tools/src/utils/currency_format.dart';
 
@@ -11,6 +12,9 @@ class SpkDetailsView extends StatefulWidget {
 }
 
 class _SpkDetailsViewState extends State<SpkDetailsView> {
+  
+  final dateFormat = DateFormat("yyy-MM-dd");
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +24,7 @@ class _SpkDetailsViewState extends State<SpkDetailsView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "SPK Details",
+          "Detail SPK",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -29,14 +33,17 @@ class _SpkDetailsViewState extends State<SpkDetailsView> {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 30,
+              height: 10,
             ),
             spkNum(),
             Divider(),
             spkBlanko(),
+            Divider(),
+            spkDateDec(),
             Divider(),
             spkCardName(),
             Divider(),
@@ -46,8 +53,9 @@ class _SpkDetailsViewState extends State<SpkDetailsView> {
             Divider(),
             spkSalesName(),
             cardModel(),
-            cardCredit(),
+            widget.value.credits != null ? cardCredit() : SizedBox(),
             cardAfi(),
+            SizedBox(height: 10),
           ],
         ),
       ),
@@ -139,6 +147,38 @@ class _SpkDetailsViewState extends State<SpkDetailsView> {
             flex: 6,
             child: Text(
               "${widget.value.cardName}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget spkDateDec() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "Tgl. Pengiriman",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${dateFormat.format(widget.value.decDate)}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,

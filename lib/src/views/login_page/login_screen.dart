@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.of(context).pop();
             Scaffold.of(context).showSnackBar(
               SnackBar(
-                content: Text("Username or Password Incorect!"),
+                content: Text("Error"),
                 backgroundColor: HexColor('#C61818'),
               ),
             );
@@ -89,8 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.of(context).pop();
             Scaffold.of(context).showSnackBar(
               SnackBar(
-                content: Text("${state.error.error}"),
-                backgroundColor: Colors.red,
+                content: Text("${state.error.errorDescription}"),
+                backgroundColor: HexColor('#C61818'),
               ),
             );
           }
