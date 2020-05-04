@@ -119,9 +119,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
           }
 
           if (state is DmsDisposeLoading) {
-            Future.delayed(Duration(seconds: 3), () {
-              Navigator.of(context, rootNavigator: false).pop();
-            });
+            Navigator.of(context, rootNavigator: false).pop();
           }
         },
         child: RefreshIndicator(
@@ -143,9 +141,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
               }
 
               if (state is DmsFailed) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                });
+                Navigator.of(context, rootNavigator: true).pop();
                 return Center(
                   child: Image.asset(
                     "assets/icons/empty_icon.png",
@@ -156,9 +152,7 @@ class _ProspectCustomerListViewState extends State<ProspectCustomerListView> {
               }
 
               if (state is DmsError) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                });
+                Navigator.of(context, rootNavigator: true).pop();
                 return Center(
                   child: Padding(
                     padding: EdgeInsets.only(top: 50),
@@ -392,9 +386,9 @@ class SlidableCustomerView extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 5, bottom: 5),
                       child: Container(
                         height: 18,
-                        width: 50,
+                        width: 80,
                         decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: value.docStatus == "Open" ? Colors.blue : Colors.red,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(

@@ -147,9 +147,7 @@ class _ProspectContactListViewState extends State<ProspectContactListView> {
           }
 
           if (state is LeadDisposeLoading) {
-            Future.delayed(Duration(seconds: 3), () {
-              Navigator.of(context, rootNavigator: false).pop();
-            });
+            Navigator.of(context, rootNavigator: false).pop();
           }
         },
         child: RefreshIndicator(
@@ -171,9 +169,7 @@ class _ProspectContactListViewState extends State<ProspectContactListView> {
               }
 
               if (state is LeadFailed) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                });
+                Navigator.of(context, rootNavigator: true).pop();
                 return Center(
                   child: Image.asset(
                     "assets/icons/empty_icon.png",
@@ -184,9 +180,7 @@ class _ProspectContactListViewState extends State<ProspectContactListView> {
               }
 
               if (state is LeadError) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                });
+                Navigator.of(context, rootNavigator: true).pop();
                 return Center(
                   child: Padding(
                     padding: EdgeInsets.only(top: 50),

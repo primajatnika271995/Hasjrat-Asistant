@@ -87,9 +87,7 @@ class _CustomerListViewState extends State<CustomerListView> {
           }
 
           if (state is CustomerDisposeLoading) {
-            Future.delayed(Duration(seconds: 3), () {
-              Navigator.of(context, rootNavigator: false).pop();
-            });
+            Navigator.of(context, rootNavigator: false).pop();
           }
         },
         child: SingleChildScrollView(

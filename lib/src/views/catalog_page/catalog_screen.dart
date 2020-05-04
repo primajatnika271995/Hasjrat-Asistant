@@ -159,9 +159,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
         child: BlocBuilder<CatalogBloc, CatalogState>(
           builder: (context, state) {
             if (state is CatalogByCategoryFailed) {
-              Future.delayed(Duration(seconds: 3), () {
-                Navigator.of(context, rootNavigator: true).pop();
-              });
+              Navigator.of(context, rootNavigator: true).pop();
               return Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 100),

@@ -412,7 +412,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         elevation: 0,
         titleSpacing: 0,
         title: Text(
-          "Calculator",
+          "Kalkulator",
           style: TextStyle(
             color: Colors.white,
             letterSpacing: 0.5,

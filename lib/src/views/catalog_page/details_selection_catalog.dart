@@ -138,17 +138,13 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
               onLoading(context);
             }
             if (state is CatalogDisposeLoading) {
-              Future.delayed(Duration(seconds: 3), () {
-                Navigator.of(context, rootNavigator: false).pop();
-              });
+              Navigator.of(context, rootNavigator: false).pop();
             }
           },
           child: BlocBuilder<CatalogBloc, CatalogState>(
             builder: (context, state) {
               if (state is DetailCatalogFailed) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                });
+                Navigator.of(context, rootNavigator: true).pop();
                 return Center(
                   child: Padding(
                     padding: EdgeInsets.only(top: 50),
