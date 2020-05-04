@@ -94,7 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       right: 15,
                     ),
                     child: Text(
-                      "Dashboard",
+                      "Dasbor",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 22,
@@ -106,7 +106,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, top: 20),
                     child: Text(
-                      "Total Profit Amount",
+                      "Jumlah Keuntungan",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,

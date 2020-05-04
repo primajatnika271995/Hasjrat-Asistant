@@ -35,7 +35,7 @@ class _BarChartViewState extends State<BarChartView> {
           overflowMode: LegendItemOverflowMode.wrap,
         ),
         title: ChartTitle(
-          text: 'Prospect Customer',
+          text: 'Prospek Pelanggan',
           alignment: ChartAlignment.near,
           textStyle: ChartTextStyle(
             fontWeight: FontWeight.w700,
@@ -54,8 +54,7 @@ class _BarChartViewState extends State<BarChartView> {
         tooltipBehavior: TooltipBehavior(
           enable: true,
           canShowMarker: false,
-          format:
-              'point.x : point.y',
+          format: 'point.x : point.y',
           header: '',
         ),
       ),
@@ -71,6 +70,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[0].total,
         yValue3: value.hotprospects[0].total,
         yValue4: value.spks[0].total,
+        yValue6: value.decs[0].total,
         yValue5: value.deliveries[0].total,
       ),
       ChartSampleData(
@@ -79,6 +79,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[1].total,
         yValue3: value.hotprospects[1].total,
         yValue4: value.spks[1].total,
+        yValue6: value.decs[1].total,
         yValue5: value.deliveries[1].total,
       ),
       ChartSampleData(
@@ -87,6 +88,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[2].total,
         yValue3: value.hotprospects[2].total,
         yValue4: value.spks[2].total,
+        yValue6: value.decs[2].total,
         yValue5: value.deliveries[2].total,
       ),
       ChartSampleData(
@@ -95,6 +97,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[3].total,
         yValue3: value.hotprospects[3].total,
         yValue4: value.spks[3].total,
+        yValue6: value.decs[3].total,
         yValue5: value.deliveries[3].total,
       ),
       ChartSampleData(
@@ -103,6 +106,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[4].total,
         yValue3: value.hotprospects[4].total,
         yValue4: value.spks[4].total,
+        yValue6: value.decs[4].total,
         yValue5: value.deliveries[4].total,
       ),
       ChartSampleData(
@@ -111,6 +115,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[5].total,
         yValue3: value.hotprospects[5].total,
         yValue4: value.spks[5].total,
+        yValue6: value.decs[5].total,
         yValue5: value.deliveries[5].total,
       ),
       ChartSampleData(
@@ -119,6 +124,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[6].total,
         yValue3: value.hotprospects[6].total,
         yValue4: value.spks[6].total,
+        yValue6: value.decs[6].total,
         yValue5: value.deliveries[6].total,
       ),
       ChartSampleData(
@@ -127,6 +133,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[7].total,
         yValue3: value.hotprospects[7].total,
         yValue4: value.spks[7].total,
+        yValue6: value.decs[7].total,
         yValue5: value.deliveries[7].total,
       ),
       ChartSampleData(
@@ -135,6 +142,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[8].total,
         yValue3: value.hotprospects[8].total,
         yValue4: value.spks[8].total,
+        yValue6: value.decs[8].total,
         yValue5: value.deliveries[8].total,
       ),
       ChartSampleData(
@@ -143,6 +151,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[9].total,
         yValue3: value.hotprospects[9].total,
         yValue4: value.spks[9].total,
+        yValue6: value.decs[9].total,
         yValue5: value.deliveries[9].total,
       ),
       ChartSampleData(
@@ -151,6 +160,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[10].total,
         yValue3: value.hotprospects[10].total,
         yValue4: value.spks[10].total,
+        yValue6: value.decs[10].total,
         yValue5: value.deliveries[10].total,
       ),
       ChartSampleData(
@@ -159,6 +169,7 @@ class _BarChartViewState extends State<BarChartView> {
         yValue2: value.prospects[11].total,
         yValue3: value.hotprospects[11].total,
         yValue4: value.spks[11].total,
+        yValue6: value.decs[11].total,
         yValue5: value.deliveries[11].total,
       ),
     ];
@@ -170,7 +181,7 @@ class _BarChartViewState extends State<BarChartView> {
         animationDuration: 0,
         spacing: 0.1,
         legendIconType: LegendIconType.rectangle,
-        legendItemText: 'Contact',
+        legendItemText: 'Kontak',
         dataLabelSettings: DataLabelSettings(
             isVisible: false, labelAlignment: ChartDataLabelAlignment.top),
         dataSource: chartData,
@@ -185,7 +196,7 @@ class _BarChartViewState extends State<BarChartView> {
         spacing: 0.1,
         animationDuration: 0,
         legendIconType: LegendIconType.rectangle,
-        legendItemText: 'Prospect',
+        legendItemText: 'Prospek',
         dataLabelSettings: DataLabelSettings(
             isVisible: false, labelAlignment: ChartDataLabelAlignment.top),
         dataSource: chartData,
@@ -200,7 +211,7 @@ class _BarChartViewState extends State<BarChartView> {
         spacing: 0.1,
         animationDuration: 0,
         legendIconType: LegendIconType.rectangle,
-        legendItemText: 'Hot Prospect',
+        legendItemText: 'Hot Prospek',
         dataLabelSettings: DataLabelSettings(
             isVisible: false, labelAlignment: ChartDataLabelAlignment.top),
         dataSource: chartData,
@@ -215,7 +226,7 @@ class _BarChartViewState extends State<BarChartView> {
         spacing: 0.1,
         animationDuration: 0,
         legendIconType: LegendIconType.rectangle,
-        legendItemText: 'SPKS',
+        legendItemText: 'SPK',
         dataLabelSettings: DataLabelSettings(
             isVisible: false, labelAlignment: ChartDataLabelAlignment.top),
         dataSource: chartData,
@@ -230,7 +241,22 @@ class _BarChartViewState extends State<BarChartView> {
         spacing: 0.1,
         animationDuration: 0,
         legendIconType: LegendIconType.rectangle,
-        legendItemText: 'Deliveries',
+        legendItemText: 'DEC',
+        dataLabelSettings: DataLabelSettings(
+            isVisible: false, labelAlignment: ChartDataLabelAlignment.top),
+        dataSource: chartData,
+        color: Colors.orangeAccent,
+        borderRadius: BorderRadius.circular(5),
+        xValueMapper: (ChartSampleData sales, _) => sales.x,
+        yValueMapper: (ChartSampleData sales, _) => sales.yValue6,
+      ),
+      ColumnSeries<ChartSampleData, String>(
+        enableTooltip: true,
+        width: 0.7,
+        spacing: 0.1,
+        animationDuration: 0,
+        legendIconType: LegendIconType.rectangle,
+        legendItemText: 'DO',
         dataLabelSettings: DataLabelSettings(
             isVisible: false, labelAlignment: ChartDataLabelAlignment.top),
         dataSource: chartData,

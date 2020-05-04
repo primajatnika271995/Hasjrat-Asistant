@@ -10,6 +10,7 @@ class ChartSampleData {
     this.yValue3,
     this.yValue4,
     this.yValue5,
+    this.yValue6,
     this.pointColor,
     this.size,
     this.text,
@@ -22,6 +23,7 @@ class ChartSampleData {
   final num yValue3;
   final num yValue4;
   final num yValue5;
+  final num yValue6;
   final Color pointColor;
   final num size;
   final String text;
