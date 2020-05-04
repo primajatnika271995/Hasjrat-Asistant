@@ -41,7 +41,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   SqliteService _dbHelper = SqliteService();
 
   final dateFormat = DateFormat("dd MMMM yyyy");
-  final timeFormat = DateFormat("h:mm a");
+  final timeFormat = DateFormat("HH:mm");
 
   DateTime _dateTime = DateTime.now();
   TimeOfDay timeOfDay = TimeOfDay.now();
@@ -95,7 +95,8 @@ class _ReminderAddViewState extends State<ReminderAddView> {
     if (picked != null)
       setState(() {
         timeOfDay = picked;
-        timeSelected.value = TextEditingValue(text: timeOfDay.format(context));
+        DateTime date = DateFormat.Hm().parse(timeOfDay.format(context));
+        timeSelected.value = TextEditingValue(text: timeFormat.format(date));
       });
   }
 
