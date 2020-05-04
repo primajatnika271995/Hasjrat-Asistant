@@ -22,6 +22,7 @@ class ServiceStationModel {
   String idDealerLocation;
   dynamic contact;
   String email;
+  String emailKabeng;
   dynamic openTime;
   dynamic closeTime;
 
@@ -39,6 +40,7 @@ class ServiceStationModel {
     this.idDealerLocation,
     this.contact,
     this.email,
+    this.emailKabeng,
     this.openTime,
     this.closeTime,
   });
@@ -57,6 +59,7 @@ class ServiceStationModel {
     idDealerLocation: json["idDealerLocation"] == null ? null : json["idDealerLocation"],
     contact: json["contact"],
     email: json["email"] == null ? null : json["email"],
+    emailKabeng: json["emailKabeng"] == null ? null : json["emailKabeng"],
     openTime: json["openTime"],
     closeTime: json["closeTime"],
   );
@@ -75,6 +78,7 @@ class ServiceStationModel {
     "idDealerLocation": idDealerLocation == null ? null : idDealerLocation,
     "contact": contact,
     "email": email == null ? null : email,
+    "emailKabeng": emailKabeng == null ? null : emailKabeng,
     "openTime": openTime,
     "closeTime": closeTime,
   };

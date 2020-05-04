@@ -310,8 +310,9 @@ class SelectorStation {
   String name;
   String address;
   String email;
+  String emailKabeng;
 
-  SelectorStation({this.name, this.address, this.email});
+  SelectorStation({this.name, this.address, this.email, this.emailKabeng});
 
   @override
   String toString() => name;
@@ -322,7 +323,7 @@ class SelectorStation {
 
   @override
   // TODO: implement hashCode
-  int get hashCode => name.hashCode^address.hashCode^email.hashCode;
+  int get hashCode => name.hashCode^address.hashCode^email.hashCode^emailKabeng.hashCode;
 }
 
 class SelectorSpkNumber {

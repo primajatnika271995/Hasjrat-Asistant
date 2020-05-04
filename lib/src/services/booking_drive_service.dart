@@ -116,7 +116,8 @@ class BookingDriveService {
         "dealerName": value.dealerName,
         "periodService": value.periodService,
         "serviceCategoryName": value.serviceCategoryName,
-        "vehicleNumber": value.vehicleNumber
+        "vehicleNumber": value.vehicleNumber,
+        "emailKabeng": value.kabengEmail,
       },
     );
     log.info(response.statusCode);
@@ -145,8 +146,9 @@ class BookingServicePost {
   String periodService;
   String serviceCategoryName;
   String vehicleNumber;
+  String kabengEmail;
 
-  BookingServicePost({this.salesName, this.salesEmail, this.bookingDate, this.bookingTime, this.bookingTypeName, this.customerEmail, this.customerName, this.customerPhone, this.dealerAddress, this.dealerName, this.dealerEmail, this.periodService, this.serviceCategoryName, this.vehicleNumber});
+  BookingServicePost({this.salesName, this.salesEmail, this.bookingDate, this.bookingTime, this.bookingTypeName, this.customerEmail, this.customerName, this.customerPhone, this.dealerAddress, this.dealerName, this.dealerEmail, this.periodService, this.serviceCategoryName, this.vehicleNumber, this.kabengEmail});
 }
 
 class BookingTestDrivePost {

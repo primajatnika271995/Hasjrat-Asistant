@@ -190,7 +190,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
   void _showListStation() {
     SelectDialog.showModal<SelectorStation>(
       context,
-      label: "Bengkel",
+      label: "List Bengkel",
       selectedValue: currentSelectStation,
       items: _stationList,
       onChange: (SelectorStation selected) {
@@ -199,6 +199,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
           dealerNameCtrl.text = selected.name;
           dealerAddressCtrl.text = selected.address;
           dealerEmailCtrl.text = selected.email;
+          kepalaBengkelEmailCtrl.text = selected.emailKabeng;
         });
       },
     );
@@ -262,7 +263,8 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
         serviceCategoryName: currentSelectBookCategory,
         vehicleNumber: vehicleNumberCtrl.text,
         salesName: salesName,
-        salesEmail: salesEmailCtrl.text
+        salesEmail: salesEmailCtrl.text,
+        kabengEmail: kepalaBengkelEmailCtrl.text
       ),
     ));
   }
@@ -324,7 +326,11 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
           if (state is StationListSuccess) {
             state.value.forEach((f) {
               _stationList.add(SelectorStation(
-                  name: f.name, address: f.address, email: f.email));
+                name: f.name,
+                address: f.address,
+                email: f.email,
+                emailKabeng: f.emailKabeng,
+              ));
             });
           }
 
