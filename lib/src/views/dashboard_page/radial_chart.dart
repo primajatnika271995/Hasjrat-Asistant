@@ -19,14 +19,14 @@ class _RadialChartViewState extends State<RadialChartView> {
     var percentTotalSold = (data.totalSoldCar / data.targetSoldCar) * 100;
     final List<ChartSampleData> chartData = <ChartSampleData>[
       ChartSampleData(
-        x: 'Total Sold Car \n ${data.totalSoldCar} Unit',
+        x: 'Terjual ${data.totalSoldCar.toStringAsFixed(0)} Unit',
         y: percentTotalSold.toDouble(),
-        text: 'Total Sold Car',
+        text: 'Terjual',
         xValue: null,
         pointColor: Colors.yellowAccent,
       ),
       ChartSampleData(
-        x: 'Target Sales \n ${data.targetSoldCar} Unit',
+        x: 'Target Penjualan ${data.targetSoldCar.toStringAsFixed(0)} Unit',
         y: 100,
         text: 'Target',
         xValue: null,
