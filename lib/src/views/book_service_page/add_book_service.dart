@@ -28,6 +28,10 @@ class BookServiceAddView extends StatefulWidget {
 class _BookServiceAddViewState extends State<BookServiceAddView> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  int _currentStep = 0;
+  VoidCallback _onStepContinue;
+  VoidCallback _onStepCancel;
+
   final dateFormat = DateFormat("yyyy-MM-dd");
   final timeFormat = DateFormat("Hms");
 
@@ -41,6 +45,8 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
   var dealerNameCtrl = new TextEditingController();
   var dealerAddressCtrl = new TextEditingController();
   var dealerEmailCtrl = new TextEditingController();
+  var salesEmailCtrl = new TextEditingController();
+  var kepalaBengkelEmailCtrl = new TextEditingController();
   var dateSelected = new TextEditingController();
   var timeSelected = new TextEditingController();
   var servicePeriodeTypeCtrl = new TextEditingController();
@@ -256,6 +262,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
         serviceCategoryName: currentSelectBookCategory,
         vehicleNumber: vehicleNumberCtrl.text,
         salesName: salesName,
+        salesEmail: salesEmailCtrl.text
       ),
     ));
   }
@@ -279,23 +286,30 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
     super.initState();
   }
 
+  Widget _createEventControlBuilder(BuildContext context,
+      {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
+    _onStepContinue = onStepContinue;
+    _onStepCancel = onStepCancel;
+    return SizedBox.shrink();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
+        backgroundColor: HexColor("#C61818"),
+        elevation: 0,
         titleSpacing: 0,
         title: Text(
           "Tambah Booking Service",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             letterSpacing: 0.5,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: BlocListener<BookingDriveBloc, BookingDriveState>(
         listener: (context, state) {
@@ -366,216 +380,302 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 ]).show();
           }
         },
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Nama Pelanggan (*)",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
+        child: Stack(
+          children: <Widget>[
+            Theme(
+              data: ThemeData(
+                canvasColor: HexColor("#C61818"),
               ),
-              formAddCustomer(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Nomor Plat (*)",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-              ),
-              formAddVehicleNumber(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Nomor Telepon Pelanggan (*)",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-              ),
-              formAddContactCustomer(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Email Pelanggan (*)",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-              ),
-              formAddEmailCustomer(),
-              Divider(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                child: Container(
-                  child: DottedBorder(
-                    strokeWidth: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 5),
-                          child: Text(
-                            "Type Service",
-                            style: TextStyle(
-                              letterSpacing: 1.0,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        radioButtonCategory(),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              currentSelectTypeService != "Perbaikan Umum"
-                  ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      "Tipe Service Periode (*)",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      ),
-                    ),
-                  ),
-                  formSelectServicePeriodeType(),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      "Service Periode (*)",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      ),
-                    ),
-                  ),
-                  servicePeriodeTypeCtrl.text ==
-                      "Berdasarkan Waktu (bulan)"
-                      ? sliderPriodeServiceMonth()
-                      : formAddServiceBerkala(),
-                ],
-              )
-                  : SizedBox(),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Kategori Booking (*)",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-              ),
-              formAddBookCategori(),
-              Divider(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Nama Bengkel (*)",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-              ),
-              formAddDealer(),
-              currentSelectStation != null
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Text(
-                            "Alamat Bengkel",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                        formAddDealerAddress(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Text(
-                            "Email Bengkel",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                        formAddDealerMail(),
-                      ],
-                    )
-                  : SizedBox(),
-              Divider(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Tanggal Service (*)",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-              ),
-              formDatePicker(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Waktu Service (*)",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-              ),
-              formTimePicker(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                child: Container(
-                  width: screenWidth(context),
-                  child: RaisedButton(
-                    onPressed: () {
-                      createBokingService();
-                    },
-                    child: Text(
-                      "Create Booking",
+              child: Stepper(
+                type: StepperType.horizontal,
+                currentStep: _currentStep,
+                onStepContinue: () {
+                  if (_currentStep >= 2) return;
+                  setState(() {
+                    _currentStep += 1;
+                  });
+                },
+                onStepCancel: () {
+                  if (_currentStep <= 0) return;
+                  setState(() {
+                    _currentStep -= 1;
+                  });
+                },
+                onStepTapped: (int index) {
+                  setState(() {
+                    _currentStep = index;
+                  });
+                },
+                controlsBuilder: _createEventControlBuilder,
+                steps: [
+                  Step(
+                    title: Text(
+                      "Pelanggan",
                       style: TextStyle(color: Colors.white),
                     ),
-                    color: HexColor('#C61818'),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                    isActive: _currentStep == 0 ? true : false,
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Nama Pelanggan (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        formAddCustomer(),
+                        Text(
+                          "Nomor Plat (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        formAddVehicleNumber(),
+                        Text(
+                          "Nomor Telepon Pelanggan (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        formAddContactCustomer(),
+                        Text(
+                          "Email Pelanggan (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        formAddEmailCustomer(),
+                        Text(
+                          "Tanggal Service (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        formDatePicker(),
+                        Text(
+                          "Waktu Service (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        formTimePicker(),
+                        SizedBox(
+                          height: 40,
+                        ),
+                      ],
                     ),
                   ),
+                  Step(
+                    title: Text(
+                      "Service",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    isActive: _currentStep == 1 ? true : false,
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Pilih Tipe Service (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        SizedBox(height: 15),
+                        Container(
+                          child: DottedBorder(
+                            strokeWidth: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 5),
+                                  child: Text(
+                                    "Type Service",
+                                    style: TextStyle(
+                                      letterSpacing: 1.0,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                                radioButtonCategory(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        currentSelectTypeService != "Perbaikan Umum"
+                            ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 10),
+                            Text(
+                              "Tipe Service Periode (*)",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                            formSelectServicePeriodeType(),
+                            SizedBox(height: 10),
+                            Text(
+                              "Service Periode (*)",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                            servicePeriodeTypeCtrl.text ==
+                                "Berdasarkan Waktu (bulan)"
+                                ? sliderPriodeServiceMonth()
+                                : formAddServiceBerkala(),
+                          ],
+                        )
+                            : SizedBox(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Kategori Booking (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        formAddBookCategori(),
+                        SizedBox(
+                          height: 40,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Step(
+                    title: Text(
+                      "Bengkel",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    isActive: _currentStep == 2 ? true : false,
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Nama Bengkel (*)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        formAddDealer(),
+                        currentSelectStation != null
+                            ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Alamat Bengkel",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                            formAddDealerAddress(),
+                            Text(
+                              "Email Bengkel",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                            formAddDealerMail(),
+                            Text(
+                              "Email Sales",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                            formAddSalesEmail(),
+                            Text(
+                              "Email Ka. Bengkel",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                            formAddKepalaBengkel(),
+                          ],
+                        )
+                            : SizedBox(),
+                        Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                          child: Container(
+                            width: screenWidth(context),
+                            child: RaisedButton(
+                              onPressed: () {
+                                createBokingService();
+                              },
+                              child: Text(
+                                "Create Booking",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: HexColor('#C61818'),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: BottomAppBar(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    _currentStep == 0
+                        ? SizedBox()
+                        : FlatButton(
+                      onPressed: () => _onStepCancel(),
+                      child: Text(
+                        'Kembali',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ),
+                    _currentStep == 2
+                        ? SizedBox()
+                        : FlatButton(
+                      onPressed: () => _onStepContinue(),
+                      child: Text(
+                        'Selanjutnya',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -583,7 +683,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formAddCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
@@ -637,7 +737,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formAddVehicleNumber() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
@@ -691,7 +791,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formAddContactCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
@@ -746,7 +846,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formAddEmailCustomer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
@@ -877,7 +977,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formAddBookCategori() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
@@ -936,7 +1036,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formSelectServicePeriodeType() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
@@ -995,7 +1095,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formAddDealer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
@@ -1057,7 +1157,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formAddDealerAddress() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -1108,7 +1208,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formAddDealerMail() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
@@ -1157,9 +1257,109 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
     );
   }
 
+  Widget formAddSalesEmail() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 16),
+                  prefixIcon: Icon(
+                    Icons.alternate_email,
+                    color: Color(0xFF6991C7),
+                    size: 24.0,
+                  ),
+                  hintText: "Alamat Email Sales",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: salesEmailCtrl,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formAddKepalaBengkel() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 16),
+                  prefixIcon: Icon(
+                    Icons.alternate_email,
+                    color: Color(0xFF6991C7),
+                    size: 24.0,
+                  ),
+                  hintText: "Alamat Email Ka.Bengkel",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13,
+                  ),
+                ),
+                controller: kepalaBengkelEmailCtrl,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget formDatePicker() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
@@ -1226,7 +1426,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formTimePicker() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
@@ -1293,7 +1493,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
   Widget formAddServiceBerkala() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(
