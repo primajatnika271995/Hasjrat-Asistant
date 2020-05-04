@@ -29,7 +29,7 @@ dependencies:
 
   # A powerful Http client for Dart, which supports Interceptors, FormData, Request Cancellation,
   # File Downloading, Timeout etc.
-  dio: ^3.0.7
+  dio: ^3.0.9
 
   # Package designed to select an item from a list, with the option to filter
   # and even search the items online.
