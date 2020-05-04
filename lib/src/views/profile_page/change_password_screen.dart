@@ -19,6 +19,7 @@ class ChangePasswordView extends StatefulWidget {
 }
 
 class _ChangePasswordViewState extends State<ChangePasswordView> with TickerProviderStateMixin {
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var passwordOldCtrl = new TextEditingController();
   var passwordNewCtrl = new TextEditingController();
@@ -57,10 +58,21 @@ class _ChangePasswordViewState extends State<ChangePasswordView> with TickerProv
 
   void getPreferences() async {
     username = await SharedPreferencesHelper.getUsername();
+    passwordOldCtrl.text = username;
     setState(() {});
   }
 
   void _onChangePassword(){
+    if (!_allValid()) {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text("Harap Validasi Password Baru"),
+          backgroundColor: HexColor('#C61818'),
+        ),
+      );
+      return;
+    }
+
     if (_allValid()) {
       // ignore: close_sinks
       final changePasswordBloc = BlocProvider.of<LoginBloc>(context);
@@ -105,6 +117,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> with TickerProv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -174,10 +187,9 @@ class _ChangePasswordViewState extends State<ChangePasswordView> with TickerProv
                   fontSize: 13,
                   letterSpacing: 0.7,
                 ),
-                obscureText: true,
                 decoration: InputDecoration(
-                  labelText: "Password Lama",
-                  hintText: "Masukan Password Lama",
+                  labelText: "Username",
+                  hintText: "Masukan Username anda",
                 ),
                 controller: passwordOldCtrl,
               ),
