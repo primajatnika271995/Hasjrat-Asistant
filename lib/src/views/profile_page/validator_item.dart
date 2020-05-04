@@ -32,7 +32,6 @@ class _ValidationItemState extends State<ValidationItem>
   @override
   void initState() {
     super.initState();
-    debugPrint("Init State");
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 150),

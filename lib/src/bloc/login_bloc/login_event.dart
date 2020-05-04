@@ -18,4 +18,15 @@ class FetchLogin extends LoginEvent {
 
 }
 
+class ChangePassword extends LoginEvent {
+  final password;
+  final username;
+
+  ChangePassword(this.password, this.username);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [password, username];
+}
+
 class ResetLogin extends LoginEvent {}

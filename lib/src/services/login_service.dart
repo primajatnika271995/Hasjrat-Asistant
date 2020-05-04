@@ -4,15 +4,16 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
+import 'package:salles_tools/src/models/changePasswordModel.dart';
 import 'package:salles_tools/src/models/employee_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
-import 'package:salles_tools/src/models/error_token_expire_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
 class LoginService {
   final Dio _dio = new Dio();
+
   final clientId = 'sales-tools-mobile';
   final clientSecret = '123456';
 
@@ -31,14 +32,12 @@ class LoginService {
     };
 
     try {
-      final response = await _dio.post(
-        UriApi.loginUri,
+      final response = await _dio.post(UriApi.loginUri,
         data: FormData.fromMap(params),
         options: Options(
-          headers: {
-            'Authorization':
-            'Basic ${base64Encode(utf8.encode('$clientId:$clientSecret'))}'
-          },
+            headers: {
+              'Authorization': 'Basic ${base64Encode(utf8.encode('$clientId:$clientSecret'))}'
+            }
         ),
       );
       log.info(response.statusCode);
@@ -47,9 +46,9 @@ class LoginService {
       }
     } on DioError catch (error) {
       log.warning("Login Error Status: ${error.response.statusCode}");
-
+      log.warning(error.response.data);
       if (error.response.statusCode == 401) {
-        return compute(errorModelFromJson, json.encode(error.response.data));
+        return compute(authenticationModelFromJson, json.encode(error.response.data));
       } else if (error.response.statusCode == 502) {
         return compute(errorModelFromJson, json.encode(error.response.data));
       } else if (error.response.statusCode == 400) {
@@ -90,6 +89,29 @@ class LoginService {
 
       log.info(response.statusCode);
       return compute(employeeModelFromJson, json.encode(response.data));
+
+    } catch (error) {
+      log.warning("Err : ${error.toString()}");
+    }
+    return null;
+  }
+
+  Future changePassword(String username, String password) async {
+    try {
+      final response = await _dio.post(UriApi.changePasswordUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        data: {
+          "password": password,
+          "username": username
+        },
+      );
+
+      log.info(response.statusCode);
+      return compute(changePasswordModelFromJson, json.encode(response.data));
 
     } catch (error) {
       log.warning("Err : ${error.toString()}");

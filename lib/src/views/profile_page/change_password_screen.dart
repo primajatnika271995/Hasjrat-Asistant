@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
+import 'package:salles_tools/src/bloc/login_bloc/login_event.dart';
+import 'package:salles_tools/src/bloc/login_bloc/login_state.dart';
+import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
+import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
-import 'dart:math' as math;
+import 'package:salles_tools/src/views/login_page/login_screen.dart';
 import 'package:salles_tools/src/views/profile_page/validator_item.dart';
 
 class ChangePasswordView extends StatefulWidget {
@@ -15,6 +23,8 @@ class _ChangePasswordViewState extends State<ChangePasswordView> with TickerProv
   var passwordOldCtrl = new TextEditingController();
   var passwordNewCtrl = new TextEditingController();
 
+  var username;
+
   AnimationController _controller;
   Animation<double> _fabScale;
 
@@ -23,13 +33,45 @@ class _ChangePasswordViewState extends State<ChangePasswordView> with TickerProv
   bool upperCaseChar = false;
   bool number = false;
 
-  void _onChangePassword() {
-    log.info(_allValid());
+  void _onLogin() async {
+    await SharedPreferencesHelper.setAccessToken(null);
+    await SharedPreferencesHelper.setListCustomer(null);
+    await SharedPreferencesHelper.setListLead(null);
+    Navigator.of(context).pushAndRemoveUntil(
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => BlocProvider<LoginBloc>(
+            create: (context) => LoginBloc(LoginService()),
+            child: LoginScreen(),
+          ),
+          transitionDuration: Duration(milliseconds: 750),
+          transitionsBuilder:
+              (_, Animation<double> animation, __, Widget child) {
+            return Opacity(
+              opacity: animation.value,
+              child: child,
+            );
+          },
+        ),
+            (Route<dynamic> route) => false);
+  }
+
+  void getPreferences() async {
+    username = await SharedPreferencesHelper.getUsername();
+    setState(() {});
+  }
+
+  void _onChangePassword(){
+    if (_allValid()) {
+      // ignore: close_sinks
+      final changePasswordBloc = BlocProvider.of<LoginBloc>(context);
+      changePasswordBloc.add(ChangePassword(passwordNewCtrl.text, username));
+    }
   }
 
   @override
   void initState() {
     // TODO: implement initState
+    getPreferences();
     passwordNewCtrl.addListener(() {
       setState(() {
         eightChars = passwordNewCtrl.text.length >= 8;
@@ -77,64 +119,107 @@ class _ChangePasswordViewState extends State<ChangePasswordView> with TickerProv
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              style: TextStyle(
-                fontSize: 13,
-                letterSpacing: 0.7,
-              ),
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: "Password Lama",
-                hintText: "Masukan Password Lama",
-              ),
-              controller: passwordOldCtrl,
-            ),
-            TextFormField(
-              style: TextStyle(
-                fontSize: 13,
-                letterSpacing: 0.7,
-              ),
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelText: "Password Baru",
-                  hintText: "Masukan Password Baru"
-              ),
-              controller: passwordNewCtrl,
-            ),
-            ValidationItem("* Required 8 characters", eightChars),
-            ValidationItem("* Required 1 special character", specialChar),
-            ValidationItem("* Required 1 upper case", upperCaseChar),
-            ValidationItem("* Required 1 number", number),
-            SizedBox(height: 30),
-            Container(
-              width: screenWidth(context),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: RaisedButton(
-                  onPressed: () {
-                    _onChangePassword();
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Text("Ubah Password",
-                    style: TextStyle(
-                      color: Colors.white,
+      body: BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state is ChangePasswordSuccess) {
+            Alert(
+                context: context,
+                type: AlertType.success,
+                title: 'Berhasil',
+                desc:
+                "Password anda berhasil diganti, silahkan Login ulang!",
+                style: AlertStyle(
+                  animationDuration: Duration(milliseconds: 500),
+                  overlayColor: Colors.black54,
+                  animationType: AnimationType.grow,
+                ),
+                buttons: [
+                  DialogButton(
+                    child: Text(
+                      "OK",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
+                    onPressed: () {
+                      _onLogin();
+                    },
+                    color: HexColor("#C61818"),
                   ),
-                  color: HexColor("#C61818"),
+                ]).show();
+          }
+
+          if (state is ChangePasswordFailed) {
+            Navigator.of(context).pop();
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Change Password Failed"),
+                backgroundColor: HexColor('#C61818'),
+              ),
+            );
+          }
+
+          if (state is LoginLoading) {
+            onLoading(context);
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: "Password Lama",
+                  hintText: "Masukan Password Lama",
+                ),
+                controller: passwordOldCtrl,
+              ),
+              TextFormField(
+                style: TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0.7,
+                ),
+                obscureText: true,
+                decoration: InputDecoration(
+                    labelText: "Password Baru",
+                    hintText: "Masukan Password Baru"
+                ),
+                controller: passwordNewCtrl,
+              ),
+              ValidationItem("* Required 8 characters", eightChars),
+              ValidationItem("* Required 1 special character", specialChar),
+              ValidationItem("* Required 1 upper case", upperCaseChar),
+              ValidationItem("* Required 1 number", number),
+              SizedBox(height: 30),
+              Container(
+                width: screenWidth(context),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: RaisedButton(
+                    onPressed: () {
+                      _onChangePassword();
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Text("Ubah Password",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    color: HexColor("#C61818"),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
