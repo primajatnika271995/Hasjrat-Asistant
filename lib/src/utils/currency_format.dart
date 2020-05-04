@@ -4,7 +4,7 @@ class CurrencyFormat {
   final data = new NumberFormat.currency(
     name: '',
     symbol: '',
-    locale: 'en_US',
+    locale: 'id_ID',
     decimalDigits: 0,
   );
 }

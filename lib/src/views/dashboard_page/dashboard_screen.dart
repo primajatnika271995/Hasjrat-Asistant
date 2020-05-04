@@ -58,9 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               }
 
               if (state is TargetDashboardDisposeLoading) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(context, rootNavigator: false).pop();
-                });
+                Navigator.of(context, rootNavigator: false).pop();
               }
             },
           ),
@@ -71,9 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               }
 
               if (state is DashboardDisposeLoading) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(context, rootNavigator: false).pop();
-                });
+                Navigator.of(context, rootNavigator: false).pop();
               }
             },
           ),
@@ -132,7 +128,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 10, horizontal: 10),
                                 child: Text(
-                                  "Rp. ${CurrencyFormat().data.format(targetState.value.totalProfitAmount)}",
+                                  "Rp ${CurrencyFormat().data.format(targetState.value.totalProfitAmount)}",
                                   style: TextStyle(
                                     fontSize: 17,
                                     letterSpacing: 1.0,
