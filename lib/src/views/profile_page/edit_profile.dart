@@ -29,6 +29,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
   var branchCtrl = new TextEditingController();
   var outletCtrl = new TextEditingController();
   var sectionCtrl = new TextEditingController();
+  var gradingCtrl = new TextEditingController();
 
   File _imageSelect;
 
@@ -83,6 +84,16 @@ class _ProfileEditViewState extends State<ProfileEditView> {
       var joinDate = await SharedPreferencesHelper.getSalesJoinDate();
       DateTime date = DateTime.parse(joinDate);
 
+      var grading = await SharedPreferencesHelper.getSalesGrading();
+
+      if (grading == "JR") {
+        gradingCtrl.text = "Junior Sales";
+      }
+
+      if (grading == "SR") {
+        gradingCtrl.text = "Senior Sales";
+      }
+
       namaCtrl.text = await SharedPreferencesHelper.getSalesName();
       nikCtrl.text = await SharedPreferencesHelper.getSalesNIK();
       tglLahirCtrl.text = await SharedPreferencesHelper.getSalesBirthday();
@@ -120,12 +131,15 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             SizedBox(height: 15),
             namaField(),
             SizedBox(height: 15),
             nikField(),
+            SizedBox(height: 15),
+            gradingField(),
             SizedBox(height: 15),
             joinDateField(),
             SizedBox(height: 15),
@@ -244,6 +258,31 @@ class _ProfileEditViewState extends State<ProfileEditView> {
           ),
         ),
         controller: nikCtrl,
+      ),
+    );
+  }
+
+  Widget gradingField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextField(
+        style: TextStyle(
+          fontWeight: FontWeight.w700,
+        ),
+        cursorColor: HexColor('#C61818'),
+        decoration: InputDecoration(
+          labelText: 'Grading',
+          contentPadding: EdgeInsets.only(bottom: 1),
+          labelStyle: TextStyle(
+            color: HexColor('#C61818'),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: HexColor('#C61818'),
+            ),
+          ),
+        ),
+        controller: gradingCtrl,
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
-import 'package:salles_tools/src/models/changePasswordModel.dart';
+import 'package:salles_tools/src/models/change_password_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 
 class LoginState extends Equatable {
