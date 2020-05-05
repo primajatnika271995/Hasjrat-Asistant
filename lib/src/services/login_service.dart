@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:salles_tools/src/configs/url.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
-import 'package:salles_tools/src/models/changePasswordModel.dart';
+import 'package:salles_tools/src/models/change_password_model.dart';
 import 'package:salles_tools/src/models/employee_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';

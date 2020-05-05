@@ -35,7 +35,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       try {
         EmployeeModel value = await loginService.register(event.value);
 
-        if (value.email != null || value.email.isNotEmpty) {
+        if (value.name != null || value.name.isNotEmpty) {
           yield RegisterSuccess(value);
         } else {
           log.warning("err coy");

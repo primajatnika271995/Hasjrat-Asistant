@@ -10,81 +10,81 @@ String employeeModelToJson(EmployeeModel data) => json.encode(data.toJson());
 
 class EmployeeModel {
   String id;
-  String username;
   String name;
-  String email;
-  bool active;
-  String jenisKelamin;
   String type;
   String educationLevel;
   String eductionMajor;
+  bool resign;
   String joinDate;
+  String mutationDate;
   DateTime birthDate;
+  bool bdeleted;
+  String jenisKelamin;
   Branch branch;
-  Outlet outlet;
+  Branch outlet;
   Branch location;
   Branch job;
   Section section;
-  String ipAddress;
+  String grading;
 
   EmployeeModel({
     this.id,
-    this.username,
     this.name,
-    this.email,
-    this.active,
-    this.jenisKelamin,
     this.type,
     this.educationLevel,
     this.eductionMajor,
+    this.resign,
     this.joinDate,
+    this.mutationDate,
     this.birthDate,
+    this.bdeleted,
+    this.jenisKelamin,
     this.branch,
     this.outlet,
     this.location,
     this.job,
     this.section,
-    this.ipAddress,
+    this.grading,
   });
 
   factory EmployeeModel.fromJson(Map<String, dynamic> json) => EmployeeModel(
     id: json["id"] == null ? null : json["id"],
-    username: json["username"] == null ? null : json["username"],
     name: json["name"] == null ? null : json["name"],
-    email: json["email"] == null ? null : json["email"],
-    active: json["active"] == null ? null : json["active"],
-    jenisKelamin: json["jenisKelamin"] == null ? null : json["jenisKelamin"],
     type: json["type"] == null ? null : json["type"],
     educationLevel: json["educationLevel"] == null ? null : json["educationLevel"],
     eductionMajor: json["eductionMajor"] == null ? null : json["eductionMajor"],
+    resign: json["resign"] == null ? null : json["resign"],
     joinDate: json["joinDate"] == null ? null : json["joinDate"],
+    mutationDate: json["mutationDate"] == null ? null : json["mutationDate"],
     birthDate: json["birthDate"] == null ? null : DateTime.parse(json["birthDate"]),
+    bdeleted: json["bdeleted"] == null ? null : json["bdeleted"],
+    jenisKelamin: json["jenisKelamin"] == null ? null : json["jenisKelamin"],
     branch: json["branch"] == null ? null : Branch.fromJson(json["branch"]),
-    outlet: json["outlet"] == null ? null : Outlet.fromJson(json["outlet"]),
+    outlet: json["outlet"] == null ? null : Branch.fromJson(json["outlet"]),
     location: json["location"] == null ? null : Branch.fromJson(json["location"]),
     job: json["job"] == null ? null : Branch.fromJson(json["job"]),
     section: json["section"] == null ? null : Section.fromJson(json["section"]),
-    ipAddress: json["ipAddress"] == null ? null : json["ipAddress"],
+    grading: json["grading"] == null ? null : json["grading"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id == null ? null : id,
-    "username": username == null ? null : username,
     "name": name == null ? null : name,
-    "email": email == null ? null : email,
-    "active": active == null ? null : active,
-    "jenisKelamin": jenisKelamin == null ? null : jenisKelamin,
     "type": type == null ? null : type,
     "educationLevel": educationLevel == null ? null : educationLevel,
     "eductionMajor": eductionMajor == null ? null : eductionMajor,
+    "resign": resign == null ? null : resign,
     "joinDate": joinDate == null ? null : joinDate,
+    "mutationDate": mutationDate == null ? null : mutationDate,
     "birthDate": birthDate == null ? null : "${birthDate.year.toString().padLeft(4, '0')}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}",
+    "bdeleted": bdeleted == null ? null : bdeleted,
+    "jenisKelamin": jenisKelamin == null ? null : jenisKelamin,
     "branch": branch == null ? null : branch.toJson(),
     "outlet": outlet == null ? null : outlet.toJson(),
     "location": location == null ? null : location.toJson(),
     "job": job == null ? null : job.toJson(),
     "section": section == null ? null : section.toJson(),
-    "ipAddress": ipAddress == null ? null : ipAddress,
+    "grading": grading == null ? null : grading,
   };
 }
 
@@ -108,32 +108,10 @@ class Branch {
   };
 }
 
-class Outlet {
-  String id;
-  String name;
-
-  Outlet({
-    this.id,
-    this.name,
-  });
-
-  factory Outlet.fromJson(Map<String, dynamic> json) => Outlet(
-    id: json["id"] == null ? null : json["id"],
-    name: json["name"] == null ? null : json["name"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id == null ? null : id,
-    "name": name == null ? null : name,
-  };
-}
-
-
-
 class Section {
   String id;
   String name;
-  dynamic newName;
+  String newName;
 
   Section({
     this.id,
@@ -144,12 +122,12 @@ class Section {
   factory Section.fromJson(Map<String, dynamic> json) => Section(
     id: json["id"] == null ? null : json["id"],
     name: json["name"] == null ? null : json["name"],
-    newName: json["newName"],
+    newName: json["newName"] == null ? null : json["newName"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id == null ? null : id,
     "name": name == null ? null : name,
-    "newName": newName,
+    "newName": newName == null ? null : newName,
   };
 }
