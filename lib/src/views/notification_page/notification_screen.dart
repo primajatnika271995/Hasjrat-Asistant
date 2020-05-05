@@ -7,6 +7,7 @@ import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/notification_page/notification_birthday.dart';
+import 'package:salles_tools/src/views/notification_page/notification_stnk_expire.dart';
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -32,9 +33,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  Future _onLoading() async {
-    await Future.delayed(Duration(seconds: 3));
-    return Navigator.of(context).pop();
+  void _onCheckCustomerStnkExpire() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => CustomerBloc(CustomerService()),
+          child: NotificationStnkExpireView(),
+        ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -105,7 +119,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
               trailing: IconButton(
                 icon: Icon(Icons.navigate_next),
-                onPressed: () {},
+                onPressed: () {
+                  _onCheckCustomerStnkExpire();
+                },
               ),
             ),
           ],

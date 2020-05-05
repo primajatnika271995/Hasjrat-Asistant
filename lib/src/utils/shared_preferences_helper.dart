@@ -10,6 +10,7 @@ class SharedPreferencesHelper {
   static const String kAccessToken = "accessToken";
   static const String kSalesName = "salesName";
   static const String kSalesNIK = "salesNIK";
+  static const String kSalesContact = "salesContact";
   static const String kSalesBirthday = "salesBirthday";
   static const String kSalesGender = "salesGender";
   static const String kSalesBranch = "salesBranch";
@@ -104,6 +105,24 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString(kSalesName, value);
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the sales contact, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getSalesContact() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kSalesContact) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the sales contact
+  /// ----------------------------------------------------------
+  static Future<bool> setSalesContact(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kSalesContact, value);
   }
 
   /// ------------------------------------------------------------

@@ -40,7 +40,7 @@ class _NotificationBirthdayViewState extends State<NotificationBirthdayView> {
         backgroundColor: Colors.white,
         elevation: 1,
         title: Text(
-          "Notification Birthday",
+          "Notifikasi Ulang Tahun",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,

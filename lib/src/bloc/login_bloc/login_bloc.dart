@@ -48,6 +48,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           await SharedPreferencesHelper.setSalesJoinDate(employee.joinDate);
 
           await SharedPreferencesHelper.setSalesGrading(employee.grading);
+          await SharedPreferencesHelper.setSalesContact(employee.contact);
 
           yield LoginSuccess(value);
         } else {

@@ -26,6 +26,7 @@ class EmployeeModel {
   Branch job;
   Section section;
   String grading;
+  String contact;
 
   EmployeeModel({
     this.id,
@@ -45,6 +46,7 @@ class EmployeeModel {
     this.job,
     this.section,
     this.grading,
+    this.contact,
   });
 
   factory EmployeeModel.fromJson(Map<String, dynamic> json) => EmployeeModel(
@@ -65,6 +67,7 @@ class EmployeeModel {
     job: json["job"] == null ? null : Branch.fromJson(json["job"]),
     section: json["section"] == null ? null : Section.fromJson(json["section"]),
     grading: json["grading"] == null ? null : json["grading"],
+    contact: json["contact"] == null ? null : json["contact"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -85,6 +88,7 @@ class EmployeeModel {
     "job": job == null ? null : job.toJson(),
     "section": section == null ? null : section.toJson(),
     "grading": grading == null ? null : grading,
+    "contact": contact == null ? null : contact,
   };
 }
 
