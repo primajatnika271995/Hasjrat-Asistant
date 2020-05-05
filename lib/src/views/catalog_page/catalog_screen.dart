@@ -175,7 +175,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
             if (state is CatalogByCategorySuccess) {
               return state.value
                           .where((f) =>
-                              // f.archive != true &&
+                              f.archive != true &&
                               f.category == catalogCategori.toLowerCase())
                           .toList()
                           .length >=
@@ -188,7 +188,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                             child: GridView.builder(
                               itemCount: state.value
                                   .where((f) =>
-                                      f.archive != true &&
+                                      f.enabled == true &&
                                       f.category ==
                                           catalogCategori.toLowerCase())
                                   .toList()

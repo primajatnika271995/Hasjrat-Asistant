@@ -5,6 +5,7 @@ import 'package:salles_tools/src/bloc/dms_bloc/dms_bloc.dart';
 import 'package:salles_tools/src/bloc/finance_bloc/finance_bloc.dart';
 import 'package:salles_tools/src/models/catalog_model.dart' as catalogModel;
 import 'package:salles_tools/src/models/detail_catalog_model.dart';
+import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/services/booking_drive_service.dart';
 import 'package:salles_tools/src/services/dms_service.dart';
 import 'package:salles_tools/src/services/finance_service.dart';
@@ -253,7 +254,7 @@ class MainViewDetailsVehicle extends StatefulWidget {
 class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
   final String heroName;
   final DetailCatalogModel dataCatalog;
-  List<String> _colorList = [];
+  List<SelectorColorCar> _colorList = [];
   String _currentColor = "";
 
   _MainViewDetailsVehicleState(this.heroName, this.dataCatalog);
@@ -299,7 +300,9 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                             color: Colors.grey,
                           ),
                         )
-                      : Image.network("${dataCatalog.colours[0].image}"),
+                      : _currentColor.isEmpty || _currentColor == null
+                          ? Image.network("${dataCatalog.colours[0].image}")
+                          : Image.network("$_currentColor"),
                 ),
               ),
             ),
@@ -324,8 +327,11 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
   }
 
   Widget dropdownMenu() {
-    dataCatalog.colours.forEach((val) {
-      _colorList.add(val.colorNameIn);
+    dataCatalog.colours.forEach((f) {
+      _colorList.add(SelectorColorCar(
+        colorInd: f.colorNameIn,
+        imageUrl: f.image,
+      ));
     });
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 10),
@@ -365,15 +371,18 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                     },
                     items: _colorList == null || _colorList.isEmpty
                         ? null
-                        : _colorList.toSet().toList().map((String val) {
+                        : _colorList
+                            .toSet()
+                            .toList()
+                            .map((SelectorColorCar val) {
                             return DropdownMenuItem<String>(
-                              value: val,
+                              value: val.imageUrl,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    val,
+                                    val.colorInd,
                                     style: TextStyle(
                                       fontSize: 11.5,
                                     ),
