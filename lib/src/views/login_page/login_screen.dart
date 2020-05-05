@@ -27,13 +27,16 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.of(context).push(
         PageRouteBuilder(
           pageBuilder: (_, __, ___) => VerificationContactView(),
-          transitionDuration: Duration(milliseconds: 750),
+          transitionDuration: Duration(milliseconds: 300),
           transitionsBuilder:
               (_, Animation<double> animation, __, Widget child) {
-            return Opacity(
-              opacity: animation.value,
-              child: child,
-            );
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
           },
         ),
     );
@@ -73,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
+            Navigator.of(context).pop();
             _onNavDashboard();
           }
 
