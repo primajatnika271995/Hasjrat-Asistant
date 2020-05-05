@@ -434,3 +434,21 @@ class SelectorFollowupMethode {
   // TODO: implement hashCode
   int get hashCode => followupId.hashCode^followupName.hashCode;
 }
+
+class SelectorColorCar {
+  String colorInd;
+  String imageUrl;
+
+  SelectorColorCar({this.colorInd, this.imageUrl});
+
+  @override
+  String toString() => colorInd;
+
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(other) => other is SelectorColorCar && other.colorInd == colorInd;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode =>colorInd.hashCode^imageUrl.hashCode;
+}

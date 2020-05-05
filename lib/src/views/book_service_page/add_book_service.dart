@@ -247,25 +247,24 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
     final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
     bookingDriveBloc.add(AddBookingServiceViaEmail(
       BookingServicePost(
-        customerName: customerNameCtrl.text,
-        customerEmail: customerEmailCtrl.text,
-        customerPhone: customerContactCtrl.text,
-        bookingTypeName: currentSelectTypeService,
-        bookingDate: dateSelected.text,
-        bookingTime: timeSelected.text,
-        dealerAddress: dealerAddressCtrl.text,
-        dealerEmail: dealerEmailCtrl.text,
-        dealerName: dealerNameCtrl.text,
-        periodService:
-            servicePeriodeTypeCtrl.text == "Berdasarkan Waktu (bulan)"
-                ? _servicePriodeMonth.toString() + " bulan"
-                : _currentSelectServiceBerkala,
-        serviceCategoryName: currentSelectBookCategory,
-        vehicleNumber: vehicleNumberCtrl.text,
-        salesName: salesName,
-        salesEmail: salesEmailCtrl.text,
-        kabengEmail: kepalaBengkelEmailCtrl.text
-      ),
+          customerName: customerNameCtrl.text,
+          customerEmail: customerEmailCtrl.text,
+          customerPhone: customerContactCtrl.text,
+          bookingTypeName: currentSelectTypeService,
+          bookingDate: dateSelected.text,
+          bookingTime: timeSelected.text,
+          dealerAddress: dealerAddressCtrl.text,
+          dealerEmail: dealerEmailCtrl.text,
+          dealerName: dealerNameCtrl.text,
+          periodService:
+              servicePeriodeTypeCtrl.text == "Berdasarkan Waktu (bulan)"
+                  ? _servicePriodeMonth.toString() + " bulan"
+                  : _currentSelectServiceBerkala,
+          serviceCategoryName: currentSelectBookCategory,
+          vehicleNumber: vehicleNumberCtrl.text,
+          salesName: salesName,
+          salesEmail: salesEmailCtrl.text,
+          kabengEmail: kepalaBengkelEmailCtrl.text),
     ));
   }
 
@@ -519,31 +518,31 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                         ),
                         currentSelectTypeService != "Perbaikan Umum"
                             ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(height: 10),
-                            Text(
-                              "Tipe Service Periode (*)",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            formSelectServicePeriodeType(),
-                            SizedBox(height: 10),
-                            Text(
-                              "Service Periode (*)",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            servicePeriodeTypeCtrl.text ==
-                                "Berdasarkan Waktu (bulan)"
-                                ? sliderPriodeServiceMonth()
-                                : formAddServiceBerkala(),
-                          ],
-                        )
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "Tipe Service Periode (*)",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                  formSelectServicePeriodeType(),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "Service Periode (*)",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                  servicePeriodeTypeCtrl.text ==
+                                          "Berdasarkan Waktu (bulan)"
+                                      ? sliderPriodeServiceMonth()
+                                      : formAddServiceBerkala(),
+                                ],
+                              )
                             : SizedBox(),
                         SizedBox(
                           height: 10,
@@ -581,46 +580,46 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                         formAddDealer(),
                         currentSelectStation != null
                             ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Alamat Bengkel",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            formAddDealerAddress(),
-                            Text(
-                              "Email Bengkel",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            formAddDealerMail(),
-                            Text(
-                              "Email Sales",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            formAddSalesEmail(),
-                            Text(
-                              "Email Ka. Bengkel",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            formAddKepalaBengkel(),
-                          ],
-                        )
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Alamat Bengkel",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                  formAddDealerAddress(),
+                                  Text(
+                                    "Email Bengkel",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                  formAddDealerMail(),
+                                  Text(
+                                    "Email Sales",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                  formAddSalesEmail(),
+                                  Text(
+                                    "Email Ka. Bengkel",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                  formAddKepalaBengkel(),
+                                ],
+                              )
                             : SizedBox(),
                         Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 30),
                           child: Container(
                             width: screenWidth(context),
                             child: RaisedButton(
@@ -656,27 +655,27 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                     _currentStep == 0
                         ? SizedBox()
                         : FlatButton(
-                      onPressed: () => _onStepCancel(),
-                      child: Text(
-                        'Kembali',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.blueAccent,
-                        ),
-                      ),
-                    ),
+                            onPressed: () => _onStepCancel(),
+                            child: Text(
+                              'Kembali',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                          ),
                     _currentStep == 2
                         ? SizedBox()
                         : FlatButton(
-                      onPressed: () => _onStepContinue(),
-                      child: Text(
-                        'Selanjutnya',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.blueAccent,
-                        ),
-                      ),
-                    ),
+                            onPressed: () => _onStepContinue(),
+                            child: Text(
+                              'Selanjutnya',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                          ),
                   ],
                 ),
               ),
