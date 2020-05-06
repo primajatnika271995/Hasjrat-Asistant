@@ -12,6 +12,7 @@ import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/lead_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
 import 'package:salles_tools/src/models/province_model.dart';
+import 'package:salles_tools/src/models/stnk_expired_model.dart';
 import 'package:salles_tools/src/models/sub_district_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -261,6 +262,44 @@ class CustomerService {
     log.info(response.statusCode);
     if (response.statusCode == 200) {
       log.info("OK DONE");
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future expiredSTNK() async {
+    final response = await _dio.post(UriApi.listExpiredStnkUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(stnkExpiredModelFromJson, json.encode(response.data));
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future allSTNK() async {
+    final response = await _dio.post(UriApi.listAllStnkUri,
+      options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      ),
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(stnkExpiredModelFromJson, json.encode(response.data));
     } else if (response.statusCode == 401) {
       return compute(errorTokenExpireFromJson, json.encode(response.data));
     } else {

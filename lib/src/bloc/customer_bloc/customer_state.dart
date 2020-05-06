@@ -6,6 +6,7 @@ import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
 import 'package:salles_tools/src/models/province_model.dart';
+import 'package:salles_tools/src/models/stnk_expired_model.dart';
 import 'package:salles_tools/src/models/sub_district_model.dart';
 
 class CustomerState extends Equatable {
@@ -109,6 +110,17 @@ class CreateContactError extends CustomerState {
   @override
   // TODO: implement props
   List<Object> get props => [];
+}
+
+class StnkExpiredSuccess extends CustomerState {
+  final _data;
+
+  StnkExpiredSuccess(this._data);
+  List<StnkExpiredModel> get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
 }
 
 class CustomerError extends CustomerState {

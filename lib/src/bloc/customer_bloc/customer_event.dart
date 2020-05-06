@@ -79,6 +79,10 @@ class FetchSubDistrict extends CustomerEvent {
   List<Object> get props => [provinceCode, districtCode];
 }
 
+class FetchStnkExpired extends CustomerEvent {
+
+}
+
 class CreateContact extends CustomerEvent {
   final ContactPost value;
   CreateContact(this.value);

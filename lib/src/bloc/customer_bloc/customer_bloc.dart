@@ -10,6 +10,7 @@ import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
 import 'package:salles_tools/src/models/province_model.dart';
+import 'package:salles_tools/src/models/stnk_expired_model.dart';
 import 'package:salles_tools/src/models/sub_district_model.dart';
 import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
@@ -25,6 +26,24 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
 
   @override
   Stream<CustomerState> mapEventToState(CustomerEvent event) async* {
+    if (event is FetchStnkExpired) {
+      yield CustomerLoading();
+
+      try {
+        List<StnkExpiredModel> value = await _customerService.allSTNK();
+
+        if (value.isEmpty || value == null) {
+          yield CustomerFailed();
+        } else {
+          yield CustomerDisposeLoading();
+          yield StnkExpiredSuccess(value);
+        }
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
+        yield CustomerError();
+      }
+    }
+
     if (event is FetchCustomerBirthDay) {
       yield CustomerLoading();
 
