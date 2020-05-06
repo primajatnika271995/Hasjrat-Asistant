@@ -4,9 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
 import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
+import 'package:salles_tools/src/models/stnk_expired_model.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
+import 'package:salles_tools/src/views/notification_page/details_stnk_expired.dart';
 
 class NotificationStnkExpireView extends StatefulWidget {
   @override
@@ -16,6 +18,23 @@ class NotificationStnkExpireView extends StatefulWidget {
 class _NotificationStnkExpireViewState extends State<NotificationStnkExpireView> {
 
   var formatDob = DateFormat("yyyy-MM-dd");
+
+  void _onCheckDetailsStnk(StnkExpiredModel value) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => DetailsStnkExpiredView(
+          value: value,
+        ),
+        transitionDuration: Duration(milliseconds: 150),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
   
   @override
   void initState() {
@@ -97,7 +116,9 @@ class _NotificationStnkExpireViewState extends State<NotificationStnkExpireView>
                     ),
                     trailing: IconButton(
                       icon: Icon(Icons.navigate_next),
-                      onPressed: () {},
+                      onPressed: () {
+                        _onCheckDetailsStnk(data);
+                      },
                     ),
                   );
                 },
