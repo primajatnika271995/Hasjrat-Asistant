@@ -7,6 +7,8 @@ class SharedPreferencesHelper {
   static const String kUsername = "username";
   static const String kPassword = "password";
 
+  static const String kFirstInstall = "isFirstInstall";
+
   static const String kAccessToken = "accessToken";
   static const String kSalesName = "salesName";
   static const String kSalesNIK = "salesNIK";
@@ -33,6 +35,24 @@ class SharedPreferencesHelper {
       _sharedPreferences = await SharedPreferences.getInstance();
     }
     return _instance;
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the First Install, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getFirstInstall() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kFirstInstall) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the First Install
+  /// ----------------------------------------------------------
+  static Future<bool> setFirstInstall(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kFirstInstall, value);
   }
 
   /// ------------------------------------------------------------

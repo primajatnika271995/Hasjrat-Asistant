@@ -39,6 +39,7 @@ class _NotificationBirthdayViewState extends State<NotificationBirthdayView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
+        titleSpacing: 0,
         title: Text(
           "Notifikasi Ulang Tahun",
           style: TextStyle(

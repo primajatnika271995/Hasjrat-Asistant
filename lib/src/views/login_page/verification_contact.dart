@@ -35,6 +35,7 @@ class _VerificationContactViewState extends State<VerificationContactView> {
     var contact = await SharedPreferencesHelper.getSalesContact();
 
     if (contactCtrl.text == contact) {
+      await SharedPreferencesHelper.setFirstInstall("no");
       _onNavDashboard();
       return;
     } {

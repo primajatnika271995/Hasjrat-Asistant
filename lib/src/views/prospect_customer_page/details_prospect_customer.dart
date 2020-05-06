@@ -86,6 +86,8 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
             Divider(),
             leadCode(),
             Divider(),
+            nikCustomer(),
+            Divider(),
             namaCustomer(),
             Divider(),
             contactCustomer(),
@@ -212,6 +214,38 @@ class _ProspectDetailsViewState extends State<ProspectDetailsView> {
             flex: 6,
             child: Text(
               "${widget.value.leadCode}",
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget nikCustomer() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(
+              "NIK",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              "${widget.value.cardCode}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,

@@ -6,6 +6,7 @@ import 'package:salles_tools/src/bloc/login_bloc/login_state.dart';
 import 'package:salles_tools/src/bloc/register_bloc/register_bloc.dart';
 import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/bottom_navigation.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -23,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var usernameCtrl = new TextEditingController();
   var passwordCtrl = new TextEditingController();
 
-  void _onNavDashboard() {
+  void _onNavVerification() {
     Navigator.of(context).push(
         PageRouteBuilder(
           pageBuilder: (_, __, ___) => VerificationContactView(),
@@ -40,6 +41,39 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ),
     );
+  }
+
+  void _onNavDashboard() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BottomNavigationDrawer(),
+        transitionDuration: Duration(milliseconds: 300),
+        transitionsBuilder:
+            (_, Animation<double> animation, __, Widget child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void onNavigator() async {
+    var firstInstall = await SharedPreferencesHelper.getFirstInstall();
+
+    if (firstInstall != null) {
+      Navigator.of(context).pop();
+      _onNavVerification();
+    }
+
+    if (firstInstall == "no") {
+      Navigator.of(context).pop();
+      _onNavDashboard();
+    }
   }
 
   void _onRegister() {
@@ -77,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is LoginSuccess) {
             Navigator.of(context).pop();
-            _onNavDashboard();
+            _onNavVerification();
           }
 
           if (state is LoginFailed) {

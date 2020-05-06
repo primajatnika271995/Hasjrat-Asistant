@@ -13,6 +13,7 @@ class _NotificationStnkExpireViewState extends State<NotificationStnkExpireView>
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
+        titleSpacing: 0,
         title: Text(
           "Notifikasi STNK",
           style: TextStyle(
