@@ -88,6 +88,11 @@ class _CatalogScreenState extends State<CatalogScreen> {
         break;
       case 5:
         setState(() {
+          catalogCategori = "commercial";
+        });
+        break;
+      case 6:
+        setState(() {
           catalogCategori = "hybrid";
         });
         break;
@@ -141,7 +146,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
                 "SUV",
                 "Sedan",
                 "Sport",
-                "Hybrid",
+                "Komersial",
+                "Hibrid",
               ],
             ),
           ),
