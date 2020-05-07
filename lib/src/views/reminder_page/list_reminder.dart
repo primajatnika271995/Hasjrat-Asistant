@@ -99,7 +99,7 @@ class _ReminderListViewState extends State<ReminderListView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Reminder",
+          "Pengingat",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -112,7 +112,7 @@ class _ReminderListViewState extends State<ReminderListView> {
           children: <Widget>[
             ExpansionTile(
               title: Text(
-                "Pending",
+                "Tertunda",
                 style: TextStyle(
                   color: pendingIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
@@ -148,7 +148,7 @@ class _ReminderListViewState extends State<ReminderListView> {
             ),
             ExpansionTile(
               title: Text(
-                "Today",
+                "Hari Ini",
                 style: TextStyle(
                   color: todayIsExpanded ? HexColor('#C61818') : Colors.black,
                 ),
@@ -185,7 +185,7 @@ class _ReminderListViewState extends State<ReminderListView> {
             ),
             ExpansionTile(
               title: Text(
-                "Tomorrow",
+                "Besok",
                 style: TextStyle(
                   color:
                       tomorrowIsExpanded ? HexColor('#C61818') : Colors.black,
@@ -222,7 +222,7 @@ class _ReminderListViewState extends State<ReminderListView> {
             ),
             ExpansionTile(
               title: Text(
-                "Upcoming",
+                "Akan Datang",
                 style: TextStyle(
                   color:
                       upcomingIsExpanded ? HexColor('#C61818') : Colors.black,
