@@ -17,6 +17,7 @@ import 'package:salles_tools/src/views/catalog_page/catalog_review.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_specifications.dart';
 import 'package:salles_tools/src/views/components/sliver_app_bar_delegate.dart';
 import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
+import 'package:select_dialog/select_dialog.dart';
 
 import '../../bloc/catalog_bloc/catalog_bloc.dart';
 import '../../bloc/catalog_bloc/catalog_bloc.dart';
@@ -255,8 +256,9 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
   final String heroName;
   final DetailCatalogModel dataCatalog;
   List<SelectorColorCar> _colorList = [];
-  String _currentColor = "";
-
+  String _currentUrlImage = "";
+  var currentSelectPriceList;
+  var curentColorCtrl = new TextEditingController();
   _MainViewDetailsVehicleState(this.heroName, this.dataCatalog);
 
   @override
@@ -300,9 +302,9 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                             color: Colors.grey,
                           ),
                         )
-                      : _currentColor.isEmpty || _currentColor == null
+                      : _currentUrlImage.isEmpty || _currentUrlImage == null
                           ? Image.network("${dataCatalog.colours[0].image}")
-                          : Image.network("$_currentColor"),
+                          : Image.network("$_currentUrlImage"),
                 ),
               ),
             ),
@@ -336,67 +338,87 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 10),
       child: Container(
-        width: 110,
+        width: MediaQuery.of(context).size.width / 2.8,
         height: 36,
-        child: FormField(
-          builder: (FormFieldState state) {
-            return InputDecorator(
-              decoration: InputDecoration(
-                hintText: 'Context Type',
-                hintStyle: TextStyle(
-                  fontSize: 13,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: ButtonTheme(
-                  child: DropdownButton<String>(
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                    hint: Text('Warna'),
-                    iconSize: 15,
-                    isExpanded: true,
-                    onChanged: (String newVal) {
-                      setState(() {
-                        _currentColor = newVal;
-                        state.didChange(newVal);
-                      });
-                      print("warna saat ini : $_currentColor");
-                    },
-                    items: _colorList == null || _colorList.isEmpty
-                        ? null
-                        : _colorList
-                            .toSet()
-                            .toList()
-                            .map((SelectorColorCar val) {
-                            return DropdownMenuItem<String>(
-                              value: val.imageUrl,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    val.colorInd,
-                                    style: TextStyle(
-                                      fontSize: 11.5,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
+        child: Container(
+          height: 30,
+          decoration: new BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(8),
+            ),
+            border: Border.all(color: Colors.grey),
+          ),
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Theme(
+                data: ThemeData(hintColor: Colors.transparent),
+                child: GestureDetector(
+                  onTap: () {
+                    // _showListVehicle();
+                    SelectDialog.showModal<SelectorColorCar>(
+                      context,
+                      label: "Pilihan Warna",
+                      // selectedValue: currentSelectPriceList,
+                      items: _colorList.toSet().toList(),
+                      itemBuilder:
+                          (context, SelectorColorCar color, bool isSelected) {
+                        return Container(
+                          decoration: !isSelected
+                              ? null
+                              : BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: Theme.of(context).primaryColor,
                                   ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
+                                ),
+                          child: ListTile(
+                            selected: isSelected,
+                            title: Text("${color.colorInd}"),
+                          ),
+                        );
+                      },
+                      onChange: (SelectorColorCar selected) {
+                        setState(() {
+                          currentSelectPriceList = selected;
+                          curentColorCtrl.text = selected.colorInd;
+                          _currentUrlImage = selected.imageUrl;
+                        });
+                      },
+                    );
+                  },
+                  child: AbsorbPointer(
+                    child: TextFormField(
+                      readOnly: true,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey,
+                      ),
+                      decoration: new InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 5),
+                        border: InputBorder.none,
+                        enabled: false,
+                        suffixIcon: Icon(
+                          Icons.arrow_drop_down,
+                          color: Color(0xFF6991C7),
+                          size: 20,
+                        ),
+                        hintText: "Warna",
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 13,
+                        ),
+                      ),
+                      controller: curentColorCtrl,
+                    ),
                   ),
                 ),
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );
