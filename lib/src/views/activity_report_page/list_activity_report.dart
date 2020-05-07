@@ -91,7 +91,7 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
         elevation: 0,
         titleSpacing: 0,
         title: Text(
-          "Laporan Kegiatan",
+          "Laporan Aktifitas",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,

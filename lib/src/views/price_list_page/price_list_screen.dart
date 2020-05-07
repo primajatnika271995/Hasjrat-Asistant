@@ -289,7 +289,7 @@ class _PriceListViewState extends State<PriceListView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Price List & Stock",
+          "Harga & Stok",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,

@@ -37,7 +37,7 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
         elevation: 0,
         titleSpacing: 0,
         title: Text(
-          "Knowledge Base",
+          "Q&A",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
