@@ -102,7 +102,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, top: 20),
                     child: Text(
-                      "Jumlah Keuntungan",
+                      "Nominal",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,

@@ -65,7 +65,7 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                                   ? Text(
                                       "Belum ada data Spesifikasi Dimensi dan Berat")
                                   : Text(
-                                      "${data.features[1].description}",
+                                      "${data.features[0].description}",
                                       style: TextStyle(
                                         letterSpacing: 0.7,
                                         fontSize: 13,
@@ -102,7 +102,7 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                                   ? Text(
                                       "Belum ada data Spesifikasi Dimensi dan Berat")
                                   : Text(
-                                      "${data.features[0].description}",
+                                      "${data.features[1].description}",
                                       style: TextStyle(
                                         letterSpacing: 0.7,
                                         fontSize: 13,
