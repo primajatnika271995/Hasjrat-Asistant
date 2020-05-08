@@ -14,6 +14,7 @@ import 'package:salles_tools/src/models/selector_model.dart';
 import 'package:salles_tools/src/models/simulation_model.dart' as simulation;
 import 'package:salles_tools/src/utils/currency_format.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
@@ -393,12 +394,22 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     return SizedBox.shrink();
   }
 
+  void getPreferences() async {
+    branchCode = await SharedPreferencesHelper.getSalesBrachId();
+    currentSelectBranch = await SharedPreferencesHelper.getSalesBrach();
+
+    branchNameCtrl.text = currentSelectBranch;
+
+    // ignore: close_sinks
+    final outletBloc = BlocProvider.of<FinanceBloc>(context);
+    outletBloc.add(FetchOutlet(branchCode));
+    setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    // ignore: close_sinks
-    final branchBloc = BlocProvider.of<FinanceBloc>(context);
-    branchBloc.add(FetchBranch());
+    getPreferences();
     super.initState();
   }
 
@@ -681,7 +692,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
               data: ThemeData(hintColor: Colors.transparent),
               child: GestureDetector(
                 onTap: () {
-                  _showListBranch();
+//                  _showListBranch();
                 },
                 child: AbsorbPointer(
                   child: TextFormField(
