@@ -395,14 +395,12 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   }
 
   void getPreferences() async {
-    branchCode = await SharedPreferencesHelper.getSalesBrachId();
     currentSelectBranch = await SharedPreferencesHelper.getSalesBrach();
-
     branchNameCtrl.text = currentSelectBranch;
 
     // ignore: close_sinks
-    final outletBloc = BlocProvider.of<FinanceBloc>(context);
-    outletBloc.add(FetchOutlet(branchCode));
+    final branchBloc = BlocProvider.of<FinanceBloc>(context);
+    branchBloc.add(FetchBranch());
     setState(() {});
   }
 
@@ -435,12 +433,13 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         listener: (context, state) {
           if (state is BranchSuccess) {
             state.value.result.forEach((f) {
-              branchList.add(
-                SelectorBranchModel(
-                  id: f.id,
-                  branchName: f.text,
-                ),
-              );
+              if (f.text == currentSelectBranch) {
+                branchCode = f.id;
+
+                // ignore: close_sinks
+                final branchBloc = BlocProvider.of<FinanceBloc>(context);
+                branchBloc.add(FetchOutlet(branchCode));
+              }
             });
           }
 
