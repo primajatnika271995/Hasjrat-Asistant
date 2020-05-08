@@ -1227,16 +1227,6 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Harga Off The Road"),
-                              Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].offtr)}"),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
                               Text("Harga On The Road"),
                               Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}"),
                             ],
@@ -1276,8 +1266,8 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                                 elevation: 1,
                                 child: Text(
                                   dataSelection == index
-                                      ? "Selected"
-                                      : "Take it",
+                                      ? "Dipilih"
+                                      : "Pilih",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),

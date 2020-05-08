@@ -60,7 +60,7 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Promotion",
+          "Promosi",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,

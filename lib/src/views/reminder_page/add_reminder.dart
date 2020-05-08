@@ -168,14 +168,14 @@ class _ReminderAddViewState extends State<ReminderAddView> {
 
   void _onCreateReminder() async {
     DateTime _now = DateTime.now();
-
+    log.info(_now.difference(_dateTime).inDays);
     if (_currentSelectLead != null) {
       log.info(_now.difference(_dateTime).inDays);
       if (_now.difference(_dateTime).inDays <= -1) {
         await _dbHelper.insert(ReminderSqlite(
           _currentSelectTask,
           taskDescriptionCtrl.text,
-          _currentSelectLead,
+          _leadName,
           dateSelected.text,
           timeSelected.text,
           notesCtrl.text,

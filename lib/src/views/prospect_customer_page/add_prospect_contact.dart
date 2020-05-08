@@ -256,6 +256,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       final customerBloc = BlocProvider.of<CustomerBloc>(context);
       customerBloc.add(CreateContact(ContactPost(
           customerName: customerNameCtrl.text,
+          noKtp: customerNIKCtrl.text,
           customerGroupId: int.parse(groupId),
           prospectSourceId: prospectSourceId,
           contact: customerContactCtrl.text,

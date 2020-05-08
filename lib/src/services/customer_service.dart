@@ -233,29 +233,30 @@ class CustomerService {
           }
       ),
       data: {
+        "card_name": value.customerName,
+        "no_ktp": value.noKtp,
+        "group_code": 100,
+        "customer_group_id": value.customerGroupId,
+        "gender": value.gender,
+        "phone1": value.contact,
+        "phone2": "",
+        "phone3": "",
+        "location": value.location,
+        "pekerjaan": value.job,
+        "suspect_date": value.suspectDate,
+        "prospect_source_id": value.prospectSourceId,
+        "suspect_followup": value.suspectFollowUp,
         "addresses": [
           {
             "address1": value.kabupatenName,
             "address2": value.kecamatanName,
-            "addres s3": value.provinceName,
+            "address3": value.provinceName,
+            "provinsi_code": value.provinceCode,
             "kabupaten_code": value.kabupatenCode,
             "kecamatan_code": value.kecamatanCode,
-            "provinsi_code": value.provinceCode,
             "zipcode": value.zipCode
           }
-        ],
-        "card_name": value.customerName,
-        "customer_group_id": value.customerGroupId,
-        "gender": value.gender,
-        "groupCode": 100,
-        "location": value.location,
-        "pekerjaan": value.job,
-        "phone1": value.contact,
-        "phone2": "",
-        "phone3": "",
-        "prospect_source_id": value.prospectSourceId,
-        "suspect_date": value.suspectDate,
-        "suspect_followup": 7
+        ]
       },
     );
 
@@ -325,6 +326,7 @@ class LeadPost {
 
 class ContactPost {
   String customerName;
+  String noKtp;
   int customerGroupId;
   String gender;
   String location;
@@ -341,5 +343,5 @@ class ContactPost {
   String kecamatanCode;
   String zipCode;
 
-  ContactPost({this.customerName, this.customerGroupId, this.gender, this.location, this.job, this.contact, this.prospectSourceId, this.suspectDate, this.suspectFollowUp, this.provinceName, this.provinceCode, this.kabupatenName, this.kabupatenCode, this.kecamatanName, this.kecamatanCode, this.zipCode});
+  ContactPost({this.customerName, this.noKtp, this.customerGroupId, this.gender, this.location, this.job, this.contact, this.prospectSourceId, this.suspectDate, this.suspectFollowUp, this.provinceName, this.provinceCode, this.kabupatenName, this.kabupatenCode, this.kecamatanName, this.kecamatanCode, this.zipCode});
 }
