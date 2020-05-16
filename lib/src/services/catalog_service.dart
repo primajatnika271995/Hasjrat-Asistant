@@ -10,11 +10,6 @@ import 'package:salles_tools/src/models/detail_catalog_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
-import '../configs/url.dart';
-import '../configs/url.dart';
-import '../configs/url.dart';
-import '../configs/url.dart';
-
 class CatalogService {
   final Dio _dio = new Dio();
 

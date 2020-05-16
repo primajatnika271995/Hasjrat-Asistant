@@ -61,11 +61,11 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   left: 17, bottom: 5, right: 17),
-                              child: data.features[1].description == null
+                              child: data.features[3] == null
                                   ? Text(
                                       "Belum ada data Spesifikasi Dimensi dan Berat")
                                   : Text(
-                                      "${data.features[0].description}",
+                                      "${data.features[3].description}",
                                       style: TextStyle(
                                         letterSpacing: 0.7,
                                         fontSize: 13,
@@ -98,11 +98,11 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   left: 17, bottom: 5, right: 17),
-                              child: data.features[0].description == null
+                              child: data.features[2].description == null
                                   ? Text(
                                       "Belum ada data Spesifikasi Dimensi dan Berat")
                                   : Text(
-                                      "${data.features[1].description}",
+                                      "${data.features[2].description}",
                                       style: TextStyle(
                                         letterSpacing: 0.7,
                                         fontSize: 13,
@@ -135,10 +135,10 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   left: 17, bottom: 5, right: 17),
-                              child: data.features[2].description == null
+                              child: data.features[0].description == null
                                   ? Text("Belum ada data Spesifikasi Performa")
                                   : Text(
-                                      "${data.features[2].description}",
+                                      "${data.features[0].description}",
                                       style: TextStyle(
                                         letterSpacing: 0.7,
                                         fontSize: 13,
@@ -171,10 +171,10 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   left: 17, bottom: 5, right: 17),
-                              child: data.features[3].description == null
+                              child: data.features[4].description == null
                                   ? Text("Belum ada data Spesifikasi Performa")
                                   : Text(
-                                      "${data.features[3].description}",
+                                      "${data.features[4].description}",
                                       style: TextStyle(
                                         letterSpacing: 0.7,
                                         fontSize: 13,
@@ -207,10 +207,10 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   left: 17, bottom: 5, right: 17),
-                              child: data.features[4].description == null
+                              child: data.features[1].description == null
                                   ? Text("Belum ada data Spesifikasi Kapasitas")
                                   : Text(
-                                      "${data.features[4].description}",
+                                      "${data.features[1].description}",
                                       style: TextStyle(
                                         letterSpacing: 0.7,
                                         fontSize: 13,

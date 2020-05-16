@@ -87,89 +87,88 @@ class _CatalogBrochureScreenState extends State<CatalogBrochureScreen> {
               return Column(
                 children: <Widget>[
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 13),
-                      child: GridView.builder(
-                        itemCount: state.value.data.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 3 / 4,
-                          crossAxisSpacing: 17,
-                          mainAxisSpacing: 17,
-                        ),
-                        itemBuilder: (context, i) {
-                          var data = state.value.data[i];
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(9.0),
-                              ),
-                              elevation: 3,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(9.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          "${data.title}",
-                                          style: TextStyle(
-                                            letterSpacing: 0.5,
-                                            fontSize: 15,
-                                          ),
+                    child: GridView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemCount: state.value.data.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 3 / 4,
+                        crossAxisSpacing: 17,
+                        mainAxisSpacing: 17,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      itemBuilder: (context, i) {
+                        var data = state.value.data[i];
+                        return GestureDetector(
+                          onTap: () {},
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(9.0),
+                            ),
+                            elevation: 3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(9.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        "${data.title}",
+                                        style: TextStyle(
+                                          letterSpacing: 0.5,
+                                          fontSize: 15,
                                         ),
-                                        Text(
-                                          "${data.description}",
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            color: Colors.grey,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(
+                                        "${data.description}",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.grey,
                                         ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                      ],
-                                    ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                    ],
                                   ),
-                                  Expanded(
-                                    child: Hero(
-                                      tag: "catalog-image$i",
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          print(
-                                              "Download Brosur => ${data.title}");
-                                          launch("${data.url}");
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(9.0),
-                                              topRight: Radius.circular(9.0),
-                                            ),
-                                            color: Color(0xfff4f4f4),
+                                ),
+                                Expanded(
+                                  child: Hero(
+                                    tag: "catalog-image$i",
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        print(
+                                            "Download Brosur => ${data.title}");
+                                        launch("${data.url}");
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(9.0),
+                                            topRight: Radius.circular(9.0),
                                           ),
-                                          child: Center(
-                                            child: Icon(
-                                              FontAwesomeIcons.download,
-                                              size: 50,
-                                              color: Colors.black,
-                                            ),
+                                          color: Color(0xfff4f4f4),
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            FontAwesomeIcons.download,
+                                            size: 50,
+                                            color: Colors.black,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],

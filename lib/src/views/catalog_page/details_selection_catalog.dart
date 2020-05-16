@@ -351,7 +351,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
           ),
           child: Center(
             child: Padding(
-              padding: EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: 10, top: 1),
               child: Theme(
                 data: ThemeData(hintColor: Colors.transparent),
                 child: GestureDetector(
