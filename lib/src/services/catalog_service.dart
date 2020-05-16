@@ -83,6 +83,9 @@ class CatalogService {
   Future brochureCatalog() async {
     final response = await _dio.post(
       UriApi.catalogBrosurUri,
+      queryParameters: {
+        "length": 100
+      },
       options: Options(
         headers: {
           'Content-Type': 'application/json',
