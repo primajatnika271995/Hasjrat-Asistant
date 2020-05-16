@@ -722,6 +722,18 @@ class _PriceListViewState extends State<PriceListView> {
                                   ],
                                 ),
                               ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                child: Text(
+                                  "Rp ${CurrencyFormat().data.format(value.ontr)}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.0,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+
                               Divider(),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
