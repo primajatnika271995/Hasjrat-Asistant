@@ -378,13 +378,6 @@ class SlidableCustomerView extends StatelessWidget {
             onTap: () {
               this.callback();
             },
-            leading: CircleAvatar(
-              radius: 25,
-              backgroundColor: Colors.indigoAccent,
-              foregroundColor: Colors.white,
-              backgroundImage: NetworkImage(
-                  "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"),
-            ),
             title: Padding(
               padding: const EdgeInsets.only(top: 5, bottom: 5),
               child: Text(
@@ -400,7 +393,7 @@ class SlidableCustomerView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "${value.cardName}",
+                  "${value.cardName.toUpperCase()}",
                   style: TextStyle(
                     letterSpacing: 1.0,
                     fontSize: 13,
