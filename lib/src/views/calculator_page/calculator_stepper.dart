@@ -289,10 +289,10 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   void exportPdf(List<simulation.Result> value) async {
     final pdf = pw.Document();
 
-    ByteData bytes = await rootBundle.load('assets/icons/hasjrat_logo_apps.png');
+    ByteData bytes = await rootBundle.load('assets/icons/old_hasjrat_toyota_logo.png');
     File imgLogo;
     try {
-      imgLogo = await writeToFile(bytes); // <= returns File
+      imgLogo = await writeToFile(bytes);
     } catch(e) {
       // catch errors here
     }
@@ -345,6 +345,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                     pw.Text('Data Tenor', textScaleFactor: 2),
                     pw.Container(
                       height: 50,
+                      width: 100,
                       child: pw.Image(image),
                     ),
                   ]),
@@ -365,8 +366,12 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 itemCount: value.length
             ),
             pw.Padding(padding: const pw.EdgeInsets.all(10)),
-            pw.Bullet(
-                text: 'harga diatas adalah perkiraan, tidak mengikat sewaktu-waktu dapat berubah.'),
+            pw.Text('*Harga tidak terikat, sewaktu-waktu dapat berubah.',
+                style: pw.TextStyle(
+                  fontSize: 5,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+            ),
           ];
         }
     ));
