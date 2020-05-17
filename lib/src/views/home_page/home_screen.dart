@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "Informasi",
     "Laporan\nAktifitas",
     "Harga\nKendaraan",
-    "Promosi",
+    "Promosi DMS",
   ];
 
   List<String> _moreMenuName = [
@@ -363,7 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Promo DMS",
+                      "Promosi",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,

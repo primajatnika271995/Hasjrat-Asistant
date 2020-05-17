@@ -256,7 +256,10 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
                         "OK",
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
-                      onPressed: () => Navigator.pop(context, true),
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                        Navigator.pop(context, true);
+                      },
                       color: HexColor("#C61818"),
                     ),
                   ]).show();
