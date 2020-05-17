@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var _salesName;
   var _branchName;
+  var _outletName;
 
   var _outletId;
   var _branchId;
@@ -236,6 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _getPreferences() async {
     _salesName = await SharedPreferencesHelper.getSalesName();
     _branchName = await SharedPreferencesHelper.getSalesBrach();
+    _outletName = await SharedPreferencesHelper.getSalesOutlet();
     _outletId = await SharedPreferencesHelper.getSalesOutletId();
     _branchId = await SharedPreferencesHelper.getSalesBrachId();
     setState(() {});
@@ -429,7 +431,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: AppTheme.namaSalesStyle,
                         ),
                         Text(
-                          "Hasjrat Toyota $_branchName",
+                          "Hasjrat Toyota $_branchName outlet $_outletName",
                           style: TextStyle(
                             fontSize: 11,
                             color: Colors.white,
