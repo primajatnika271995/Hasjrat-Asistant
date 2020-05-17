@@ -436,6 +436,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
               if (f.text == currentSelectBranch) {
                 branchCode = f.id;
 
+                log.info("Branch Code : $branchCode");
+
                 // ignore: close_sinks
                 final branchBloc = BlocProvider.of<FinanceBloc>(context);
                 branchBloc.add(FetchOutlet(branchCode));
@@ -446,7 +448,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           if (state is OutletSuccess) {
             state.value.result.forEach((f) {
               if (f.text == "Manado"
-                  || f.text == "Tandean"
+                  || f.text == "Tendean"
                   || f.text == "Bitung 3S"
                   || f.text == "Bitung 3S"
                   || f.text == "Kotamobagu"
