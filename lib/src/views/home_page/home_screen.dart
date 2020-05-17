@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "Pengingat\nJadwal",
     "Booking\nService",
     "Booking\nTest Drive",
-    "Q&A",
+    "Informasi",
     "Laporan\nAktifitas",
     "Harga\nKendaraan",
     "Promosi",
@@ -363,7 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Promo",
+                      "Promo DMS",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/knowledge_base_bloc/knowledge_base_bloc.dart';
 import 'package:salles_tools/src/bloc/knowledge_base_bloc/knowledge_base_event.dart';
 import 'package:salles_tools/src/bloc/knowledge_base_bloc/knowledge_base_state.dart';
+import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/knowledge_base_page/ebook_screen.dart';
 
 class KnowledgeBaseScreen extends StatefulWidget {
   @override
@@ -11,12 +14,30 @@ class KnowledgeBaseScreen extends StatefulWidget {
 }
 
 class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
+  ScrollController _hideButtonController;
   var searchCtrl = new TextEditingController();
+
+  var _isVisible;
 
   void searchQnA(String query) {
     // ignore: close_sinks
     final qnaBloc = BlocProvider.of<KnowledgeBaseBloc>(context);
     qnaBloc.add(SearchKnowledgeBase(query));
+  }
+
+  void _onSeeEbook() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => EbookScreen(),
+        transitionDuration: Duration(milliseconds: 750),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return Opacity(
+            opacity: animation.value,
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -25,6 +46,25 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
     // ignore: close_sinks
     final qnaBloc = BlocProvider.of<KnowledgeBaseBloc>(context);
     qnaBloc.add(FetchKnowledgeBase());
+
+    _isVisible = true;
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener((){
+      if(_hideButtonController.position.userScrollDirection == ScrollDirection.reverse){
+        if(_isVisible == true) {
+          setState((){
+            _isVisible = false;
+          });
+        }
+      } else {
+        if(_hideButtonController.position.userScrollDirection == ScrollDirection.forward){
+          if(_isVisible == false) {
+            setState((){
+              _isVisible = true;
+            });
+          }
+        }
+      }});
     super.initState();
   }
 
@@ -37,7 +77,7 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
         elevation: 0,
         titleSpacing: 0,
         title: Text(
-          "Q&A",
+          "Informasi",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -62,6 +102,8 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
           }
         },
         child: SingleChildScrollView(
+          controller: _hideButtonController,
+          physics: BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -158,6 +200,18 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
               ),
             ],
           ),
+        ),
+      ),
+      floatingActionButton: AnimatedOpacity(
+        opacity: _isVisible ? 1.0 : 0.0,
+        duration: Duration(milliseconds: 1000),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            _onSeeEbook();
+          },
+          label: Text("Ebook"),
+          icon: Icon(Icons.picture_as_pdf),
+          backgroundColor: HexColor('#C61818'),
         ),
       ),
     );
