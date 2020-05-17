@@ -125,7 +125,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           elevation: 1,
           titleSpacing: 0,
           title: Text(
-            "${data.itemModel} ${data.itemType}",
+            "${data.itemClass1}",
             // "test data",
             style: TextStyle(
               color: Colors.black,
