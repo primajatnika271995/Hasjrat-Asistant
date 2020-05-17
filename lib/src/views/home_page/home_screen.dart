@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var _salesName;
   var _branchName;
+  var _outletName;
 
   var _outletId;
   var _branchId;
@@ -62,10 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
     "Pengingat\nJadwal",
     "Booking\nService",
     "Booking\nTest Drive",
-    "Q&A",
+    "Informasi",
     "Laporan\nAktifitas",
     "Harga\nKendaraan",
-    "Promosi",
+    "Promosi DMS",
   ];
 
   List<String> _moreMenuName = [
@@ -236,6 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _getPreferences() async {
     _salesName = await SharedPreferencesHelper.getSalesName();
     _branchName = await SharedPreferencesHelper.getSalesBrach();
+    _outletName = await SharedPreferencesHelper.getSalesOutlet();
     _outletId = await SharedPreferencesHelper.getSalesOutletId();
     _branchId = await SharedPreferencesHelper.getSalesBrachId();
     setState(() {});
@@ -361,7 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Promo",
+                      "Promosi",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
@@ -429,7 +431,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: AppTheme.namaSalesStyle,
                         ),
                         Text(
-                          "Hasjrat Toyota $_branchName",
+                          "Hasjrat Toyota $_branchName outlet $_outletName",
                           style: TextStyle(
                             fontSize: 11,
                             color: Colors.white,

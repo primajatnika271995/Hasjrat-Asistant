@@ -1,4 +1,4 @@
-package com.hasjrat.salles_tools
+package com.hasjrat.sales_tools
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

@@ -446,7 +446,7 @@ class _ProspectContactDetailsViewState extends State<ProspectContactDetailsView>
           Expanded(
             flex: 6,
             child: Text(
-              "$_currentContextType",
+              "${widget.value.prospectClassificationName}",
               style: TextStyle(
                 fontSize: 16,
                 letterSpacing: 1.0,

@@ -159,7 +159,7 @@ class _PriceListViewState extends State<PriceListView> {
   void exportPdf(Datum value) async {
     final pdf = pw.Document();
 
-    ByteData bytes = await rootBundle.load('assets/icons/hasjrat_logo_apps.png');
+    ByteData bytes = await rootBundle.load('assets/icons/old_hasjrat_toyota_logo.png');
     File imgLogo;
     try {
       imgLogo = await writeToFile(bytes); // <= returns File
@@ -215,6 +215,7 @@ class _PriceListViewState extends State<PriceListView> {
                     pw.Text(' Data Price List & Stock', textScaleFactor: 2),
                     pw.Container(
                       height: 50,
+                      width: 100,
                       child: pw.Image(image),
                     ),
                   ]),
@@ -249,6 +250,13 @@ class _PriceListViewState extends State<PriceListView> {
                 );
               },
               itemCount: value.stocks.length
+          ),
+          pw.Padding(padding: const pw.EdgeInsets.all(10)),
+          pw.Text('*Harga tidak terikat, sewaktu-waktu dapat berubah.',
+            style: pw.TextStyle(
+              fontSize: 5,
+              fontWeight: pw.FontWeight.bold,
+            ),
           ),
         ];
     }
