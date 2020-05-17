@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_event.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_state.dart';
@@ -22,6 +23,8 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   var _employeeId;
+  
+  var yearFormat = DateFormat("yyyy");
 
   void _getTargetDashboard() async {
     _employeeId = await SharedPreferencesHelper.getSalesNIK();
@@ -90,7 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       right: 15,
                     ),
                     child: Text(
-                      "Dasbor",
+                      "Dasbor Tahun ${yearFormat.format(DateTime.now())}",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 22,
