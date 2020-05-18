@@ -11,6 +11,7 @@ import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/login_page/login_screen.dart';
 import 'package:salles_tools/src/views/profile_page/change_password_screen.dart';
 import 'package:salles_tools/src/views/profile_page/edit_profile.dart';
+import 'package:salles_tools/src/views/profile_page/privacy_police_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -51,6 +52,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           create: (context) => LoginBloc(LoginService()),
           child: ChangePasswordView(),
         ),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _onSeePrivacyPolice() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => PrivacyPoliceView(),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return SlideTransition(
             position: Tween<Offset>(
@@ -480,7 +498,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                _onSeePrivacyPolice();
+              },
               child: Container(
                 width: screenWidth(context),
                 child: Column(
