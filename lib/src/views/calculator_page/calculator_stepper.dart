@@ -30,6 +30,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentStep = 0;
 
+  List<List<String>> rowTenor = new List();
+
   VoidCallback _onStepContinue;
   VoidCallback _onStepCancel;
 
@@ -287,7 +289,15 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   }
 
   void exportPdf(List<simulation.Result> value) async {
+    rowTenor.clear();
     final pdf = pw.Document();
+
+    rowTenor.add(<String>['Nama Tenor', 'Lama Tenor', 'Uang Muka', 'Pembayaran Bulanan']);
+
+    value.forEach((f) {
+      List<String> tenor = <String>[f.tenorName, f.tenorVale.toString(), f.downPayment, 'Rp ${f.installment} / Bulan'];
+      rowTenor.add(tenor);
+    });
 
     ByteData bytes = await rootBundle.load('assets/icons/old_hasjrat_toyota_logo.png');
     File imgLogo;
@@ -353,18 +363,22 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
             pw.Paragraph(
                 text: 'Tenor List'
             ),
-            pw.ListView.builder(
-                itemBuilder: (pw.Context context, index) {
-                  return pw.Table.fromTextArray(
-                    context: context,
-                    data: <List<String>>[
-                      <String>['Nama Tenor', 'Lama Tenor', 'Uang Muka', 'Pembayaran Bulanan'],
-                      <String>['${value[index].tenorName}', '${value[index].tenorVale}', 'Rp ${value[index].downPayment}', 'Rp ${value[index].installment} / Bulan'],
-                    ],
-                  );
-                },
-                itemCount: value.length
+            pw.Table.fromTextArray(
+                context: context,
+                data: rowTenor
             ),
+//            pw.ListView.builder(
+//                itemBuilder: (pw.Context context, index) {
+//                  return pw.Table.fromTextArray(
+//                    context: context,
+//                    data: <List<String>>[
+//                      <String>['Nama Tenor', 'Lama Tenor', 'Uang Muka', 'Pembayaran Bulanan'],
+//                      <String>['${value[index].tenorName}', '${value[index].tenorVale}', 'Rp ${value[index].downPayment}', 'Rp ${value[index].installment} / Bulan'],
+//                    ],
+//                  );
+//                },
+//                itemCount: value.length
+//            ),
             pw.Padding(padding: const pw.EdgeInsets.all(10)),
             pw.Text('*Harga tidak terikat, sewaktu-waktu dapat berubah.',
                 style: pw.TextStyle(
