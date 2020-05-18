@@ -29,7 +29,6 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
         child: data.features.isEmpty || data.features == null
             ? Center(
                 child: Padding(
