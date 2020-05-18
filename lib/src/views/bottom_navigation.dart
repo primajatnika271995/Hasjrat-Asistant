@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/target_dashboard_bloc.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_bloc.dart';
@@ -18,6 +19,8 @@ class BottomNavigationDrawer extends StatefulWidget {
 
 class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
   int _selectedIndex = 0;
+
+  var yearFormat = DateFormat("yyyy");
 
   List<Widget> _widgetPages = [
 //    HomeScreen(),
@@ -103,7 +106,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
               ),
               activeIcon:
                   Image.asset('assets/icons/dashboard_icon.png', height: 25),
-              title: Text("Dasbor"),
+              title: Text("Dasbor ${yearFormat.format(DateTime.now())}"),
             ),
             BottomNavigationBarItem(
               icon: Image.asset(

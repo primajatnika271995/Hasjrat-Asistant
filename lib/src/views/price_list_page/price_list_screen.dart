@@ -27,6 +27,9 @@ class PriceListView extends StatefulWidget {
 class _PriceListViewState extends State<PriceListView> {
   var _formKey = GlobalKey<FormState>();
 
+  List<List<String>> rowPrice = new List();
+  List<List<String>> rowStock = new List();
+
   var leadCodeCtrl = new TextEditingController();
   var leadNameCtrl = new TextEditingController();
   var prospectDateCtrl = new TextEditingController();
@@ -157,7 +160,23 @@ class _PriceListViewState extends State<PriceListView> {
   }
 
   void exportPdf(Datum value) async {
+    rowPrice.clear();
+    rowStock.clear();
+
     final pdf = pw.Document();
+    rowPrice.add(<String>['Kode Item', 'Model Kendaraan', 'Dalam Kota', 'Tanggal', 'Harga'],);
+    rowStock.add(<String>['Tahun', 'Jumlah', 'Warna']);
+
+    value.pricelists.forEach((f) {
+      List<String> price = <String>[f.itemCode, f.itemModel, f.dalamKota, f.pricelistTanggal.toString(), CurrencyFormat().data.format(f.ontr)];
+      rowPrice.add(price);
+    });
+
+    value.stocks.forEach((f) {
+      List<String> stock = <String>[f.tahun, f.quantity.toString(), f.namaWarna];
+      rowStock.add(stock);
+    });
+
 
     ByteData bytes = await rootBundle.load('assets/icons/old_hasjrat_toyota_logo.png');
     File imgLogo;
@@ -223,34 +242,42 @@ class _PriceListViewState extends State<PriceListView> {
           pw.Paragraph(
             text: 'Price List'
           ),
-          pw.ListView.builder(
-            itemBuilder: (pw.Context context, index) {
-              return pw.Table.fromTextArray(
-                context: context,
-                data: <List<String>>[
-                  <String>['Kode Item', 'Model Kendaraan', 'Dalam Kota', 'Tanggal', 'Harga'],
-                  <String>['${value.pricelists[index].itemCode}', '${value.pricelists[index].itemModel}', '${value.pricelists[index].dalamKota}', '${value.pricelists[index].pricelistTanggal}', 'Rp ${CurrencyFormat().data.format(value.pricelists[index].ontr)}'],
-                ],
-              );
-            },
-           itemCount: value.pricelists.length
+          pw.Table.fromTextArray(
+            context: context,
+            data: rowPrice
           ),
+//          pw.ListView.builder(
+//            itemBuilder: (pw.Context context, index) {
+//              return pw.Table.fromTextArray(
+//                context: context,
+//                data: <List<String>>[
+//                  <String>['Kode Item', 'Model Kendaraan', 'Dalam Kota', 'Tanggal', 'Harga'],
+//                  <String>['${value.pricelists[index].itemCode}', '${value.pricelists[index].itemModel}', '${value.pricelists[index].dalamKota}', '${value.pricelists[index].pricelistTanggal}', 'Rp ${CurrencyFormat().data.format(value.pricelists[index].ontr)}'],
+//                ],
+//              );
+//            },
+//           itemCount: value.pricelists.length
+//          ),
           pw.Padding(padding: const pw.EdgeInsets.all(10)),
           pw.Paragraph(
               text: 'Stock'
           ),
-          pw.ListView.builder(
-              itemBuilder: (pw.Context context, index) {
-                return pw.Table.fromTextArray(
-                  context: context,
-                  data: <List<String>>[
-                    <String>['Tahun', 'Jumlah', 'Warna'],
-                    <String>['${value.stocks[index].tahun}', '${value.stocks[index].quantity}', '${value.stocks[index].namaWarna}'],
-                  ],
-                );
-              },
-              itemCount: value.stocks.length
+          pw.Table.fromTextArray(
+              context: context,
+              data: rowStock
           ),
+//          pw.ListView.builder(
+//              itemBuilder: (pw.Context context, index) {
+//                return pw.Table.fromTextArray(
+//                  context: context,
+//                  data: <List<String>>[
+//                    <String>['Tahun', 'Jumlah', 'Warna'],
+//                    <String>['${value.stocks[index].tahun}', '${value.stocks[index].quantity}', '${value.stocks[index].namaWarna}'],
+//                  ],
+//                );
+//              },
+//              itemCount: value.stocks.length
+//          ),
           pw.Padding(padding: const pw.EdgeInsets.all(10)),
           pw.Text('*Harga tidak terikat, sewaktu-waktu dapat berubah.',
             style: pw.TextStyle(
