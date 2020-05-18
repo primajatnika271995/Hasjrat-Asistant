@@ -23,7 +23,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   var _employeeId;
-  
+
   var yearFormat = DateFormat("yyyy");
 
   void _getTargetDashboard() async {
@@ -163,7 +163,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     BoxShadow(blurRadius: 13.0, color: Colors.black26),
                   ],
                 ),
-                child: BlocBuilder<DashboardBloc, DashboardState>(builder: (context, dashboardState) {
+                child: BlocBuilder<DashboardBloc, DashboardState>(
+                    builder: (context, dashboardState) {
                   if (dashboardState is DashboardLoading) {
                     return Container(
                       decoration: BoxDecoration(

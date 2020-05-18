@@ -311,7 +311,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
             Column(
               children: <Widget>[
                 Text(
-                  "${dataCatalog.itemModel} ${dataCatalog.itemType}",
+                  "${dataCatalog.itemClass1}",
                   style: TextStyle(
                     fontSize: 16,
                     letterSpacing: 1.0,
