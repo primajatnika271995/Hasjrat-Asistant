@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salles_tools/src/bloc/knowledge_base_bloc/knowledge_base_bloc.dart';
 import 'package:salles_tools/src/bloc/knowledge_base_bloc/knowledge_base_event.dart';
 import 'package:salles_tools/src/bloc/knowledge_base_bloc/knowledge_base_state.dart';
+import 'package:salles_tools/src/services/knowledge_base_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/knowledge_base_page/ebook_screen.dart';
@@ -28,7 +29,10 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
   void _onSeeEbook() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => EbookScreen(),
+        pageBuilder: (_, __, ___) => BlocProvider(
+          create: (context) => KnowledgeBaseBloc(KnowledgeBaseService()),
+          child: EbookScreen(),
+        ),
         transitionDuration: Duration(milliseconds: 750),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(

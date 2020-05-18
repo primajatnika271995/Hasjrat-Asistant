@@ -40,19 +40,21 @@ class Datum {
   String id;
   String question;
   String answer;
-  dynamic category;
+  dynamic urlFile;
+  Category category;
   bool draft;
   bool publish;
   int likeCount;
   String createdBy;
   String createdDate;
   String lastUpdatedBy;
-  String lastUpdatedDate;
+  dynamic lastUpdatedDate;
 
   Datum({
     this.id,
     this.question,
     this.answer,
+    this.urlFile,
     this.category,
     this.draft,
     this.publish,
@@ -67,27 +69,49 @@ class Datum {
     id: json["id"] == null ? null : json["id"],
     question: json["question"] == null ? null : json["question"],
     answer: json["answer"] == null ? null : json["answer"],
-    category: json["category"],
+    urlFile: json["urlFile"],
+    category: json["category"] == null ? null : Category.fromJson(json["category"]),
     draft: json["draft"] == null ? null : json["draft"],
     publish: json["publish"] == null ? null : json["publish"],
     likeCount: json["likeCount"] == null ? null : json["likeCount"],
     createdBy: json["createdBy"] == null ? null : json["createdBy"],
     createdDate: json["createdDate"] == null ? null : json["createdDate"],
     lastUpdatedBy: json["lastUpdatedBy"] == null ? null : json["lastUpdatedBy"],
-    lastUpdatedDate: json["lastUpdatedDate"] == null ? null : json["lastUpdatedDate"],
+    lastUpdatedDate: json["lastUpdatedDate"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id == null ? null : id,
     "question": question == null ? null : question,
     "answer": answer == null ? null : answer,
-    "category": category,
+    "urlFile": urlFile,
+    "category": category == null ? null : category.toJson(),
     "draft": draft == null ? null : draft,
     "publish": publish == null ? null : publish,
     "likeCount": likeCount == null ? null : likeCount,
     "createdBy": createdBy == null ? null : createdBy,
     "createdDate": createdDate == null ? null : createdDate,
     "lastUpdatedBy": lastUpdatedBy == null ? null : lastUpdatedBy,
-    "lastUpdatedDate": lastUpdatedDate == null ? null : lastUpdatedDate,
+    "lastUpdatedDate": lastUpdatedDate,
+  };
+}
+
+class Category {
+  String id;
+  String name;
+
+  Category({
+    this.id,
+    this.name,
+  });
+
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
+    id: json["id"] == null ? null : json["id"],
+    name: json["name"] == null ? null : json["name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
+    "name": name == null ? null : name,
   };
 }
