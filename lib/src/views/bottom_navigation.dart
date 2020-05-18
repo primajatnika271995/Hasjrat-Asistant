@@ -106,7 +106,7 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
               ),
               activeIcon:
                   Image.asset('assets/icons/dashboard_icon.png', height: 25),
-              title: Text("Dasbor ${yearFormat.format(DateTime.now())}"),
+              title: Text("Dashboard"),
             ),
             BottomNavigationBarItem(
               icon: Image.asset(

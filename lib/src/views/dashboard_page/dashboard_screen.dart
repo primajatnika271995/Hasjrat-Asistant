@@ -93,7 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       right: 15,
                     ),
                     child: Text(
-                      "Dasbor Tahun ${yearFormat.format(DateTime.now())}",
+                      "Dashboard Tahun ${yearFormat.format(DateTime.now())}",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 22,
