@@ -111,6 +111,24 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                                 child: Image.network("${valueData.image}",
                                     fit: BoxFit.cover, width: 1000.0),
                               ),
+                              valueData.description == null
+                                  ? SizedBox()
+                                  : Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, bottom: 10),
+                                        child: Text(
+                                          "${valueData.description}",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.white.withOpacity(0.7),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w900),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
                             ]),
                           ),
                         );
@@ -154,6 +172,24 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                                 child: Image.network("${valueData.image}",
                                     fit: BoxFit.cover, width: 1000.0),
                               ),
+                              valueData.description == null
+                                  ? SizedBox()
+                                  : Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, bottom: 10),
+                                        child: Text(
+                                          "${valueData.description}",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.white.withOpacity(0.7),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w900),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
                             ]),
                           ),
                         );

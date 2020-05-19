@@ -42,186 +42,48 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
               )
             : Column(
                 children: <Widget>[
-                  ExpansionTile(
-                    title: Text(
-                      "Dimension and Weight",
-                      style: TextStyle(
-                        letterSpacing: 1.0,
-                        color: dimensionIsExpanded
-                            ? HexColor('#C61818')
-                            : Colors.black,
-                      ),
-                    ),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: data.features.length,
+                    itemBuilder: (context, i) {
+                      return ExpansionTile(
+                        title: Text(
+                          "${data.features[i].title}",
+                          style: TextStyle(
+                            letterSpacing: 1.0,
+                            color: dimensionIsExpanded
+                                ? HexColor('#C61818')
+                                : Colors.black,
+                          ),
+                        ),
                         children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 17, bottom: 5, right: 17),
-                              child: data.features[3] == null
-                                  ? Text(
-                                      "Belum ada data Spesifikasi Dimensi dan Berat")
-                                  : Text(
-                                      "${data.features[3].description}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 17, bottom: 5, right: 17),
+                                  child: data.features[i].description == null
+                                      ? Text(
+                                          "Data dan Spesifikasi Kosong")
+                                      : Text(
+                                          "${data.features[i].description}",
+                                          style: TextStyle(
+                                            letterSpacing: 0.7,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                      ),
-                    ],
-                    onExpansionChanged: (bool val) {
-                      setState(() => this.dimensionIsExpanded = val);
-                    },
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      "Engine",
-                      style: TextStyle(
-                        letterSpacing: 1.0,
-                        color: engineIsExpanded
-                            ? HexColor('#C61818')
-                            : Colors.black,
-                      ),
-                    ),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 17, bottom: 5, right: 17),
-                              child: data.features[2].description == null
-                                  ? Text(
-                                      "Belum ada data Spesifikasi Dimensi dan Berat")
-                                  : Text(
-                                      "${data.features[2].description}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    onExpansionChanged: (bool val) {
-                      setState(() => this.engineIsExpanded = val);
-                    },
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      "Performance",
-                      style: TextStyle(
-                        letterSpacing: 1.0,
-                        color: performanceIsExpanded
-                            ? HexColor('#C61818')
-                            : Colors.black,
-                      ),
-                    ),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 17, bottom: 5, right: 17),
-                              child: data.features[0].description == null
-                                  ? Text("Belum ada data Spesifikasi Performa")
-                                  : Text(
-                                      "${data.features[0].description}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    onExpansionChanged: (bool val) {
-                      setState(() => this.performanceIsExpanded = val);
-                    },
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      "Safety",
-                      style: TextStyle(
-                        letterSpacing: 1.0,
-                        color: safetyIsExpanded
-                            ? HexColor('#C61818')
-                            : Colors.black,
-                      ),
-                    ),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 17, bottom: 5, right: 17),
-                              child: data.features[4].description == null
-                                  ? Text("Belum ada data Spesifikasi Performa")
-                                  : Text(
-                                      "${data.features[4].description}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    onExpansionChanged: (bool val) {
-                      setState(() => this.safetyIsExpanded = val);
-                    },
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      "Capacity",
-                      style: TextStyle(
-                        letterSpacing: 1.0,
-                        color: capacityIsExpanded
-                            ? HexColor('#C61818')
-                            : Colors.black,
-                      ),
-                    ),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 17, bottom: 5, right: 17),
-                              child: data.features[1].description == null
-                                  ? Text("Belum ada data Spesifikasi Kapasitas")
-                                  : Text(
-                                      "${data.features[1].description}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    onExpansionChanged: (bool val) {
-                      setState(() => this.capacityIsExpanded = val);
+                        onExpansionChanged: (bool val) {
+                          setState(() => this.dimensionIsExpanded = val);
+                        },
+                      );
                     },
                   ),
                 ],
