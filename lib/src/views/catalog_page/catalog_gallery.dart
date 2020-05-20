@@ -60,31 +60,43 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 15),
-              child: Text(
-                "Interior",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.0,
-                  fontSize: 15,
+        child: data.galleriesExterior.isEmpty &&
+                data.galleriesInterior.isEmpty &&
+                data.galleriesSafety.isEmpty
+            ? Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 100),
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset("assets/icons/no_data.png", height: 200),
+                      Text(
+                        "Data gambar kosong",
+                        style: TextStyle(
+                            letterSpacing: 1,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-            data.galleriesInterior.isEmpty
-                ? Center(
-                    child: Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset("assets/icons/no_data.png", height: 180),
-                      ],
-                    ),
-                  ))
-                : Padding(
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  data.galleriesInterior.isEmpty
+                      ? Text("")
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 15),
+                          child: Text(
+                            "Interior",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                  Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: CarouselSlider.builder(
                       initialPage: 1,
@@ -134,28 +146,20 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                       },
                     ),
                   ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 15),
-              child: Text(
-                "Exterior",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.0,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            data.galleriesExterior.isEmpty
-                ? Center(
-                    child: Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset("assets/icons/no_data.png", height: 180),
-                      ],
-                    ),
-                  ))
-                : Padding(
+                  data.galleriesExterior.isEmpty
+                      ? Text("")
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 15),
+                          child: Text(
+                            "Exterior",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                  Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: CarouselSlider.builder(
                       initialPage: 1,
@@ -205,28 +209,20 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                       },
                     ),
                   ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 15),
-              child: Text(
-                "Keamanan",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.0,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            data.galleriesSafety.isEmpty
-                ? Center(
-                    child: Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset("assets/icons/no_data.png", height: 180),
-                      ],
-                    ),
-                  ))
-                : Padding(
+                  data.galleriesSafety.isEmpty
+                      ? Text("")
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 15),
+                          child: Text(
+                            "Keamanan",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                  Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: CarouselSlider.builder(
                       initialPage: 1,
@@ -276,8 +272,8 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                       },
                     ),
                   ),
-          ],
-        ),
+                ],
+              ),
       ),
     );
   }

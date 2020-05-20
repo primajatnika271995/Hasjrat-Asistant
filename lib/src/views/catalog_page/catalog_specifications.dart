@@ -30,13 +30,14 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: data.specifications.isEmpty || data.specifications == null
-            ? Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 100),
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset("assets/icons/no_data.png", height: 200),
-                    ],
+            ? Padding(
+                padding: const EdgeInsets.only(top: 20, left: 15),
+                child: Text(
+                  "Data Spesifikasi Tidak Ada",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                    fontSize: 16,
                   ),
                 ),
               )
@@ -48,7 +49,8 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                     itemCount: data.specifications.length,
                     itemBuilder: (context, i) {
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 5, left: 8, right: 8),
+                        padding:
+                            const EdgeInsets.only(bottom: 5, left: 8, right: 8),
                         child: Card(
                           elevation: 2,
                           child: Container(
@@ -64,23 +66,41 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                                   children: <Widget>[
                                     ListTile(
                                       title: Text("Mesin"),
-                                      subtitle: Text(
-                                          "${data.specifications[i].engine}"),
+                                      subtitle: data.specifications[i].engine ==
+                                              null
+                                          ? Text(
+                                              "Tidak ada data spesifikasi mesin")
+                                          : Text(
+                                              "${data.specifications[i].engine}"),
                                     ),
                                     ListTile(
                                       title: Text("Dimensi dan Berat"),
-                                      subtitle: Text(
-                                          "${data.specifications[i].dimensionHeight}"),
+                                      subtitle: data.specifications[i]
+                                                  .dimensionHeight ==
+                                              null
+                                          ? Text(
+                                              "Tidak ada data spesifikasi Dimensi dan Berat")
+                                          : Text(
+                                              "${data.specifications[i].dimensionHeight}"),
                                     ),
                                     ListTile(
                                       title: Text("Sasis"),
-                                      subtitle: Text(
-                                          "${data.specifications[i].chasis}"),
+                                      subtitle: data.specifications[i].chasis ==
+                                              null
+                                          ? Text(
+                                              "Tidak ada data spesifikasi Sasis")
+                                          : Text(
+                                              "${data.specifications[i].chasis}"),
                                     ),
                                     ListTile(
                                       title: Text("Kapasitas"),
-                                      subtitle: Text(
-                                          "${data.specifications[i].capacity}"),
+                                      subtitle: data
+                                                  .specifications[i].capacity ==
+                                              null
+                                          ? Text(
+                                              "Tidak ada data spesifikasi Kapasitas")
+                                          : Text(
+                                              "${data.specifications[i].capacity}"),
                                     ),
                                   ],
                                 ),
