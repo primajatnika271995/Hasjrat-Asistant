@@ -125,7 +125,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
           elevation: 1,
           titleSpacing: 0,
           title: Text(
-            "${data.itemClass1}",
+            "${data.itemModel}",
             // "test data",
             style: TextStyle(
               color: Colors.black,
@@ -311,7 +311,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
             Column(
               children: <Widget>[
                 Text(
-                  "${dataCatalog.itemClass1}",
+                  "${dataCatalog.itemModel}",
                   style: TextStyle(
                     fontSize: 16,
                     letterSpacing: 1.0,

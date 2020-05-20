@@ -259,7 +259,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Text(
-                                                "${data.itemClass1}",
+                                                "${data.itemModel}",
                                                 style: TextStyle(
                                                   letterSpacing: 0.8,
                                                   fontSize: 18,

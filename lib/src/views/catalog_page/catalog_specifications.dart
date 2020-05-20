@@ -29,7 +29,7 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: data.features.isEmpty || data.features == null
+        child: data.specifications.isEmpty || data.specifications == null
             ? Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 100),
@@ -45,44 +45,52 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: data.features.length,
+                    itemCount: data.specifications.length,
                     itemBuilder: (context, i) {
-                      return ExpansionTile(
-                        title: Text(
-                          "${data.features[i].title}",
-                          style: TextStyle(
-                            letterSpacing: 1.0,
-                            color: dimensionIsExpanded
-                                ? HexColor('#C61818')
-                                : Colors.black,
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 5, left: 8, right: 8),
+                        child: Card(
+                          elevation: 2,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: ExpansionTile(
+                              title: Text(
+                                "${data.itemModel} Tipe ${data.specifications[i].itemType}",
+                                style: TextStyle(
+                                    letterSpacing: 1.0, color: Colors.black),
+                              ),
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: Text("Mesin"),
+                                      subtitle: Text(
+                                          "${data.specifications[i].engine}"),
+                                    ),
+                                    ListTile(
+                                      title: Text("Dimensi dan Berat"),
+                                      subtitle: Text(
+                                          "${data.specifications[i].dimensionHeight}"),
+                                    ),
+                                    ListTile(
+                                      title: Text("Sasis"),
+                                      subtitle: Text(
+                                          "${data.specifications[i].chasis}"),
+                                    ),
+                                    ListTile(
+                                      title: Text("Kapasitas"),
+                                      subtitle: Text(
+                                          "${data.specifications[i].capacity}"),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                              onExpansionChanged: (bool val) {
+                                setState(() => this.dimensionIsExpanded = val);
+                              },
+                            ),
                           ),
                         ),
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 17, bottom: 5, right: 17),
-                                  child: data.features[i].description == null
-                                      ? Text(
-                                          "Data dan Spesifikasi Kosong")
-                                      : Text(
-                                          "${data.features[i].description}",
-                                          style: TextStyle(
-                                            letterSpacing: 0.7,
-                                            fontSize: 13,
-                                          ),
-                                        ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                        onExpansionChanged: (bool val) {
-                          setState(() => this.dimensionIsExpanded = val);
-                        },
                       );
                     },
                   ),
