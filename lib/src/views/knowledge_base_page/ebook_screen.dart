@@ -95,7 +95,7 @@ class _EbookScreenState extends State<EbookScreen> {
                   Expanded(
                     child: GridView.builder(
                       physics: BouncingScrollPhysics(),
-                      itemCount: state.salesData.data.where((f) => f.urlFile != null).toList().length,
+                      itemCount: state.salesData.data.where((f) => f.urlFile != null && f.publish == true && f.draft != true).toList().length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: 3 / 4,
@@ -104,7 +104,7 @@ class _EbookScreenState extends State<EbookScreen> {
                       ),
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       itemBuilder: (context, i) {
-                        var data = state.salesData.data.where((f) => f.urlFile != null).toList()[i];
+                        var data = state.salesData.data.where((f) => f.urlFile != null && f.publish == true && f.draft != true).toList()[i];
                         return GestureDetector(
                           onTap: () {},
                           child: Card(
