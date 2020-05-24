@@ -197,7 +197,7 @@ class _DetailsCatalogViewState extends State<DetailsCatalogView> {
                     _onBookTestDrive();
                   },
                   child: Text(
-                    'Layanan Uji Coba',
+                    'Test Drive',
                     style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.white,
