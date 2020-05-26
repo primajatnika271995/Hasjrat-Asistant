@@ -29,199 +29,89 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: data.features.isEmpty || data.features == null
-            ? Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 100),
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset("assets/icons/no_data.png", height: 200),
-                    ],
+        child: data.specifications.isEmpty || data.specifications == null
+            ? Padding(
+                padding: const EdgeInsets.only(top: 20, left: 15),
+                child: Text(
+                  "Data Spesifikasi Tidak Ada",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                    fontSize: 16,
                   ),
                 ),
               )
             : Column(
                 children: <Widget>[
-                  ExpansionTile(
-                    title: Text(
-                      "Dimension and Weight",
-                      style: TextStyle(
-                        letterSpacing: 1.0,
-                        color: dimensionIsExpanded
-                            ? HexColor('#C61818')
-                            : Colors.black,
-                      ),
-                    ),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 17, bottom: 5, right: 17),
-                              child: data.features[3] == null
-                                  ? Text(
-                                      "Belum ada data Spesifikasi Dimensi dan Berat")
-                                  : Text(
-                                      "${data.features[3].description}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
-                                      ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: data.specifications.length,
+                    itemBuilder: (context, i) {
+                      return Padding(
+                        padding:
+                            const EdgeInsets.only(bottom: 5, left: 8, right: 8),
+                        child: Card(
+                          elevation: 2,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: ExpansionTile(
+                              title: Text(
+                                "${data.itemModel} Tipe ${data.specifications[i].itemType}",
+                                style: TextStyle(
+                                    letterSpacing: 1.0, color: Colors.black),
+                              ),
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: Text("Mesin"),
+                                      subtitle: data.specifications[i].engine ==
+                                              null
+                                          ? Text(
+                                              "Tidak ada data spesifikasi mesin")
+                                          : Text(
+                                              "${data.specifications[i].engine}"),
                                     ),
+                                    ListTile(
+                                      title: Text("Dimensi dan Berat"),
+                                      subtitle: data.specifications[i]
+                                                  .dimensionHeight ==
+                                              null
+                                          ? Text(
+                                              "Tidak ada data spesifikasi Dimensi dan Berat")
+                                          : Text(
+                                              "${data.specifications[i].dimensionHeight}"),
+                                    ),
+                                    ListTile(
+                                      title: Text("Sasis"),
+                                      subtitle: data.specifications[i].chasis ==
+                                              null
+                                          ? Text(
+                                              "Tidak ada data spesifikasi Sasis")
+                                          : Text(
+                                              "${data.specifications[i].chasis}"),
+                                    ),
+                                    ListTile(
+                                      title: Text("Kapasitas"),
+                                      subtitle: data
+                                                  .specifications[i].capacity ==
+                                              null
+                                          ? Text(
+                                              "Tidak ada data spesifikasi Kapasitas")
+                                          : Text(
+                                              "${data.specifications[i].capacity}"),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                              onExpansionChanged: (bool val) {
+                                setState(() => this.dimensionIsExpanded = val);
+                              },
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                    onExpansionChanged: (bool val) {
-                      setState(() => this.dimensionIsExpanded = val);
-                    },
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      "Engine",
-                      style: TextStyle(
-                        letterSpacing: 1.0,
-                        color: engineIsExpanded
-                            ? HexColor('#C61818')
-                            : Colors.black,
-                      ),
-                    ),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 17, bottom: 5, right: 17),
-                              child: data.features[2].description == null
-                                  ? Text(
-                                      "Belum ada data Spesifikasi Dimensi dan Berat")
-                                  : Text(
-                                      "${data.features[2].description}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    onExpansionChanged: (bool val) {
-                      setState(() => this.engineIsExpanded = val);
-                    },
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      "Performance",
-                      style: TextStyle(
-                        letterSpacing: 1.0,
-                        color: performanceIsExpanded
-                            ? HexColor('#C61818')
-                            : Colors.black,
-                      ),
-                    ),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 17, bottom: 5, right: 17),
-                              child: data.features[0].description == null
-                                  ? Text("Belum ada data Spesifikasi Performa")
-                                  : Text(
-                                      "${data.features[0].description}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    onExpansionChanged: (bool val) {
-                      setState(() => this.performanceIsExpanded = val);
-                    },
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      "Safety",
-                      style: TextStyle(
-                        letterSpacing: 1.0,
-                        color: safetyIsExpanded
-                            ? HexColor('#C61818')
-                            : Colors.black,
-                      ),
-                    ),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 17, bottom: 5, right: 17),
-                              child: data.features[4].description == null
-                                  ? Text("Belum ada data Spesifikasi Performa")
-                                  : Text(
-                                      "${data.features[4].description}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    onExpansionChanged: (bool val) {
-                      setState(() => this.safetyIsExpanded = val);
-                    },
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      "Capacity",
-                      style: TextStyle(
-                        letterSpacing: 1.0,
-                        color: capacityIsExpanded
-                            ? HexColor('#C61818')
-                            : Colors.black,
-                      ),
-                    ),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 17, bottom: 5, right: 17),
-                              child: data.features[1].description == null
-                                  ? Text("Belum ada data Spesifikasi Kapasitas")
-                                  : Text(
-                                      "${data.features[1].description}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    onExpansionChanged: (bool val) {
-                      setState(() => this.capacityIsExpanded = val);
+                        ),
+                      );
                     },
                   ),
                 ],

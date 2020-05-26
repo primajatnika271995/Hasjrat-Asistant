@@ -30,7 +30,9 @@ class CatalogModel {
     List<dynamic> galleriesInterior;
     List<dynamic> galleriesExterior;
     List<dynamic> accessories;
+    List<dynamic> galleriesSafety;
     List<dynamic> features;
+    List<dynamic> specifications;
 
     CatalogModel({
         this.id,
@@ -54,7 +56,9 @@ class CatalogModel {
         this.galleriesInterior,
         this.galleriesExterior,
         this.accessories,
+        this.galleriesSafety,
         this.features,
+        this.specifications,
     });
 
     factory CatalogModel.fromJson(Map<String, dynamic> json) => CatalogModel(
@@ -79,7 +83,9 @@ class CatalogModel {
         galleriesInterior: json["galleriesInterior"] == null ? null : List<dynamic>.from(json["galleriesInterior"].map((x) => x)),
         galleriesExterior: json["galleriesExterior"] == null ? null : List<dynamic>.from(json["galleriesExterior"].map((x) => x)),
         accessories: json["accessories"] == null ? null : List<dynamic>.from(json["accessories"].map((x) => x)),
+        galleriesSafety: json["galleriesSafety"] == null ? null : List<dynamic>.from(json["galleriesSafety"].map((x) => x)),
         features: json["features"] == null ? null : List<dynamic>.from(json["features"].map((x) => x)),
+        specifications: json["specifications"] == null ? null : List<dynamic>.from(json["specifications"].map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
@@ -104,7 +110,9 @@ class CatalogModel {
         "galleriesInterior": galleriesInterior == null ? null : List<dynamic>.from(galleriesInterior.map((x) => x)),
         "galleriesExterior": galleriesExterior == null ? null : List<dynamic>.from(galleriesExterior.map((x) => x)),
         "accessories": accessories == null ? null : List<dynamic>.from(accessories.map((x) => x)),
+        "galleriesSafety": galleriesSafety == null ? null : List<dynamic>.from(galleriesSafety.map((x) => x)),
         "features": features == null ? null : List<dynamic>.from(features.map((x) => x)),
+        "specifications": specifications == null ? null : List<dynamic>.from(specifications.map((x) => x)),
     };
 }
 

@@ -21,8 +21,8 @@ class DetailCatalogModel {
     String category;
     String createdBy;
     String createdDate;
-    dynamic lastUpdateBy;
-    dynamic lastUpdateDate;
+    String lastUpdateBy;
+    String lastUpdateDate;
     bool enabled;
     bool archive;
     bool draft;
@@ -30,7 +30,9 @@ class DetailCatalogModel {
     List<Feature> galleriesInterior;
     List<Feature> galleriesExterior;
     List<dynamic> accessories;
+    List<dynamic> galleriesSafety;
     List<Feature> features;
+    List<Specification> specifications;
 
     DetailCatalogModel({
         this.id,
@@ -54,7 +56,9 @@ class DetailCatalogModel {
         this.galleriesInterior,
         this.galleriesExterior,
         this.accessories,
+        this.galleriesSafety,
         this.features,
+        this.specifications,
     });
 
     factory DetailCatalogModel.fromJson(Map<String, dynamic> json) => DetailCatalogModel(
@@ -70,8 +74,8 @@ class DetailCatalogModel {
         category: json["category"] == null ? null : json["category"],
         createdBy: json["createdBy"] == null ? null : json["createdBy"],
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
-        lastUpdateBy: json["lastUpdateBy"],
-        lastUpdateDate: json["lastUpdateDate"],
+        lastUpdateBy: json["lastUpdateBy"] == null ? null : json["lastUpdateBy"],
+        lastUpdateDate: json["lastUpdateDate"] == null ? null : json["lastUpdateDate"],
         enabled: json["enabled"] == null ? null : json["enabled"],
         archive: json["archive"] == null ? null : json["archive"],
         draft: json["draft"] == null ? null : json["draft"],
@@ -79,7 +83,9 @@ class DetailCatalogModel {
         galleriesInterior: json["galleriesInterior"] == null ? null : List<Feature>.from(json["galleriesInterior"].map((x) => Feature.fromJson(x))),
         galleriesExterior: json["galleriesExterior"] == null ? null : List<Feature>.from(json["galleriesExterior"].map((x) => Feature.fromJson(x))),
         accessories: json["accessories"] == null ? null : List<dynamic>.from(json["accessories"].map((x) => x)),
+        galleriesSafety: json["galleriesSafety"] == null ? null : List<dynamic>.from(json["galleriesSafety"].map((x) => x)),
         features: json["features"] == null ? null : List<Feature>.from(json["features"].map((x) => Feature.fromJson(x))),
+        specifications: json["specifications"] == null ? null : List<Specification>.from(json["specifications"].map((x) => Specification.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -95,8 +101,8 @@ class DetailCatalogModel {
         "category": category == null ? null : category,
         "createdBy": createdBy == null ? null : createdBy,
         "createdDate": createdDate == null ? null : createdDate,
-        "lastUpdateBy": lastUpdateBy,
-        "lastUpdateDate": lastUpdateDate,
+        "lastUpdateBy": lastUpdateBy == null ? null : lastUpdateBy,
+        "lastUpdateDate": lastUpdateDate == null ? null : lastUpdateDate,
         "enabled": enabled == null ? null : enabled,
         "archive": archive == null ? null : archive,
         "draft": draft == null ? null : draft,
@@ -104,7 +110,9 @@ class DetailCatalogModel {
         "galleriesInterior": galleriesInterior == null ? null : List<dynamic>.from(galleriesInterior.map((x) => x.toJson())),
         "galleriesExterior": galleriesExterior == null ? null : List<dynamic>.from(galleriesExterior.map((x) => x.toJson())),
         "accessories": accessories == null ? null : List<dynamic>.from(accessories.map((x) => x)),
+        "galleriesSafety": galleriesSafety == null ? null : List<dynamic>.from(galleriesSafety.map((x) => x)),
         "features": features == null ? null : List<dynamic>.from(features.map((x) => x.toJson())),
+        "specifications": specifications == null ? null : List<dynamic>.from(specifications.map((x) => x.toJson())),
     };
 }
 
@@ -165,5 +173,41 @@ class Feature {
         "image": image == null ? null : image,
         "title": title == null ? null : title,
         "description": description == null ? null : description,
+    };
+}
+
+class Specification {
+    String id;
+    String itemType;
+    String dimensionHeight;
+    String engine;
+    String chasis;
+    String capacity;
+
+    Specification({
+        this.id,
+        this.itemType,
+        this.dimensionHeight,
+        this.engine,
+        this.chasis,
+        this.capacity,
+    });
+
+    factory Specification.fromJson(Map<String, dynamic> json) => Specification(
+        id: json["id"] == null ? null : json["id"],
+        itemType: json["itemType"] == null ? null : json["itemType"],
+        dimensionHeight: json["dimensionHeight"] == null ? null : json["dimensionHeight"],
+        engine: json["engine"] == null ? null : json["engine"],
+        chasis: json["chasis"] == null ? null : json["chasis"],
+        capacity: json["capacity"] == null ? null : json["capacity"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id == null ? null : id,
+        "itemType": itemType == null ? null : itemType,
+        "dimensionHeight": dimensionHeight == null ? null : dimensionHeight,
+        "engine": engine == null ? null : engine,
+        "chasis": chasis == null ? null : chasis,
+        "capacity": capacity == null ? null : capacity,
     };
 }

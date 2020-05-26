@@ -60,13 +60,22 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
-        child: data.galleriesExterior.isEmpty && data.galleriesInterior.isEmpty
+        child: data.galleriesExterior.isEmpty &&
+                data.galleriesInterior.isEmpty &&
+                data.galleriesSafety.isEmpty
             ? Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 100),
                   child: Column(
                     children: <Widget>[
                       Image.asset("assets/icons/no_data.png", height: 200),
+                      Text(
+                        "Data gambar kosong",
+                        style: TextStyle(
+                            letterSpacing: 1,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ],
                   ),
                 ),
@@ -74,17 +83,19 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, top: 15),
-                    child: Text(
-                      "Interior",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
+                  data.galleriesInterior.isEmpty
+                      ? Text("")
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 15),
+                          child: Text(
+                            "Interior",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: CarouselSlider.builder(
@@ -111,23 +122,44 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                                 child: Image.network("${valueData.image}",
                                     fit: BoxFit.cover, width: 1000.0),
                               ),
+                              valueData.description == null
+                                  ? SizedBox()
+                                  : Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, bottom: 10),
+                                        child: Text(
+                                          "${valueData.description}",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.white.withOpacity(0.7),
+                                              fontSize: 12,
+                                              letterSpacing: 1,
+                                              fontWeight: FontWeight.w900),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
                             ]),
                           ),
                         );
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, top: 15),
-                    child: Text(
-                      "Exterior",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
+                  data.galleriesExterior.isEmpty
+                      ? Text("")
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 15),
+                          child: Text(
+                            "Exterior",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: CarouselSlider.builder(
@@ -154,6 +186,87 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                                 child: Image.network("${valueData.image}",
                                     fit: BoxFit.cover, width: 1000.0),
                               ),
+                              valueData.description == null
+                                  ? SizedBox()
+                                  : Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, bottom: 10),
+                                        child: Text(
+                                          "${valueData.description}",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.white.withOpacity(0.7),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w900),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                            ]),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  data.galleriesSafety.isEmpty
+                      ? Text("")
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 15),
+                          child: Text(
+                            "Keamanan",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: CarouselSlider.builder(
+                      initialPage: 1,
+                      autoPlay: false,
+                      enlargeCenterPage: true,
+                      viewportFraction: 0.9,
+                      autoPlayCurve: Curves.bounceIn,
+                      reverse: false,
+                      height: 180,
+                      enableInfiniteScroll: false,
+                      aspectRatio: 2.0,
+                      itemCount: data.galleriesSafety.length,
+                      itemBuilder: (context, index) {
+                        var valueData = data.galleriesSafety[index];
+                        return Container(
+                          margin: EdgeInsets.all(5.0),
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5.0)),
+                            child: Stack(children: <Widget>[
+                              Hero(
+                                tag: "promotion-tag${data.id}",
+                                child: Image.network("${valueData.image}",
+                                    fit: BoxFit.cover, width: 1000.0),
+                              ),
+                              valueData.description == null
+                                  ? SizedBox()
+                                  : Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, bottom: 10),
+                                        child: Text(
+                                          "${valueData.description}",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.white.withOpacity(0.7),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w900),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
                             ]),
                           ),
                         );

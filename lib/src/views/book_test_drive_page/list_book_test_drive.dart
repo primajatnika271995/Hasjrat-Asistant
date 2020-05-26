@@ -250,21 +250,21 @@ class SlidableBookTestDriveView extends StatelessWidget {
             ),
             child: Row(
               children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 5, top: 5, bottom: 15),
-                        child: Image.network(
-                          "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png",
-                          height: 70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Expanded(
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: <Widget>[
+                //       Padding(
+                //         padding:
+                //             const EdgeInsets.only(left: 5, top: 5, bottom: 15),
+                //         child: Image.network(
+                //           "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png",
+                //           height: 70,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10),
