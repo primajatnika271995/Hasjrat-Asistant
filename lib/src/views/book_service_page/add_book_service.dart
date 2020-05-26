@@ -32,6 +32,8 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
   VoidCallback _onStepContinue;
   VoidCallback _onStepCancel;
 
+  String branchName;
+
   final dateFormat = DateFormat("yyyy-MM-dd");
   final timeFormat = DateFormat("Hms");
 
@@ -268,9 +270,16 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
     ));
   }
 
+  void getPreferences() async {
+    branchName = await SharedPreferencesHelper.getSalesBrach();
+    setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
+    getPreferences();
+
     // ignore: close_sinks
     final bookingDriveBloc = BlocProvider.of<BookingDriveBloc>(context);
     bookingDriveBloc.add(FetchStation());
@@ -324,12 +333,14 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
 
           if (state is StationListSuccess) {
             state.value.forEach((f) {
-              _stationList.add(SelectorStation(
-                name: f.name,
-                address: f.address,
-                email: f.email,
-                emailKabeng: f.emailKabeng,
-              ));
+              if (f.name.toLowerCase().contains(branchName.toLowerCase())) {
+                _stationList.add(SelectorStation(
+                  name: f.name,
+                  address: f.address,
+                  email: f.email,
+                  emailKabeng: f.emailKabeng,
+                ));
+              }
             });
           }
 
