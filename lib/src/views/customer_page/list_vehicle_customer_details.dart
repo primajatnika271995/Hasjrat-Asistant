@@ -42,13 +42,13 @@ class _VehicleCustomerDetailsListViewState
                     padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
                     child: Row(
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(right: 25),
-                          child: Image.network(
-                            "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png",
-                            height: 70,
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(right: 25),
+                        //   child: Image.network(
+                        //     "https://m.toyota.astra.co.id/sites/default/files/2019-04/car-pearl.png",
+                        //     height: 70,
+                        //   ),
+                        // ),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

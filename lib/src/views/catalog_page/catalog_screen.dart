@@ -18,7 +18,7 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
-  String catalogCategori = "mpv";
+  String catalogCategori = "hatchback";
 
   void _onSeeDetails(String heroName, CatalogModel data) {
     Navigator.of(context).push(
@@ -63,32 +63,32 @@ class _CatalogScreenState extends State<CatalogScreen> {
     switch (id) {
       case 0:
         setState(() {
-          catalogCategori = "mpv";
+          catalogCategori = "hatchback";
         });
         break;
       case 1:
         setState(() {
-          catalogCategori = "hatchback";
+          catalogCategori = "suv";
         });
         break;
       case 2:
         setState(() {
-          catalogCategori = "suv";
+          catalogCategori = "sedan";
         });
         break;
       case 3:
         setState(() {
-          catalogCategori = "sedan";
+          catalogCategori = "mpv";
         });
         break;
       case 4:
         setState(() {
-          catalogCategori = "sport";
+          catalogCategori = "commercial";
         });
         break;
       case 5:
         setState(() {
-          catalogCategori = "commercial";
+          catalogCategori = "sport";
         });
         break;
       case 6:
@@ -141,13 +141,13 @@ class _CatalogScreenState extends State<CatalogScreen> {
                 tabFilter(id);
               },
               list: [
-                "MPV",
-                "HatchBack",
+                "Hatchback",
                 "SUV",
                 "Sedan",
+                "Mpv",
+                "Commercial",
                 "Sport",
-                "Komersial",
-                "Hibrid",
+                "Hybrid",
               ],
             ),
           ),
