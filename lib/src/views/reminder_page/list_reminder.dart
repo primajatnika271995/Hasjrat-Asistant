@@ -488,6 +488,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                 value.timeReminder,
                 value.notes,
                 'Pending',
+                value.createdBy,
               ),
               value.id,
             );
@@ -618,6 +619,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                 value.timeReminder,
                 value.notes,
                 'Pending',
+                value.createdBy,
               ),
               value.id,
             );
@@ -747,6 +749,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                 value.timeReminder,
                 value.notes,
                 'Pending',
+                value.createdBy,
               ),
               value.id,
             );

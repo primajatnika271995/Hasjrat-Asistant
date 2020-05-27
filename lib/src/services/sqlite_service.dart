@@ -14,6 +14,7 @@ class SqliteService {
   static const timeReminder = 'time_reminder';
   static const status = 'status';
   static const notes = 'notes';
+  static const createdBy = 'created_by';
   SqliteAcces _dbHelper = new SqliteAcces();
 
   Future<int> insert(ReminderSqlite reminder) async {
@@ -26,13 +27,14 @@ class SqliteService {
         ${SqliteService.dateReminder},
         ${SqliteService.timeReminder},
         ${SqliteService.notes},
-        ${SqliteService.status}
+        ${SqliteService.status},
+        ${SqliteService.createdBy}
       ) VALUES (
-        ?, ?, ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?, ?, ?
       )
     ''';
 
-    List<dynamic> params = [reminder.taskType, reminder.taskDescription, reminder.customerName, reminder.dateReminder, reminder.timeReminder, reminder.notes, reminder.status];
+    List<dynamic> params = [reminder.taskType, reminder.taskDescription, reminder.customerName, reminder.dateReminder, reminder.timeReminder, reminder.notes, reminder.status, reminder.createdBy];
     final result = await db.rawInsert(sql, params);
     return result;
   }
@@ -46,14 +48,22 @@ class SqliteService {
           ${SqliteService.dateReminder} = ?,
           ${SqliteService.timeReminder} = ?,
           ${SqliteService.notes} = ?,
-          ${SqliteService.status} = ?
+          ${SqliteService.status} = ?,
+          ${SqliteService.createdBy} = ?
       WHERE ${SqliteService.id} = ?    
     ''';
 
-    List<dynamic> params = [reminder.taskType, reminder.taskDescription, reminder.dateReminder, reminder.timeReminder, reminder.notes, reminder.status, id];
+    List<dynamic> params = [reminder.taskType, reminder.taskDescription, reminder.dateReminder, reminder.timeReminder, reminder.notes, reminder.status, reminder.createdBy, id];
     final result = await db.rawUpdate(sql, params);
 
     return result;
+  }
+
+  Future<int> deleteFollowupReminder() async {
+    Database db = await _dbHelper.initDB();
+
+    int count = await db.delete(SqliteService.todoTable, where: 'id=?', whereArgs: ['Import DMS']);
+    return count;
   }
 
   Future<int> delete(int id) async {

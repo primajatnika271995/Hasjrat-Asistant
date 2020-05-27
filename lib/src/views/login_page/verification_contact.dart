@@ -60,12 +60,17 @@ class _VerificationContactViewState extends State<VerificationContactView> {
     }
   }
 
+  void onDeleteFollowupReminder() async {
+    await _dbHelper.deleteFollowupReminder();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
+    onDeleteFollowupReminder();
     // ignore: close_sinks
-    final bookingDriveBloc = BlocProvider.of<FollowupBloc>(context);
-    bookingDriveBloc.add(FetchFollowupReminder());
+    final reminder = BlocProvider.of<FollowupBloc>(context);
+    reminder.add(FetchFollowupReminder());
     super.initState();
   }
 
@@ -106,6 +111,7 @@ class _VerificationContactViewState extends State<VerificationContactView> {
                   timeFormat.format(f.prospectDate).toString(),
                   "Reminder Followup",
                   'Upcoming',
+                  'Import DMS'
                 ));
               } else if (f.prospectDate != null) {
                 log.info("Now Data");
@@ -117,6 +123,7 @@ class _VerificationContactViewState extends State<VerificationContactView> {
                   timeFormat.format(f.prospectDate).toString(),
                   "Reminder Followup",
                   'Now',
+                  'Import DMS'
                 ));
               }
             });
