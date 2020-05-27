@@ -65,9 +65,13 @@ class CatalogService {
     }
   }
 
-  Future bannerPromotion() async {
+  Future bannerPromotion(String branchCode, String outletCode) async {
     final response = await _dio.post(
       UriApi.bannerPromotionUri,
+      queryParameters: {
+        "branchCode": branchCode,
+        "outletCode": outletCode,
+      },
       options: Options(
         headers: {
           'Content-Type': 'application/json',

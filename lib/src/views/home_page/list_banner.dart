@@ -10,6 +10,7 @@ import 'package:salles_tools/src/models/banner_model.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/home_page/details_banner.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 
 class BannerListView extends StatefulWidget {
   final Function callback;
@@ -55,13 +56,19 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
     );
   }
 
+  void getPreferences() async {
+    var branchCode = await SharedPreferencesHelper.getSalesBrachId();
+    var outletCode = await SharedPreferencesHelper.getSalesOutletId();
+
+    // ignore: close_sinks
+    final bannerBloc = BlocProvider.of<CatalogBloc>(context);
+    bannerBloc.add(FetchBannerPromotionList(branchCode, outletCode));
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    // ignore: close_sinks
-    final bannerBloc = BlocProvider.of<CatalogBloc>(context);
-    bannerBloc.add(FetchBannerPromotionList());
-
+    getPreferences();
     Timer(Duration(seconds: 3), () {
       setState(() => loadImage = false);
     });

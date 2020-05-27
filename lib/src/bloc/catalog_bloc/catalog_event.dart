@@ -30,9 +30,14 @@ class FetchDetailCatalog extends CatalogEvent {
 }
 
 class FetchBannerPromotionList extends CatalogEvent {
+  final String branchCode;
+  final String outletCode;
+
+  FetchBannerPromotionList(this.branchCode, this.outletCode);
+
   @override
   // TODO: implement props
-  List<Object> get props => [];
+  List<Object> get props => [branchCode, outletCode];
 }
 
 class FetchBrosurList extends CatalogEvent {
