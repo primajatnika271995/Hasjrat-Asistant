@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _onBookTestDrive();
                 },
                 child: Text(
-                  'Pemesanan\nUji Jalan',
+                  'Booking\nTest Drive',
                   style: TextStyle(
                     color: Colors.white,
                     letterSpacing: 1.0,
@@ -123,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _onBookService();
                 },
                 child: Text(
-                  'Layanan\nPemesanan',
+                  'Booking\nService',
                   style: TextStyle(
                     color: Colors.white,
                     letterSpacing: 1.0,

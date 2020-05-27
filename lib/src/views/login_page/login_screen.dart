@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salles_tools/src/bloc/followup_bloc/followup_bloc.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_event.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_state.dart';
 import 'package:salles_tools/src/bloc/register_bloc/register_bloc.dart';
+import 'package:salles_tools/src/services/followup_service.dart';
 import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
@@ -27,7 +29,10 @@ class _LoginScreenState extends State<LoginScreen> {
   void _onNavVerification() {
     Navigator.of(context).push(
         PageRouteBuilder(
-          pageBuilder: (_, __, ___) => VerificationContactView(),
+          pageBuilder: (_, __, ___) => BlocProvider<FollowupBloc>(
+            create: (context) => FollowupBloc(FollowupService()),
+            child: VerificationContactView(),
+          ),
           transitionDuration: Duration(milliseconds: 300),
           transitionsBuilder:
               (_, Animation<double> animation, __, Widget child) {

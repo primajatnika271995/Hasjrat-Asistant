@@ -128,7 +128,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                       return ListView.builder(
                         itemCount: snapshot.data.length,
                         shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
+                        physics: ScrollPhysics(),
                         itemBuilder: (context, index) {
                           return listDataPending(snapshot.data[index], index);
                         },
@@ -165,7 +165,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                       return ListView.builder(
                         itemCount: snapshot.data.length,
                         shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
+                        physics: ScrollPhysics(),
                         itemBuilder: (context, index) {
                           return listDataToday(snapshot.data[index], index);
                         },
@@ -202,7 +202,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                       return ListView.builder(
                         itemCount: snapshot.data.length,
                         shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
+                        physics: ScrollPhysics(),
                         itemBuilder: (context, index) {
                           return listDataTomorrow(snapshot.data[index], index);
                         },
@@ -239,7 +239,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                       return ListView.builder(
                         itemCount: snapshot.data.length,
                         shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
+                        physics: ScrollPhysics(),
                         itemBuilder: (context, index) {
                           return listDataUpcoming(snapshot.data[index], index);
                         },
