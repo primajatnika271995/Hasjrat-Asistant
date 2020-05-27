@@ -113,7 +113,7 @@ class _VerificationContactViewState extends State<VerificationContactView> {
                   "Call",
                   "${f.cardName} | Reminder Follow Up",
                   f.cardName,
-                  dateFormat.format(DateTime.now()).toString(),
+                  dateFormat.format(f.prospectDate).toString(),
                   timeFormat.format(f.prospectDate).toString(),
                   "Reminder Followup",
                   'Now',
