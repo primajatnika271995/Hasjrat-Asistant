@@ -7,6 +7,12 @@ class FollowupEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class FetchFollowupReminder extends FollowupEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
 class FetchFollowupMethode extends FollowupEvent {
   @override
   // TODO: implement props

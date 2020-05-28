@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/classification_followup_model.dart';
 import 'package:salles_tools/src/models/followup_methode_model.dart';
+import 'package:salles_tools/src/models/followup_reminder_model.dart';
 
 class FollowupState extends Equatable {
   @override
@@ -26,6 +27,17 @@ class FollowupFailed extends FollowupState {
 
 class FollowupError extends FollowupState {
 
+}
+
+class FollowupReminderSuccess extends FollowupState {
+  final _data;
+
+  FollowupReminderSuccess(this._data);
+  FollowUpReminderModel get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
 }
 
 class FollowupMethodeSuccess extends FollowupState {

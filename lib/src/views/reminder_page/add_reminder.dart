@@ -13,6 +13,7 @@ import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 
 class ReminderAddView extends StatefulWidget {
   final int id;
@@ -56,6 +57,8 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   var dateSelectedFocus = new FocusNode();
   var timeSelectedFocus = new FocusNode();
   var noteFocus = new FocusNode();
+
+  String salesName;
 
   String _currentSelectTask;
   List<String> _taskList = ["Call", "Meet Up"];
@@ -180,6 +183,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
           timeSelected.text,
           notesCtrl.text,
           'Upcoming',
+          salesName,
         ));
         Navigator.of(context).pop();
       } else {
@@ -191,6 +195,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
           timeSelected.text,
           notesCtrl.text,
           'Now',
+          salesName,
         ));
         Navigator.of(context).pop();
       }
@@ -209,10 +214,16 @@ class _ReminderAddViewState extends State<ReminderAddView> {
         timeSelected.text,
         notesCtrl.text,
         'Now',
+        salesName,
       ),
       widget.id,
     );
     Navigator.of(context).pop();
+  }
+
+  void getPreferences() async {
+    salesName = await SharedPreferencesHelper.getSalesName();
+    setState(() {});
   }
 
   @override
@@ -224,6 +235,8 @@ class _ReminderAddViewState extends State<ReminderAddView> {
     dateSelected.text = widget.dateReminder;
     timeSelected.text = widget.timeReminder;
     notesCtrl.text = widget.notes;
+
+    getPreferences();
 
     // ignore: close_sinks
     final leadBloc = BlocProvider.of<LeadBloc>(context);

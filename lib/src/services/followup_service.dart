@@ -7,6 +7,7 @@ import 'package:salles_tools/src/models/classification_followup_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/error_token_expire_model.dart';
 import 'package:salles_tools/src/models/followup_methode_model.dart';
+import 'package:salles_tools/src/models/followup_reminder_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -30,6 +31,25 @@ class FollowupService {
     log.info(response.statusCode);
     if (response.statusCode == 200) {
       return compute(classificationFollowUpModelFromJson, json.encode(response.data));
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future followUpReminderList() async {
+    final response = await _dio.get(UriApi.followUpReminderUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        )
+    );
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(followUpReminderModelFromJson, json.encode(response.data));
     } else if (response.statusCode == 401) {
       return compute(errorTokenExpireFromJson, json.encode(response.data));
     } else {

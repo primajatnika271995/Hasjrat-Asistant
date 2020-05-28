@@ -3,6 +3,7 @@ import 'package:salles_tools/src/bloc/followup_bloc/followup_event.dart';
 import 'package:salles_tools/src/bloc/followup_bloc/followup_state.dart';
 import 'package:salles_tools/src/models/classification_followup_model.dart';
 import 'package:salles_tools/src/models/followup_methode_model.dart';
+import 'package:salles_tools/src/models/followup_reminder_model.dart';
 import 'package:salles_tools/src/services/followup_service.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -16,6 +17,20 @@ class FollowupBloc extends Bloc<FollowupEvent, FollowupState> {
 
   @override
   Stream<FollowupState> mapEventToState(FollowupEvent event) async* {
+    if (event is FetchFollowupReminder) {
+      try {
+        FollowUpReminderModel value = await _followupService.followUpReminderList();
+
+        if (value.data.isEmpty || value.data == null) {
+          yield FollowupFailed();
+        } else {
+          yield FollowupReminderSuccess(value);
+        }
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
+      }
+    }
+
     if (event is FetchClassificationFollowup) {
       try {
         ClassificationFollowUpModel value = await _followupService.classificationList();

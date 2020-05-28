@@ -75,7 +75,7 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
       yield CatalogLoading();
 
       try {
-        BannerModel value = await _catalogService.bannerPromotion();
+        BannerModel value = await _catalogService.bannerPromotion(event.branchCode, event.outletCode);
 
         if (value.data.isEmpty || value.data == null) {
           yield CatalogListFailed();

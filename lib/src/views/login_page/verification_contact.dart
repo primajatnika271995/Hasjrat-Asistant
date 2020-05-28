@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:salles_tools/src/bloc/followup_bloc/followup_bloc.dart';
+import 'package:salles_tools/src/bloc/followup_bloc/followup_event.dart';
+import 'package:salles_tools/src/bloc/followup_bloc/followup_state.dart';
+import 'package:salles_tools/src/models/followup_reminder_model.dart';
+import 'package:salles_tools/src/models/reminder_sqlite_model.dart';
+import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/bottom_navigation.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 
 class VerificationContactView extends StatefulWidget {
   @override
@@ -12,6 +21,10 @@ class VerificationContactView extends StatefulWidget {
 
 class _VerificationContactViewState extends State<VerificationContactView> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  SqliteService _dbHelper = SqliteService();
+
+  final dateFormat = DateFormat("dd MMMM yyyy");
+  final timeFormat = DateFormat.Hm();
 
   var contactCtrl = new TextEditingController();
 
@@ -47,6 +60,20 @@ class _VerificationContactViewState extends State<VerificationContactView> {
     }
   }
 
+  void onDeleteFollowupReminder() async {
+    await _dbHelper.deleteFollowupReminder();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    onDeleteFollowupReminder();
+    // ignore: close_sinks
+    final reminder = BlocProvider.of<FollowupBloc>(context);
+    reminder.add(FetchFollowupReminder());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,75 +92,113 @@ class _VerificationContactViewState extends State<VerificationContactView> {
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              color: Colors.white,
-              width: screenWidth(context),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 10),
-                    child: Text(
-                      "Enter your mobile number",
-                      style: TextStyle(
-                        letterSpacing: 0.8,
-                        fontSize: 17,
+      body: BlocListener<FollowupBloc, FollowupState>(
+        listener: (context, state) {
+          if (state is FollowupReminderSuccess) {
+            log.info("Store Data");
+
+            DateTime _now = DateTime.now();
+            state.value.data.forEach((f) async {
+              log.info("${dateFormat.format(f.prospectDate)}");
+
+              if (f.prospectDate != null && _now.difference(f.prospectDate).inDays <= -1) {
+                log.info("Upcoming Data");
+                await _dbHelper.insert(ReminderSqlite(
+                  "Call",
+                  "${f.cardName} | Reminder Follow Up",
+                  f.cardName,
+                  dateFormat.format(f.prospectDate).toString(),
+                  timeFormat.format(f.prospectDate).toString(),
+                  "Reminder Followup",
+                  'Upcoming',
+                  'Import DMS'
+                ));
+              } else if (f.prospectDate != null) {
+                log.info("Now Data");
+                await _dbHelper.insert(ReminderSqlite(
+                  "Call",
+                  "${f.cardName} | Reminder Follow Up",
+                  f.cardName,
+                  dateFormat.format(f.prospectDate).toString(),
+                  timeFormat.format(f.prospectDate).toString(),
+                  "Reminder Followup",
+                  'Now',
+                  'Import DMS'
+                ));
+              }
+            });
+          }
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                color: Colors.white,
+                width: screenWidth(context),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(left: 20, right: 20, top: 10),
+                      child: Text(
+                        "Enter your mobile number",
+                        style: TextStyle(
+                          letterSpacing: 0.8,
+                          fontSize: 17,
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 15, left: 20, right: 20),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: 'eg. 08111000000',
-                      ),
-                      controller: contactCtrl,
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 40, bottom: 30),
-                    child: Text(
-                      "I agree to Hasjrat Sales Tools terms, condition and privacy",
-                      style: TextStyle(
-                        letterSpacing: 0.7,
-                        fontSize: 13,
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(bottom: 15, left: 20, right: 20),
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'eg. 08111000000',
+                        ),
+                        controller: contactCtrl,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20, bottom: 30),
-                    child: Container(
-                      width: screenWidth(context),
-                      child: RaisedButton(
-                        onPressed: () {
-                          onCheckContact();
-                        },
-                        color: HexColor("#C61818"),
-                        child: Text(
-                          "Continue",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(left: 20, right: 40, bottom: 30),
+                      child: Text(
+                        "I agree to Hasjrat Sales Tools terms, condition and privacy",
+                        style: TextStyle(
+                          letterSpacing: 0.7,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                      child: Container(
+                        width: screenWidth(context),
+                        child: RaisedButton(
+                          onPressed: () {
+                            onCheckContact();
+                          },
+                          color: HexColor("#C61818"),
+                          child: Text(
+                            "Continue",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
