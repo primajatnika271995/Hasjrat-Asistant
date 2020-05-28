@@ -198,7 +198,7 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                                           style: TextStyle(
                                               color:
                                                   Colors.white.withOpacity(0.7),
-                                              fontSize: 15,
+                                              fontSize: 12,
                                               fontWeight: FontWeight.w900),
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -261,7 +261,7 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                                           style: TextStyle(
                                               color:
                                                   Colors.white.withOpacity(0.7),
-                                              fontSize: 15,
+                                              fontSize: 12,
                                               fontWeight: FontWeight.w900),
                                           overflow: TextOverflow.ellipsis,
                                         ),
