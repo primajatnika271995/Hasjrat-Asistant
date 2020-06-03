@@ -133,7 +133,7 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                                           "${valueData.description}",
                                           style: TextStyle(
                                               color:
-                                                  Colors.white.withOpacity(0.7),
+                                                  Colors.white.withOpacity(0.8),
                                               fontSize: 12,
                                               letterSpacing: 1,
                                               fontWeight: FontWeight.w900),
@@ -197,7 +197,7 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                                           "${valueData.description}",
                                           style: TextStyle(
                                               color:
-                                                  Colors.white.withOpacity(0.7),
+                                                  Colors.white.withOpacity(0.8),
                                               fontSize: 12,
                                               fontWeight: FontWeight.w900),
                                           overflow: TextOverflow.ellipsis,
@@ -260,7 +260,7 @@ class _CatalogGalleryViewState extends State<CatalogGalleryView> {
                                           "${valueData.description}",
                                           style: TextStyle(
                                               color:
-                                                  Colors.white.withOpacity(0.7),
+                                                  Colors.white.withOpacity(0.8),
                                               fontSize: 12,
                                               fontWeight: FontWeight.w900),
                                           overflow: TextOverflow.ellipsis,

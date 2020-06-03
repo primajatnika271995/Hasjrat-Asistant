@@ -123,7 +123,6 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
                 reverse: false,
                 height: 180,
                 enableInfiniteScroll: false,
-                aspectRatio: 2.0,
                 itemCount: state.value.data.length,
                 itemBuilder: (context, index) {
                   var data = state.value.data[index];
@@ -140,7 +139,7 @@ class _BannerListViewState extends State<BannerListView> with TickerProviderStat
                             tag: "promotion-tag${data.id}",
                             child: Image.network(
                                 "${data.url}",
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                                 width: 1000.0,
                             ),
                           ),

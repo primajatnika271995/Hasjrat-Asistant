@@ -8,6 +8,7 @@ import 'package:salles_tools/src/services/knowledge_base_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/knowledge_base_page/ebook_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class KnowledgeBaseScreen extends StatefulWidget {
   @override
@@ -53,22 +54,25 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
 
     _isVisible = true;
     _hideButtonController = new ScrollController();
-    _hideButtonController.addListener((){
-      if(_hideButtonController.position.userScrollDirection == ScrollDirection.reverse){
-        if(_isVisible == true) {
-          setState((){
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (_isVisible == true) {
+          setState(() {
             _isVisible = false;
           });
         }
       } else {
-        if(_hideButtonController.position.userScrollDirection == ScrollDirection.forward){
-          if(_isVisible == false) {
-            setState((){
+        if (_hideButtonController.position.userScrollDirection ==
+            ScrollDirection.forward) {
+          if (_isVisible == false) {
+            setState(() {
               _isVisible = true;
             });
           }
         }
-      }});
+      }
+    });
     super.initState();
   }
 
@@ -98,7 +102,7 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
           if (state is KnowledgeBaseLoading) {
             onLoading(context);
           }
-          
+
           if (state is KnowledgeBaseDisposeLoading) {
             Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context, rootNavigator: false).pop();
@@ -114,7 +118,7 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 17, top: 20),
                 child: Text(
-                  "FAQ",
+                  "Informasi",
                   style: TextStyle(
                     letterSpacing: 0.8,
                     fontSize: 16,
@@ -133,7 +137,8 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: <Widget>[
-                            Image.asset("assets/icons/error_banner.jpg", height: 200),
+                            Image.asset("assets/icons/error_banner.jpg",
+                                height: 200),
                             Text("502 Error Bad Gateway"),
                           ],
                         ),
@@ -150,7 +155,8 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                         padding: EdgeInsets.only(top: 100),
                         child: Column(
                           children: <Widget>[
-                            Image.asset("assets/icons/no_data.png", height: 200),
+                            Image.asset("assets/icons/no_data.png",
+                                height: 200),
                           ],
                         ),
                       ),
@@ -163,39 +169,102 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         var data = searchCtrl == null
-                            ? state.salesData.data.where((f) => f.publish == true && f.draft == false).toList()[index]
-                            : state.salesData.data.where((f) => f.publish == true && f.draft == false && f.question.toLowerCase().contains(searchCtrl.text.toLowerCase())).toList()[index];
+                            ? state.salesData.data
+                                .where((f) =>
+                                    f.publish == true && f.draft == false)
+                                .toList()[index]
+                            : state.salesData.data
+                                .where((f) =>
+                                    f.publish == true &&
+                                    f.draft == false &&
+                                    f.question.toLowerCase().contains(
+                                        searchCtrl.text.toLowerCase()))
+                                .toList()[index];
 
                         return ExpansionTile(
-                          title: Text("${data.question}",
+                          title: Text(
+                            "${data.question}",
                             style: TextStyle(
                               letterSpacing: 0.7,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                            Column(
                               children: <Widget>[
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 17, bottom: 5, right: 17),
-                                    child: Text("${data.answer}",
-                                      style: TextStyle(
-                                        letterSpacing: 0.7,
-                                        fontSize: 13,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 17, bottom: 5, right: 17),
+                                        child: Text(
+                                          "${data.answer}",
+                                          style: TextStyle(
+                                            letterSpacing: 0.7,
+                                            fontSize: 13,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
+                                data.urlFile == null
+                                    ? SizedBox()
+                                    : Padding(
+                                      padding: const EdgeInsets.only(left: 17),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(                                              
+                                              child: RaisedButton(
+                                                textColor: Colors.white,
+                                                color: HexColor('#C61818'),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Icon(Icons.picture_as_pdf, color: Colors.white),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(left: 15, right: 10),
+                                                      child: Text("Download", style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 0.8)),
+                                                    ),
+                                                  ],
+                                                ),
+                                                onPressed: () {
+                                                  launch(data.urlFile);
+                                                },
+                                                shape: new RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                    ),
                               ],
                             ),
                           ],
                         );
                       },
                       itemCount: searchCtrl == null
-                          ? state.salesData.data.where((f) => f.publish == true && f.draft == false).toList().length
-                          : state.salesData.data.where((f) => f.publish == true && f.draft == false && f.question.toLowerCase().contains(searchCtrl.text.toLowerCase())).toList().length,
+                          ? state.salesData.data
+                              .where(
+                                  (f) => f.publish == true && f.draft == false)
+                              .toList()
+                              .length
+                          : state.salesData.data
+                              .where((f) =>
+                                  f.publish == true &&
+                                  f.draft == false &&
+                                  f.question
+                                      .toLowerCase()
+                                      .contains(searchCtrl.text.toLowerCase()))
+                              .toList()
+                              .length,
                     );
                   }
 
@@ -204,18 +273,6 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
               ),
             ],
           ),
-        ),
-      ),
-      floatingActionButton: AnimatedOpacity(
-        opacity: _isVisible ? 1.0 : 0.0,
-        duration: Duration(milliseconds: 1000),
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            _onSeeEbook();
-          },
-          label: Text("Ebook"),
-          icon: Icon(Icons.picture_as_pdf),
-          backgroundColor: HexColor('#C61818'),
         ),
       ),
     );

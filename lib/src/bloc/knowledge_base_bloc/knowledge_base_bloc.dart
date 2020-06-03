@@ -5,7 +5,7 @@ import 'package:salles_tools/src/models/knowledge_base_model.dart';
 import 'package:salles_tools/src/services/knowledge_base_service.dart';
 
 class KnowledgeBaseBloc extends Bloc<KnowledgeBaseEvent, KnowledgeBaseState> {
-  KnowledgeBaseService  _knowledgeBaseService;
+  KnowledgeBaseService _knowledgeBaseService;
   KnowledgeBaseBloc(this._knowledgeBaseService);
 
   @override
@@ -26,7 +26,7 @@ class KnowledgeBaseBloc extends Bloc<KnowledgeBaseEvent, KnowledgeBaseState> {
           yield KnowledgeBaseDisposeLoading();
           yield KnowledgeBaseSuccess(value);
         }
-      } catch(err) {
+      } catch (err) {
         yield KnowledgeBaseDisposeLoading();
         yield KnowledgeBaseError();
       }
@@ -41,11 +41,10 @@ class KnowledgeBaseBloc extends Bloc<KnowledgeBaseEvent, KnowledgeBaseState> {
         if (value.data == null || value.data.isEmpty) {
           yield KnowledgeBaseFailed();
         } else {
-
           yield KnowledgeBaseDisposeLoading();
           yield KnowledgeBaseSuccess(value);
         }
-      } catch(err) {
+      } catch (err) {
         yield KnowledgeBaseDisposeLoading();
         yield KnowledgeBaseError();
       }
