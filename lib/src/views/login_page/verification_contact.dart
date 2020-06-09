@@ -100,9 +100,10 @@ class _VerificationContactViewState extends State<VerificationContactView> {
             DateTime _now = DateTime.now();
             state.value.data.forEach((f) async {
               log.info("${dateFormat.format(f.prospectDate)}");
-
-              if (f.prospectDate != null && _now.difference(f.prospectDate).inDays <= -1) {
-                log.info("Upcoming Data");
+              print('prospect date => ${_now.difference(f.prospectDate).inDays}');
+              print('difference prospect date => ${_now.difference(f.prospectDate).inDays}');
+              if (f.prospectDate != null && _now.difference(f.prospectDate).inDays == 0) {
+                log.info("Data Hari Ini");
                 await _dbHelper.insert(ReminderSqlite(
                   "Call",
                   "${f.cardName} | Reminder Follow Up",
@@ -113,8 +114,8 @@ class _VerificationContactViewState extends State<VerificationContactView> {
                   'Upcoming',
                   'Import DMS'
                 ));
-              } else if (f.prospectDate != null) {
-                log.info("Now Data");
+              } else if (f.prospectDate != null && _now.difference(f.prospectDate).inDays == 1 ) {
+                log.info("Data Besok");
                 await _dbHelper.insert(ReminderSqlite(
                   "Call",
                   "${f.cardName} | Reminder Follow Up",
@@ -123,6 +124,18 @@ class _VerificationContactViewState extends State<VerificationContactView> {
                   timeFormat.format(f.prospectDate).toString(),
                   "Reminder Followup",
                   'Now',
+                  'Import DMS'
+                ));
+              } else if (f.prospectDate != null && _now.difference(f.prospectDate).inDays >= 2) {
+                log.info("data yang akan datang 2 hari kedepan");
+                await _dbHelper.insert(ReminderSqlite(
+                  "Call",
+                  "${f.cardName} | Reminder Follow Up",
+                  f.cardName,
+                  dateFormat.format(f.prospectDate).toString(),
+                  timeFormat.format(f.prospectDate).toString(),
+                  "Reminder Followup",
+                  'Upcoming',
                   'Import DMS'
                 ));
               }

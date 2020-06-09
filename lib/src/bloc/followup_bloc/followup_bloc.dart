@@ -25,6 +25,7 @@ class FollowupBloc extends Bloc<FollowupEvent, FollowupState> {
           yield FollowupFailed();
         } else {
           yield FollowupReminderSuccess(value);
+          log.info(value);
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");

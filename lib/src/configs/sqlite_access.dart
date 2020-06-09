@@ -9,7 +9,7 @@ class SqliteAcces {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'reminder.db';
 
-    var todoDatabase = openDatabase(path, version: 2, onCreate: _createDB,);
+    var todoDatabase = openDatabase(path, version: 3, onCreate: _createDB,);
     return todoDatabase;
   }
 
@@ -23,7 +23,8 @@ class SqliteAcces {
         date_reminder TEXT,
         time_reminder TEXT,
         notes TEXT,
-        status TEXT
+        status TEXT,
+        created_by TEXT
       )
     ''');
   }

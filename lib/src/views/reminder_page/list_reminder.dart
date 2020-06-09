@@ -85,6 +85,7 @@ class _ReminderListViewState extends State<ReminderListView> {
   @override
   void initState() {
     // TODO: implement initState
+    print("ini page reminder");
     _updateListView();
     super.initState();
   }
