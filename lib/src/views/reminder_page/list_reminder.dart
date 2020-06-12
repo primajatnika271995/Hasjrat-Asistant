@@ -279,51 +279,66 @@ class _ReminderListViewState extends State<ReminderListView> {
         value: index,
         groupValue: selectionDataPending,
         title: Text(
-          '${value.taskDescription}',
+          '${value.customerName}',
           style: TextStyle(
-            fontSize: 13,
+            fontSize: 14,
             color: Colors.black,
+            fontWeight: FontWeight.w600,
           ),
         ),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 3),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                height: 18,
-                width: 55,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Text(
-                    "${value.timeReminder}",
+              Text(
+                    'Notes: ${value.notes}',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w400,
+                      fontSize: 13,
+                      color: Colors.black,
+                      
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Container(
-                height: 18,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Icon(
-                    value.taskType == 'Call' ? Icons.call : Icons.person,
-                    size: 11,
-                    color: Colors.white,
+              SizedBox(height: 5),
+              Row(
+                children: <Widget>[
+                  Container(
+                    height: 18,
+                    width: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "${value.timeReminder}",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Container(
+                    height: 18,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        value.taskType == 'Call' ? Icons.call : Icons.person,
+                        size: 11,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -356,7 +371,8 @@ class _ReminderListViewState extends State<ReminderListView> {
                   ),
                 ),
                 transitionDuration: Duration(milliseconds: 150),
-                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                transitionsBuilder:
+                    (_, Animation<double> animation, __, Widget child) {
                   return Opacity(
                     opacity: animation.value,
                     child: child,
@@ -389,51 +405,65 @@ class _ReminderListViewState extends State<ReminderListView> {
         value: index,
         groupValue: selectionDataToday,
         title: Text(
-          '${value.taskDescription}',
+          '${value.customerName}',
           style: TextStyle(
-            fontSize: 13,
+            fontSize: 14,
             color: Colors.black,
+            fontWeight: FontWeight.w600,
           ),
         ),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 3),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                height: 18,
-                width: 55,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20),
+              Text(
+                'Notes: ${value.notes}',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
                 ),
-                child: Center(
-                  child: Text(
-                    "${value.timeReminder}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w400,
+              ),
+              SizedBox(height: 5),
+              Row(
+                children: <Widget>[
+                  Container(
+                    height: 18,
+                    width: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "${value.timeReminder}",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Container(
-                height: 18,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Icon(
-                    value.taskType == 'Call' ? Icons.call : Icons.person,
-                    size: 11,
-                    color: Colors.white,
+                  SizedBox(
+                    width: 5,
                   ),
-                ),
+                  Container(
+                    height: 18,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        value.taskType == 'Call' ? Icons.call : Icons.person,
+                        size: 11,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -465,7 +495,8 @@ class _ReminderListViewState extends State<ReminderListView> {
                   ),
                 ),
                 transitionDuration: Duration(milliseconds: 150),
-                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                transitionsBuilder:
+                    (_, Animation<double> animation, __, Widget child) {
                   return Opacity(
                     opacity: animation.value,
                     child: child,
@@ -519,51 +550,65 @@ class _ReminderListViewState extends State<ReminderListView> {
         value: index,
         groupValue: selectionDataTomorrow,
         title: Text(
-          '${value.taskDescription}',
+          '${value.customerName}',
           style: TextStyle(
-            fontSize: 13,
+            fontSize: 14,
             color: Colors.black,
+            fontWeight: FontWeight.w600,
           ),
         ),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 3),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                height: 18,
-                width: 55,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20),
+              Text(
+                'Notes: ${value.notes}',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
                 ),
-                child: Center(
-                  child: Text(
-                    "${value.timeReminder}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w400,
+              ),
+              SizedBox(height: 5),
+              Row(
+                children: <Widget>[
+                  Container(
+                    height: 18,
+                    width: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "${value.timeReminder}",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Container(
-                height: 18,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Icon(
-                    value.taskType == 'Call' ? Icons.call : Icons.person,
-                    size: 11,
-                    color: Colors.white,
+                  SizedBox(
+                    width: 5,
                   ),
-                ),
+                  Container(
+                    height: 18,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        value.taskType == 'Call' ? Icons.call : Icons.person,
+                        size: 11,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -596,7 +641,8 @@ class _ReminderListViewState extends State<ReminderListView> {
                   ),
                 ),
                 transitionDuration: Duration(milliseconds: 150),
-                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                transitionsBuilder:
+                    (_, Animation<double> animation, __, Widget child) {
                   return Opacity(
                     opacity: animation.value,
                     child: child,
@@ -650,51 +696,65 @@ class _ReminderListViewState extends State<ReminderListView> {
         value: index,
         groupValue: selectionDataUpcoming,
         title: Text(
-          '${value.taskDescription}',
+          '${value.customerName}',
           style: TextStyle(
-            fontSize: 13,
+            fontSize: 14,
             color: Colors.black,
+            fontWeight: FontWeight.w600,
           ),
         ),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 3),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                height: 18,
-                width: 55,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20),
+              Text(
+                'Notes: ${value.notes}',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
                 ),
-                child: Center(
-                  child: Text(
-                    "${value.timeReminder}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w400,
+              ),
+              SizedBox(height: 5),
+              Row(
+                children: <Widget>[
+                  Container(
+                    height: 18,
+                    width: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "${value.timeReminder}",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Container(
-                height: 18,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Icon(
-                    value.taskType == 'Call' ? Icons.call : Icons.person,
-                    size: 11,
-                    color: Colors.white,
+                  SizedBox(
+                    width: 5,
                   ),
-                ),
+                  Container(
+                    height: 18,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        value.taskType == 'Call' ? Icons.call : Icons.person,
+                        size: 11,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -726,7 +786,8 @@ class _ReminderListViewState extends State<ReminderListView> {
                   ),
                 ),
                 transitionDuration: Duration(milliseconds: 150),
-                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                transitionsBuilder:
+                    (_, Animation<double> animation, __, Widget child) {
                   return Opacity(
                     opacity: animation.value,
                     child: child,

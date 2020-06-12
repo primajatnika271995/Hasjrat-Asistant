@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "Informasi",
     "Laporan\nAktifitas",
     "Harga\nKendaraan",
-    "Promosi DMS",
+    "Sales\nProgram",
   ];
 
   List<String> _moreMenuName = [
