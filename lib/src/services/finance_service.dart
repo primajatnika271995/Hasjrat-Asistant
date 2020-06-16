@@ -35,6 +35,7 @@ class FinanceService {
     if (response.statusCode == 200) {
       return compute(branchModelFromJson, json.encode(response.data));
     }
+    print("response get branch ${response.data}");
   }
 
   Future outletCode(String branchCode) async {
@@ -53,6 +54,8 @@ class FinanceService {
     if (response.statusCode == 200) {
       return compute(outletModelFromJson, json.encode(response.data));
     }
+    print("response get outlet ${response.data}");
+    
   }
   
   Future assetKind(String branchCode) async {

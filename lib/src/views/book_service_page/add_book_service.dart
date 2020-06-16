@@ -131,6 +131,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
       label: "Tipe Service Periode",
       selectedValue: _currentSelectServicePeriodeType,
       items: _servicePeriodeType,
+      showSearchBox: false,
       itemBuilder: (context, String item, bool isSelected) {
         return Container(
           decoration: !isSelected
@@ -163,6 +164,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
       label: "Service Berkala",
       selectedValue: _currentSelectServiceBerkala,
       items: _serviceBerkalaList,
+      showSearchBox: false,
       itemBuilder: (context, String item, bool isSelected) {
         return Container(
           decoration: !isSelected
@@ -195,6 +197,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
       label: "List Bengkel",
       selectedValue: currentSelectStation,
       items: _stationList,
+      showSearchBox: false,
       onChange: (SelectorStation selected) {
         setState(() {
           currentSelectStation = selected;
@@ -213,6 +216,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
       label: "Kategori Booking",
       selectedValue: currentSelectBookCategory,
       items: bookCategoryList,
+      showSearchBox: false,
       onChange: (String selected) {
         setState(() {
           currentSelectBookCategory = selected;
