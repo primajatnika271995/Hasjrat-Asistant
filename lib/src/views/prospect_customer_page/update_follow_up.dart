@@ -45,7 +45,6 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
     "3",
     "4",
     "5",
-    "5",
     "6",
     "7",
   ];
@@ -55,6 +54,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
       context,
       label: "Follow Up Selanjutnya",
       selectedValue: _currentSelectFollowUp,
+      showSearchBox: false,
       items: followUpList,
       onChange: (String selected) {
         setState(() {
@@ -71,6 +71,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
       label: "Klasifikasi",
       selectedValue: currentSelectClassification,
       items: classificationList,
+      showSearchBox: false,
       onChange: (SelectorClassification selected) {
         setState(() {
           currentSelectClassification = selected;
@@ -87,6 +88,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
       label: "Metode Follow Up",
       selectedValue: currentSelectFollowUpMethode,
       items: followupMethodeList,
+      showSearchBox: false,
       onChange: (SelectorFollowupMethode selected) {
         setState(() {
           currentSelectFollowUpMethode = selected;
@@ -117,7 +119,7 @@ class _FollowUpUpdateViewState extends State<FollowUpUpdateView> {
 
     prospectFollowUpIdCtrl.value = TextEditingValue(text: '${widget.value.followups.last.prospectFollowupId.toString()}');
     prospectIdCtrl.value = TextEditingValue(text: '${widget.value.followups.last.prospectId.toString()}');
-    prospectRemarkCtrl.value = TextEditingValue(text: '${widget.value.followups.last.prospectRemarks}');
+    // prospectRemarkCtrl.value = TextEditingValue(text: '${widget.value.followups.last.prospectRemarks}');
     followUpCtrl.value = TextEditingValue(text: '7');
 
     // ignore: close_sinks
