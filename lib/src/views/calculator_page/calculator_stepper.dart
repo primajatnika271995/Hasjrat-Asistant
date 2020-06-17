@@ -511,7 +511,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
               if (data.text == "tyt limboto") {
                 data.text = "Limboto";
               }
-              if (data.text == "palu") {
+              if (data.text == "Palu") {
                 data.text = "Palu Diponegoro";
               }
               if (data.text == "Mutiara") {
@@ -529,7 +529,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                   f.text == "Marisa" ||
                   f.text == "Limboto" ||
                   f.text == "Palu Diponegoro" ||
-                  f.text == "parigi" ||
+                  f.text == "Parigi" ||
                   f.text == "Palu Mutiara" ||
                   f.text == "Luwuk" ||
                   f.text == "Toili" ||
