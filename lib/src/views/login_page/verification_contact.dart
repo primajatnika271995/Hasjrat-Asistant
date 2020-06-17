@@ -67,6 +67,8 @@ class _VerificationContactViewState extends State<VerificationContactView> {
   @override
   void initState() {
     // TODO: implement initState
+    
+    print("Eksekusi delete sqlite local server");
     onDeleteFollowupReminder();
     // ignore: close_sinks
     final reminder = BlocProvider.of<FollowupBloc>(context);

@@ -62,8 +62,7 @@ class SqliteService {
   Future<int> deleteFollowupReminder() async {
     Database db = await _dbHelper.initDB();
 
-    int count = await db.delete(SqliteService.todoTable, where: 'id=?', whereArgs: ['Import DMS']);
-    return count;
+    await db.execute("DELETE FROM ${SqliteService.todoTable}");
   }
 
   Future<int> delete(int id) async {
