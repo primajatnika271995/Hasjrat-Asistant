@@ -501,15 +501,36 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           }
 
           if (state is OutletSuccess) {
-            state.value.result.forEach((f) {
-              if (f.text == "Manado" ||
-                  f.text == "Tendean" ||
+            var newVal = state.value.result.map((data) {
+              if (data.text == "Manado") {
+                data.text = "Manado Sudirman";
+              }
+              if (data.text == "Tendean") {
+                data.text = "Manado Tendean";
+              }
+              if (data.text == "tyt limboto") {
+                data.text = "Limboto";
+              }
+              if (data.text == "palu") {
+                data.text = "Palu Diponegoro";
+              }
+              if (data.text == "Mutiara") {
+                data.text = "Palu Mutiara";
+              }
+
+              return data;
+            });
+            newVal.forEach((f) {
+              if (f.text == "Manado Sudirman" ||
+                  f.text == "Manado Tendean" ||
                   f.text == "Girian" ||
                   f.text == "Kotamobagu" ||
                   f.text == "Gorontalo" ||
-                  f.text == "Palu" ||
-                  f.text == "Parigi" ||
-                  f.text == "Mutiara" ||
+                  f.text == "Marisa" ||
+                  f.text == "Limboto" ||
+                  f.text == "Palu Diponegoro" ||
+                  f.text == "parigi" ||
+                  f.text == "Palu Mutiara" ||
                   f.text == "Luwuk" ||
                   f.text == "Toili" ||
                   f.text == "Ambon" ||
@@ -523,12 +544,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                   f.text == "Serui" ||
                   f.text == "Ternate" ||
                   f.text == "Tobelo") {
-                outletList.add(
-                  SelectorOutletModel(
-                    id: f.id,
-                    outletName: f.text,
-                  ),
-                );
+                outletList
+                    .add(SelectorOutletModel(id: f.id, outletName: f.text));
               }
             });
           }
