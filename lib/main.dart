@@ -13,7 +13,7 @@ SqliteService _dbHelper = SqliteService();
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =  FlutterLocalNotificationsPlugin();
 
-final timeFormat = DateFormat("HH:mm");
+final timeFormat = DateFormat("HH:mm:ss");
 
 void checkTime() {
   Future<List<ReminderSqlite>> today = _dbHelper.getReminderToday();
