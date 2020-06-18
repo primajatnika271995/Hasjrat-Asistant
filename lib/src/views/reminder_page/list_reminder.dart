@@ -8,6 +8,7 @@ import 'package:salles_tools/src/services/customer_service.dart';
 import 'package:salles_tools/src/services/sqlite_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/reminder_page/add_reminder.dart';
+import 'package:intl/intl.dart';
 
 class ReminderListView extends StatefulWidget {
   @override
@@ -15,6 +16,8 @@ class ReminderListView extends StatefulWidget {
 }
 
 class _ReminderListViewState extends State<ReminderListView> {
+  final timeFormat = DateFormat("HH:mm");
+
   bool pendingIsExpanded = false;
   bool todayIsExpanded = true;
   bool tomorrowIsExpanded = false;
@@ -292,13 +295,12 @@ class _ReminderListViewState extends State<ReminderListView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                    'Notes: ${value.notes}',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.black,
-                      
-                    ),
-                  ),
+                'Notes: ${value.notes}',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                ),
+              ),
               SizedBox(height: 5),
               Row(
                 children: <Widget>[
@@ -311,7 +313,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                     ),
                     child: Center(
                       child: Text(
-                        "${value.timeReminder}",
+                        "${timeFormat.format(DateFormat.Hm().parse(value.timeReminder))}",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 11,
@@ -436,7 +438,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                     ),
                     child: Center(
                       child: Text(
-                        "${value.timeReminder}",
+                        "${timeFormat.format(DateFormat.Hm().parse(value.timeReminder))}",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 11,
@@ -581,7 +583,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                     ),
                     child: Center(
                       child: Text(
-                        "${value.timeReminder}",
+                        "${timeFormat.format(DateFormat.Hm().parse(value.timeReminder))}",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 11,
@@ -727,7 +729,7 @@ class _ReminderListViewState extends State<ReminderListView> {
                     ),
                     child: Center(
                       child: Text(
-                        "${value.timeReminder}",
+                        "${timeFormat.format(DateFormat.Hm().parse(value.timeReminder))}",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 11,
