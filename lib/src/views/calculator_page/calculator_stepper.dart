@@ -508,6 +508,9 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
               if (data.text == "Tendean") {
                 data.text = "Manado Tendean";
               }
+              if (data.text == "Bitung 3S") {
+                data.text = "Bitung";
+              }
               if (data.text == "tyt limboto") {
                 data.text = "Limboto";
               }
@@ -523,7 +526,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
             newVal.forEach((f) {
               if (f.text == "Manado Sudirman" ||
                   f.text == "Manado Tendean" ||
-                  f.text == "Girian" ||
+                  f.text == "Bitung" ||
                   f.text == "Kotamobagu" ||
                   f.text == "Gorontalo" ||
                   f.text == "Marisa" ||
