@@ -98,7 +98,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
     if (picked != null)
       setState(() {
         timeOfDay = picked;
-        DateTime date = DateFormat.Hm().parse(timeOfDay.format(context));
+        DateTime date = DateFormat("HH:mm").parse(timeOfDay.format(context));
         timeSelected.value = TextEditingValue(text: timeFormat.format(date));
       });
   }
@@ -174,6 +174,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
     log.info(_now.difference(_dateTime).inDays);
     if (_currentSelectLead != null) {
       log.info(_now.difference(_dateTime).inDays);
+      log.info("Selected time => ${timeSelected.text}");
       if (_now.difference(_dateTime).inDays <= -1) {
         await _dbHelper.insert(ReminderSqlite(
           _currentSelectTask,
