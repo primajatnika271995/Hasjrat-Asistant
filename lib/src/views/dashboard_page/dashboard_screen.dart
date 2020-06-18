@@ -81,7 +81,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: 340,
+              height: 270,
               color: HexColor('#C61818'),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,44 +102,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, top: 20),
-                    child: Text(
-                      "Nominal",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
+                  
                   BlocBuilder<TargetDashboardBloc, TargetDashboardState>(
                       builder: (context, targetState) {
                     if (targetState is TargetDashboardSuccess) {
                       return Column(
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, right: 15, top: 5, bottom: 5),
-                            child: Container(
-                              width: screenWidth(context),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 10),
-                                child: Text(
-                                  "Rp ${CurrencyFormat().data.format(targetState.value.totalProfitAmount)}",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    letterSpacing: 1.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          SizedBox(height: 20),
                           RadialChartView(
                             data: targetState.value,
                           ),
