@@ -22,7 +22,9 @@ class KnowledgeBaseService {
       final response = await _dio.post(
         UriApi.knowledgeBaseUri,
         queryParameters: {
-          "length": 100,
+          // "order%5B0%5D%5Bcolumn%5D": 3,
+          // "order%5B0%5D%5Bdir%5D": "desc",
+          // "length" : 66,
         },
       );
 
