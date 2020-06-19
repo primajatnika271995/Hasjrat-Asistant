@@ -109,6 +109,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       label: "Task Type",
       selectedValue: _currentSelectTask,
       items: _taskList,
+      showSearchBox: false,
       itemBuilder: (context, String item, bool isSelected) {
         return Container(
           decoration: !isSelected
@@ -142,6 +143,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       label: "Data Lead",
       selectedValue: _currentSelectLead,
       items: _leadList,
+      showSearchBox: false,
       itemBuilder: (context, SelectorLeadModel item, bool isSelected) {
         return Container(
           decoration: !isSelected

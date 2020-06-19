@@ -169,6 +169,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Payment",
       selectedValue: currentSelectMethode,
       items: methodeList,
+      showSearchBox: false,
       onChange: (String selected) {
         setState(() {
           currentSelectMethode = selected;
@@ -184,6 +185,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Nama Branch",
       selectedValue: currentSelectBranch,
       items: branchList,
+      showSearchBox: false,
       onChange: (SelectorBranchModel selected) {
         setState(() {
           outletList = [];
@@ -231,6 +233,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Asset Kind",
       selectedValue: currentSelectAssetKind,
       items: assetKindList,
+      showSearchBox: false,
       onChange: (SelectorAssetKindModel selected) {
         setState(() {
           insuranceTypeList = [];
@@ -252,6 +255,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Asset Kind",
       selectedValue: currentSelectInsuranceType,
       items: insuranceTypeList,
+      showSearchBox: false,
       onChange: (SelectorInsuranceTypeModel selected) {
         setState(() {
           assetGroupList = [];
