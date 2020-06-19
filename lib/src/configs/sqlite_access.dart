@@ -9,13 +9,13 @@ class SqliteAcces {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'reminder.db';
 
-    var todoDatabase = openDatabase(path, version: 3, onCreate: _createDB,);
+    var todoDatabase = openDatabase(path, version: 5, onCreate: _createDB,);
     return todoDatabase;
   }
 
   void _createDB(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE tb_reminder (
+      CREATE TABLE tb_reminder_v2 (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         task_type TEXT,
         task_description TEXT,

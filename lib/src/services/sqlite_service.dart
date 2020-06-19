@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 
 class SqliteService {
 
-  static const todoTable = 'tb_reminder';
+  static const todoTable = 'tb_reminder_v2';
   static const id = 'id';
   static const taskType = 'task_type';
   static const taskDescription = 'task_description';
