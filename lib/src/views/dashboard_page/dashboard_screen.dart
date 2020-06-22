@@ -15,6 +15,7 @@ import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/dashboard_page/bar_chart.dart';
 import 'package:salles_tools/src/views/dashboard_page/radial_chart.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -24,7 +25,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   var _employeeId;
 
-  var yearFormat = DateFormat("yyyy");
+  var yearFormat = DateFormat("MMMM");
+  var bulan;
 
   void _getTargetDashboard() async {
     _employeeId = await SharedPreferencesHelper.getSalesNIK();
@@ -32,6 +34,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final targetDashboardBloc = BlocProvider.of<TargetDashboardBloc>(context);
     targetDashboardBloc.add(
         FetchTargetDashboard(TargetDashboardPost(employeeId: _employeeId)));
+  }
+
+  void _formatTanggalIndo(){
+    initializeDateFormatting("id", null).then((_) {
+      var formatter = new DateFormat.MMMM('id');
+      print("konversi tanggal ${formatter.format(new DateTime.now())}");
+
+      setState(() {
+        bulan = formatter.format(DateTime.now());
+      });
+    });
+    
   }
 
   void _getDashboardBar() async {
@@ -43,6 +57,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    _formatTanggalIndo();
     _getTargetDashboard();
     _getDashboardBar();
     super.initState();
@@ -93,7 +108,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       right: 15,
                     ),
                     child: Text(
-                      "Dashboard Tahun ${yearFormat.format(DateTime.now())}",
+                      "Dashboard Bulan $bulan",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 22,
@@ -102,7 +117,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  
                   BlocBuilder<TargetDashboardBloc, TargetDashboardState>(
                       builder: (context, targetState) {
                     if (targetState is TargetDashboardSuccess) {

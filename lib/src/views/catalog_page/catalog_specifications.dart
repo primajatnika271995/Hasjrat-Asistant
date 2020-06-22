@@ -57,7 +57,7 @@ class _CatalogSpecificationsViewState extends State<CatalogSpecificationsView> {
                             width: MediaQuery.of(context).size.width,
                             child: ExpansionTile(
                               title: Text(
-                                "${data.itemModel} Tipe ${data.specifications[i].itemType}",
+                                "${data.itemClass1} Tipe ${data.specifications[i].itemType}",
                                 style: TextStyle(
                                     letterSpacing: 1.0, color: Colors.black),
                               ),
