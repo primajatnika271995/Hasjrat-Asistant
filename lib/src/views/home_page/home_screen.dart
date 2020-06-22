@@ -36,8 +36,10 @@ import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
 import 'package:salles_tools/src/views/promotion_page/list_promotion.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/sales_input.dart';
 import 'package:salles_tools/src/views/reminder_page/list_reminder.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../../bloc/booking_bloc/booking_drive_bloc.dart';
+import '../../configs/sqlite_access.dart';
 import '../../services/booking_drive_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -171,13 +173,12 @@ class _HomeScreenState extends State<HomeScreen> {
         return Container(
           height: screenHeight(context) / 2,
           child: GridView.builder(
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  childAspectRatio: 0.8,
-                  mainAxisSpacing: 4.0,
-                  crossAxisSpacing: 1.0,
-                ),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              childAspectRatio: 0.8,
+              mainAxisSpacing: 4.0,
+              crossAxisSpacing: 1.0,
+            ),
             itemCount: 4,
             itemBuilder: (context, index) {
               return Material(
@@ -248,9 +249,26 @@ class _HomeScreenState extends State<HomeScreen> {
         SalesMonthPost(branchCode: _branchId, outletCode: _outletId)));
   }
 
+  var jumlahReminder;
+
+  void countReminder() async {
+    SqliteAcces _dbHelper = new SqliteAcces();
+    Database db = await _dbHelper.initDB();
+
+    final count = Sqflite.firstIntValue(
+        await db.rawQuery('SELECT COUNT(*) FROM tb_reminder_v2'));
+
+    print("total reminder $count");
+
+    setState(() {
+      jumlahReminder = count;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
+    countReminder();
     _getPreferences();
     super.initState();
   }
@@ -329,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             backgroundColor: Colors.transparent,
                                             foregroundColor: Colors.white,
                                             backgroundImage: NetworkImage(
-                                                "${state.salesData.imageUrl}",
+                                              "${state.salesData.imageUrl}",
                                             ),
                                           ),
                                         ),
@@ -480,24 +498,68 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Image.asset(
-                        _assetsMenu[index],
-                        height: 55,
-                      ),
-                      Flexible(
-                        child: Text(
-                          _menuName[index],
-                          style: TextStyle(
-                            fontSize: 13,
+                  child: _assetsMenu[index] == "assets/icons/reminder_icon.png"
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Stack(
+                            alignment: Alignment.topLeft,
+                            children: <Widget>[
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Image.asset(
+                                    "assets/icons/reminder_icon.png",
+                                    height: 55,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      _menuName[index],
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                height: 25,
+                                width: 25,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    border: Border.all(color: Colors.white),
+                                    shape: BoxShape.circle),
+                                child: Center(
+                                  child: Text(
+                                    "$jumlahReminder",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                        fontSize: 12),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          textAlign: TextAlign.center,
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Image.asset(
+                              _assetsMenu[index],
+                              height: 55,
+                            ),
+                            Flexible(
+                              child: Text(
+                                _menuName[index],
+                                style: TextStyle(
+                                  fontSize: 13,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             );
