@@ -4,6 +4,7 @@ import 'package:salles_tools/src/bloc/followup_bloc/followup_state.dart';
 import 'package:salles_tools/src/models/classification_followup_model.dart';
 import 'package:salles_tools/src/models/followup_methode_model.dart';
 import 'package:salles_tools/src/models/followup_reminder_model.dart';
+import 'package:salles_tools/src/models/follow_plan_today_model.dart';
 import 'package:salles_tools/src/services/followup_service.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -29,6 +30,20 @@ class FollowupBloc extends Bloc<FollowupEvent, FollowupState> {
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");
+      }
+    }
+
+    if (event is FetchFollowPlanToday) {
+      try {
+        FollowPlanTodayModel value = await _followupService.followUpTodayList();
+        if (value.data.isEmpty || value.data == null) {
+          yield FollowUpTodayFailed();
+        } else {
+          yield FollowUpTodaySuccess(value);
+          log.info(value);
+        }
+      } catch (e) {
+        log.warning("Bloc FollowUpToday Error : ${e.toString()}");
       }
     }
 

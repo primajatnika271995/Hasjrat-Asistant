@@ -111,6 +111,8 @@ class UriApi {
 
   static const String followUpReminderUri = "/sales-tools-dealer-service/api/v2/dms/prospect/follow-planning";
 
+  static const String followUpTodayUri = "/sales-tools-dealer-service/api/v2/dms/prospect/follow-up-reminder";
+
   static const String updateFollowUpUri = "/sales-tools-dealer-service/api/v2/dms/prospect/follow-up";
 
   static const String dashboardUri = "/sales-tools-dealer-service/api/v2/dms/prospect/dashboard";

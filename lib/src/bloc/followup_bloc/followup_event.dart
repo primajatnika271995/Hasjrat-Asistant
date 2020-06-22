@@ -13,6 +13,12 @@ class FetchFollowupReminder extends FollowupEvent {
   List<Object> get props => [];
 }
 
+class FetchFollowPlanToday extends FollowupEvent {
+  @override
+
+  List<Object> get props => [];
+}
+
 class FetchFollowupMethode extends FollowupEvent {
   @override
   // TODO: implement props
