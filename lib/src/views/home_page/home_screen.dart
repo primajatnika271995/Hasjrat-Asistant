@@ -32,6 +32,7 @@ import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/customer_page/list_customer.dart';
 import 'package:salles_tools/src/views/home_page/list_banner.dart';
 import 'package:salles_tools/src/views/knowledge_base_page/knowledge_base_screen.dart';
+import 'package:salles_tools/src/views/notification_page/notification_screen.dart';
 import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
 import 'package:salles_tools/src/views/promotion_page/list_promotion.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/sales_input.dart';
@@ -249,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
         SalesMonthPost(branchCode: _branchId, outletCode: _outletId)));
   }
 
-  var jumlahReminder;
+  var jumlahReminder = 0;
 
   void countReminder() async {
     SqliteAcces _dbHelper = new SqliteAcces();
@@ -372,7 +373,9 @@ class _HomeScreenState extends State<HomeScreen> {
             sliverAppBar(),
             sliverGridMenu(),
             SliverToBoxAdapter(
-              child: Divider(),
+              child: Divider(
+                thickness: 2,
+              ),
             ),
             SliverToBoxAdapter(
               child: Container(
@@ -410,24 +413,61 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
         padding: EdgeInsets.only(top: paddingTop(context)),
         child: Container(
-          height: 200,
+          height: 300,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/icons/new_header_icon.jpg"),
+              image: AssetImage("assets/icons/new_header_icon.png"),
               fit: BoxFit.cover,
             ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Image.asset(
-                  "assets/icons/hasjrat_toyota_logo.png",
-                  height: 50,
-                  width: 130,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Image.asset(
+                      "assets/icons/hasjrat_toyota_logo.png",
+                      height: 50,
+                      width: 130,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15, right: 15),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => NotificationScreen(),
+                          ),
+                        );
+                      },
+                      icon: Stack(
+                        children: [
+                          Image.asset(
+                            'assets/icons/notification_icon.png',
+                            height: 20,
+                            color: Colors.white,
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              height: 8,
+                              width: 8,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20),
@@ -437,7 +477,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 20, bottom: 10),
+                padding: const EdgeInsets.only(left: 20, bottom: 10, top: 80),
                 child: Row(
                   children: <Widget>[
                     Column(
