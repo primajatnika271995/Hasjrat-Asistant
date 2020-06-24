@@ -42,7 +42,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
   SqliteService _dbHelper = SqliteService();
 
   final dateFormat = DateFormat("dd MMMM yyyy");
-  final timeFormat = DateFormat("HH:mm");
+  final timeFormat = DateFormat("HH:mm:ss");
 
   DateTime _dateTime = DateTime.now();
   TimeOfDay timeOfDay = TimeOfDay.now();
@@ -109,6 +109,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       label: "Task Type",
       selectedValue: _currentSelectTask,
       items: _taskList,
+      showSearchBox: false,
       itemBuilder: (context, String item, bool isSelected) {
         return Container(
           decoration: !isSelected
@@ -142,6 +143,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       label: "Data Lead",
       selectedValue: _currentSelectLead,
       items: _leadList,
+      showSearchBox: false,
       itemBuilder: (context, SelectorLeadModel item, bool isSelected) {
         return Container(
           decoration: !isSelected
@@ -174,6 +176,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
     log.info(_now.difference(_dateTime).inDays);
     if (_currentSelectLead != null) {
       log.info(_now.difference(_dateTime).inDays);
+      log.info("time selected => ${timeSelected.text}");
       if (_now.difference(_dateTime).inDays <= -1) {
         await _dbHelper.insert(ReminderSqlite(
           _currentSelectTask,

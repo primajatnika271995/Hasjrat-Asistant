@@ -179,37 +179,23 @@ class _CatalogScreenState extends State<CatalogScreen> {
             }
 
             if (state is CatalogByCategorySuccess) {
-              return state.value
-                          .where((f) =>
-                              f.archive != true &&
-                              f.category == catalogCategori.toLowerCase())
-                          .toList()
-                          .length >=
-                      1
+              return state.value.where((f) => f.archive != true && f.category == catalogCategori.toLowerCase()).toList().length >= 1
                   ? Column(
                       children: <Widget>[
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 13),
                             child: GridView.builder(
-                              itemCount: state.value
-                                  .where((f) =>
-                                      f.enabled == true &&
-                                      f.category ==
-                                          catalogCategori.toLowerCase())
-                                  .toList()
-                                  .length,
+                              itemCount: state.value.where((f) => f.enabled == true && f.category == catalogCategori.toLowerCase()).toList().length,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 3 / 4,
-                                crossAxisSpacing: 17,
-                                mainAxisSpacing: 17,
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 3 / 4,
+                                  crossAxisSpacing: 17,
+                                  mainAxisSpacing: 17,
                               ),
                               itemBuilder: (context, i) {
-                                var data = state.value
-                                    .where((f) => f.archive != true)
-                                    .toList()[i];
+                                var data = state.value.where((f) => f.archive != true && f.draft == false).toList()[i];
                                 return GestureDetector(
                                   onTap: () {
                                     _onSeeDetails("catalog-image$i", data);
@@ -259,20 +245,12 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Text(
-                                                "${data.itemModel}",
+                                                "${data.itemClass1}",
                                                 style: TextStyle(
                                                   letterSpacing: 0.8,
                                                   fontSize: 18,
                                                 ),
                                               ),
-                                              // Text(
-                                              //   "${data.itemType}",
-                                              //   style: TextStyle(
-                                              //     letterSpacing: 0.8,
-                                              //     fontSize: 13,
-                                              //     color: Colors.grey,
-                                              //   ),
-                                              // ),
                                               SizedBox(
                                                 height: 5.0,
                                               ),

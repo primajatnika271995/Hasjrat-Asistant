@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final followUpReminderModel = followUpReminderModelFromJson(jsonString);
+//     final followPlanTodayModel = followPlanTodayModelFromJson(jsonString);
 
 import 'dart:convert';
 
-FollowUpReminderModel followUpReminderModelFromJson(String str) => FollowUpReminderModel.fromJson(json.decode(str));
+FollowPlanTodayModel followPlanTodayModelFromJson(String str) => FollowPlanTodayModel.fromJson(json.decode(str));
 
-String followUpReminderModelToJson(FollowUpReminderModel data) => json.encode(data.toJson());
+String followPlanTodayModelToJson(FollowPlanTodayModel data) => json.encode(data.toJson());
 
-class FollowUpReminderModel {
-    FollowUpReminderModel({
+class FollowPlanTodayModel {
+    FollowPlanTodayModel({
         this.status,
         this.data,
         this.error,
@@ -25,7 +25,7 @@ class FollowUpReminderModel {
     int retCode;
     dynamic token;
 
-    factory FollowUpReminderModel.fromJson(Map<String, dynamic> json) => FollowUpReminderModel(
+    factory FollowPlanTodayModel.fromJson(Map<String, dynamic> json) => FollowPlanTodayModel(
         status: json["status"] == null ? null : json["status"],
         data: json["data"] == null ? null : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
         error: json["error"] == null ? null : json["error"],

@@ -57,6 +57,7 @@ class _PriceListViewState extends State<PriceListView> {
       label: "Jenis Kendaraan",
       selectedValue: currentSelectClass1,
       items: class1List,
+      showSearchBox: false,
       onChange: (String selected) {
         setState(() {
           itemModelList = [];
@@ -76,6 +77,7 @@ class _PriceListViewState extends State<PriceListView> {
       context,
       label: "Model Kendaraan",
       selectedValue: currentSelectItemModel,
+      showSearchBox: false,
       items: itemModelList.toSet().toList(),
       onChange: (String selected) {
         setState(() {
@@ -101,6 +103,7 @@ class _PriceListViewState extends State<PriceListView> {
       label: "Tipe Kendaraan",
       selectedValue: currentSelectItemType,
       items: itemTypeList,
+      showSearchBox: false,
       onChange: (String selected) {
         setState(() {
           priceList = [];
@@ -124,6 +127,7 @@ class _PriceListViewState extends State<PriceListView> {
       label: "Nama Kode",
       selectedValue: currentSelectPriceList,
       items: priceList,
+      showSearchBox: false,
       itemBuilder: (context, SelectorPriceListModel item, bool isSelected) {
         return Container(
           decoration: !isSelected

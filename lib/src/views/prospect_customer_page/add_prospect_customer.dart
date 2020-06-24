@@ -28,7 +28,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
   var _formKey = GlobalKey<FormState>();
 
   int dataSelection = -1;
-  
+
   DateTime currentTime = DateTime.now();
 
   int _currentStep = 0;
@@ -54,9 +54,8 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     "3 Hari",
     "4 Hari",
     "5 Hari",
-    "5 Hari",
     "6 Hari",
-  "7 Hari",
+    "7 Hari",
   ];
 
   var customerProspectSourceCtrl = new TextEditingController();
@@ -86,6 +85,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
       label: "Jenis Kendaraan",
       selectedValue: currentSelectClass1,
       items: class1List,
+      showSearchBox: false,
       onChange: (String selected) {
         setState(() {
           itemModelList = [];
@@ -95,11 +95,10 @@ class _ProspectAddViewState extends State<ProspectAddView> {
           // ignore: close_sinks
           final dmsBloc = BlocProvider.of<DmsBloc>(context);
           dmsBloc.add(FetchItemModel(ItemModelPost(
-            itemType: "",
-            itemModel: "",
-            itemClass1: class1Ctrl.text,
-            itemClass: ""
-          )));
+              itemType: "",
+              itemModel: "",
+              itemClass1: class1Ctrl.text,
+              itemClass: "")));
         });
       },
     );
@@ -110,6 +109,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
       context,
       label: "Model Kendaraan",
       selectedValue: currentSelectItemModel,
+       showSearchBox: false,
       items: itemModelList.toSet().toList(),
       onChange: (String selected) {
         setState(() {
@@ -123,8 +123,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
               itemType: "",
               itemModel: itemModelCtrl.text,
               itemClass1: class1Ctrl.text,
-              itemClass: ""
-          )));
+              itemClass: "")));
         });
       },
     );
@@ -136,6 +135,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
       label: "Tipe Kendaraan",
       selectedValue: currentSelectItemType,
       items: itemTypeList,
+       showSearchBox: false,
       onChange: (String selected) {
         setState(() {
           priceList = [];
@@ -159,6 +159,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
       label: "Follow Up",
       selectedValue: _currentSelectFollowUp,
       items: followUpList,
+       showSearchBox: false,
       onChange: (String selected) {
         setState(() {
           _currentSelectFollowUp = selected;
@@ -174,6 +175,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
       label: "Sumber Prospek",
       selectedValue: currentSelectProspectSource,
       items: sourceList,
+       showSearchBox: false,
       onChange: (SelectorProspectSourceModel selected) {
         setState(() {
           currentSelectProspectSource = selected;
@@ -190,17 +192,18 @@ class _ProspectAddViewState extends State<ProspectAddView> {
       label: "Kode Kendaraan",
       selectedValue: currentSelectPriceList,
       items: priceList,
+       showSearchBox: false,
       itemBuilder: (context, SelectorPriceListModel item, bool isSelected) {
         return Container(
           decoration: !isSelected
               ? null
               : BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.white,
-            border: Border.all(
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
           child: ListTile(
             selected: isSelected,
             title: Text("${item.itemModel} ${item.itemType}"),
@@ -257,7 +260,6 @@ class _ProspectAddViewState extends State<ProspectAddView> {
         quantity: "1",
         price: _currentSelectPrice,
         itemCode: itemCodeCtrl.text,
-
       )));
     } else {
       log.warning("Please Complete Form!");
@@ -269,7 +271,8 @@ class _ProspectAddViewState extends State<ProspectAddView> {
     // TODO: implement initState
     leadCodeCtrl.text = widget.value.leadCode;
     leadNameCtrl.text = widget.value.cardName;
-    prospectDateCtrl.value = TextEditingValue(text: dateFormat.format(DateTime.now()).toString());
+    prospectDateCtrl.value =
+        TextEditingValue(text: dateFormat.format(DateTime.now()).toString());
     salesNameCtrl.text = widget.value.salesName;
     followUpCtrl.text = "7 Hari";
 
@@ -335,7 +338,8 @@ class _ProspectAddViewState extends State<ProspectAddView> {
 
             if (state is PriceListSuccess) {
               state.value.data.forEach((f) {
-                if (f.itemModel == currentSelectItemModel && f.itemType == currentSelectItemType) {
+                if (f.itemModel == currentSelectItemModel &&
+                    f.itemType == currentSelectItemType) {
                   priceList.add(SelectorPriceListModel(
                     itemCode: f.itemCode,
                     itemModel: f.itemModel,
@@ -369,8 +373,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                       },
                       color: HexColor("#C61818"),
                     ),
-                  ]
-              ).show();
+                  ]).show();
             }
 
             if (state is CreateProspectError) {
@@ -394,8 +397,7 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                       onPressed: () => Navigator.pop(context),
                       color: HexColor("#C61818"),
                     ),
-                  ]
-              ).show();
+                  ]).show();
             }
           },
           child: Stack(
@@ -530,7 +532,8 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           itemList(),
                           SizedBox(height: 10),
                           Padding(
-                            padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
+                            padding: const EdgeInsets.only(
+                                left: 30, right: 30, top: 30, bottom: 10),
                             child: Container(
                               width: screenWidth(context),
                               child: RaisedButton(
@@ -564,27 +567,27 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                       _currentStep == 0
                           ? SizedBox()
                           : FlatButton(
-                        onPressed: () => _onStepCancel(),
-                        child: Text(
-                          'BACK',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.blueAccent,
-                          ),
-                        ),
-                      ),
+                              onPressed: () => _onStepCancel(),
+                              child: Text(
+                                'BACK',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                            ),
                       _currentStep == 1
                           ? SizedBox()
                           : FlatButton(
-                        onPressed: () => _onStepContinue(),
-                        child: Text(
-                          'NEXT',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.blueAccent,
-                          ),
-                        ),
-                      ),
+                              onPressed: () => _onStepContinue(),
+                              child: Text(
+                                'NEXT',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                 ),
@@ -1184,7 +1187,8 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                       initiallyExpanded: dataSelection == index ? true : false,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 3),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -1199,8 +1203,10 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("Model Kendaraan"),
                               Text("${state.value.data[0].itemModel}"),
@@ -1208,8 +1214,10 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("Tahun"),
                               Text("${value.tahun}"),
@@ -1217,8 +1225,10 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("Warna"),
                               Text("${value.namaWarna}"),
@@ -1226,18 +1236,22 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 3),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("Harga On The Road"),
-                              Text("Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}"),
+                              Text(
+                                  "Rp ${CurrencyFormat().data.format(state.value.data[0].pricelists[0].ontr)}"),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("Stok "),
                               Text("${value.quantity}"),
@@ -1261,16 +1275,17 @@ class _ProspectAddViewState extends State<ProspectAddView> {
                                 onPressed: () {
                                   setState(() {
                                     dataSelection = index;
-                                    _currentSelectItemColour = state.value.data[0].stocks[index].namaWarna;
-                                    _currentSelectYear = state.value.data[0].stocks[index].tahun;
-                                    _currentSelectPrice = state.value.data[0].pricelists[0].ontr;
+                                    _currentSelectItemColour = state
+                                        .value.data[0].stocks[index].namaWarna;
+                                    _currentSelectYear =
+                                        state.value.data[0].stocks[index].tahun;
+                                    _currentSelectPrice =
+                                        state.value.data[0].pricelists[0].ontr;
                                   });
                                 },
                                 elevation: 1,
                                 child: Text(
-                                  dataSelection == index
-                                      ? "Dipilih"
-                                      : "Pilih",
+                                  dataSelection == index ? "Dipilih" : "Pilih",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),

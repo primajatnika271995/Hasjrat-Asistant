@@ -19,6 +19,8 @@ class _NotificationStnkExpireViewState extends State<NotificationStnkExpireView>
 
   var formatDob = DateFormat("yyyy-MM-dd");
 
+  List<StnkExpiredModel> tmpData = [];
+
   void _onCheckDetailsStnk(StnkExpiredModel value) {
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -105,9 +107,11 @@ class _NotificationStnkExpireViewState extends State<NotificationStnkExpireView>
               return ListView.builder(
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  var data = state.value.where((f) => f.expiredDateStnk != null).toList()[index];
+
+                  var custName = state.value.map((e) => e.customerName).toSet().toList()[index];
+                  var data = tmpData.where((f) => f.expiredDateStnk != null).toSet().toList().toSet().toList()[index];
                   return ListTile(
-                    title: Text("${data.customerName}"),
+                    title: Text("$custName"),
                     subtitle: Text("${formatDob.format(DateTime.parse(data.expiredDateStnk))}"),
                     leading: CircleAvatar(
                       backgroundColor: Colors.indigoAccent,
@@ -117,12 +121,12 @@ class _NotificationStnkExpireViewState extends State<NotificationStnkExpireView>
                     trailing: IconButton(
                       icon: Icon(Icons.navigate_next),
                       onPressed: () {
-                        _onCheckDetailsStnk(data);
+                        _onCheckDetailsStnk(data );
                       },
                     ),
                   );
                 },
-                itemCount: state.value.where((f) => f.expiredDateStnk != null).toList().length,
+                itemCount: state.value.map((e) => e.customerName).toSet().toList().length,
               );
             }
             return SizedBox();

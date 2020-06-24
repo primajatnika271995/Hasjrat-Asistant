@@ -8,17 +8,11 @@ class KnowledgeBaseState extends Equatable {
   List<Object> get props => [];
 }
 
-class KnowledgeBaseInitial extends KnowledgeBaseState {
+class KnowledgeBaseInitial extends KnowledgeBaseState {}
 
-}
+class KnowledgeBaseLoading extends KnowledgeBaseState {}
 
-class KnowledgeBaseLoading extends KnowledgeBaseState {
-
-}
-
-class KnowledgeBaseDisposeLoading extends KnowledgeBaseState {
-
-}
+class KnowledgeBaseDisposeLoading extends KnowledgeBaseState {}
 
 class KnowledgeBaseSuccess extends KnowledgeBaseState {
   final _data;
@@ -31,10 +25,6 @@ class KnowledgeBaseSuccess extends KnowledgeBaseState {
   List<Object> get props => [_data];
 }
 
-class KnowledgeBaseFailed extends KnowledgeBaseState {
+class KnowledgeBaseFailed extends KnowledgeBaseState {}
 
-}
-
-class KnowledgeBaseError extends KnowledgeBaseState {
-
-}
+class KnowledgeBaseError extends KnowledgeBaseState {}

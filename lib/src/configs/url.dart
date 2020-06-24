@@ -79,7 +79,7 @@ class UriApi {
 
   static const String bannerPromotionUri = "/sales-tools-catalog-service/api/v2/banner/datatables";
 
-  static const String knowledgeBaseUri = "/sales-tools-qna-service/api/v2/qna/datatables";
+  static const String knowledgeBaseUri = "/sales-tools-qna-service/api/v2/qna/datatables?order%5B0%5D%5Bcolumn%5D=3&order%5B0%5D%5Bdir%5D=desc&length=66";
 
   static const String catalogListUri = "/sales-tools-catalog-service/api/v2/catalog/list";
 
@@ -109,7 +109,9 @@ class UriApi {
 
   static const String followUpMethodeUri = "/sales-tools-dealer-service/api/v2/dms/prospect/follow-up-method";
 
-  static const String followUpReminderUri = "/sales-tools-dealer-service/api/v2/dms/prospect/follow-up-reminder";
+  static const String followUpReminderUri = "/sales-tools-dealer-service/api/v2/dms/prospect/follow-planning";
+
+  static const String followUpTodayUri = "/sales-tools-dealer-service/api/v2/dms/prospect/follow-up-reminder";
 
   static const String updateFollowUpUri = "/sales-tools-dealer-service/api/v2/dms/prospect/follow-up";
 

@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 
 class SqliteService {
 
-  static const todoTable = 'tb_reminder';
+  static const todoTable = 'tb_reminder_v2';
   static const id = 'id';
   static const taskType = 'task_type';
   static const taskDescription = 'task_description';
@@ -62,8 +62,7 @@ class SqliteService {
   Future<int> deleteFollowupReminder() async {
     Database db = await _dbHelper.initDB();
 
-    int count = await db.delete(SqliteService.todoTable, where: 'id=?', whereArgs: ['Import DMS']);
-    return count;
+    await db.execute("DELETE FROM ${SqliteService.todoTable}");
   }
 
   Future<int> delete(int id) async {

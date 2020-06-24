@@ -31,7 +31,8 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
   var nikScan, namaScan;
   int loopIndex = 0;
   Image currentPreviewImage;
-  final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+  final TextRecognizer textRecognizer =
+      FirebaseVision.instance.textRecognizer();
 
   int _currentStep = 0;
   VoidCallback _onStepContinue;
@@ -94,7 +95,6 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
     "3 Hari",
     "4 Hari",
     "5 Hari",
-    "5 Hari",
     "6 Hari",
     "7 Hari",
   ];
@@ -105,6 +105,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       label: "Follow Up",
       selectedValue: _currentSelectFollowUp,
       items: followUpList,
+      showSearchBox: false,
       onChange: (String selected) {
         setState(() {
           _currentSelectFollowUp = selected;
@@ -120,6 +121,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       label: "Gender",
       selectedValue: currentSelectGender,
       items: genderList,
+      showSearchBox: false,
       onChange: (SelectorGenderModel selected) {
         setState(() {
           currentSelectGender = selected;
@@ -136,6 +138,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       label: "Gender",
       selectedValue: currentSelectGroup,
       items: groupList,
+      showSearchBox: false,
       onChange: (SelectorGroupModel selected) {
         setState(() {
           currentSelectGroup = selected;
@@ -152,6 +155,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       label: "Prospect Source",
       selectedValue: currentSelectProspectSource,
       items: sourceList,
+      showSearchBox: false,
       onChange: (SelectorProspectSourceModel selected) {
         setState(() {
           currentSelectProspectSource = selected;
@@ -168,6 +172,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       label: "Customer Location",
       selectedValue: currentSelectLocation,
       items: locationList,
+      showSearchBox: false,
       onChange: (SelectorLocationModel selected) {
         setState(() {
           currentSelectLocation = selected;
@@ -184,6 +189,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       label: "Customer Job",
       selectedValue: currentSelectJob,
       items: jobList,
+      showSearchBox: false,
       onChange: (SelectorJobModel selected) {
         setState(() {
           currentSelectJob = selected;
@@ -200,6 +206,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       label: "Province Name",
       selectedValue: currentSelectProvince,
       items: provinceList,
+      showSearchBox: false,
       onChange: (SelectorProvinceModel selected) {
         setState(() {
           currentSelectProvince = selected;
@@ -220,6 +227,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       label: "Kabupaten / Kota",
       selectedValue: currentSelectDistrict,
       items: districtList,
+      showSearchBox: false,
       onChange: (SelectorDistrictModel selected) {
         setState(() {
           currentSelectDistrict = selected;
@@ -240,6 +248,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       label: "Kecamatan",
       selectedValue: currentSelectSubDistrict,
       items: districtSubList,
+      showSearchBox: false,
       onChange: (SelectorSubDistrictModel selected) {
         setState(() {
           currentSelectSubDistrict = selected;
@@ -271,8 +280,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
           kabupatenCode: districtCode,
           kecamatanName: customerSubDistrictCtrl.text,
           kecamatanCode: districtSubCode,
-          zipCode: "40287"
-      )));
+          zipCode: "40287")));
     } else {
       log.warning("Please Complete Form!");
     }
@@ -313,15 +321,16 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
       );
 
       setState(() {
-        currentPreviewImage = Image.file(File(fileCropper.path),
+        currentPreviewImage = Image.file(
+          File(fileCropper.path),
           fit: BoxFit.cover,
         );
       });
 
       final FirebaseVisionImage visionImage =
-      FirebaseVisionImage.fromFile(fileCropper);
+          FirebaseVisionImage.fromFile(fileCropper);
       final VisionText visionText =
-      await textRecognizer.processImage(visionImage);
+          await textRecognizer.processImage(visionImage);
 
       String text = visionText.text;
       for (TextBlock block in visionText.blocks) {
@@ -353,7 +362,6 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
         content: Text(e.toString()),
       ));
     }
-
   }
 
   Widget _createEventControlBuilder(BuildContext context,
@@ -493,33 +501,31 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                       },
                       color: HexColor("#C61818"),
                     ),
-                  ]
-              ).show();
+                  ]).show();
             }
 
             if (state is CreateContactError) {
               log.warning("Fail Create Lead");
               Alert(
-                context: context,
-                type: AlertType.error,
-                title: 'Gagal Menambahkan Lead!',
-                desc: 'Silahkan cek kembali data yg dimasukan.',
-                style: AlertStyle(
-                  animationDuration: Duration(milliseconds: 500),
-                  overlayColor: Colors.black54,
-                  animationType: AnimationType.grow,
-                ),
-                buttons: [
-                  DialogButton(
-                    child: Text(
-                      "OK",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                    color: HexColor("#C61818"),
+                  context: context,
+                  type: AlertType.error,
+                  title: 'Gagal Menambahkan Lead!',
+                  desc: 'Silahkan cek kembali data yg dimasukan.',
+                  style: AlertStyle(
+                    animationDuration: Duration(milliseconds: 500),
+                    overlayColor: Colors.black54,
+                    animationType: AnimationType.grow,
                   ),
-                ]
-              ).show();
+                  buttons: [
+                    DialogButton(
+                      child: Text(
+                        "OK",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      color: HexColor("#C61818"),
+                    ),
+                  ]).show();
             }
 
             if (state is CustomerLoading) {
@@ -568,55 +574,59 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          currentPreviewImage == null ?
-                          Card(
-                            elevation: 3,
-                            child: Container(
-                              height: 170,
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    FloatingActionButton(
-                                      onPressed: () {
-                                        onTakeOCR();
-                                      },
-                                      heroTag: 'ocr-camera',
-                                      child: Icon(Icons.camera_enhance,
-                                        color: Colors.white,
+                          currentPreviewImage == null
+                              ? Card(
+                                  elevation: 3,
+                                  child: Container(
+                                    height: 170,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          FloatingActionButton(
+                                            onPressed: () {
+                                              onTakeOCR();
+                                            },
+                                            heroTag: 'ocr-camera',
+                                            child: Icon(
+                                              Icons.camera_enhance,
+                                              color: Colors.white,
+                                            ),
+                                            backgroundColor: Colors.blue,
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 10),
+                                            child: Text(
+                                              "Scan data Kartu Identitas / KTP",
+                                              style:
+                                                  TextStyle(letterSpacing: 1.0),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      backgroundColor: Colors.blue,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: Text("Scan data Kartu Identitas / KTP",
-                                        style: TextStyle(
-                                          letterSpacing: 1.0
-                                      ),),
+                                  ),
+                                )
+                              : Center(
+                                  child: Card(
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                  ],
+                                    child: Container(
+                                      height: 170,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: ClipRRect(
+                                        child: currentPreviewImage,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ) :
-                          Center(
-                            child: Card(
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Container(
-                                height: 170,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: ClipRRect(
-                                  child: currentPreviewImage,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                            ),
-                          ),
                           SizedBox(height: 20),
                           Text(
                             "NIK Pelanggan (*)",
@@ -757,7 +767,8 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                           ),
                           formSelectSubDistrict(),
                           Padding(
-                            padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
+                            padding: const EdgeInsets.only(
+                                left: 30, right: 30, top: 30, bottom: 10),
                             child: Container(
                               width: screenWidth(context),
                               child: RaisedButton(
@@ -970,7 +981,8 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                   ),
                 ),
                 onEditingComplete: () {
-                  FocusScope.of(context).requestFocus(customerSumberContactFocus);
+                  FocusScope.of(context)
+                      .requestFocus(customerSumberContactFocus);
                 },
                 controller: customerContactCtrl,
                 focusNode: customerContactFocus,

@@ -8,6 +8,7 @@ import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/error_token_expire_model.dart';
 import 'package:salles_tools/src/models/followup_methode_model.dart';
 import 'package:salles_tools/src/models/followup_reminder_model.dart';
+import 'package:salles_tools/src/models/follow_plan_today_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
@@ -21,16 +22,14 @@ class FollowupService {
 
   Future classificationList() async {
     final response = await _dio.get(UriApi.classificationFollowUpUri,
-        options: Options(
-            headers: {
-              'Content-Type': 'application/json',
-            }
-        )
-    );
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+        }));
 
     log.info(response.statusCode);
     if (response.statusCode == 200) {
-      return compute(classificationFollowUpModelFromJson, json.encode(response.data));
+      return compute(
+          classificationFollowUpModelFromJson, json.encode(response.data));
     } else if (response.statusCode == 401) {
       return compute(errorTokenExpireFromJson, json.encode(response.data));
     } else {
@@ -40,12 +39,9 @@ class FollowupService {
 
   Future followUpReminderList() async {
     final response = await _dio.get(UriApi.followUpReminderUri,
-        options: Options(
-            headers: {
-              'Content-Type': 'application/json',
-            }
-        )
-    );
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+        }));
 
     log.info(response.statusCode);
     if (response.statusCode == 200) {
@@ -57,14 +53,27 @@ class FollowupService {
     }
   }
 
+  Future followUpTodayList() async {
+    final response = await _dio.get(UriApi.followUpTodayUri,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+        }));
+
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(followPlanTodayModelFromJson, json.encode(response.data));
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
   Future followUpMethodeList() async {
     final response = await _dio.get(UriApi.followUpMethodeUri,
-        options: Options(
-            headers: {
-              'Content-Type': 'application/json',
-            }
-        )
-    );
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+        }));
 
     log.info(response.statusCode);
     if (response.statusCode == 200) {
@@ -78,19 +87,18 @@ class FollowupService {
 
   Future updateFollowup(FollowUpParams value) async {
     final response = await _dio.post(UriApi.updateFollowUpUri,
-      options: Options(headers: {
-        'Content-Type': 'application/json',
-      }),
-      data: {
-        "followup_next_day": value.followUpNextDay,
-        "line_num": value.lineNum,
-        "prospect_classification_id": value.prospectClassificationId,
-        "prospect_followup_id": value.prospectFollowUpId,
-        "prospect_followup_method_id": value.prospectFollowUpMethodeId,
-        "prospect_id": value.prospectId,
-        "prospect_remarks": value.prospectRemarks
-      }
-    );
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+        }),
+        data: {
+          "followup_next_day": value.followUpNextDay,
+          "line_num": value.lineNum,
+          "prospect_classification_id": value.prospectClassificationId,
+          "prospect_followup_id": value.prospectFollowUpId,
+          "prospect_followup_method_id": value.prospectFollowUpMethodeId,
+          "prospect_id": value.prospectId,
+          "prospect_remarks": value.prospectRemarks
+        });
 
     log.info(response.statusCode);
     if (response.statusCode == 200) {
@@ -112,5 +120,12 @@ class FollowUpParams {
   int prospectId;
   String prospectRemarks;
 
-  FollowUpParams({this.followUpNextDay, this.lineNum, this.prospectClassificationId, this.prospectFollowUpId, this.prospectFollowUpMethodeId, this.prospectId, this.prospectRemarks});
+  FollowUpParams(
+      {this.followUpNextDay,
+      this.lineNum,
+      this.prospectClassificationId,
+      this.prospectFollowUpId,
+      this.prospectFollowUpMethodeId,
+      this.prospectId,
+      this.prospectRemarks});
 }

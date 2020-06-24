@@ -51,7 +51,8 @@ class _VerificationContactViewState extends State<VerificationContactView> {
       await SharedPreferencesHelper.setFirstInstall("no");
       _onNavDashboard();
       return;
-    } {
+    }
+    {
       scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text("No. Telepon yang anda masukan tidak sesuai."),
         backgroundColor: HexColor('#C61818'),
@@ -67,9 +68,12 @@ class _VerificationContactViewState extends State<VerificationContactView> {
   @override
   void initState() {
     // TODO: implement initState
+
+    print("Eksekusi delete sqlite local server");
     onDeleteFollowupReminder();
     // ignore: close_sinks
     final reminder = BlocProvider.of<FollowupBloc>(context);
+    reminder.add(FetchFollowPlanToday());
     reminder.add(FetchFollowupReminder());
     super.initState();
   }
@@ -94,37 +98,69 @@ class _VerificationContactViewState extends State<VerificationContactView> {
       ),
       body: BlocListener<FollowupBloc, FollowupState>(
         listener: (context, state) {
+          if (state is FollowUpTodaySuccess) {
+            print("data today");
+            DateTime _now = DateTime.now();
+            final dateFormat = DateFormat("dd MMMM yyyy");
+            state.value.data.forEach((data) async {
+              log.info("${dateFormat.format(data.followupPlanDate)}");
+              print('Name => ${data.cardName}');
+              print('Follow-Plning date => ${data.followupPlanDate}');
+              print(
+                  'difference prospect date => ${_now.difference(data.followupPlanDate).inDays}');
+
+              if (data.followupPlanDate != null &&
+                  _now.difference(data.followupPlanDate).inDays == 0) {
+                log.info("Data Hari Ini");
+                await _dbHelper.insert(ReminderSqlite(
+                    "Call",
+                    "${data.cardName} | Reminder Follow Up",
+                    data.cardName,
+                    dateFormat.format(data.followupPlanDate).toString(),
+                    timeFormat.format(data.followupPlanDate).toString(),
+                    "Reminder Followup",
+                    'Now',
+                    'Import DMS'));
+              }
+            });
+          }
+
           if (state is FollowupReminderSuccess) {
             log.info("Store Data");
 
             DateTime _now = DateTime.now();
+            var nextDay = DateTime(_now.year, _now.month, _now.day + 1);
+            final dateFormat = DateFormat("dd MMMM yyyy");
             state.value.data.forEach((f) async {
-              log.info("${dateFormat.format(f.prospectDate)}");
-
-              if (f.prospectDate != null && _now.difference(f.prospectDate).inDays <= -1) {
-                log.info("Upcoming Data");
+              log.info("${dateFormat.format(f.followupPlanDate)}");
+              print('Name => ${f.cardName}');
+              print('Follow-Plning date => ${f.followupPlanDate}');
+              print(
+                  'difference prospect date => ${_now.difference(f.followupPlanDate).inDays}');
+              if (f.followupPlanDate != null &&
+                  _now.difference(f.followupPlanDate).inDays == 0) {
+                log.info("Data Besok");
                 await _dbHelper.insert(ReminderSqlite(
-                  "Call",
-                  "${f.cardName} | Reminder Follow Up",
-                  f.cardName,
-                  dateFormat.format(f.prospectDate).toString(),
-                  timeFormat.format(f.prospectDate).toString(),
-                  "Reminder Followup",
-                  'Upcoming',
-                  'Import DMS'
-                ));
-              } else if (f.prospectDate != null) {
-                log.info("Now Data");
+                    "Call",
+                    "${f.cardName} | Reminder Follow Up",
+                    f.cardName,
+                    dateFormat.format(f.followupPlanDate).toString(),
+                    timeFormat.format(f.followupPlanDate).toString(),
+                    "Reminder Followup",
+                    'Now',
+                    'Import DMS'));
+              } else if (f.followupPlanDate != null &&
+                  _now.difference(f.followupPlanDate).inDays <= -1) {
+                log.info("data yang akan datang 2 hari kedepan");
                 await _dbHelper.insert(ReminderSqlite(
-                  "Call",
-                  "${f.cardName} | Reminder Follow Up",
-                  f.cardName,
-                  dateFormat.format(f.prospectDate).toString(),
-                  timeFormat.format(f.prospectDate).toString(),
-                  "Reminder Followup",
-                  'Now',
-                  'Import DMS'
-                ));
+                    "Call",
+                    "${f.cardName} | Reminder Follow Up",
+                    f.cardName,
+                    dateFormat.format(f.followupPlanDate).toString(),
+                    timeFormat.format(f.followupPlanDate).toString(),
+                    "Reminder Followup",
+                    'Upcoming',
+                    'Import DMS'));
               }
             });
           }
@@ -144,7 +180,7 @@ class _VerificationContactViewState extends State<VerificationContactView> {
                   children: <Widget>[
                     Padding(
                       padding:
-                      const EdgeInsets.only(left: 20, right: 20, top: 10),
+                          const EdgeInsets.only(left: 20, right: 20, top: 10),
                       child: Text(
                         "Enter your mobile number",
                         style: TextStyle(
@@ -154,8 +190,8 @@ class _VerificationContactViewState extends State<VerificationContactView> {
                       ),
                     ),
                     Padding(
-                      padding:
-                      const EdgeInsets.only(bottom: 15, left: 20, right: 20),
+                      padding: const EdgeInsets.only(
+                          bottom: 15, left: 20, right: 20),
                       child: TextFormField(
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
@@ -165,8 +201,8 @@ class _VerificationContactViewState extends State<VerificationContactView> {
                       ),
                     ),
                     Padding(
-                      padding:
-                      const EdgeInsets.only(left: 20, right: 40, bottom: 30),
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 40, bottom: 30),
                       child: Text(
                         "I agree to Hasjrat Sales Tools terms, condition and privacy",
                         style: TextStyle(

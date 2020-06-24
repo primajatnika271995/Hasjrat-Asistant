@@ -23,7 +23,8 @@ import 'package:pdf/widgets.dart' as pw;
 
 class CalculatorStepperScreen extends StatefulWidget {
   @override
-  _CalculatorStepperScreenState createState() => _CalculatorStepperScreenState();
+  _CalculatorStepperScreenState createState() =>
+      _CalculatorStepperScreenState();
 }
 
 class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
@@ -35,7 +36,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   VoidCallback _onStepContinue;
   VoidCallback _onStepCancel;
 
-  var dpVehicleCtrl = MoneyMaskedTextController(leftSymbol: 'Rp ', precision: 0, decimalSeparator: '');
+  var dpVehicleCtrl = MoneyMaskedTextController(
+      leftSymbol: 'Rp ', precision: 0, decimalSeparator: '');
   int priceSelection = -1;
 
   var methodeCtrl = new TextEditingController();
@@ -91,7 +93,11 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
   void _onCalculateSimulator() {
     switch (currentSelectMethode) {
       case "Down Payment":
-        if (dpVehicleCtrl.numberValue < 1 || dpVehicleCtrl.numberValue < double.parse(dpMinimum.replaceAll(".", "")) || dpVehicleCtrl.numberValue > double.parse(dpMaximum.replaceAll(".", ""))) {
+        if (dpVehicleCtrl.numberValue < 1 ||
+            dpVehicleCtrl.numberValue <
+                double.parse(dpMinimum.replaceAll(".", "")) ||
+            dpVehicleCtrl.numberValue >
+                double.parse(dpMaximum.replaceAll(".", ""))) {
           _scaffoldKey.currentState.showSnackBar(
             SnackBar(
               content: Row(
@@ -112,7 +118,15 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         } else {
           // ignore: close_sinks
           final simulationBloc = BlocProvider.of<FinanceBloc>(context);
-          simulationBloc.add(FetchSimulationDownPayment(branchCode, "ASK01", "ASIPC", assetGroupCode, assetTypeCode, priceListId, priceOriginal, (dpVehicleCtrl.numberValue / 10).toString()));
+          simulationBloc.add(FetchSimulationDownPayment(
+              branchCode,
+              "ASK01",
+              "ASIPC",
+              assetGroupCode,
+              assetTypeCode,
+              priceListId,
+              priceOriginal,
+              (dpVehicleCtrl.numberValue / 10).toString()));
         }
         break;
       case "Price List":
@@ -136,7 +150,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
         } else {
           // ignore: close_sinks
           final simulationBloc = BlocProvider.of<FinanceBloc>(context);
-          simulationBloc.add(FetchSimulationPriceList(branchCode, "ASK01", "ASIPC", assetGroupCode, assetTypeCode, priceListId, priceOriginal));
+          simulationBloc.add(FetchSimulationPriceList(
+              branchCode,
+              "ASK01",
+              "ASIPC",
+              assetGroupCode,
+              assetTypeCode,
+              priceListId,
+              priceOriginal));
           break;
         }
     }
@@ -148,6 +169,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Payment",
       selectedValue: currentSelectMethode,
       items: methodeList,
+      showSearchBox: false,
       onChange: (String selected) {
         setState(() {
           currentSelectMethode = selected;
@@ -163,6 +185,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Nama Branch",
       selectedValue: currentSelectBranch,
       items: branchList,
+      showSearchBox: false,
       onChange: (SelectorBranchModel selected) {
         setState(() {
           outletList = [];
@@ -184,6 +207,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Nama Outlet",
       selectedValue: currentSelectOutlet,
       items: outletList,
+      showSearchBox: false,
       onChange: (SelectorOutletModel selected) {
         setState(() {
           assetKindList = [];
@@ -209,6 +233,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Asset Kind",
       selectedValue: currentSelectAssetKind,
       items: assetKindList,
+      showSearchBox: false,
       onChange: (SelectorAssetKindModel selected) {
         setState(() {
           insuranceTypeList = [];
@@ -230,6 +255,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Asset Kind",
       selectedValue: currentSelectInsuranceType,
       items: insuranceTypeList,
+      showSearchBox: false,
       onChange: (SelectorInsuranceTypeModel selected) {
         setState(() {
           assetGroupList = [];
@@ -251,6 +277,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Kendaraan",
       selectedValue: currentSelectAssetGroup,
       items: assetGroupList,
+      showSearchBox: false,
       onChange: (SelectorAssetGroupModel selected) {
         setState(() {
           assetTypeList = [];
@@ -260,7 +287,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
           // ignore: close_sinks
           final assetTypeBloc = BlocProvider.of<FinanceBloc>(context);
-          assetTypeBloc.add(FetchAssetType(branchCode, "ASK01", "ASIPC", assetGroupCode));
+          assetTypeBloc.add(
+              FetchAssetType(branchCode, "ASK01", "ASIPC", assetGroupCode));
         });
       },
     );
@@ -272,6 +300,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       label: "Tipe",
       selectedValue: currentSelectAssetType,
       items: assetTypeList,
+      showSearchBox: false,
       onChange: (SelectorAssetTypeModel selected) {
         setState(() {
           _assetPriceModel = null;
@@ -282,7 +311,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
           // ignore: close_sinks
           final assetPriceBloc = BlocProvider.of<FinanceBloc>(context);
-          assetPriceBloc.add(FetchAssetPrice(branchCode, "ASK01", "ASIPC", assetGroupCode, assetTypeCode));
+          assetPriceBloc.add(FetchAssetPrice(
+              branchCode, "ASK01", "ASIPC", assetGroupCode, assetTypeCode));
         });
       },
     );
@@ -292,18 +322,29 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     rowTenor.clear();
     final pdf = pw.Document();
 
-    rowTenor.add(<String>['Nama Tenor', 'Lama Tenor', 'Uang Muka', 'Pembayaran Bulanan']);
+    rowTenor.add(<String>[
+      'Nama Tenor',
+      'Lama Tenor',
+      'Uang Muka',
+      'Pembayaran Bulanan'
+    ]);
 
     value.forEach((f) {
-      List<String> tenor = <String>[f.tenorName, f.tenorVale.toString(), f.downPayment, 'Rp ${f.installment} / Bulan'];
+      List<String> tenor = <String>[
+        f.tenorName,
+        f.tenorVale.toString(),
+        f.downPayment,
+        'Rp ${f.installment} / Bulan'
+      ];
       rowTenor.add(tenor);
     });
 
-    ByteData bytes = await rootBundle.load('assets/icons/old_hasjrat_toyota_logo.png');
+    ByteData bytes =
+        await rootBundle.load('assets/icons/old_hasjrat_toyota_logo.png');
     File imgLogo;
     try {
       imgLogo = await writeToFile(bytes);
-    } catch(e) {
+    } catch (e) {
       // catch errors here
     }
 
@@ -313,7 +354,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     );
 
     pdf.addPage(pw.MultiPage(
-        pageFormat: PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+        pageFormat:
+            PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         header: (pw.Context context) {
           if (context.pageNumber == 1) {
@@ -326,7 +368,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
             decoration: const pw.BoxDecoration(
                 border: pw.BoxBorder(
                     bottom: true, width: 0.5, color: PdfColors.grey)),
-            child: pw.Text('Tenor List',
+            child: pw.Text(
+              'Tenor List',
               style: pw.Theme.of(context)
                   .defaultTextStyle
                   .copyWith(color: PdfColors.grey),
@@ -360,13 +403,8 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                     ),
                   ]),
             ),
-            pw.Paragraph(
-                text: 'Tenor List'
-            ),
-            pw.Table.fromTextArray(
-                context: context,
-                data: rowTenor
-            ),
+            pw.Paragraph(text: 'Tenor List'),
+            pw.Table.fromTextArray(context: context, data: rowTenor),
 //            pw.ListView.builder(
 //                itemBuilder: (pw.Context context, index) {
 //                  return pw.Table.fromTextArray(
@@ -380,15 +418,15 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 //                itemCount: value.length
 //            ),
             pw.Padding(padding: const pw.EdgeInsets.all(10)),
-            pw.Text('*Harga tidak terikat, sewaktu-waktu dapat berubah.',
-                style: pw.TextStyle(
-                  fontSize: 5,
-                  fontWeight: pw.FontWeight.bold,
-                ),
+            pw.Text(
+              '*Harga tidak terikat, sewaktu-waktu dapat berubah.',
+              style: pw.TextStyle(
+                fontSize: 5,
+                fontWeight: pw.FontWeight.bold,
+              ),
             ),
           ];
-        }
-    ));
+        }));
     final directory = await getExternalStorageDirectory();
     log.info(directory.path);
 
@@ -402,12 +440,14 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
     final buffer = data.buffer;
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
-    var filePath = tempPath + '/file_logo.tmp'; // file_01.tmp is dump file, can be anything
+    var filePath = tempPath +
+        '/file_logo.tmp'; // file_01.tmp is dump file, can be anything
     return new File(filePath).writeAsBytes(
         buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
   }
 
-  Widget _createEventControlBuilder(BuildContext context, {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
+  Widget _createEventControlBuilder(BuildContext context,
+      {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
     _onStepContinue = onStepContinue;
     _onStepCancel = onStepCancel;
     return SizedBox.shrink();
@@ -465,41 +505,54 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
           }
 
           if (state is OutletSuccess) {
-            state.value.result.forEach((f) {
-              if (f.text == "Manado"
-                  || f.text == "Tendean"
-                  || f.text == "Bitung 3S"
-                  || f.text == "Bitung 3S"
-                  || f.text == "Kotamobagu"
-                  || f.text == "Bitung 3S"
-                  || f.text == "Gorontalo"
-                  || f.text == "Bitung 3S"
-                  || f.text == "Palu"
-                  || f.text == "Parigi"
-                  || f.text == "Mutiara"
-                  || f.text == "Luwuk"
-                  || f.text == "Toili"
-                  || f.text == "Ambon"
-                  || f.text == "Tual"
-                  || f.text == "Sorong"
-                  || f.text == "Bitung 3S"
-                  || f.text == "Jayapura"
-                  || f.text == "Bitung 3S"
-                  || f.text == "Merauke"
-                  || f.text == "Timika"
-                  || f.text == "Bitung 3S"
-                  || f.text == "Nabire"
-                  || f.text == "Biak"
-                  || f.text == "Serui"
-                  || f.text == "Ternate"
-                  || f.text == "Tobelo") {
+            var newVal = state.value.result.map((data) {
+              if (data.text == "Manado") {
+                data.text = "Manado Sudirman";
+              }
+              if (data.text == "Tendean") {
+                data.text = "Manado Tendean";
+              }
+              if (data.text == "Bitung 3S") {
+                data.text = "Bitung";
+              }
+              if (data.text == "tyt limboto") {
+                data.text = "Limboto";
+              }
+              if (data.text == "Palu") {
+                data.text = "Palu Diponegoro";
+              }
+              if (data.text == "Mutiara") {
+                data.text = "Palu Mutiara";
+              }
 
-                outletList.add(
-                  SelectorOutletModel(
-                    id: f.id,
-                    outletName: f.text,
-                  ),
-                );
+              return data;
+            });
+            newVal.forEach((f) {
+              if (f.text == "Manado Sudirman" ||
+                  f.text == "Manado Tendean" ||
+                  f.text == "Bitung" ||
+                  f.text == "Kotamobagu" ||
+                  f.text == "Gorontalo" ||
+                  f.text == "Marisa" ||
+                  f.text == "Limboto" ||
+                  f.text == "Palu Diponegoro" ||
+                  f.text == "Parigi" ||
+                  f.text == "Palu Mutiara" ||
+                  f.text == "Luwuk" ||
+                  f.text == "Toili" ||
+                  f.text == "Ambon" ||
+                  f.text == "Tual" ||
+                  f.text == "Sorong" ||
+                  f.text == "Jayapura" ||
+                  f.text == "Merauke" ||
+                  f.text == "Timika" ||
+                  f.text == "Nabire" ||
+                  f.text == "Biak" ||
+                  f.text == "Serui" ||
+                  f.text == "Ternate" ||
+                  f.text == "Tobelo") {
+                outletList
+                    .add(SelectorOutletModel(id: f.id, outletName: f.text));
               }
             });
           }
@@ -592,21 +645,24 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                 steps: [
                   Step(
                     isActive: _currentStep == 0 ? true : false,
-                    title: Text("Kendaraan",
+                    title: Text(
+                      "Kendaraan",
                       style: TextStyle(color: Colors.white),
                     ),
                     content: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Branch", style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.0,
-                        )),
+                        Text("Branch",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            )),
                         formSelectBranch(),
-                        Text("Outlet", style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.0,
-                        )),
+                        Text("Outlet",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            )),
                         formSelectOutlet(),
 //                        Text("Asset Kind", style: TextStyle(
 //                          fontWeight: FontWeight.w700,
@@ -618,29 +674,33 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 //                          letterSpacing: 1.0,
 //                        )),
 //                        formSelectInsuranceType(),
-                        Text("Kendaraan", style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.0,
-                        )),
+                        Text("Kendaraan",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            )),
                         formSelectAssetGroup(),
-                        Text("Tipe", style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.0,
-                        )),
+                        Text("Tipe",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.0,
+                            )),
                         formSelectAssetType(),
                       ],
                     ),
                   ),
                   Step(
                     isActive: _currentStep == 1 ? true : false,
-                    title: Text("Kategori",
+                    title: Text(
+                      "Kategori",
                       style: TextStyle(color: Colors.white),
                     ),
                     content: stepCategory(),
                   ),
                   Step(
                     isActive: _currentStep == 2 ? true : false,
-                    title: Text("Tenor",
+                    title: Text(
+                      "Tenor",
                       style: TextStyle(color: Colors.white),
                     ),
                     state: StepState.complete,
@@ -1134,200 +1194,206 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
       children: <Widget>[
         _assetPriceModel != null
             ? Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              "Price List",
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.0,
-              ),
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                var value = _assetPriceModel.result[index];
-                return ExpansionTile(
-                  title: Text("${value.priListTitle}"),
-                  initiallyExpanded: priceSelection == index
-                      ? true
-                      : false,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Price List",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      var value = _assetPriceModel.result[index];
+                      return ExpansionTile(
+                        title: Text("${value.priListTitle}"),
+                        initiallyExpanded:
+                            priceSelection == index ? true : false,
                         children: <Widget>[
-                          Text("Type"),
-                          Text(
-                            "${value.assetTypeName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 3),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("Type"),
+                                Text(
+                                  "${value.assetTypeName}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 3),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("Start Date"),
+                                Text("${value.startDate}"),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 3),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("End Date"),
+                                Text("${value.endDate}"),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 3),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("Minimum DP"),
+                                Text(
+                                    "Rp ${value.dpBottomLimit} (${value.dpBottomLimitPercentage} %)"),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 3),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("Maximum DP"),
+                                Text(
+                                    "Rp ${value.dpTopLimit} (${value.dpTopLimitPercentage} %)"),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "Rp ${value.price}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.0,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                RaisedButton(
+                                  onPressed: () {
+                                    _onSelectionPrice(index);
+                                    setState(() {
+                                      priceListId = value.priceListId;
+                                      dpMinimum = value.dpBottomLimit;
+                                      dpMaximum = value.dpTopLimit;
+                                      priceOriginal = value.price;
+                                    });
+                                  },
+                                  elevation: 1,
+                                  child: Text(
+                                    priceSelection == index
+                                        ? "Dipilih"
+                                        : "Pilih",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  color: priceSelection == index
+                                      ? Colors.green
+                                      : Colors.grey,
+                                ),
+                              ],
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("Start Date"),
-                          Text("${value.startDate}"),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("End Date"),
-                          Text("${value.endDate}"),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("Minimum DP"),
-                          Text("Rp ${value.dpBottomLimit} (${value.dpBottomLimitPercentage} %)"),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("Maximum DP"),
-                          Text("Rp ${value.dpTopLimit} (${value.dpTopLimitPercentage} %)"),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Rp ${value.price}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.0,
-                              fontSize: 16,
-                            ),
-                          ),
-                          RaisedButton(
-                            onPressed: () {
-                              _onSelectionPrice(index);
-                              setState(() {
-                                priceListId = value.priceListId;
-                                dpMinimum = value.dpBottomLimit;
-                                dpMaximum = value.dpTopLimit;
-                                priceOriginal = value.price;
-                              });
-                            },
-                            elevation: 1,
-                            child: Text(
-                              priceSelection == index
-                                  ? "Dipilih"
-                                  : "Pilih",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            color: priceSelection == index
-                                ? Colors.green
-                                : Colors.grey,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-              itemCount: _assetPriceModel.result.length,
-            ),
-          ],
-        )
+                      );
+                    },
+                    itemCount: _assetPriceModel.result.length,
+                  ),
+                ],
+              )
             : Center(
-          child: Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: Text(
-              "Data tidak berhasil ditemukan!",
-              style: TextStyle(
-                letterSpacing: 1.0,
-                fontWeight: FontWeight.w700,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text(
+                    "Data tidak berhasil ditemukan!",
+                    style: TextStyle(
+                      letterSpacing: 1.0,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
         _assetPriceModel == null
             ? SizedBox()
             : Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Divider(),
-            Padding(
-              padding:
-              const EdgeInsets.only(right: 25, top: 10),
-              child: Text(
-                "Tipe Simulasi",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ),
-            selectedMethode(),
-            currentSelectMethode == "Down Payment"
-                ? formDP()
-                : SizedBox(),
-            currentSelectMethode == "Down Payment"
-                ? Row(
-              children: <Widget>[
-                Text("* Minimum DP : "),
-                Text(
-                  "$dpMinimum",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-              ],
-            ) : SizedBox(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    child: Expanded(
-                      child: RaisedButton(
-                        onPressed: () {
-                          _onCalculateSimulator();
-                        },
-                        child: Text(
-                          "Hitung",
-                          style: TextStyle(
-                              color: Colors.white),
-                        ),
-                        color: HexColor('#C61818'),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
+                  Divider(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 25, top: 10),
+                    child: Text(
+                      "Tipe Simulasi",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
                       ),
+                    ),
+                  ),
+                  selectedMethode(),
+                  currentSelectMethode == "Down Payment"
+                      ? formDP()
+                      : SizedBox(),
+                  currentSelectMethode == "Down Payment"
+                      ? Row(
+                          children: <Widget>[
+                            Text("* Minimum DP : "),
+                            Text(
+                              "$dpMinimum",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ],
+                        )
+                      : SizedBox(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 30),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          child: Expanded(
+                            child: RaisedButton(
+                              onPressed: () {
+                                _onCalculateSimulator();
+                              },
+                              child: Text(
+                                "Hitung",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: HexColor('#C61818'),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
       ],
     );
   }
@@ -1416,14 +1482,16 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                       onPressed: () {
                         exportPdf(state.value.result);
                       },
-                      icon: Icon(Icons.file_download,
+                      icon: Icon(
+                        Icons.file_download,
                         color: Colors.white,
                       ),
                       color: HexColor('#C61818'),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      label: Text("Export PDF",
+                      label: Text(
+                        "Export PDF",
                         style: TextStyle(
                           color: Colors.white,
                         ),

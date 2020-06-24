@@ -58,7 +58,7 @@ class _RadialChartViewState extends State<RadialChartView> {
 
   @override
   Widget build(BuildContext context) {
-     var percentTotalSold = (data.totalSoldCar / data.targetSoldCar) * 100;
+    var percentTotalSold = (data.totalSoldCar / data.targetSoldCar) * 100;
     return Container(
       height: 170,
       child: SfCircularChart(
@@ -66,13 +66,21 @@ class _RadialChartViewState extends State<RadialChartView> {
           CircularChartAnnotation(
             angle: 0,
             radius: '0%',
-            widget: Text(
-              "${percentTotalSold.toStringAsFixed(2)} %",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 19,
-                  fontWeight: FontWeight.w700),
-            ),
+            widget: percentTotalSold >= 100.00
+                ? Text(
+                    "100.00 %",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w700),
+                  )
+                : Text(
+                    "${percentTotalSold.toStringAsFixed(2)} %",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w700),
+                  ),
           ),
         ],
         legend: Legend(

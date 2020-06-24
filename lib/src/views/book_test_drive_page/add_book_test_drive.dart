@@ -108,6 +108,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
       label: "Item Code",
       selectedValue: currentSelectPriceList,
       items: vehicleList,
+      showSearchBox: false,
       itemBuilder: (context, SelectorVehicleModel item, bool isSelected) {
         return Container(
           decoration: !isSelected
