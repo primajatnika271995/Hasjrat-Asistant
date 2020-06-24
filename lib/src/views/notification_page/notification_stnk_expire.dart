@@ -19,8 +19,6 @@ class _NotificationStnkExpireViewState extends State<NotificationStnkExpireView>
 
   var formatDob = DateFormat("yyyy-MM-dd");
 
-  List<StnkExpiredModel> tmpData = [];
-
   void _onCheckDetailsStnk(StnkExpiredModel value) {
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -109,7 +107,7 @@ class _NotificationStnkExpireViewState extends State<NotificationStnkExpireView>
                 itemBuilder: (context, index) {
 
                   var custName = state.value.map((e) => e.customerName).toSet().toList()[index];
-                  var data = tmpData.where((f) => f.expiredDateStnk != null).toSet().toList().toSet().toList()[index];
+                  var data = state.value.where((f) => f.expiredDateStnk != null).toSet().toList().toSet().toList()[index];
                   return ListTile(
                     title: Text("$custName"),
                     subtitle: Text("${formatDob.format(DateTime.parse(data.expiredDateStnk))}"),
