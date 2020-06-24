@@ -11,6 +11,8 @@ import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/activity_report_page/add_activity_report.dart';
 import 'package:salles_tools/src/views/activity_report_page/details_activity_report.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
+import 'package:salles_tools/src/services/customer_service.dart';
 
 class ActivityReportListView extends StatefulWidget {
   @override
@@ -19,19 +21,31 @@ class ActivityReportListView extends StatefulWidget {
 
 class _ActivityReportListViewState extends State<ActivityReportListView> {
   var searchCtrl = new TextEditingController();
-  
+
   var dateFormat = DateFormat("yyyy/MM/dd");
 
   String outletCode;
   String branchCode;
 
   void _onAddActivityReport() {
-    Navigator.of(context).push(
+    Navigator.of(context)
+        .push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => BlocProvider(
-          create: (context) => ActivityReportBloc(ActivityReportService()),
+        pageBuilder: (_, __, ___) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => ActivityReportBloc(ActivityReportService()),
+            ),
+            BlocProvider(
+              create: (context) => CustomerBloc(CustomerService()),
+            ),
+          ],
           child: AddActivityReportView(),
         ),
+        // BlocProvider(
+        //   create: (context) => ActivityReportBloc(ActivityReportService()),
+        //   child: AddActivityReportView(),
+        // ),
         transitionDuration: Duration(milliseconds: 450),
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return Opacity(
@@ -40,7 +54,8 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
           );
         },
       ),
-    ).then((f) {
+    )
+        .then((f) {
       getListActivityReport();
     });
   }
@@ -81,7 +96,7 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
     getListActivityReport();
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +144,8 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
                         padding: EdgeInsets.only(top: 100),
                         child: Column(
                           children: <Widget>[
-                            Image.asset("assets/icons/no_data.png", height: 200),
+                            Image.asset("assets/icons/no_data.png",
+                                height: 200),
                           ],
                         ),
                       ),
@@ -142,7 +158,8 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: <Widget>[
-                            Image.asset("assets/icons/error_banner.jpg", height: 200),
+                            Image.asset("assets/icons/error_banner.jpg",
+                                height: 200),
                             Text("502 Error Bad Gateway"),
                           ],
                         ),
@@ -154,7 +171,8 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
                     return ListView.separated(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      separatorBuilder: (BuildContext context, int index) => Divider(),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(),
                       itemBuilder: (context, index) {
                         var data = state.value.data[index];
                         return ListTile(
@@ -165,14 +183,16 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Expanded(
-                                child: Text("${data.title.toUpperCase()}",
+                                child: Text(
+                                  "${data.title.toUpperCase()}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14,
                                   ),
                                 ),
                               ),
-                              Text("${dateFormat.format(DateTime.parse(data.createdDate))}",
+                              Text(
+                                "${dateFormat.format(DateTime.parse(data.createdDate))}",
                                 style: TextStyle(
                                   fontSize: 10,
                                   letterSpacing: 0.6,
@@ -180,7 +200,10 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
                               ),
                             ],
                           ),
-                          subtitle: Text(data.description.isEmpty ? "-" : "${data.description}",
+                          subtitle: Text(
+                            data.description.isEmpty
+                                ? "-"
+                                : "${data.description}",
                             style: TextStyle(
                               fontSize: 11,
                             ),
@@ -208,7 +231,7 @@ class _ActivityReportListViewState extends State<ActivityReportListView> {
       ),
     );
   }
-  
+
   Widget searchContent() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),

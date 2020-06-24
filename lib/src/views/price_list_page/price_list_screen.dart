@@ -66,7 +66,11 @@ class _PriceListViewState extends State<PriceListView> {
 
           // ignore: close_sinks
           final dmsBloc = BlocProvider.of<DmsBloc>(context);
-          dmsBloc.add(FetchItemModel(ItemModelPost(itemType: "", itemModel: "", itemClass1: class1Ctrl.text, itemClass: "")));
+          dmsBloc.add(FetchItemModel(ItemModelPost(
+              itemType: "",
+              itemModel: "",
+              itemClass1: class1Ctrl.text,
+              itemClass: "")));
         });
       },
     );
@@ -168,25 +172,43 @@ class _PriceListViewState extends State<PriceListView> {
     rowStock.clear();
 
     final pdf = pw.Document();
-    rowPrice.add(<String>['Kode Item', 'Model Kendaraan', 'Dalam Kota', 'Tanggal', 'Harga'],);
+    rowPrice.add(
+      <String>[
+        'Kode Item',
+        'Model Kendaraan',
+        'Dalam Kota',
+        'Tanggal',
+        'Harga'
+      ],
+    );
     rowStock.add(<String>['Tahun', 'Jumlah', 'Warna']);
 
     value.pricelists.forEach((f) {
-      List<String> price = <String>[f.itemCode, f.itemModel, f.dalamKota, f.pricelistTanggal.toString(), CurrencyFormat().data.format(f.ontr)];
+      List<String> price = <String>[
+        f.itemCode,
+        f.itemModel,
+        f.dalamKota,
+        f.pricelistTanggal.toString(),
+        CurrencyFormat().data.format(f.ontr)
+      ];
       rowPrice.add(price);
     });
 
     value.stocks.forEach((f) {
-      List<String> stock = <String>[f.tahun, f.quantity.toString(), f.namaWarna];
+      List<String> stock = <String>[
+        f.tahun,
+        f.quantity.toString(),
+        f.namaWarna
+      ];
       rowStock.add(stock);
     });
 
-
-    ByteData bytes = await rootBundle.load('assets/icons/old_hasjrat_toyota_logo.png');
+    ByteData bytes =
+        await rootBundle.load('assets/icons/old_hasjrat_toyota_logo.png');
     File imgLogo;
     try {
       imgLogo = await writeToFile(bytes); // <= returns File
-    } catch(e) {
+    } catch (e) {
       // catch errors here
     }
 
@@ -196,41 +218,43 @@ class _PriceListViewState extends State<PriceListView> {
     );
 
     pdf.addPage(pw.MultiPage(
-      pageFormat: PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      header: (pw.Context context) {
-        if (context.pageNumber == 1) {
-          return null;
-        }
-        return pw.Container(
+        pageFormat:
+            PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        header: (pw.Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return pw.Container(
             alignment: pw.Alignment.centerRight,
             margin: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
             padding: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
             decoration: const pw.BoxDecoration(
                 border: pw.BoxBorder(
                     bottom: true, width: 0.5, color: PdfColors.grey)),
-            child: pw.Text('Price List',
-                style: pw.Theme.of(context)
-                    .defaultTextStyle
-                    .copyWith(color: PdfColors.grey),
+            child: pw.Text(
+              'Price List',
+              style: pw.Theme.of(context)
+                  .defaultTextStyle
+                  .copyWith(color: PdfColors.grey),
             ),
-        );
-      },
-      footer: (pw.Context context) {
-        return pw.Container(
+          );
+        },
+        footer: (pw.Context context) {
+          return pw.Container(
             alignment: pw.Alignment.centerRight,
             margin: const pw.EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
             child: pw.Text(
-                'Page ${context.pageNumber} of ${context.pagesCount}',
-                style: pw.Theme.of(context)
-                    .defaultTextStyle
-                    .copyWith(color: PdfColors.grey),
+              'Page ${context.pageNumber} of ${context.pagesCount}',
+              style: pw.Theme.of(context)
+                  .defaultTextStyle
+                  .copyWith(color: PdfColors.grey),
             ),
-        );
-      },
-      build: (pw.Context context) {
-        return <pw.Widget>[
-          pw.Header(
+          );
+        },
+        build: (pw.Context context) {
+          return <pw.Widget>[
+            pw.Header(
               level: 0,
               child: pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -242,14 +266,9 @@ class _PriceListViewState extends State<PriceListView> {
                       child: pw.Image(image),
                     ),
                   ]),
-          ),
-          pw.Paragraph(
-            text: 'Price List'
-          ),
-          pw.Table.fromTextArray(
-            context: context,
-            data: rowPrice
-          ),
+            ),
+            pw.Paragraph(text: 'Price List'),
+            pw.Table.fromTextArray(context: context, data: rowPrice),
 //          pw.ListView.builder(
 //            itemBuilder: (pw.Context context, index) {
 //              return pw.Table.fromTextArray(
@@ -262,14 +281,9 @@ class _PriceListViewState extends State<PriceListView> {
 //            },
 //           itemCount: value.pricelists.length
 //          ),
-          pw.Padding(padding: const pw.EdgeInsets.all(10)),
-          pw.Paragraph(
-              text: 'Stock'
-          ),
-          pw.Table.fromTextArray(
-              context: context,
-              data: rowStock
-          ),
+            pw.Padding(padding: const pw.EdgeInsets.all(10)),
+            pw.Paragraph(text: 'Stock'),
+            pw.Table.fromTextArray(context: context, data: rowStock),
 //          pw.ListView.builder(
 //              itemBuilder: (pw.Context context, index) {
 //                return pw.Table.fromTextArray(
@@ -282,16 +296,16 @@ class _PriceListViewState extends State<PriceListView> {
 //              },
 //              itemCount: value.stocks.length
 //          ),
-          pw.Padding(padding: const pw.EdgeInsets.all(10)),
-          pw.Text('*Harga tidak terikat, sewaktu-waktu dapat berubah.',
-            style: pw.TextStyle(
-              fontSize: 5,
-              fontWeight: pw.FontWeight.bold,
+            pw.Padding(padding: const pw.EdgeInsets.all(10)),
+            pw.Text(
+              '*Harga tidak terikat, sewaktu-waktu dapat berubah.',
+              style: pw.TextStyle(
+                fontSize: 5,
+                fontWeight: pw.FontWeight.bold,
+              ),
             ),
-          ),
-        ];
-    }
-    ));
+          ];
+        }));
     final directory = await getExternalStorageDirectory();
     log.info(directory.path);
 
@@ -305,7 +319,8 @@ class _PriceListViewState extends State<PriceListView> {
     final buffer = data.buffer;
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
-    var filePath = tempPath + '/file_logo.tmp'; // file_01.tmp is dump file, can be anything
+    var filePath = tempPath +
+        '/file_logo.tmp'; // file_01.tmp is dump file, can be anything
     return new File(filePath).writeAsBytes(
         buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
   }
@@ -679,7 +694,6 @@ class _PriceListViewState extends State<PriceListView> {
     );
   }
 
-
   Widget itemList() {
     return Container(
       child: Padding(
@@ -772,7 +786,6 @@ class _PriceListViewState extends State<PriceListView> {
                                   ),
                                 ),
                               ),
-
                               Divider(),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -791,52 +804,145 @@ class _PriceListViewState extends State<PriceListView> {
                               ),
                               state.value.data[0].stocks.isEmpty
                                   ? Padding(
-                                    padding: const EdgeInsets.only(bottom: 20),
-                                    child: Text("Tidak Tersedia"),
-                                  )
-                                  : ListView.separated(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      separatorBuilder: (BuildContext context, int index) => Divider(),
-                                      itemBuilder: (context, iStock) {
-                                        var stock = state.value.data[0].stocks[iStock];
-                                        return Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: <Widget>[
-                                                  Text("Tahun Pembuatan"),
-                                                  Text("${stock.tahun}"),
-                                                ],
+                                      padding:
+                                          const EdgeInsets.only(bottom: 20),
+                                      child: Text("Tidak Tersedia"),
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 15),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Expanded(
+                                                flex: 1,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 5),
+                                                      child: Text("Tahun",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 13)),
+                                                    ),
+                                                    ListView.builder(
+                                                      shrinkWrap: true,
+                                                      physics:
+                                                          NeverScrollableScrollPhysics(),
+                                                      itemCount: state
+                                                          .value
+                                                          .data[0]
+                                                          .stocks
+                                                          .length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        return Text(
+                                                            "${state.value.data[0].stocks[index].tahun}",
+                                                            style: TextStyle(
+                                                                fontSize: 12));
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: <Widget>[
-                                                  Text("Warna"),
-                                                  Text("${stock.namaWarna}"),
-                                                ],
+                                              Expanded(
+                                                flex: 3,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 5),
+                                                      child: Text("Warna",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 13)),
+                                                    ),
+                                                    ListView.builder(
+                                                      shrinkWrap: true,
+                                                      physics:
+                                                          NeverScrollableScrollPhysics(),
+                                                      itemCount: state
+                                                          .value
+                                                          .data[0]
+                                                          .stocks
+                                                          .length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        return Text(
+                                                            "${state.value.data[0].stocks[index].namaWarna}",
+                                                            style: TextStyle(
+                                                                fontSize: 12));
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: <Widget>[
-                                                  Text("Quantity"),
-                                                  Text("${stock.quantity}"),
-                                                ],
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 5),
+                                                      child: Text("Stock",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 13)),
+                                                    ),
+                                                    ListView.builder(
+                                                      shrinkWrap: true,
+                                                      physics:
+                                                          NeverScrollableScrollPhysics(),
+                                                      itemCount: state
+                                                          .value
+                                                          .data[0]
+                                                          .stocks
+                                                          .length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        return Text(
+                                                            "${state.value.data[0].stocks[index].quantity}",
+                                                            style: TextStyle(
+                                                                fontSize: 12));
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                      itemCount: state.value.data[0].stocks.length,
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(bottom:5),
+                                          child: Divider(
+                                            color: Colors.grey[100],
+                                            thickness: 1,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                               SizedBox(
                                 height: 10,
@@ -853,14 +959,16 @@ class _PriceListViewState extends State<PriceListView> {
                       onPressed: () {
                         exportPdf(state.value.data[0]);
                       },
-                      icon: Icon(Icons.file_download,
+                      icon: Icon(
+                        Icons.file_download,
                         color: Colors.white,
                       ),
                       color: HexColor('#C61818'),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      label: Text("Export PDF",
+                      label: Text(
+                        "Export PDF",
                         style: TextStyle(
                           color: Colors.white,
                         ),

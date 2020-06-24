@@ -21,6 +21,11 @@ import 'package:salles_tools/src/views/components/log.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_bloc.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_event.dart';
+import 'package:salles_tools/src/bloc/customer_bloc/customer_state.dart';
+import 'package:select_dialog/select_dialog.dart';
+import 'package:salles_tools/src/models/selector_model.dart';
 
 class AddActivityReportView extends StatefulWidget {
   @override
@@ -61,13 +66,30 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
   File image4;
   List<SourceImg> uploadImgList = [];
 
+  var customerProvinceCtrl = new TextEditingController();
+  var currentSelectProvince;
+  var provinceCode;
+  List<SelectorProvinceModel> provinceList = [];
+
+  var customerDistrictCtrl = new TextEditingController();
+  var currentSelectDistrict;
+  var districtCode;
+  List<SelectorDistrictModel> districtList = [];
+
+  var customerSubDistrictCtrl = new TextEditingController();
+  var currentSelectSubDistrict;
+  var districtSubCode;
+  List<SelectorSubDistrictModel> districtSubList = [];
+
   Future selectFromCamera() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
-    File croppedImg = await ImageCropper.cropImage(sourcePath: image.path, maxWidth: 512, maxHeight: 512);
+    File croppedImg = await ImageCropper.cropImage(
+        sourcePath: image.path, maxWidth: 512, maxHeight: 512);
 
     if (image1 == null) {
       image1 = croppedImg;
-      uploadImgList.add(SourceImg(title: image1.path.split("/").last, size: "0MB"));
+      uploadImgList
+          .add(SourceImg(title: image1.path.split("/").last, size: "0MB"));
       setState(() {});
     } else if (image2 == null) {
       image2 = croppedImg;
@@ -75,7 +97,8 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
       String rename = path.join(dir, 'file-upload-2.jpg');
 
       image2.renameSync(rename);
-      uploadImgList.add(SourceImg(title: image2.path.split("/").last, size: "0MB"));
+      uploadImgList
+          .add(SourceImg(title: image2.path.split("/").last, size: "0MB"));
       setState(() {});
     } else if (image3 == null) {
       image3 = croppedImg;
@@ -83,7 +106,8 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
       String rename = path.join(dir, 'file-upload-3.jpg');
 
       image3.renameSync(rename);
-      uploadImgList.add(SourceImg(title: image3.path.split("/").last, size: "0MB"));
+      uploadImgList
+          .add(SourceImg(title: image3.path.split("/").last, size: "0MB"));
       setState(() {});
     } else if (image4 == null) {
       image4 = croppedImg;
@@ -91,7 +115,8 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
       String rename = path.join(dir, 'file-upload-5.jpg');
 
       image4.renameSync(rename);
-      uploadImgList.add(SourceImg(title: image4.path.split("/").last, size: "0MB"));
+      uploadImgList
+          .add(SourceImg(title: image4.path.split("/").last, size: "0MB"));
       setState(() {});
     }
   }
@@ -107,17 +132,14 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
     if (picked != null)
       setState(() {
         _dateTime = picked;
-        dateSelected.value =
-            TextEditingValue(text: picked.toString());
+        dateSelected.value = TextEditingValue(text: picked.toString());
       });
   }
 
   Future getCurrentLocation() async {
     location.getLocation().then((LocationData value) async {
-      List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(
-          value.latitude,
-          value.longitude
-      );
+      List<Placemark> placemark = await Geolocator()
+          .placemarkFromCoordinates(value.latitude, value.longitude);
 
       var locationName = ""
           "${placemark[0].name}, "
@@ -214,10 +236,73 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
       // ignore: close_sinks
       final activityReportBloc = BlocProvider.of<ActivityReportBloc>(context);
       activityReportBloc.add(UploadActivityReport(image1));
-
     } else {
       log.warning("Please Complete Form!");
     }
+  }
+
+  void getProvinceData() {
+    final customerBloc = BlocProvider.of<CustomerBloc>(context);
+    customerBloc.add(FetchProvince());
+  }
+
+  void _showListProvinsi() {
+    SelectDialog.showModal<SelectorProvinceModel>(
+      context,
+      label: "Province Name",
+      selectedValue: currentSelectProvince,
+      items: provinceList,
+      showSearchBox: false,
+      onChange: (SelectorProvinceModel selected) {
+        setState(() {
+          currentSelectProvince = selected;
+          customerProvinceCtrl.text = selected.provinceName;
+          provinceCode = selected.provinceCode;
+
+          // ignore: close_sinks
+          final customerBloc = BlocProvider.of<CustomerBloc>(context);
+          customerBloc.add(FetchDistrict(provinceCode));
+        });
+      },
+    );
+  }
+
+  void _showListDistrict() {
+    SelectDialog.showModal<SelectorDistrictModel>(
+      context,
+      label: "Kabupaten / Kota",
+      selectedValue: currentSelectDistrict,
+      items: districtList,
+      showSearchBox: false,
+      onChange: (SelectorDistrictModel selected) {
+        setState(() {
+          currentSelectDistrict = selected;
+          customerDistrictCtrl.text = selected.districtName;
+          districtCode = selected.districtCode;
+
+          // ignore: close_sinks
+          final customerBloc = BlocProvider.of<CustomerBloc>(context);
+          customerBloc.add(FetchSubDistrict(provinceCode, districtCode));
+        });
+      },
+    );
+  }
+
+  void _showListSubDistrict() {
+    SelectDialog.showModal<SelectorSubDistrictModel>(
+      context,
+      label: "Kecamatan",
+      selectedValue: currentSelectSubDistrict,
+      items: districtSubList,
+      showSearchBox: false,
+      onChange: (SelectorSubDistrictModel selected) {
+        setState(() {
+          currentSelectSubDistrict = selected;
+          customerSubDistrictCtrl.text = selected.districtSubName;
+          districtSubCode = selected.districtSubCode;
+        });
+      },
+    );
   }
 
   @override
@@ -225,6 +310,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
     // TODO: implement initState
     getCurrentLocation();
     getPreferences();
+    getProvinceData();
     initSpeechState();
     super.initState();
   }
@@ -272,8 +358,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                     },
                     color: HexColor("#C61818"),
                   ),
-                ]
-            ).show();
+                ]).show();
           }
 
           if (state is CreateActivityReportError) {
@@ -297,22 +382,22 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                     onPressed: () => Navigator.pop(context),
                     color: HexColor("#C61818"),
                   ),
-                ]
-            ).show();
+                ]).show();
           }
 
           if (state is UploadActivityReportSuccess) {
             DateTime parseDate = DateTime.parse(dateSelected.text);
             // ignore: close_sinks
-            final activityReportBloc = BlocProvider.of<ActivityReportBloc>(context);
+            final activityReportBloc =
+                BlocProvider.of<ActivityReportBloc>(context);
             activityReportBloc.add(CreateActivityReport(ActivityReportPost(
-                title: titleCtrl.text,
-                alamat: alamatCtrl.text,
-                description: notesCtrl.text,
-                createdInMillisecond: parseDate.millisecondsSinceEpoch,
-                idContent: state.value.id,
-                outletCode: outletCode,
-                branchCode: branchCode,
+              title: titleCtrl.text,
+              alamat: alamatCtrl.text,
+              description: notesCtrl.text,
+              createdInMillisecond: parseDate.millisecondsSinceEpoch,
+              idContent: state.value.id,
+              outletCode: outletCode,
+              branchCode: branchCode,
             )));
           }
 
@@ -337,8 +422,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                     onPressed: () => Navigator.pop(context),
                     color: HexColor("#C61818"),
                   ),
-                ]
-            ).show();
+                ]).show();
           }
 
           if (state is ActivityReportLoading) {
@@ -388,6 +472,75 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                   ),
                 ),
                 formDatePicker(),
+                BlocBuilder<CustomerBloc, CustomerState>(
+                    builder: (context, customerState) {
+                  if (customerState is ProvinceSuccess) {
+                    customerState.value.data.forEach((f) {
+                      provinceList.add(SelectorProvinceModel(
+                        provinceCode: f.provinsiCode,
+                        provinceName: f.provinsiName,
+                      ));
+                    });
+                  }
+
+                  if (customerState is DistrictSuccess) {
+                    customerState.value.data.forEach((f) {
+                      districtList.add(SelectorDistrictModel(
+                        districtCode: f.kabupatenCode,
+                        districtName: f.kabupatenName,
+                      ));
+                    });
+                  }
+
+                  if (customerState is SubDistrictSuccess) {
+                    customerState.value.data.forEach((f) {
+                      districtSubList.add(SelectorSubDistrictModel(
+                        districtSubCode: f.kecamatanCode,
+                        districtSubName: f.kecamatanName,
+                      ));
+                    });
+                  }
+                  return SizedBox();
+                }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Provinsi",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ),
+                formSelectProvince(),
+                SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Kota/Kabupaten",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ),
+                formSelectKota(),
+                SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Kecamatan",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ),
+                formSelectKecamatan(),
                 SizedBox(
                   height: 5,
                 ),
@@ -421,17 +574,19 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                 speech.isListening
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Text("I'm listening..."),
-                    )
+                        child: Text("I'm listening..."),
+                      )
                     : SizedBox(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Container(
                     width: screenWidth(context),
                     child: RaisedButton(
-                      onPressed: image1 == null ? null : () {
-                        onCreateActivityReport();
-                      },
+                      onPressed: image1 == null
+                          ? null
+                          : () {
+                              onCreateActivityReport();
+                            },
                       child: Text(
                         "Create",
                         style: TextStyle(color: Colors.white),
@@ -678,6 +833,183 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
     );
   }
 
+  Widget formSelectProvince() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListProvinsi();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 16),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Pilih Provinsi',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerProvinceCtrl,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formSelectKota() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListDistrict();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 16),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Pilih Provinsi',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerDistrictCtrl,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget formSelectKecamatan() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+      child: Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15.0,
+              spreadRadius: 0.0,
+            )
+          ],
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 2.0),
+            child: Theme(
+              data: ThemeData(hintColor: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  _showListSubDistrict();
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 0.7,
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabled: false,
+                      contentPadding: EdgeInsets.only(bottom: 16),
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF6991C7),
+                        size: 24.0,
+                      ),
+                      hintText: 'Pilih Provinsi',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                    controller: customerSubDistrictCtrl,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget formNote() {
     return Stack(
       children: <Widget>[
@@ -723,20 +1055,21 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
           right: 15,
           bottom: 10,
           child: IconButton(
-            onPressed: !_hasSpeech || speech.isListening
-                ? null
-                : startListening,
+            onPressed:
+                !_hasSpeech || speech.isListening ? null : startListening,
             icon: Icon(Icons.mic),
           ),
         ),
-        speech.isListening ? Positioned(
-          right: 15,
-          bottom: 40,
-          child: IconButton(
-            onPressed: cancelListening,
-            icon: Icon(Icons.mic_off),
-          ),
-        ) : SizedBox(),
+        speech.isListening
+            ? Positioned(
+                right: 15,
+                bottom: 40,
+                child: IconButton(
+                  onPressed: cancelListening,
+                  icon: Icon(Icons.mic_off),
+                ),
+              )
+            : SizedBox(),
       ],
     );
   }
