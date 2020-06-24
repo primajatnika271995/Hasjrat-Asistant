@@ -72,7 +72,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           BlocListener<TargetDashboardBloc, TargetDashboardState>(
             listener: (context, state) {
               if (state is TargetDashboardLoading) {
-                onLoading(context);
+                // onLoading(context);
               }
 
               if (state is TargetDashboardDisposeLoading) {
@@ -96,7 +96,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: 270,
+              height: 295,
               color: HexColor('#C61818'),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
