@@ -23,27 +23,10 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
   var yearFormat = DateFormat("yyyy");
 
   List<Widget> _widgetPages = [
-//    HomeScreen(),
     BlocProvider(
       create: (context) => SalesMonthBloc(SalesMonthService()),
       child: HomeScreen(),
     ),
-    NotificationScreen(),
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => TargetDashboardBloc(DashboardService()),
-        ),
-        BlocProvider(
-          create: (context) => DashboardBloc(DashboardService()),
-        ),
-      ],
-      child: DashboardScreen(),
-    ),
-    // BlocProvider(
-    //   create: (context) => DashboardBloc(DashboardService()),
-    //   child: DashboardScreen(),
-    // ),
     ProfileScreen(),
   ];
 
@@ -69,6 +52,34 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
       onWillPop: _onBack,
       child: Scaffold(
         body: _widgetPages.elementAt(_selectedIndex),
+        floatingActionButton: SizedBox(
+          height: 70,
+          width: 70,
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) =>
+                            TargetDashboardBloc(DashboardService()),
+                      ),
+                      BlocProvider(
+                        create: (context) => DashboardBloc(DashboardService()),
+                      ),
+                    ],
+                    child: DashboardScreen(),
+                  ),
+                ),
+              );
+            },
+            child: Image.asset('assets/icons/dashboard_icon.png', height: 30),
+            backgroundColor: Colors.grey[100],
+            elevation: 1,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: <BottomNavigationBarItem>[
@@ -84,29 +95,6 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
                 color: HexColor('#C61818'),
               ),
               title: Text("Beranda"),
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/icons/notification_icon.png',
-                height: 25,
-                color: HexColor('#212120'),
-              ),
-              activeIcon: Image.asset(
-                'assets/icons/notification_icon.png',
-                height: 25,
-                color: HexColor('#C61818'),
-              ),
-              title: Text("Notifikasi"),
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/icons/dashboard_icon.png',
-                height: 25,
-                color: HexColor('#212120'),
-              ),
-              activeIcon:
-                  Image.asset('assets/icons/dashboard_icon.png', height: 25),
-              title: Text("Dashboard"),
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
