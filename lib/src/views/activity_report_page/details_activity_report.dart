@@ -8,7 +8,8 @@ class ActivityReportDetailsView extends StatefulWidget {
   ActivityReportDetailsView({this.data});
 
   @override
-  _ActivityReportDetailsViewState createState() => _ActivityReportDetailsViewState();
+  _ActivityReportDetailsViewState createState() =>
+      _ActivityReportDetailsViewState();
 }
 
 class _ActivityReportDetailsViewState extends State<ActivityReportDetailsView> {
@@ -34,12 +35,14 @@ class _ActivityReportDetailsViewState extends State<ActivityReportDetailsView> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          widget.data.files.isNotEmpty ? Image.network(
-            "${widget.data.files[0].url}",
-            height: 250,
-            fit: BoxFit.cover,
-            width: screenWidth(context),
-          ) : SizedBox(),
+          widget.data.files.isNotEmpty
+              ? Image.network(
+                  "${widget.data.files[0].url}",
+                  height: 250,
+                  fit: BoxFit.cover,
+                  width: screenWidth(context),
+                )
+              : SizedBox(),
           Padding(
             padding: const EdgeInsets.only(top: 20, left: 20),
             child: Text(
@@ -54,14 +57,34 @@ class _ActivityReportDetailsViewState extends State<ActivityReportDetailsView> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 2, left: 20),
-            child: Text(
-              "${widget.data.alamat}",
-              style: TextStyle(
-                letterSpacing: 1.0,
-                fontSize: 11,
-                color: Colors.black,
-                fontWeight: FontWeight.w700,
-              ),
+            child: Column( crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                widget.data.provinceCode != null ||
+                        widget.data.provinceName != null ||
+                        widget.data.kabupatenCode != null ||
+                        widget.data.kabupatenName != null ||
+                        widget.data.kecamatanCode != null ||
+                        widget.data.kecamatanName != null
+                    ? Text(
+                        "${widget.data.provinceName}, ${widget.data.kecamatanName}, ${widget.data.kecamatanName}",
+                        style: TextStyle(
+                          letterSpacing: 1.0,
+                          fontSize: 11,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )
+                    : SizedBox(),
+                Text(
+                  "${widget.data.alamat}",
+                  style: TextStyle(
+                    letterSpacing: 1.0,
+                    fontSize: 11,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
             ),
           ),
           Row(

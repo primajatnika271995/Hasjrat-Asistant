@@ -398,7 +398,16 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
               idContent: state.value.id,
               outletCode: outletCode,
               branchCode: branchCode,
+              provinceCode: provinceCode,
+              kabCode: districtCode,
+              kecCode: districtSubCode,
+              provinceName: customerProvinceCtrl.text,
+              kabName: customerDistrictCtrl.text,
+              kecName: customerSubDistrictCtrl.text,
             )));
+
+            print(
+                "value to send : \n${titleCtrl.text}\n${alamatCtrl.text}\n${notesCtrl.text}\n${parseDate.millisecondsSinceEpoch}\n${state.value.id}\n$outletCode\n$branchCode\n${customerProvinceCtrl.text}\n$provinceCode\n${customerDistrictCtrl.text}\n$districtCode\n${customerSubDistrictCtrl.text}\n$districtSubCode");
           }
 
           if (state is UploadActivityReportError) {

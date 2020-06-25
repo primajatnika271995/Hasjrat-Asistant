@@ -13,7 +13,7 @@ class UriApi {
 
   static const String checkLastSalesOfTheMonth = "/sales-tools-employees-service/api/v2/employee-of-the-month/lastEmployeeOfTheMonth";
 
-  static const String activityReportListUri = "/sales-tools-employees-service/api/v2/activities/sales/datatables";
+  static const String activityReportListUri = "/sales-tools-employees-service/api/v2/activities/sales/datatables/byCreatedDateBetween?length=100&order%5B0%5D%5Bdir%5D=desc&order%5B0%5D%5Bcolumn%5D=3";
 
   static const String createActivityReportUri = "/sales-tools-employees-service/api/v2/activities/sales/new";
 
