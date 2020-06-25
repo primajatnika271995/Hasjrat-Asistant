@@ -66,7 +66,7 @@ class _ActivityReportDetailsViewState extends State<ActivityReportDetailsView> {
                         widget.data.kecamatanCode != null ||
                         widget.data.kecamatanName != null
                     ? Text(
-                        "${widget.data.provinceName}, ${widget.data.kecamatanName}, ${widget.data.kecamatanName}",
+                        "${widget.data.provinceName}, ${widget.data.kabupatenName}, ${widget.data.kecamatanName}",
                         style: TextStyle(
                           letterSpacing: 1.0,
                           fontSize: 11,
