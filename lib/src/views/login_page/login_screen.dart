@@ -246,21 +246,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             controller: passwordCtrl,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 25, horizontal: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  "Forgot Password?",
-                                  style: TextStyle(
-                                    letterSpacing: 1.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          SizedBox(height: 40),
                         ],
                       ),
                     ),
