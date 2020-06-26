@@ -120,18 +120,28 @@ class _NotificationStnkExpireViewState
               return ListView.builder(
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  var custName = state.value
-                      .map((e) => e.customerName)
-                      .toSet()
-                      .toList()[index];
-                  var data = state.value
-                      .where((f) => f.expiredDateStnk != null)
-                      .toSet()
-                      .toList()
-                      .toSet()
-                      .toList()[index];
+                  // var custName = state.value
+                  //     .map((e) => e.customerName)
+                  //     .toSet()
+                  //     .toList()[index];
+                  // var data = state.value
+                  //     .where((f) => f.expiredDateStnk != null)
+                  //     .toSet()
+                  //     .toList()
+                  //     .toSet()
+                  //     .toList()[index];
+                  var data = searchByNameCtrl == null
+                      ? state.value
+                          .where((f) => f.expiredDateStnk != null)
+                          .toList()[index]
+                      : state.value
+                          .where((f) =>
+                              f.expiredDateStnk != null &&
+                              f.customerName.toLowerCase().contains(
+                                  searchByNameCtrl.text.toLowerCase()))
+                          .toList()[index];
                   return ListTile(
-                    title: Text("$custName"),
+                    title: Text("${data.customerName}"),
                     subtitle: Text(
                         "${formatDob.format(DateTime.parse(data.expiredDateStnk))}"),
                     leading: CircleAvatar(
@@ -148,11 +158,24 @@ class _NotificationStnkExpireViewState
                     ),
                   );
                 },
-                itemCount: state.value
-                    .map((e) => e.customerName)
-                    .toSet()
-                    .toList()
-                    .length,
+                itemCount: searchByNameCtrl == null
+                    ? state.value
+                        .where((f) => f.expiredDateStnk != null)
+                        .toList()
+                        .length
+                    : state.value
+                        .where((f) =>
+                            f.expiredDateStnk != null &&
+                            f.customerName
+                                .toLowerCase()
+                                .contains(searchByNameCtrl.text.toLowerCase()))
+                        .toList()
+                        .length,
+                // itemCount: state.value
+                //     .map((e) => e.customerName)
+                //     .toSet()
+                //     .toList()
+                //     .length,
               );
             }
             return SizedBox();

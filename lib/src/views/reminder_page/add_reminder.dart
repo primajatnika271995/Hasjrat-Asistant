@@ -15,6 +15,8 @@ import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 
+import '../../bloc/lead_bloc/lead_event.dart';
+
 class ReminderAddView extends StatefulWidget {
   final int id;
   final String taskType;
@@ -243,7 +245,7 @@ class _ReminderAddViewState extends State<ReminderAddView> {
 
     // ignore: close_sinks
     final leadBloc = BlocProvider.of<LeadBloc>(context);
-    leadBloc.add(RefreshLead(LeadPost(
+    leadBloc.add(FetchReminderLead(LeadPost(
       leadName: "",
       leadCode: "",
     )));
