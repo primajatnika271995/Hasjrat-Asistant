@@ -478,75 +478,87 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                   ),
                 ),
                 formDatePicker(),
-                BlocBuilder<CustomerBloc, CustomerState>(
-                    builder: (context, customerState) {
-                  if (customerState is ProvinceSuccess) {
-                    customerState.value.data.forEach((f) {
-                      provinceList.add(SelectorProvinceModel(
-                        provinceCode: f.provinsiCode,
-                        provinceName: f.provinsiName,
-                      ));
-                    });
-                  }
+                BlocListener<CustomerBloc, CustomerState>(
+                    listener: (context, state) {
+                      if (state is ProvinceSuccess) {
+                        state.value.data.forEach((f) {
+                          provinceList.add(SelectorProvinceModel(
+                            provinceCode: f.provinsiCode,
+                            provinceName: f.provinsiName,
+                          ));
+                        });
+                      }
 
-                  if (customerState is DistrictSuccess) {
-                    customerState.value.data.forEach((f) {
-                      districtList.add(SelectorDistrictModel(
-                        districtCode: f.kabupatenCode,
-                        districtName: f.kabupatenName,
-                      ));
-                    });
-                  }
+                      if (state is DistrictSuccess) {
+                        state.value.data.forEach((f) {
+                          districtList.add(SelectorDistrictModel(
+                            districtCode: f.kabupatenCode,
+                            districtName: f.kabupatenName,
+                          ));
+                        });
+                      }
 
-                  if (customerState is SubDistrictSuccess) {
-                    customerState.value.data.forEach((f) {
-                      districtSubList.add(SelectorSubDistrictModel(
-                        districtSubCode: f.kecamatanCode,
-                        districtSubName: f.kecamatanName,
-                      ));
-                    });
-                  }
-                  return SizedBox();
-                }),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    "Provinsi",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ),
-                formSelectProvince(),
-                SizedBox(
-                  height: 5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    "Kota/Kabupaten",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ),
-                formSelectKota(),
-                SizedBox(
-                  height: 5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    "Kecamatan",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ),
-                formSelectKecamatan(),
+                      if (state is SubDistrictSuccess) {
+                        state.value.data.forEach((f) {
+                          districtSubList.add(SelectorSubDistrictModel(
+                            districtSubCode: f.kecamatanCode,
+                            districtSubName: f.kecamatanName,
+                          ));
+                        });
+                      }
+
+                      if (state is CustomerLoading) {
+                        onLoading(context);
+                      }
+
+                      if (state is CustomerDisposeLoading) {
+                        Navigator.of(context, rootNavigator: false).pop();
+                      }
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            "Provinsi",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                        formSelectProvince(),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            "Kota/Kabupaten",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                        formSelectKota(),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            "Kecamatan",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                        formSelectKecamatan(),
+                      ],
+                    )),
                 SizedBox(
                   height: 5,
                 ),

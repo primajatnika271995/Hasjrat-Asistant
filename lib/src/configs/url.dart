@@ -79,7 +79,7 @@ class UriApi {
 
   static const String bannerPromotionUri = "/sales-tools-catalog-service/api/v2/banner/datatables";
 
-  static const String knowledgeBaseUri = "/sales-tools-qna-service/api/v2/qna/datatables?order%5B0%5D%5Bcolumn%5D=4&order%5B0%5D%5Bdir%5D=desc&length=100";
+  static const String knowledgeBaseUri = "/sales-tools-qna-service/api/v2/qna/datatables?order%5B0%5D%5Bcolumn%5D=3&order%5B0%5D%5Bdir%5D=desc&length=66";
 
   static const String catalogListUri = "/sales-tools-catalog-service/api/v2/catalog/list";
 
