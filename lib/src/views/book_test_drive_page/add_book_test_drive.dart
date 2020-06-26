@@ -16,7 +16,8 @@ import 'package:select_dialog/select_dialog.dart';
 
 class BookTestDriveAddView extends StatefulWidget {
   final String customerName;
-  BookTestDriveAddView({this.customerName});
+  final String customerPhone;
+  BookTestDriveAddView({this.customerName, this.customerPhone});
 
   @override
   _BookTestDriveAddViewState createState() => _BookTestDriveAddViewState();
@@ -195,6 +196,7 @@ class _BookTestDriveAddViewState extends State<BookTestDriveAddView> {
     )));
 
     customerNameCtrl.text = widget.customerName;
+    customerContactCtrl.text = widget.customerPhone;
     super.initState();
   }
 
