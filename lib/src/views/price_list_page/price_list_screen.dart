@@ -794,7 +794,7 @@ class _PriceListViewState extends State<PriceListView> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "Data Stock",
+                                      "List Stock",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -936,10 +936,27 @@ class _PriceListViewState extends State<PriceListView> {
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(bottom:5),
+                                          padding:
+                                              const EdgeInsets.only(bottom: 5),
                                           child: Divider(
                                             color: Colors.grey[100],
                                             thickness: 1,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 3),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "Jumlah Stock = ${state.value.data[0].stocks.length} Unit",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
