@@ -72,7 +72,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           BlocListener<TargetDashboardBloc, TargetDashboardState>(
             listener: (context, state) {
               if (state is TargetDashboardLoading) {
-                // onLoading(context);
+                onLoading(context);
               }
 
               if (state is TargetDashboardDisposeLoading) {
