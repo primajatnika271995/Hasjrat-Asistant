@@ -46,6 +46,7 @@ class DashboardService {
         ),
         queryParameters: {
           "employeeId": value.employeeId,
+          "tahunBulan": value.yearMonth,
         });
     log.info(response.statusCode);
     if (response.statusCode == 200) {
@@ -63,6 +64,7 @@ class DashboardPost {
 
 class TargetDashboardPost {
   String employeeId;
+  String yearMonth;
 
-  TargetDashboardPost({this.employeeId});
+  TargetDashboardPost({this.employeeId, this.yearMonth});
 }

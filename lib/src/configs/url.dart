@@ -117,7 +117,7 @@ class UriApi {
 
   static const String dashboardUri = "/sales-tools-dealer-service/api/v2/dms/prospect/dashboard";
 
-  static const String dashboardTargetUri = "/sales-tools-employees-service/api/v2/dashboard/sales/summary-target-sales/group-by/employeeIdAndBranchAndOutlet";
+  static const String dashboardTargetUri = "/sales-tools-employees-service/api/v2/dashboard/sales/summary-target-sales/group-by/employeeIdAndBranchAndOutletAndCustomerGroupAndTahunBulan/by-tahunBulan";
 
   static const String summaryDashboardUri = "/sales-tools-employees-service/api/v2/dashboard/head-officer/prospect/findByBranchAndOutletCode";
 

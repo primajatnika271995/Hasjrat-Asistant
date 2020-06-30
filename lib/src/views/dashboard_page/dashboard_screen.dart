@@ -16,6 +16,7 @@ import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/dashboard_page/bar_chart.dart';
 import 'package:salles_tools/src/views/dashboard_page/radial_chart.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:salles_tools/src/views/dashboard_page/handle_chart_listEmpty.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -31,10 +32,83 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _getTargetDashboard() async {
     _employeeId = await SharedPreferencesHelper.getSalesNIK();
-    // ignore: close_sinks
+
+    var formatter = new DateFormat.MMMM('id');
+    var cekBulan = formatter.format(DateTime.now());
+    // var cekBulan = "Januari";
+
     final targetDashboardBloc = BlocProvider.of<TargetDashboardBloc>(context);
-    targetDashboardBloc.add(
-        FetchTargetDashboard(TargetDashboardPost(employeeId: _employeeId)));
+    switch (cekBulan) {
+      case 'Januari':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202001',
+        )));
+        break;
+      case 'Februari':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202002',
+        )));
+        break;
+      case 'Maret':
+        return targetDashboardBloc.add(FetchTargetDashboard(
+            TargetDashboardPost(employeeId: _employeeId, yearMonth: '202003')));
+        break;
+      case 'April':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202004',
+        )));
+        break;
+      case 'Mei':
+        return targetDashboardBloc.add(FetchTargetDashboard(
+            TargetDashboardPost(employeeId: _employeeId, yearMonth: '202005')));
+        break;
+      case 'Juni':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202006',
+        )));
+        break;
+      case 'Juli':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202007',
+        )));
+        break;
+      case 'Agustus':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202008',
+        )));
+        break;
+      case 'September':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202009',
+        )));
+        break;
+      case 'Oktober':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202010',
+        )));
+        break;
+      case 'November':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202011',
+        )));
+        break;
+      case 'Desember':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202012',
+        )));
+        break;
+      default:
+    }
   }
 
   void _formatTanggalIndo() {
@@ -171,9 +245,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return Column(
                         children: <Widget>[
                           SizedBox(height: 20),
-                          RadialChartView(
-                            data: targetState.value,
-                          ),
+                          targetState.value.isEmpty
+                              ? HandleChartEmptyValue()
+                              : RadialChartView(
+                                  data: targetState.value[0],
+                                ),
                         ],
                       );
                     }

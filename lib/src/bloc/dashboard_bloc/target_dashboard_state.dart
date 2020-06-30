@@ -20,7 +20,7 @@ class TargetDashboardSuccess extends TargetDashboardState {
   final _data;
 
   TargetDashboardSuccess(this._data);
-  TargetDashboardModel get value => _data;
+  List<TargetDashboardModel> get value => _data;
 
   @override
   // TODO: implement props
