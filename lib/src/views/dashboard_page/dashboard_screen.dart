@@ -23,6 +23,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  String yearMonth;
   var _employeeId;
 
   var yearFormat = DateFormat("MMMM");
@@ -36,7 +37,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         FetchTargetDashboard(TargetDashboardPost(employeeId: _employeeId)));
   }
 
-  void _formatTanggalIndo(){
+  void _formatTanggalIndo() {
     initializeDateFormatting("id", null).then((_) {
       var formatter = new DateFormat.MMMM('id');
       print("konversi tanggal ${formatter.format(new DateTime.now())}");
@@ -44,14 +45,62 @@ class _DashboardScreenState extends State<DashboardScreen> {
       setState(() {
         bulan = formatter.format(DateTime.now());
       });
-    });
-    
-  }
 
-  void _getDashboardBar() async {
-    // ignore: close_sinks
-    final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
-    dashboardBloc.add(FetchDashboard());
+      var dataBulan = formatter.format(DateTime.now());
+      // String dataBulan = "Juli";
+      final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
+      switch (dataBulan) {
+        case 'Januari':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202001")));
+          break;
+        case 'Februari':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202002")));
+          break;
+        case 'Maret':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202003")));
+          break;
+        case 'April':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202004")));
+          break;
+        case 'Mei':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202005")));
+          break;
+        case 'Juni':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202006")));
+          break;
+        case 'Juli':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202007")));
+          break;
+        case 'Agustus':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202008")));
+          break;
+        case 'September':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202009")));
+          break;
+        case 'Oktober':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202010")));
+          break;
+        case 'November':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202011")));
+          break;
+        case 'Desember':
+          return dashboardBloc
+              .add(FetchDashboard(DashboardPost(yearMonth: "202012")));
+          break;
+        default:
+      }
+    });
   }
 
   @override
@@ -59,7 +108,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // TODO: implement initState
     _formatTanggalIndo();
     _getTargetDashboard();
-    _getDashboardBar();
     super.initState();
   }
 
