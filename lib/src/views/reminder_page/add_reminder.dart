@@ -145,7 +145,11 @@ class _ReminderAddViewState extends State<ReminderAddView> {
       label: "Data Lead",
       selectedValue: _currentSelectLead,
       items: _leadList,
-      showSearchBox: false,
+      showSearchBox: true,
+      searchBoxDecoration: InputDecoration(
+        hintText: "Cari Lead",
+        prefixIcon: Icon(Icons.search),        
+      ),
       itemBuilder: (context, SelectorLeadModel item, bool isSelected) {
         return Container(
           decoration: !isSelected
