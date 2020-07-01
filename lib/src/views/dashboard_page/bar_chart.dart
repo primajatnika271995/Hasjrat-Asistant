@@ -49,16 +49,6 @@ class _BarChartViewState extends State<BarChartView> {
     var value = dataDashboard.data.rekaps[0];
     final List<ChartSampleData> funnelData = <ChartSampleData>[
       ChartSampleData(
-        x: 'Contact',
-        y: value.contact,
-        text: '${value.contact}',
-      ),
-      ChartSampleData(
-        x: 'Prospect ',
-        y: value.prospect,
-        text: '${value.prospect}',
-      ),
-      ChartSampleData(
         x: 'Hot Prospect ',
         y: value.hotprospect,
         text: '${value.hotprospect}',
