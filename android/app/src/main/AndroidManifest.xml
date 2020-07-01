@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Hasjrat Sales Tools"
+        android:label="Hasjrat Sales Assistant"
         android:icon="@mipmap/launcher_icon">
         <service
             android:name="io.flutter.plugins.androidalarmmanager.AlarmService"

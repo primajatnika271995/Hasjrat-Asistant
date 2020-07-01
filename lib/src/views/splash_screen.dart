@@ -156,7 +156,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  "Sales Tools",
+                  "Sales Assistant",
                   style: TextStyle(
                     letterSpacing: 0.8,
                     fontWeight: FontWeight.w700,
