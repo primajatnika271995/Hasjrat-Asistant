@@ -18,7 +18,7 @@ class KnowledgeBaseScreen extends StatefulWidget {
 }
 
 class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
-  String categoryInformation = "How To";
+  String categoryInformation = "Knowledgebase";
   ScrollController _hideButtonController;
   var searchCtrl = new TextEditingController();
 
@@ -83,12 +83,12 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
     switch (id) {
       case 0:
         setState(() {
-          categoryInformation = "How To";
+          categoryInformation = "Knowledgebase";
         });
         break;
       case 1:
         setState(() {
-          categoryInformation = "Help";
+          categoryInformation = "Showrom";
         });
         break; 
     }

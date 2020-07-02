@@ -39,8 +39,9 @@ class _InformationTabMenuState extends State<InformationTabMenu> {
                     fontSize: 17,
                   ),
                 ),
+                SizedBox(height: 10),
                 active == id ? Container(
-                  width: 15,
+                  width: 30,
                   height: 3,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
