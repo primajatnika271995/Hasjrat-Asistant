@@ -52,6 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           create: (context) => BookingDriveBloc(BookingDriveService()),
           child: BookServiceAddView(
             customerName: widget.datum.cardName,
+            customerPhone: widget.datum.phone1,
           )
         ),
         transitionDuration: Duration(milliseconds: 150),

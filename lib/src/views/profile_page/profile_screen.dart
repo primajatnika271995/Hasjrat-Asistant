@@ -580,7 +580,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Row(
           children: <Widget>[
-            Text("Version 1.0.0 buildVersion 1",
+            Text("Version 1.0.4 buildVersion 5",
               style: TextStyle(
                 fontSize: 12,
               ),
