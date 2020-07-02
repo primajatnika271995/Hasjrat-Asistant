@@ -22,37 +22,45 @@ class ActivityReportService {
 
   Future activityReport(String branchCode, String outletCode) async {
     try {
-      final response = await _dio.post(UriApi.activityReportListUri,
-          data: {
-            "branchCode": branchCode,
-            "outletCode": outletCode,
-          },
+      final response = await _dio.post(
+        UriApi.activityReportListUri,
+        data: {
+          "branchCode": branchCode,
+          "outletCode": outletCode,
+        },
       );
 
       log.info(response.statusCode);
       return compute(activityReportModelFromJson, json.encode(response.data));
-    } catch(error) {
+    } catch (error) {
       log.warning(error.toString());
     }
   }
-  
+
   Future createActivityReport(ActivityReportPost value) async {
-    final response = await _dio.post(UriApi.createActivityReportUri,
+    final response = await _dio.post(
+      UriApi.createActivityReportUri,
       options: Options(
         headers: {'Content-Type': 'application/json'},
       ),
       data: {
-        "title": value.title,
-        "latitude": 0,
-        "longitude": 0,
         "alamat": value.alamat,
-        "description": value.description,
         "branchCode": value.branchCode,
-        "outletCode": value.outletCode,
+        "createdInMillisecond": value.createdInMillisecond,
+        "description": value.description,
         "files": [
           value.idContent,
         ],
-        "createdInMillisecond": value.createdInMillisecond
+        "kabupatenCode": value.kabCode,
+        "kabupatenName": value.kabName,
+        "kecamatanCode": value.kecCode,
+        "kecamatanName": value.kecName,
+        "latitude": 0,
+        "longitude": 0,
+        "outletCode": value.outletCode,
+        "provinceCode": value.provinceCode,
+        "provinceName": value.provinceName,
+        "title": value.title,
       },
     );
 
@@ -68,17 +76,19 @@ class ActivityReportService {
 
   Future uploadFile(File image) async {
     FormData formData = FormData.fromMap({
-      "content": await MultipartFile.fromFile(image.path, filename: "activity-report.png")
+      "content": await MultipartFile.fromFile(image.path,
+          filename: "activity-report.png")
     });
 
     try {
-      final response = await _dio.post(UriApi.uploadMediaFileUri, data: formData);
+      final response =
+          await _dio.post(UriApi.uploadMediaFileUri, data: formData);
 
       log.info(response.statusCode);
       if (response.statusCode == 200) {
         return compute(uploadMediaModelFromJson, json.encode(response.data));
       }
-    } catch(error) {
+    } catch (error) {
       log.warning(error.toString());
     }
   }
@@ -92,8 +102,29 @@ class ActivityReportPost {
   dynamic latitude;
   dynamic longitude;
   String alamat;
+  String provinceCode;
+  String provinceName;
+  String kabCode;
+  String kabName;
+  String kecCode;
+  String kecName;
   String description;
   int createdInMillisecond;
 
-  ActivityReportPost({this.title, this.idContent, this.branchCode, this.outletCode, this.latitude, this.longitude, this.alamat, this.description, this.createdInMillisecond});
+  ActivityReportPost(
+      {this.title,
+      this.idContent,
+      this.branchCode,
+      this.outletCode,
+      this.latitude,
+      this.longitude,
+      this.alamat,
+      this.provinceCode,
+      this.provinceName,
+      this.kabCode,
+      this.kabName,
+      this.kecCode,
+      this.kecName,
+      this.description,
+      this.createdInMillisecond});
 }

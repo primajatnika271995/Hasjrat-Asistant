@@ -44,6 +44,23 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       }
     }
 
+    if (event is SearchStnkExpired) {
+      yield CustomerLoading();
+
+      try {
+        List<StnkExpiredModel> value = await _customerService.allSTNK();
+
+        if (value == null || value.isEmpty) {
+          yield CustomerFailed();
+        } else {
+          yield CustomerDisposeLoading();
+          yield StnkExpiredSuccess(value);
+        }
+      } catch (err) {
+       log.info("errod message search stnk : ${err.toString()}");
+      }
+    }
+
     if (event is FetchCustomerBirthDay) {
       yield CustomerLoading();
 

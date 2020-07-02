@@ -18,7 +18,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield DashboardLoading();
 
       try {
-        DashboardModel value = await _dashboardService.fetchDashboard();
+        DashboardModel value = await _dashboardService.fetchDashboard(event.value);
         if (value == null) {
           yield DashboardFailed();
         } else {

@@ -13,7 +13,7 @@ class UriApi {
 
   static const String checkLastSalesOfTheMonth = "/sales-tools-employees-service/api/v2/employee-of-the-month/lastEmployeeOfTheMonth";
 
-  static const String activityReportListUri = "/sales-tools-employees-service/api/v2/activities/sales/datatables";
+  static const String activityReportListUri = "/sales-tools-employees-service/api/v2/activities/sales/datatables/byCreatedDateBetween?length=100&order%5B0%5D%5Bdir%5D=desc&order%5B0%5D%5Bcolumn%5D=3";
 
   static const String createActivityReportUri = "/sales-tools-employees-service/api/v2/activities/sales/new";
 
@@ -117,11 +117,11 @@ class UriApi {
 
   static const String dashboardUri = "/sales-tools-dealer-service/api/v2/dms/prospect/dashboard";
 
-  static const String dashboardTargetUri = "/sales-tools-employees-service/api/v2/dashboard/sales/summary-target-sales/group-by/employeeIdAndBranchAndOutlet";
+  static const String dashboardTargetUri = "/sales-tools-employees-service/api/v2/dashboard/sales/summary-target-sales/group-by/employeeIdAndBranchAndOutletAndCustomerGroupAndTahunBulan/by-tahunBulan";
 
   static const String summaryDashboardUri = "/sales-tools-employees-service/api/v2/dashboard/head-officer/prospect/findByBranchAndOutletCode";
 
   static const String listExpiredStnkUri = "/hasjrat-resource-server/hcare-api/api/sales/vehicle-customer/list/expired";
 
-  static const String listAllStnkUri = "/hasjrat-resource-server/hcare-api/api/sales/vehicle-customer/list/all";
+  static const String listAllStnkUri = "/hasjrat-resource-server/hcare-api/api/sales/vehicle-customer/list/expired";
 }

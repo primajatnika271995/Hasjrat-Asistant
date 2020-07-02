@@ -83,6 +83,15 @@ class FetchStnkExpired extends CustomerEvent {
 
 }
 
+class SearchStnkExpired extends CustomerEvent {
+  final String query;
+  SearchStnkExpired(this.query);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [query];
+}
+
 class CreateContact extends CustomerEvent {
   final ContactPost value;
   CreateContact(this.value);

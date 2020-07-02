@@ -18,7 +18,7 @@ class TargetDashboardBloc extends Bloc<TargetDashboardEvent, TargetDashboardStat
       yield TargetDashboardLoading();
 
       try {
-        TargetDashboardModel value = await _dashboardService.fetchTargetDashboard(event.value);
+        List<TargetDashboardModel> value = await _dashboardService.fetchTargetDashboard(event.value);
         if (value == null) {
           yield TargetDashboardFailed();
         } else {

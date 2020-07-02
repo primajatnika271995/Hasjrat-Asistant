@@ -16,6 +16,8 @@ import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/dashboard_page/bar_chart.dart';
 import 'package:salles_tools/src/views/dashboard_page/radial_chart.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:salles_tools/src/views/dashboard_page/handle_chart_listEmpty.dart';
+import 'package:select_dialog/select_dialog.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -23,20 +25,317 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  String yearMonth;
   var _employeeId;
 
   var yearFormat = DateFormat("MMMM");
   var bulan;
 
+  List<String> newValueMonth = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
+  ];
+  // String bulan = "Januari";
+
   void _getTargetDashboard() async {
     _employeeId = await SharedPreferencesHelper.getSalesNIK();
-    // ignore: close_sinks
+
     final targetDashboardBloc = BlocProvider.of<TargetDashboardBloc>(context);
-    targetDashboardBloc.add(
-        FetchTargetDashboard(TargetDashboardPost(employeeId: _employeeId)));
+    switch (bulan) {
+      case 'Januari':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202001',
+        )));
+        break;
+      case 'Februari':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202002',
+        )));
+        break;
+      case 'Maret':
+        return targetDashboardBloc.add(FetchTargetDashboard(
+            TargetDashboardPost(employeeId: _employeeId, yearMonth: '202003')));
+        break;
+      case 'April':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202004',
+        )));
+        break;
+      case 'Mei':
+        return targetDashboardBloc.add(FetchTargetDashboard(
+            TargetDashboardPost(employeeId: _employeeId, yearMonth: '202005')));
+        break;
+      case 'Juni':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202006',
+        )));
+        break;
+      case 'Juli':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202007',
+        )));
+        break;
+      case 'Agustus':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202008',
+        )));
+        break;
+      case 'September':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202009',
+        )));
+        break;
+      case 'Oktober':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202010',
+        )));
+        break;
+      case 'November':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202011',
+        )));
+        break;
+      case 'Desember':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202012',
+        )));
+        break;
+      default:
+    }
   }
 
-  void _formatTanggalIndo(){
+  void _newMonthTargetDashboard() async {
+    _employeeId = await SharedPreferencesHelper.getSalesNIK();
+
+    final targetDashboardBloc = BlocProvider.of<TargetDashboardBloc>(context);
+    switch (bulan) {
+      case 'Januari':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202001',
+        )));
+        break;
+      case 'Februari':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202002',
+        )));
+        break;
+      case 'Maret':
+        return targetDashboardBloc.add(FetchTargetDashboard(
+            TargetDashboardPost(employeeId: _employeeId, yearMonth: '202003')));
+        break;
+      case 'April':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202004',
+        )));
+        break;
+      case 'Mei':
+        return targetDashboardBloc.add(FetchTargetDashboard(
+            TargetDashboardPost(employeeId: _employeeId, yearMonth: '202005')));
+        break;
+      case 'Juni':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202006',
+        )));
+        break;
+      case 'Juli':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202007',
+        )));
+        break;
+      case 'Agustus':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202008',
+        )));
+        break;
+      case 'September':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202009',
+        )));
+        break;
+      case 'Oktober':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202010',
+        )));
+        break;
+      case 'November':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202011',
+        )));
+        break;
+      case 'Desember':
+        return targetDashboardBloc.add(FetchTargetDashboard(TargetDashboardPost(
+          employeeId: _employeeId,
+          yearMonth: '202012',
+        )));
+        break;
+      default:
+    }
+  }
+
+  void _getDashboard() async {
+    _employeeId = await SharedPreferencesHelper.getSalesNIK();
+
+    final targetDashboardBloc = BlocProvider.of<DashboardBloc>(context);
+    switch (bulan) {
+      case 'Januari':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202001',
+        )));
+        break;
+      case 'Februari':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202002',
+        )));
+        break;
+      case 'Maret':
+        return targetDashboardBloc
+            .add(FetchDashboard(DashboardPost(yearMonth: '202003')));
+        break;
+      case 'April':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202004',
+        )));
+        break;
+      case 'Mei':
+        return targetDashboardBloc
+            .add(FetchDashboard(DashboardPost(yearMonth: '202005')));
+        break;
+      case 'Juni':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202006',
+        )));
+        break;
+      case 'Juli':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202007',
+        )));
+        break;
+      case 'Agustus':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202008',
+        )));
+        break;
+      case 'September':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202009',
+        )));
+        break;
+      case 'Oktober':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202010',
+        )));
+        break;
+      case 'November':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202011',
+        )));
+        break;
+      case 'Desember':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202012',
+        )));
+        break;
+      default:
+    }
+  }
+
+  void _newMonthDashboard() async {
+    _employeeId = await SharedPreferencesHelper.getSalesNIK();
+
+    final targetDashboardBloc = BlocProvider.of<DashboardBloc>(context);
+    switch (bulan) {
+      case 'Januari':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202001',
+        )));
+        break;
+      case 'Februari':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202002',
+        )));
+        break;
+      case 'Maret':
+        return targetDashboardBloc
+            .add(FetchDashboard(DashboardPost(yearMonth: '202003')));
+        break;
+      case 'April':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202004',
+        )));
+        break;
+      case 'Mei':
+        return targetDashboardBloc
+            .add(FetchDashboard(DashboardPost(yearMonth: '202005')));
+        break;
+      case 'Juni':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202006',
+        )));
+        break;
+      case 'Juli':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202007',
+        )));
+        break;
+      case 'Agustus':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202008',
+        )));
+        break;
+      case 'September':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202009',
+        )));
+        break;
+      case 'Oktober':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202010',
+        )));
+        break;
+      case 'November':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202011',
+        )));
+        break;
+      case 'Desember':
+        return targetDashboardBloc.add(FetchDashboard(DashboardPost(
+          yearMonth: '202012',
+        )));
+        break;
+      default:
+    }
+  }
+
+  void _formatTanggalIndo() {
     initializeDateFormatting("id", null).then((_) {
       var formatter = new DateFormat.MMMM('id');
       print("konversi tanggal ${formatter.format(new DateTime.now())}");
@@ -45,13 +344,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         bulan = formatter.format(DateTime.now());
       });
     });
-    
-  }
-
-  void _getDashboardBar() async {
-    // ignore: close_sinks
-    final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
-    dashboardBloc.add(FetchDashboard());
   }
 
   @override
@@ -59,7 +351,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // TODO: implement initState
     _formatTanggalIndo();
     _getTargetDashboard();
-    _getDashboardBar();
+    _getDashboard();
     super.initState();
   }
 
@@ -72,7 +364,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           BlocListener<TargetDashboardBloc, TargetDashboardState>(
             listener: (context, state) {
               if (state is TargetDashboardLoading) {
-                // onLoading(context);
+                onLoading(context);
               }
 
               if (state is TargetDashboardDisposeLoading) {
@@ -107,13 +399,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       left: 15,
                       right: 15,
                     ),
-                    child: Text(
-                      "Dashboard Bulan $bulan",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.5,
+                    child: GestureDetector(
+                      onTap: () {
+                        SelectDialog.showModal<String>(
+                          context,
+                          label: "Dashboard Bulan",
+                          items: newValueMonth,
+                          showSearchBox: false,
+                          onChange: (String selected) {
+                            setState(() {
+                              bulan = selected;
+                            });
+                            print("Bulan after change => $bulan");
+                            _newMonthTargetDashboard();
+                            _newMonthDashboard();
+                          },
+                        );
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            "Dashboard Bulan $bulan",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Icon(Icons.arrow_drop_down, color: Colors.white, size: 25,)
+                        ],
                       ),
                     ),
                   ),
@@ -123,9 +439,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return Column(
                         children: <Widget>[
                           SizedBox(height: 20),
-                          RadialChartView(
-                            data: targetState.value,
-                          ),
+                          targetState.value.isEmpty
+                              ? HandleChartEmptyValue()
+                              : RadialChartView(
+                                  data: targetState.value[0],
+                                ),
                         ],
                       );
                     }

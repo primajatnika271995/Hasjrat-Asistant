@@ -446,7 +446,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Icon(Icons.info),
                               ),
-                              Text("Panduan Sales Tools",
+                              Text("Panduan Sales Assistant",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 12,

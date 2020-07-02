@@ -229,6 +229,8 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
   void createBokingService() async {
     var salesName = await SharedPreferencesHelper.getSalesName();
 
+    bool checkEmailValidation = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(customerEmailCtrl.text);
+
     if (dateSelected.text.isEmpty || timeSelected.text.isEmpty) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text("Hari dan Tanggal Wajib diisi"),
@@ -237,6 +239,17 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
       ));
       return;
     }
+
+    if ( customerEmailCtrl.text.isEmpty || checkEmailValidation == false){
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("Email Belum Diisi/Email Salah"),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+      ));
+      return;
+    }
+
+    
 
     if (dealerEmailCtrl.text.isEmpty ||
         dealerNameCtrl.text.isEmpty ||
@@ -908,6 +921,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
                 ),
                 controller: customerEmailCtrl,
                 focusNode: customerEmailFocus,
+                
               ),
             ),
           ),

@@ -361,6 +361,7 @@ class _MainViewDetailsVehicleState extends State<MainViewDetailsVehicle> {
                       context,
                       label: "Pilihan Warna",
                       // selectedValue: currentSelectPriceList,
+                      showSearchBox: false,
                       items: _colorList.toSet().toList(),
                       itemBuilder:
                           (context, SelectorColorCar color, bool isSelected) {

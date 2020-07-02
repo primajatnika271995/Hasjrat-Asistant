@@ -18,7 +18,7 @@ class DashboardService {
     _dio.interceptors.add(DioLoggingInterceptors(_dio));
   }
 
-  Future fetchDashboard() async {
+  Future fetchDashboard(DashboardPost value) async {
     final response = await _dio.get(
       UriApi.dashboardUri,
       options: Options(
@@ -26,6 +26,9 @@ class DashboardService {
           'Content-Type': 'application/json',
         },
       ),
+      queryParameters: {
+        "yearmonth": value.yearMonth,
+      }
     );
     log.info(response.statusCode);
     if (response.statusCode == 200) {
@@ -43,6 +46,7 @@ class DashboardService {
         ),
         queryParameters: {
           "employeeId": value.employeeId,
+          "tahunBulan": value.yearMonth,
         });
     log.info(response.statusCode);
     if (response.statusCode == 200) {
@@ -52,8 +56,15 @@ class DashboardService {
   }
 }
 
+class DashboardPost {
+  String yearMonth;
+  
+  DashboardPost({this.yearMonth});
+}
+
 class TargetDashboardPost {
   String employeeId;
+  String yearMonth;
 
-  TargetDashboardPost({this.employeeId});
+  TargetDashboardPost({this.employeeId, this.yearMonth});
 }
