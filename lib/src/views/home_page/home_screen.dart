@@ -66,10 +66,10 @@ class _HomeScreenState extends State<HomeScreen> {
     "Pengingat\nJadwal",
     "Booking\nService",
     "Booking\nTest Drive",
-    "Informasi",
+    "Sales\nProgram",
     "Laporan\nAktifitas",
     "Harga\nKendaraan",
-    "Sales\nProgram",
+    "Informasi",
   ];
 
   List<String> _moreMenuName = [
@@ -87,10 +87,10 @@ class _HomeScreenState extends State<HomeScreen> {
     "assets/icons/reminder_icon.png",
     "assets/icons/book_service_icon.png",
     "assets/icons/book_test_drive_icon.png",
-    "assets/icons/knowledge_base_icon.png",
+    "assets/icons/promotion_icon_2.png",
     "assets/icons/activity_report_icon.png",
     "assets/icons/price_list_icon.png",
-    "assets/icons/promotion_icon.png",
+    "assets/icons/knowledge_base_icon.png",
   ];
 
   List<String> _assetsMoreMenu = [
@@ -125,9 +125,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BookTestDriveListView(),
     ),
     BlocProvider(
-      create: (context) => KnowledgeBaseBloc(KnowledgeBaseService()),
-      child: KnowledgeBaseScreen(),
+      create: (context) => DmsBloc(DmsService()),
+      child: PromotionListScreen(),
     ),
+
     BlocProvider(
       create: (context) => ActivityReportBloc(ActivityReportService()),
       child: ActivityReportListView(),
@@ -137,8 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: PriceListView(),
     ),
     BlocProvider(
-      create: (context) => DmsBloc(DmsService()),
-      child: PromotionListScreen(),
+      create: (context) => KnowledgeBaseBloc(KnowledgeBaseService()),
+      child: KnowledgeBaseScreen(),
     ),
   ];
 
