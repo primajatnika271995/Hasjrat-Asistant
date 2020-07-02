@@ -825,50 +825,25 @@ class _PriceListViewState extends State<PriceListView> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: <Widget>[
-                                                    Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: Text("Tahun",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize:
-                                                                      13)),
-                                                        ),
-                                                        Expanded(
-                                                          flex: 3,
-                                                          child: Text("Warna",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize:
-                                                                      13)),
-                                                        ),
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: Text("Stock",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize:
-                                                                      13)),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                    // Padding(
+                                                    //   padding:
+                                                    //       const EdgeInsets.only(
+                                                    //           bottom: 5),
+                                                    //   child: Text("Tahun",
+                                                    //       style: TextStyle(
+                                                    //           fontWeight:
+                                                    //               FontWeight
+                                                    //                   .w600,
+                                                    //           fontSize: 13)),
+                                                    // ),
                                                     ListView.builder(
                                                       shrinkWrap: true,
                                                       physics:
                                                           NeverScrollableScrollPhysics(),
                                                       itemCount: state
-                                                          .value.data[0].stocks
-                                                          .map((e) =>
-                                                              e.namaWarna)
-                                                          .toSet()
-                                                          .toList()
+                                                          .value
+                                                          .data[0]
+                                                          .stocks
                                                           .length,
                                                       itemBuilder:
                                                           (BuildContext context,
@@ -894,7 +869,7 @@ class _PriceListViewState extends State<PriceListView> {
                                                             Expanded(
                                                               flex: 1,
                                                               child: Text(
-                                                                  "${state.value.data[0].stocks[index].kodeWarna}",
+                                                                  "${state.value.data[0].stocks[index].quantity}",
                                                                   style: TextStyle(
                                                                       fontSize:
                                                                           12)),
@@ -906,6 +881,81 @@ class _PriceListViewState extends State<PriceListView> {
                                                   ],
                                                 ),
                                               ),
+                                              // Expanded(
+                                              //   flex: 3,
+                                              //   child: Column(
+                                              //     crossAxisAlignment:
+                                              //         CrossAxisAlignment.start,
+                                              //     children: <Widget>[
+                                              //       Padding(
+                                              //         padding:
+                                              //             const EdgeInsets.only(
+                                              //                 bottom: 5),
+                                              //         child: Text("Warna",
+                                              //             style: TextStyle(
+                                              //                 fontWeight:
+                                              //                     FontWeight
+                                              //                         .w600,
+                                              //                 fontSize: 13)),
+                                              //       ),
+                                              //       ListView.builder(
+                                              //         shrinkWrap: true,
+                                              //         physics:
+                                              //             NeverScrollableScrollPhysics(),
+                                              //         itemCount: state
+                                              //             .value
+                                              //             .data[0]
+                                              //             .stocks
+                                              //             .length,
+                                              //         itemBuilder:
+                                              //             (BuildContext context,
+                                              //                 int index) {
+                                              //           return Text(
+                                              //               "${state.value.data[0].stocks[index].namaWarna}",
+                                              //               style: TextStyle(
+                                              //                   fontSize: 12));
+                                              //         },
+                                              //       ),
+                                              //     ],
+                                              //   ),
+                                              // ),
+                                              // Expanded(
+                                              //   child: Column(
+                                              //     crossAxisAlignment:
+                                              //         CrossAxisAlignment.start,
+                                              //     children: <Widget>[
+                                              //       Padding(
+                                              //         padding:
+                                              //             const EdgeInsets.only(
+                                              //                 bottom: 5),
+                                              //         child: Text("Stock",
+                                              //             style: TextStyle(
+                                              //                 fontWeight:
+                                              //                     FontWeight
+                                              //                         .w600,
+                                              //                 fontSize: 13)),
+                                              //       ),
+                                              //       ListView.builder(
+                                              //         shrinkWrap: true,
+                                              //         physics:
+                                              //             NeverScrollableScrollPhysics(),
+                                              //         itemCount: state
+                                              //             .value
+                                              //             .data[0]
+                                              //             .stocks
+                                              //             .length,
+                                              //         itemBuilder:
+                                              //             (BuildContext context,
+                                              //                 int index) {
+                                              //           return Text(
+                                              //               "${state.value.data[0].stocks[index].quantity}",
+                                              //               style: TextStyle(
+                                              //                   fontSize: 12));
+                                              //         },
+                                              //       ),
+                                              //     ],
+                                              //   ),
+                                              // ),
                                             ],
                                           ),
                                         ),

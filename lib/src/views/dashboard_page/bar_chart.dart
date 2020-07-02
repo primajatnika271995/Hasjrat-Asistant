@@ -19,7 +19,7 @@ class _BarChartViewState extends State<BarChartView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 2.2,
+      height: MediaQuery.of(context).size.height / 1.7,
       child: Padding(
         padding: const EdgeInsets.only(right: 20, left: 10),
         child: SfFunnelChart(
@@ -49,16 +49,6 @@ class _BarChartViewState extends State<BarChartView> {
     var value = dataDashboard.data.rekaps[0];
     final List<ChartSampleData> funnelData = <ChartSampleData>[
       ChartSampleData(
-        x: 'Hot Prospect ',
-        y: value.hotprospect,
-        text: '${value.hotprospect}',
-      ),
-      ChartSampleData(
-        x: 'SPK',
-        y: value.spk,
-        text: '${value.spk}',
-      ),
-      ChartSampleData(
         x: 'DO',
         y: value.deliveryOrder,
         text: '${value.deliveryOrder}',
@@ -67,6 +57,16 @@ class _BarChartViewState extends State<BarChartView> {
         x: 'DEC',
         y: value.dec,
         text: '${value.dec}',
+      ),
+      ChartSampleData(
+        x: 'SPK',
+        y: value.spk,
+        text: '${value.spk}',
+      ),
+      ChartSampleData(
+        x: 'Hot Prospect ',
+        y: value.hotprospect,
+        text: '${value.hotprospect}',
       ),
     ];
     return FunnelSeries<ChartSampleData, String>(
