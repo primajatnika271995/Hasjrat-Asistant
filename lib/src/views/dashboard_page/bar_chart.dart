@@ -54,19 +54,24 @@ class _BarChartViewState extends State<BarChartView> {
         text: '${value.deliveryOrder}',
       ),
       ChartSampleData(
-        x: 'DEC',
-        y: value.dec,
-        text: '${value.dec}',
-      ),
-      ChartSampleData(
         x: 'SPK',
         y: value.spk,
         text: '${value.spk}',
       ),
       ChartSampleData(
-        x: 'Hot Prospect ',
+        x: 'Hot Prospect',
         y: value.hotprospect,
         text: '${value.hotprospect}',
+      ),
+      ChartSampleData(
+        x: 'Prospect',
+        y: value.prospect,
+        text: '${value.prospect}',
+      ),
+      ChartSampleData(
+        x: 'Contact',
+        y: value.contact,
+        text: '${value.contact}',
       ),
     ];
     return FunnelSeries<ChartSampleData, String>(
