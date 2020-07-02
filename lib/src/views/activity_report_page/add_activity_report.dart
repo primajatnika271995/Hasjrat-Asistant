@@ -951,7 +951,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Pilih Provinsi',
+                      hintText: 'Pilih Kota/Kabupaten',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,
@@ -1010,7 +1010,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                         color: Color(0xFF6991C7),
                         size: 24.0,
                       ),
-                      hintText: 'Pilih Provinsi',
+                      hintText: 'Pilih Kecamatan',
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w400,

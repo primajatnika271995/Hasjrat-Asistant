@@ -19,7 +19,8 @@ enum TypeService { perbaikanUmum, serviceBerkala }
 
 class BookServiceAddView extends StatefulWidget {
   final String customerName;
-  BookServiceAddView({this.customerName});
+  final String customerPhone;
+  BookServiceAddView({this.customerName, this.customerPhone});
 
   @override
   _BookServiceAddViewState createState() => _BookServiceAddViewState();
@@ -310,6 +311,7 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
     bookingCategoryCtrl.text = "On Call In (BS)";
     servicePeriodeTypeCtrl.text = "Berdasarkan Waktu (bulan)";
     customerNameCtrl.text = widget.customerName;
+    customerContactCtrl.text = widget.customerPhone;
     super.initState();
   }
 
