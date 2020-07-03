@@ -122,7 +122,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Edit Profil",
+          "Detail Profil",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -152,24 +152,24 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             emailField(),
             SizedBox(height: 15),
             alamatField(),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 50, bottom: 10),
-              child: Container(
-                width: screenWidth(context),
-                child: RaisedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Done",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  color: HexColor('#C61818'),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(
+            //       left: 20, right: 20, top: 50, bottom: 10),
+            //   child: Container(
+            //     width: screenWidth(context),
+            //     child: RaisedButton(
+            //       onPressed: () {},
+            //       child: Text(
+            //         "Done",
+            //         style: TextStyle(color: Colors.white),
+            //       ),
+            //       color: HexColor('#C61818'),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(30),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -267,7 +267,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(bottom: 10, top: 10),
-              child: Text("Profil",
+              child: Text("Detail Profil",
                 style: TextStyle(
                   fontSize: 21,
                   fontWeight: FontWeight.w700,
