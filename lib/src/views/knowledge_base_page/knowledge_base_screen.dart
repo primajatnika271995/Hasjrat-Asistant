@@ -7,7 +7,9 @@ import 'package:salles_tools/src/bloc/knowledge_base_bloc/knowledge_base_state.d
 import 'package:salles_tools/src/services/knowledge_base_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
+import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/knowledge_base_page/ebook_screen.dart';
+import 'package:salles_tools/src/views/components/Information_tab_menu.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class KnowledgeBaseScreen extends StatefulWidget {
@@ -16,6 +18,7 @@ class KnowledgeBaseScreen extends StatefulWidget {
 }
 
 class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
+  String categoryInformation = "Knowledgebase";
   ScrollController _hideButtonController;
   var searchCtrl = new TextEditingController();
 
@@ -76,13 +79,28 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
     super.initState();
   }
 
+  void tabFilter(int id) {
+    switch (id) {
+      case 0:
+        setState(() {
+          categoryInformation = "Knowledgebase";
+        });
+        break;
+      case 1:
+        setState(() {
+          categoryInformation = "Showroom";
+        });
+        break; 
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         titleSpacing: 0,
         title: Text(
           "Informasi",
@@ -92,8 +110,27 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(45),
-          child: searchContent(),
+          preferredSize: Size.fromHeight(100),
+          child: Column(
+            children: <Widget>[
+              searchContent(),
+              Container(
+                height: 55,
+                padding: EdgeInsets.only(top: 5),
+                alignment: Alignment.center,
+                child: InformationTabMenu(
+                  callback: (id) {
+                    log.info("id Tab : $id");
+                    tabFilter(id);
+                  },
+                  list: [
+                    "Knowledge Base",
+                    "Showroom",
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
@@ -115,17 +152,7 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 17, top: 20),
-                child: Text(
-                  "Informasi",
-                  style: TextStyle(
-                    letterSpacing: 0.8,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
+              
               BlocBuilder<KnowledgeBaseBloc, KnowledgeBaseState>(
                 builder: (context, state) {
                   if (state is KnowledgeBaseError) {
@@ -171,12 +198,15 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                         var data = searchCtrl == null
                             ? state.salesData.data
                                 .where((f) =>
-                                    f.publish == true && f.draft == false)
+                                    f.publish == true &&
+                                    f.draft == false &&
+                                    f.category.name == "$categoryInformation")
                                 .toList()[index]
                             : state.salesData.data
                                 .where((f) =>
                                     f.publish == true &&
                                     f.draft == false &&
+                                    f.category.name == "$categoryInformation" &&
                                     f.question.toLowerCase().contains(
                                         searchCtrl.text.toLowerCase()))
                                 .toList()[index];
@@ -213,29 +243,42 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                                 data.urlFile == null
                                     ? SizedBox()
                                     : Padding(
-                                      padding: const EdgeInsets.only(left: 17),
-                                      child: Row(
+                                        padding:
+                                            const EdgeInsets.only(left: 17),
+                                        child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: <Widget>[
-                                            Container(                                              
+                                            Container(
                                               child: RaisedButton(
                                                 textColor: Colors.white,
                                                 color: HexColor('#C61818'),
                                                 child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
                                                   children: <Widget>[
-                                                    Icon(Icons.picture_as_pdf, color: Colors.white),
+                                                    Icon(Icons.picture_as_pdf,
+                                                        color: Colors.white),
                                                     Padding(
-                                                      padding: const EdgeInsets.only(left: 15, right: 10),
-                                                      child: Text("Download", style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 0.8)),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 15,
+                                                              right: 10),
+                                                      child: Text("Download",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              letterSpacing:
+                                                                  0.8)),
                                                     ),
                                                   ],
                                                 ),
                                                 onPressed: () {
                                                   launch(data.urlFile);
                                                 },
-                                                shape: new RoundedRectangleBorder(
+                                                shape:
+                                                    new RoundedRectangleBorder(
                                                   borderRadius:
                                                       new BorderRadius.circular(
                                                           10.0),
@@ -244,7 +287,7 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                                             ),
                                           ],
                                         ),
-                                    ),
+                                      ),
                               ],
                             ),
                           ],
@@ -252,14 +295,17 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
                       },
                       itemCount: searchCtrl == null
                           ? state.salesData.data
-                              .where(
-                                  (f) => f.publish == true && f.draft == false)
+                              .where((f) =>
+                                  f.publish == true &&
+                                  f.draft == false &&
+                                  f.category.name == "$categoryInformation")
                               .toList()
                               .length
                           : state.salesData.data
                               .where((f) =>
                                   f.publish == true &&
                                   f.draft == false &&
+                                  f.category.name == "$categoryInformation" &&
                                   f.question
                                       .toLowerCase()
                                       .contains(searchCtrl.text.toLowerCase()))
@@ -280,7 +326,7 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen> {
 
   Widget searchContent() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
       child: Container(
         height: 30.0,
         decoration: BoxDecoration(

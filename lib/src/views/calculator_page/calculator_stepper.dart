@@ -524,6 +524,9 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
               if (data.text == "Mutiara") {
                 data.text = "Palu Mutiara";
               }
+              if (data.text == "TYT Limboto") {
+                data.text = "Toyota Limboto";
+              }
 
               return data;
             });
@@ -533,6 +536,10 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                   f.text == "Bitung" ||
                   f.text == "Kotamobagu" ||
                   f.text == "Gorontalo" ||
+                  f.text == "Kabila" ||
+                  f.text == "Toyota Limboto" ||
+                  f.text == "Kwandang" ||
+                  f.text == "GTO Paguyaman" ||
                   f.text == "Marisa" ||
                   f.text == "Limboto" ||
                   f.text == "Palu Diponegoro" ||
@@ -545,11 +552,28 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                   f.text == "Sorong" ||
                   f.text == "Jayapura" ||
                   f.text == "Merauke" ||
+                  f.text == "Latumahina" ||
+                  f.text == "Tual" ||
+                  f.text == "Biak" ||
+                  f.text == "Serui" ||
+                  f.text == "Namlea" ||
                   f.text == "Timika" ||
                   f.text == "Nabire" ||
                   f.text == "Biak" ||
                   f.text == "Serui" ||
                   f.text == "Ternate" ||
+                  f.text == "Sentani" ||
+                  f.text == "Toyota Abepura" ||
+                  f.text == "Aimas" ||
+                  f.text == "Dumoga" ||
+                  f.text == "Sorong" ||
+                  f.text == "Kotamobagu" ||
+                  f.text == "Mutiara" ||
+                  f.text == "Parigi" ||
+                  f.text == "Luwuk" ||
+                  f.text == "Toili" ||
+                  f.text == "Marisa" ||
+                  f.text == "Tilamuta" ||
                   f.text == "Tobelo") {
                 outletList
                     .add(SelectorOutletModel(id: f.id, outletName: f.text));

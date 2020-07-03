@@ -181,7 +181,7 @@ class _PriceListViewState extends State<PriceListView> {
         'Harga'
       ],
     );
-    rowStock.add(<String>['Tahun', 'Jumlah', 'Warna']);
+    rowStock.add(<String>['Tahun', 'Jumlah', 'Warna', 'Warehouse']);
 
     value.pricelists.forEach((f) {
       List<String> price = <String>[
@@ -198,7 +198,8 @@ class _PriceListViewState extends State<PriceListView> {
       List<String> stock = <String>[
         f.tahun,
         f.quantity.toString(),
-        f.namaWarna
+        f.namaWarna,
+        f.whsName,
       ];
       rowStock.add(stock);
     });
@@ -789,7 +790,7 @@ class _PriceListViewState extends State<PriceListView> {
                               Divider(),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 3),
+                                    horizontal: 5, vertical: 3),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
@@ -814,7 +815,7 @@ class _PriceListViewState extends State<PriceListView> {
                                       children: <Widget>[
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              vertical: 5, horizontal: 15),
+                                              vertical: 5, horizontal: 5),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -828,34 +829,41 @@ class _PriceListViewState extends State<PriceListView> {
                                                     Row(
                                                       children: <Widget>[
                                                         Expanded(
-                                                          flex: 1,
+                                                          flex: 2,
                                                           child: Text("Tahun",
                                                               style: TextStyle(
+                                                                  fontSize: 12,
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .w600,
-                                                                  fontSize:
-                                                                      13)),
+                                                                          .w600)),
                                                         ),
                                                         Expanded(
                                                           flex: 3,
                                                           child: Text("Warna",
                                                               style: TextStyle(
+                                                                  fontSize: 12,
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .w600,
-                                                                  fontSize:
-                                                                      13)),
+                                                                          .w600)),
+                                                        ),
+                                                        Expanded(
+                                                          flex: 3,
+                                                          child: Text("Warehouse",
+                                                              style: TextStyle(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600)),
                                                         ),
                                                         Expanded(
                                                           flex: 1,
-                                                          child: Text("Stock",
+                                                          child: Text(
+                                                              "Qty",
                                                               style: TextStyle(
+                                                                  fontSize: 12,
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .w600,
-                                                                  fontSize:
-                                                                      13)),
+                                                                          .w600)),
                                                         ),
                                                       ],
                                                     ),
@@ -864,41 +872,59 @@ class _PriceListViewState extends State<PriceListView> {
                                                       physics:
                                                           NeverScrollableScrollPhysics(),
                                                       itemCount: state
-                                                          .value.data[0].stocks
-                                                          .map((e) =>
-                                                              e.namaWarna)
-                                                          .toSet()
-                                                          .toList()
+                                                          .value
+                                                          .data[0]
+                                                          .stocks
                                                           .length,
                                                       itemBuilder:
                                                           (BuildContext context,
                                                               int index) {
-                                                        return Row(
+                                                        return Column(
                                                           children: <Widget>[
-                                                            Expanded(
-                                                              flex: 1,
-                                                              child: Text(
-                                                                  "${state.value.data[0].stocks[index].tahun}",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          12)),
+                                                            Row(
+                                                              children: <Widget>[
+                                                                Expanded(
+                                                                  flex: 2,
+                                                                  child: Text(
+                                                                      "${state.value.data[0].stocks[index].tahun}",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              12)),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 3,
+                                                                  child: Text(
+                                                                      "${state.value.data[0].stocks[index].namaWarna}",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              12)),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 3,
+                                                                  child: Text(
+                                                                      "${state.value.data[0].stocks[index].whsName}",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              12)),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 1,
+                                                                  child: Text(
+                                                                      "  ${state.value.data[0].stocks[index].quantity}",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              12)),
+                                                                ),
+                                                              ],
                                                             ),
-                                                            Expanded(
-                                                              flex: 3,
-                                                              child: Text(
-                                                                  "${state.value.data[0].stocks[index].namaWarna}",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          12)),
-                                                            ),
-                                                            Expanded(
-                                                              flex: 1,
-                                                              child: Text(
-                                                                  "${state.value.data[0].stocks[index].kodeWarna}",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          12)),
-                                                            ),
+                                                             Padding(
+                                                                padding:
+                                                                    const EdgeInsets.only(bottom: 5),
+                                                                child: Divider(
+                                                                  color: Colors.grey[100],
+                                                                  thickness: 1,
+                                                                ),
+                                                              ),
                                                           ],
                                                         );
                                                       },
@@ -906,6 +932,7 @@ class _PriceListViewState extends State<PriceListView> {
                                                   ],
                                                 ),
                                               ),
+                                              
                                             ],
                                           ),
                                         ),
