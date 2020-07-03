@@ -832,6 +832,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
             child: Theme(
               data: ThemeData(hintColor: Colors.transparent),
               child: TextFormField(
+                readOnly: true,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: "Alamat Kejadian",
