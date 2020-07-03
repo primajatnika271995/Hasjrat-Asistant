@@ -629,7 +629,7 @@ class _ProspectContactAddState extends State<ProspectContactAdd> {
                                 ),
                           SizedBox(height: 20),
                           Text(
-                            "NIK Pelanggan (*)",
+                            "NIK Pelanggan",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.0,
