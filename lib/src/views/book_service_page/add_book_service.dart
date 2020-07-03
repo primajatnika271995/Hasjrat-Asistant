@@ -353,6 +353,17 @@ class _BookServiceAddViewState extends State<BookServiceAddView> {
           if (state is StationListSuccess) {
             state.value.forEach((f) {
               if (f.name.toLowerCase().contains(branchName.toLowerCase())) {
+                log.info(branchName.toLowerCase());
+
+                if(branchName.toLowerCase().contains("jayapura")) {
+                  _stationList.add(SelectorStation(
+                    name: "Hasjrat Toyota Abepura",
+                    address:"Jl. Raya Abe - Kotaraja No. 3 Abepura, Jayapura.",
+                    email: "crc.abe@hasjrat.co.id",
+                    emailKabeng: "rudianto@hasjrat.co.id",
+                  ));
+                }
+
                 _stationList.add(SelectorStation(
                   name: f.name,
                   address: f.address,
