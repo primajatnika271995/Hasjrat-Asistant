@@ -8,6 +8,7 @@ import 'package:salles_tools/src/models/authentication_model.dart';
 import 'package:salles_tools/src/models/change_password_model.dart';
 import 'package:salles_tools/src/models/employee_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
+import 'package:salles_tools/src/models/histori_login_model.dart';
 import 'package:salles_tools/src/utils/dio_logging_interceptors.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -114,6 +115,49 @@ class LoginService {
       log.info(response.statusCode);
       return compute(changePasswordModelFromJson, json.encode(response.data));
 
+    } catch (error) {
+      log.warning("Err : ${error.toString()}");
+    }
+    return null;
+  }
+
+  Future historyLogin(String branchCode, String branchName, String employeeId, String outletCode, String outletName) async {
+    try {
+      final response = await _dio.post(UriApi.historyLoginUri,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+        data: {
+          "branchCode": branchCode,
+          "branchName": branchName,
+          "employeeId": employeeId,
+          "outletCode": outletCode,
+          "outletName": outletName
+        },
+      );
+
+      log.info(response.statusCode);
+      return compute(historiLoginModelFromJson, json.encode(response.data));
+    } catch (error) {
+      log.warning("Err : ${error.toString()}");
+    }
+    return null;
+  }
+
+  Future historyLogout(String idHistory) async {
+    try {
+      final response = await _dio.put(UriApi.historyLogoutUri + '/$idHistory/setLogout',
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        ),
+      );
+
+      log.info(response.statusCode);
+      return compute(historiLoginModelFromJson, json.encode(response.data));
     } catch (error) {
       log.warning("Err : ${error.toString()}");
     }

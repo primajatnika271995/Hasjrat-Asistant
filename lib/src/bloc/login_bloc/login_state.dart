@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:salles_tools/src/models/authentication_model.dart';
 import 'package:salles_tools/src/models/change_password_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
+import 'package:salles_tools/src/models/histori_login_model.dart';
 
 class LoginState extends Equatable {
   @override
@@ -52,6 +53,17 @@ class ChangePasswordSuccess extends LoginState {
   @override
   // TODO: implement props
   List<Object> get props => [_data];
+}
+
+class HistoryLogout extends LoginState {
+  final _data;
+
+  HistoryLogout(this._data);
+  HistoriLoginModel get _model => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => super.props;
 }
 
 class ChangePasswordFailed extends LoginState {

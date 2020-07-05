@@ -9,6 +9,8 @@ class SharedPreferencesHelper {
 
   static const String kFirstInstall = "isFirstInstall";
 
+  static const String kHistoryLoginId = "historyLoginId";
+
   static const String kAccessToken = "accessToken";
   static const String kSalesName = "salesName";
   static const String kSalesNIK = "salesNIK";
@@ -341,6 +343,24 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString(kSalesGrading, value);
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the History Login Id, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getHistoryLoginId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kHistoryLoginId) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the History Login Id
+  /// ----------------------------------------------------------
+  static Future<bool> setHistoryLoginId(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kHistoryLoginId, value);
   }
 
   /// ------------------------------------------------------------

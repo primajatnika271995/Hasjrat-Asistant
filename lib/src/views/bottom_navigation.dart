@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:salles_tools/src/bloc/dashboard_bloc/target_dashboard_bloc.dart';
+import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
 import 'package:salles_tools/src/bloc/sales_month_bloc/sales_month_bloc.dart';
 import 'package:salles_tools/src/services/dashboard_service.dart';
+import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/services/sales_month_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/views/dashboard_page/dashboard_screen.dart';
@@ -27,7 +29,10 @@ class _BottomNavigationDrawerState extends State<BottomNavigationDrawer> {
       create: (context) => SalesMonthBloc(SalesMonthService()),
       child: HomeScreen(),
     ),
-    ProfileScreen(),
+    BlocProvider(
+      create: (context) => LoginBloc(LoginService()),
+      child: ProfileScreen(),
+    ),
   ];
 
   void _onItemTapped(int index) {

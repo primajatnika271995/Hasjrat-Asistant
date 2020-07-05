@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
+import 'package:salles_tools/src/bloc/login_bloc/login_event.dart';
 import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/hex_converter.dart';
 import 'package:salles_tools/src/utils/screen_size.dart';
@@ -86,6 +87,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await SharedPreferencesHelper.setAccessToken(null);
     await SharedPreferencesHelper.setListCustomer(null);
     await SharedPreferencesHelper.setListLead(null);
+
+    var idHistory = await SharedPreferencesHelper.getHistoryLoginId();
+
+    // ignore: close_sinks
+    final loginBloc = BlocProvider.of<LoginBloc>(context);
+    loginBloc.add(FetchLogout(idHistory));
+
     Navigator.of(context).pushAndRemoveUntil(
         PageRouteBuilder(
           pageBuilder: (_, __, ___) => BlocProvider<LoginBloc>(
@@ -332,7 +340,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Icon(Icons.person),
                                 ),
-                                Text("Ubah Profil",
+                                Text("Detil Profil",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 12,

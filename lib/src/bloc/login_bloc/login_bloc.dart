@@ -5,6 +5,7 @@ import 'package:salles_tools/src/models/authentication_model.dart';
 import 'package:salles_tools/src/models/change_password_model.dart';
 import 'package:salles_tools/src/models/employee_model.dart';
 import 'package:salles_tools/src/models/error_model.dart';
+import 'package:salles_tools/src/models/histori_login_model.dart';
 import 'package:salles_tools/src/services/login_service.dart';
 import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -50,6 +51,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           await SharedPreferencesHelper.setSalesGrading(employee.grading);
           await SharedPreferencesHelper.setSalesContact(employee.contact);
 
+          HistoriLoginModel histori = await loginService.historyLogin(
+            employee.branch.id,
+            employee.branch.name,
+            employee.id,
+            employee.outlet.id,
+            employee.outlet.name,
+          );
+
+          await SharedPreferencesHelper.setHistoryLoginId(histori.id);
+
           yield LoginSuccess(value);
         } else {
           log.warning(value.errorDescription);
@@ -71,6 +82,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (err) {
         log.warning(err.toString());
         yield ChangePasswordFailed();
+      }
+    }
+
+    if (event is FetchLogout) {
+      try {
+        HistoriLoginModel value = await loginService.historyLogout(event.idHistory);
+      } catch (err) {
+        log.warning(err.toString());
       }
     }
   }

@@ -18,6 +18,7 @@ import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+//import 'package:native_pdf_renderer/native_pdf_renderer.dart' as npr;
 
 class PriceListView extends StatefulWidget {
   @override
@@ -313,6 +314,15 @@ class _PriceListViewState extends State<PriceListView> {
     final file = File('${directory.path}/price-list.pdf');
     file.writeAsBytesSync(pdf.save());
 
+//    final document = await npr.PdfDocument.openFile(file.path);
+//    final page = await document.getPage(1);
+//    final pageImage = await page.render(width: page.width, height: page.height);
+
+//    final fileImg = File('${directory.path}/price-list.jpg');
+//    fileImg.writeAsBytesSync(pageImage.bytes);
+//    await page.close();
+
+//    OpenFile.open('${directory.path}/price-list.jpg');
     OpenFile.open('${directory.path}/price-list.pdf');
   }
 

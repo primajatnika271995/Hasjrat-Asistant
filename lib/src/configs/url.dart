@@ -121,6 +121,10 @@ class UriApi {
 
   static const String summaryDashboardUri = "/sales-tools-employees-service/api/v2/dashboard/head-officer/prospect/findByBranchAndOutletCode";
 
+  static const String historyLoginUri = "/sales-tools-employees-service/api/v2/history-login/new";
+
+  static const String historyLogoutUri = "/sales-tools-employees-service/api/v2/history-login";
+
   static const String listExpiredStnkUri = "/hasjrat-resource-server/hcare-api/api/sales/vehicle-customer/list/expired";
 
   static const String listAllStnkUri = "/hasjrat-resource-server/hcare-api/api/sales/vehicle-customer/list/expired";

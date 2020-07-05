@@ -135,6 +135,9 @@ dependencies:
   # Pdf creation library
   pdf: ^1.6.0
 
+  # Plugin to render PDF pages as images on
+#  native_pdf_renderer: ^2.3.2
+
   # A library that exposes device specific speech recognition capability.
   speech_to_text: ^2.1.0
 

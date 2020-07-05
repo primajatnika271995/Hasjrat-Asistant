@@ -18,6 +18,16 @@ class FetchLogin extends LoginEvent {
 
 }
 
+class FetchLogout extends LoginEvent {
+  final idHistory;
+
+  FetchLogout(this.idHistory);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [idHistory];
+}
+
 class ChangePassword extends LoginEvent {
   final password;
   final username;
