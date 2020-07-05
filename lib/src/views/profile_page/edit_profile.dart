@@ -122,7 +122,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         elevation: 1,
         titleSpacing: 0,
         title: Text(
-          "Edit Profil",
+          "Detail Profil",
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 0.5,
@@ -152,24 +152,24 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             emailField(),
             SizedBox(height: 15),
             alamatField(),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 50, bottom: 10),
-              child: Container(
-                width: screenWidth(context),
-                child: RaisedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Done",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  color: HexColor('#C61818'),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(
+            //       left: 20, right: 20, top: 50, bottom: 10),
+            //   child: Container(
+            //     width: screenWidth(context),
+            //     child: RaisedButton(
+            //       onPressed: () {},
+            //       child: Text(
+            //         "Done",
+            //         style: TextStyle(color: Colors.white),
+            //       ),
+            //       color: HexColor('#C61818'),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(30),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -220,6 +220,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
           fontWeight: FontWeight.w700,
         ),
         cursorColor: HexColor('#C61818'),
+        readOnly: true,
         decoration: InputDecoration(
           labelText: 'Nama',
           contentPadding: EdgeInsets.only(bottom: 1),
@@ -244,6 +245,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
+        readOnly: true,
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'NIK',
@@ -269,6 +271,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
+        readOnly: true,
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Grading',
@@ -294,6 +297,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
+        readOnly: true,
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Tanggal Bergabung',
@@ -319,6 +323,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
+        readOnly: true,
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Tanggal Lahir',
@@ -344,6 +349,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
+        readOnly: true,
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Jenis Kelamin',
@@ -369,6 +375,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
+        readOnly: true,
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Nama Branch',
@@ -394,6 +401,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
+        readOnly: true,
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Lokasi Penempatan',
@@ -419,6 +427,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
+        readOnly: true,
         cursorColor: HexColor('#C61818'),
         decoration: InputDecoration(
           labelText: 'Posisi',
