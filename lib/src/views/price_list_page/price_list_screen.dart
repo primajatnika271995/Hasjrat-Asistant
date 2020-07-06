@@ -18,7 +18,7 @@ import 'package:salles_tools/src/views/components/log.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-//import 'package:native_pdf_renderer/native_pdf_renderer.dart' as npr;
+import 'package:native_pdf_renderer/native_pdf_renderer.dart' as npr;
 
 class PriceListView extends StatefulWidget {
   @override
@@ -314,16 +314,165 @@ class _PriceListViewState extends State<PriceListView> {
     final file = File('${directory.path}/price-list.pdf');
     file.writeAsBytesSync(pdf.save());
 
-//    final document = await npr.PdfDocument.openFile(file.path);
-//    final page = await document.getPage(1);
-//    final pageImage = await page.render(width: page.width, height: page.height);
-
-//    final fileImg = File('${directory.path}/price-list.jpg');
-//    fileImg.writeAsBytesSync(pageImage.bytes);
-//    await page.close();
-
-//    OpenFile.open('${directory.path}/price-list.jpg');
     OpenFile.open('${directory.path}/price-list.pdf');
+  }
+
+  void exportPdfToImage(Datum value) async {
+    rowPrice.clear();
+    rowStock.clear();
+
+    final pdf = pw.Document();
+    rowPrice.add(
+      <String>[
+        'Kode Item',
+        'Model Kendaraan',
+        'Dalam Kota',
+        'Tanggal',
+        'Harga'
+      ],
+    );
+    rowStock.add(<String>['Tahun', 'Jumlah', 'Warna', 'Warehouse']);
+
+    value.pricelists.forEach((f) {
+      List<String> price = <String>[
+        f.itemCode,
+        f.itemModel,
+        f.dalamKota,
+        f.pricelistTanggal.toString(),
+        CurrencyFormat().data.format(f.ontr)
+      ];
+      rowPrice.add(price);
+    });
+
+    value.stocks.forEach((f) {
+      List<String> stock = <String>[
+        f.tahun,
+        f.quantity.toString(),
+        f.namaWarna,
+        f.whsName,
+      ];
+      rowStock.add(stock);
+    });
+
+    ByteData bytes =
+    await rootBundle.load('assets/icons/old_hasjrat_toyota_logo.png');
+    File imgLogo;
+    try {
+      imgLogo = await writeToFile(bytes); // <= returns File
+    } catch (e) {
+      // catch errors here
+    }
+
+    final image = PdfImage.file(
+      pdf.document,
+      bytes: imgLogo.readAsBytesSync(),
+    );
+
+    pdf.addPage(pw.MultiPage(
+        pageFormat:
+        PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        header: (pw.Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return pw.Container(
+            alignment: pw.Alignment.centerRight,
+            margin: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+            padding: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+            decoration: const pw.BoxDecoration(
+                border: pw.BoxBorder(
+                    bottom: true, width: 0.5, color: PdfColors.grey)),
+            child: pw.Text(
+              'Price List',
+              style: pw.Theme.of(context)
+                  .defaultTextStyle
+                  .copyWith(color: PdfColors.grey),
+            ),
+          );
+        },
+        footer: (pw.Context context) {
+          return pw.Container(
+            alignment: pw.Alignment.centerRight,
+            margin: const pw.EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+            child: pw.Text(
+              'Page ${context.pageNumber} of ${context.pagesCount}',
+              style: pw.Theme.of(context)
+                  .defaultTextStyle
+                  .copyWith(color: PdfColors.grey),
+            ),
+          );
+        },
+        build: (pw.Context context) {
+          return <pw.Widget>[
+            pw.Header(
+              level: 0,
+              child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: <pw.Widget>[
+                    pw.Text(' Data Price List & Stock', textScaleFactor: 2),
+                    pw.Container(
+                      height: 50,
+                      width: 100,
+                      child: pw.Image(image),
+                    ),
+                  ]),
+            ),
+            pw.Paragraph(text: 'Price List'),
+            pw.Table.fromTextArray(context: context, data: rowPrice),
+//          pw.ListView.builder(
+//            itemBuilder: (pw.Context context, index) {
+//              return pw.Table.fromTextArray(
+//                context: context,
+//                data: <List<String>>[
+//                  <String>['Kode Item', 'Model Kendaraan', 'Dalam Kota', 'Tanggal', 'Harga'],
+//                  <String>['${value.pricelists[index].itemCode}', '${value.pricelists[index].itemModel}', '${value.pricelists[index].dalamKota}', '${value.pricelists[index].pricelistTanggal}', 'Rp ${CurrencyFormat().data.format(value.pricelists[index].ontr)}'],
+//                ],
+//              );
+//            },
+//           itemCount: value.pricelists.length
+//          ),
+            pw.Padding(padding: const pw.EdgeInsets.all(10)),
+            pw.Paragraph(text: 'Stock'),
+            pw.Table.fromTextArray(context: context, data: rowStock),
+//          pw.ListView.builder(
+//              itemBuilder: (pw.Context context, index) {
+//                return pw.Table.fromTextArray(
+//                  context: context,
+//                  data: <List<String>>[
+//                    <String>['Tahun', 'Jumlah', 'Warna'],
+//                    <String>['${value.stocks[index].tahun}', '${value.stocks[index].quantity}', '${value.stocks[index].namaWarna}'],
+//                  ],
+//                );
+//              },
+//              itemCount: value.stocks.length
+//          ),
+            pw.Padding(padding: const pw.EdgeInsets.all(10)),
+            pw.Text(
+              '*Harga tidak terikat, sewaktu-waktu dapat berubah.',
+              style: pw.TextStyle(
+                fontSize: 5,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+          ];
+        }));
+    final directory = await getExternalStorageDirectory();
+    log.info(directory.path);
+
+    final file = File('${directory.path}/price-list.pdf');
+    file.writeAsBytesSync(pdf.save());
+
+    final document = await npr.PdfDocument.openFile(file.path);
+    final page = await document.getPage(1);
+    final pageImage = await page.render(width: page.width, height: page.height);
+
+    final fileImg = File('${directory.path}/price-list.jpg');
+    fileImg.writeAsBytesSync(pageImage.bytes);
+    await page.close();
+
+    OpenFile.open('${directory.path}/price-list.jpg');
+//    OpenFile.open('${directory.path}/price-list.pdf');
   }
 
   Future<File> writeToFile(ByteData data) async {
@@ -982,26 +1131,52 @@ class _PriceListViewState extends State<PriceListView> {
                     },
                     itemCount: state.value.data[0].pricelists.length,
                   ),
-                  Center(
-                    child: RaisedButton.icon(
-                      onPressed: () {
-                        exportPdf(state.value.data[0]);
-                      },
-                      icon: Icon(
-                        Icons.file_download,
-                        color: Colors.white,
-                      ),
-                      color: HexColor('#C61818'),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      label: Text(
-                        "Export PDF",
-                        style: TextStyle(
-                          color: Colors.white,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Center(
+                        child: RaisedButton.icon(
+                          onPressed: () {
+                            exportPdf(state.value.data[0]);
+                          },
+                          icon: Icon(
+                            Icons.file_download,
+                            color: Colors.white,
+                          ),
+                          color: HexColor('#C61818'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          label: Text(
+                            "Export PDF",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      Center(
+                        child: RaisedButton.icon(
+                          onPressed: () {
+                            exportPdfToImage(state.value.data[0]);
+                          },
+                          icon: Icon(
+                            Icons.file_download,
+                            color: Colors.white,
+                          ),
+                          color: HexColor('#C61818'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          label: Text(
+                            "Export JPG",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               );
