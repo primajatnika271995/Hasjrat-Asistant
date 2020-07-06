@@ -465,7 +465,7 @@ class _PriceListViewState extends State<PriceListView> {
 
     final document = await npr.PdfDocument.openFile(file.path);
     final page = await document.getPage(1);
-    final pageImage = await page.render(width: page.width, height: page.height);
+    final pageImage = await page.render(width: page.width, height: page.height, backgroundColor: '#FFFFFF');
 
     final fileImg = File('${directory.path}/price-list.jpg');
     fileImg.writeAsBytesSync(pageImage.bytes);

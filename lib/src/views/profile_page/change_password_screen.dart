@@ -90,7 +90,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> with TickerProv
         number = passwordNewCtrl.text.contains(RegExp(r'\d'), 0);
         upperCaseChar = passwordNewCtrl.text.contains(new RegExp(r'[A-Z]'), 0);
         specialChar = passwordNewCtrl.text.isNotEmpty &&
-            !passwordNewCtrl.text.contains(RegExp(r'^[\w&.-]+$'), 0);
+            !passwordNewCtrl.text.contains(RegExp(r'^[\w_]+$'), 0);
       });
 
       if (_allValid()) {

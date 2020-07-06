@@ -554,13 +554,13 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
 
     final document = await npr.PdfDocument.openFile(file.path);
     final page = await document.getPage(1);
-    final pageImage = await page.render(width: page.width, height: page.height);
+    final pageImage = await page.render(width: page.width, height: page.height, backgroundColor: '#FFFFFF');
 
-    final fileImg = File('${directory.path}/price-list.jpg');
+    final fileImg = File('${directory.path}/tenor.jpg');
     fileImg.writeAsBytesSync(pageImage.bytes);
     await page.close();
 
-    OpenFile.open('${directory.path}/price-list.jpg');
+    OpenFile.open('${directory.path}/tenor.jpg');
 
 //    OpenFile.open('${directory.path}/tenor.pdf');
   }
