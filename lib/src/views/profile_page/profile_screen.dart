@@ -340,7 +340,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Icon(Icons.person),
                                 ),
-                                Text("Detil Profil",
+                                Text("Detail Profil",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 12,
