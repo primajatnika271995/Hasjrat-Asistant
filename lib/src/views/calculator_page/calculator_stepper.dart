@@ -742,6 +742,7 @@ class _CalculatorStepperScreenState extends State<CalculatorStepperScreen> {
                   assetGroupName: f.assetGroupName,
                 ),
               );
+              assetGroupList.removeWhere((data) => data.assetGroupName == "GLORY");
             });
           }
 

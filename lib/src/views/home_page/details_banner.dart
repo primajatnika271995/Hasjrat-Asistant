@@ -42,16 +42,7 @@ class _BannerDetailsViewState extends State<BannerDetailsView> {
               tag: "promotion-tag${widget.data.id}",
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                child: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7),
-                    image: DecorationImage(
-                      image: NetworkImage('${widget.data.url}'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
+                child: Image.network("${widget.data.url}")
               ),
             ),
             Padding(
