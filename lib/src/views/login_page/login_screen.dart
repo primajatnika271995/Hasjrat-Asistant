@@ -222,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'NIK wajib diisi';
+                                return 'Username wajib diisi';
                               }
                               return null;
                             },
