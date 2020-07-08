@@ -26,6 +26,9 @@ class SharedPreferencesHelper {
   static const String kSalesStatus = "salesStatus";
   static const String kSalesGrading = "salesGrading";
 
+  static const String kImeiDevice = "imeiDevice";
+  static const String kDeviceInfo = "deviceInfo";
+
   static const String kCustomerJSON = "customerList";
   static const String kLeadJSON = "leadList";
 
@@ -361,6 +364,42 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString(kHistoryLoginId, value);
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the imei device, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getImeiDevice() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kImeiDevice) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the imei device
+  /// ----------------------------------------------------------
+  static Future<bool> setImeiDevice(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kImeiDevice, value);
+  }
+
+  /// ------------------------------------------------------------
+  /// Method that returns the device info, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getDeviceInfo() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kDeviceInfo) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the device info
+  /// ----------------------------------------------------------
+  static Future<bool> setDeviceInfo(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kDeviceInfo, value);
   }
 
   /// ------------------------------------------------------------

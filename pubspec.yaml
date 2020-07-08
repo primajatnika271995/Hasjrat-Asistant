@@ -141,6 +141,12 @@ dependencies:
   # A library that exposes device specific speech recognition capability.
   speech_to_text: ^2.1.0
 
+  # Get current device information from within the Flutter application.
+  device_info: ^0.4.2+4
+
+  # Get unique id device on ios and android
+  imei_plugin: ^1.1.6
+
   # A cross platform plugin for displaying local notifications.
   flutter_local_notifications: ^1.2.0+3
 
