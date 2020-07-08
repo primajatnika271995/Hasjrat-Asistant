@@ -490,7 +490,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: AppTheme.namaSalesStyle,
                         ),
                         Text(
-                          "Hasjrat Toyota $_branchName outlet $_outletName",
+                          "Hasjrat Toyota $_branchName Outlet $_outletName",
                           style: TextStyle(
                             fontSize: 11,
                             color: Colors.white,
