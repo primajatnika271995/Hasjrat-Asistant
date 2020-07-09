@@ -35,9 +35,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _onCheckLocation() async {
-    location.onLocationChanged.listen((LocationData currentLocation) {
+    location.onLocationChanged.listen((LocationData currentLocation) async {
       log.info(currentLocation.latitude);
       log.info(currentLocation.longitude);
+
+      await SharedPreferencesHelper.setLatitudeLogin(currentLocation.latitude.toString());
+      await SharedPreferencesHelper.setLongitudeLogin(currentLocation.longitude.toString());
     });
   }
 

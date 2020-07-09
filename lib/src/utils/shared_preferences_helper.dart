@@ -26,8 +26,11 @@ class SharedPreferencesHelper {
   static const String kSalesStatus = "salesStatus";
   static const String kSalesGrading = "salesGrading";
 
-  static const String kImeiDevice = "imeiDevice";
+  static const String kImeiDevice = "imeiDevice"; 
   static const String kDeviceInfo = "deviceInfo";
+
+  static const String kLatitudeLogin = "latitudeLogin";
+  static const String kLongitudeLogin = "longitudeLogin";
 
   static const String kCustomerJSON = "customerList";
   static const String kLeadJSON = "leadList";
@@ -400,6 +403,40 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString(kDeviceInfo, value);
+  }
+
+  /// Method that returns the latitude login, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getLatitudeLogin() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kLatitudeLogin) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the latitude login
+  /// ----------------------------------------------------------
+  static Future<bool> setLatitudeLogin(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kLatitudeLogin, value);
+  }
+
+  /// Method that returns the longitude login, 'null' if not set
+  /// ------------------------------------------------------------
+  static Future<String> getLongitudeLogin() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString(kLongitudeLogin) ?? null;
+  }
+
+  /// ----------------------------------------------------------
+  /// Method that saves the longitude login
+  /// ----------------------------------------------------------
+  static Future<bool> setLongitudeLogin(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString(kLongitudeLogin, value);
   }
 
   /// ------------------------------------------------------------
