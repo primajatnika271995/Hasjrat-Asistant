@@ -26,6 +26,7 @@ import 'package:salles_tools/src/views/activity_report_page/list_activity_report
 import 'package:salles_tools/src/views/book_service_page/add_book_service.dart';
 import 'package:salles_tools/src/views/book_service_page/list_book_service.dart';
 import 'package:salles_tools/src/views/book_test_drive_page/list_book_test_drive.dart';
+import 'package:salles_tools/src/views/calculator_basic_page/calculator_basic_screen.dart';
 import 'package:salles_tools/src/views/calculator_page/calculator_stepper.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_screen.dart';
 import 'package:salles_tools/src/views/components/log.dart';
@@ -62,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "Pelanggan",
     "Prospek Pelanggan",
     "Katalog",
+    "Kalkulator Simulasi",
     "Kalkulator",
     "Pengingat\nJadwal",
     "Booking\nService",
@@ -83,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "assets/icons/costumer_icon.png",
     "assets/icons/prospect_costumer_icon.png",
     "assets/icons/catalog_icon.png",
+    "assets/icons/calculator_icon.png",
     "assets/icons/calculator_icon.png",
     "assets/icons/reminder_icon.png",
     "assets/icons/book_service_icon.png",
@@ -114,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => FinanceBloc(FinanceService()),
       child: CalculatorStepperScreen(),
     ),
+    CalculatorBasicScreen(),
     ReminderListView(),
 //    BookServiceListView(),
     BlocProvider(
