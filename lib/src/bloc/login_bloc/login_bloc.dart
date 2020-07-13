@@ -51,10 +51,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           await SharedPreferencesHelper.setSalesGrading(employee.grading);
           await SharedPreferencesHelper.setSalesContact(employee.contact);
 
+          var imei = await SharedPreferencesHelper.getImeiDevice();
+          var deviceInfo = await SharedPreferencesHelper.getDeviceInfo();
+          var latitudeLogin = await SharedPreferencesHelper.getLatitudeLogin();
+          var longitudeLogin = await SharedPreferencesHelper.getLongitudeLogin();
+
+          log.info(latitudeLogin);
+
           HistoriLoginModel histori = await loginService.historyLogin(
             employee.branch.id,
             employee.branch.name,
+            deviceInfo,
             employee.id,
+            imei,
+            latitudeLogin,
+            longitudeLogin,
             employee.outlet.id,
             employee.outlet.name,
           );
@@ -87,7 +98,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (event is FetchLogout) {
       try {
-        HistoriLoginModel value = await loginService.historyLogout(event.idHistory);
+        HistoriLoginModel value = await loginService.historyLogout(event.idHistory, event.deviceInfo, event.imei, event.latitudeLogout, event.longitudeLogout);
+
+        await SharedPreferencesHelper.setAccessToken(null);
       } catch (err) {
         log.warning(err.toString());
       }

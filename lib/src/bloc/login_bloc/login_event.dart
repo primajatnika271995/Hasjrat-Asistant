@@ -20,8 +20,12 @@ class FetchLogin extends LoginEvent {
 
 class FetchLogout extends LoginEvent {
   final idHistory;
+  final deviceInfo;
+  final imei;
+  final latitudeLogout;
+  final longitudeLogout;
 
-  FetchLogout(this.idHistory);
+  FetchLogout(this.idHistory, this.deviceInfo, this.imei, this.latitudeLogout, this.longitudeLogout);
 
   @override
   // TODO: implement props

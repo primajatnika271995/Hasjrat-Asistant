@@ -23,8 +23,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  bool visibility = true;
+
   var usernameCtrl = new TextEditingController();
   var passwordCtrl = new TextEditingController();
+
+  void _onShowPassword() {
+    setState(() {
+      visibility  = !visibility;
+    });
+  }
 
   void _onNavVerification() {
     Navigator.of(context).push(
@@ -229,13 +237,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller: usernameCtrl,
                           ),
                           TextFormField(
-                            obscureText: true,
+                            obscureText: visibility,
                             decoration: InputDecoration(
                               hintText: 'Password',
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: HexColor('#C61818'),
                                 ),
+                              ),
+                              suffixIcon: IconButton(
+                                onPressed: _onShowPassword,
+                                icon: Icon(visibility ? Icons.visibility_off : Icons.visibility),
                               ),
                             ),
                             validator: (value) {

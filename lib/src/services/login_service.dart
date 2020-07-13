@@ -121,7 +121,7 @@ class LoginService {
     return null;
   }
 
-  Future historyLogin(String branchCode, String branchName, String employeeId, String outletCode, String outletName) async {
+  Future historyLogin(String branchCode, String branchName, String deviceInfo, String employeeId, String imei, dynamic latitudeLogin, dynamic longitudeLogin, String outletCode, String outletName) async {
     try {
       final response = await _dio.post(UriApi.historyLoginUri,
         options: Options(
@@ -132,7 +132,11 @@ class LoginService {
         data: {
           "branchCode": branchCode,
           "branchName": branchName,
+          "deviceInfo": deviceInfo,
           "employeeId": employeeId,
+          "imei": imei,
+          "latitudeLogin": double.parse(latitudeLogin),
+          "longitudeLogin": double.parse(longitudeLogin),
           "outletCode": outletCode,
           "outletName": outletName
         },
@@ -146,14 +150,20 @@ class LoginService {
     return null;
   }
 
-  Future historyLogout(String idHistory) async {
+  Future historyLogout(String idHistory, String deviceInfo, String imei, dynamic latitudeLogout, dynamic longitudeLogout) async {
     try {
       final response = await _dio.put(UriApi.historyLogoutUri + '/$idHistory/setLogout',
         options: Options(
             headers: {
               'Content-Type': 'application/json',
-            }
+            },
         ),
+        data: {
+          "deviceInfo": deviceInfo,
+          "imei": imei,
+          "latitudeLogout": latitudeLogout,
+          "longitudeLogout": longitudeLogout
+        },
       );
 
       log.info(response.statusCode);

@@ -22,23 +22,16 @@ class _SplashScreenState extends State<SplashScreen> {
   void _onCheckDeviceInfo() async {
     DeviceInfoPlugin _deviceInfo = new DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await _deviceInfo.androidInfo;
-
-    log.info(androidInfo.model);
     await SharedPreferencesHelper.setDeviceInfo(androidInfo.model);
   }
 
   void _onCheckImei() async {
     String imei = await ImeiPlugin.getImei(shouldShowRequestPermissionRationale: false);
-
-    log.info(imei);
     await SharedPreferencesHelper.setImeiDevice(imei);
   }
 
   void _onCheckLocation() async {
     location.onLocationChanged.listen((LocationData currentLocation) async {
-      log.info(currentLocation.latitude);
-      log.info(currentLocation.longitude);
-
       await SharedPreferencesHelper.setLatitudeLogin(currentLocation.latitude.toString());
       await SharedPreferencesHelper.setLongitudeLogin(currentLocation.longitude.toString());
     });
@@ -55,7 +48,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
     checkIfAuthenticated().then((_) async {
       var token = await SharedPreferencesHelper.getAccessToken();
-      print(token);
       if (token == null) {
         Navigator.of(context).push(
           PageRouteBuilder(

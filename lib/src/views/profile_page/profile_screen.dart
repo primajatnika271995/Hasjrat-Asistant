@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:location/location.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_bloc.dart';
 import 'package:salles_tools/src/bloc/login_bloc/login_event.dart';
@@ -20,12 +21,17 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Location location = new Location();
+  LocationData _locationData;
+
   final double targetElevation = 3;
   double _elevation = 0;
   ScrollController _controller;
 
   var _salesName;
   var _salesNIK;
+  var _latitude;
+  var _longitude;
 
   String titleName = "";
 
@@ -83,16 +89,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  void _onCheckLocation() async {
+    _locationData = await location.getLocation();
+
+    _latitude = _locationData.latitude;
+    _longitude = _locationData.longitude;
+  }
+
   void _onLogin() async {
-    await SharedPreferencesHelper.setAccessToken(null);
-    await SharedPreferencesHelper.setListCustomer(null);
-    await SharedPreferencesHelper.setListLead(null);
-
     var idHistory = await SharedPreferencesHelper.getHistoryLoginId();
+    var imei = await SharedPreferencesHelper.getImeiDevice();
+    var deviceInfo = await SharedPreferencesHelper.getDeviceInfo();
 
+    log.info(imei);
+    log.info(deviceInfo);
     // ignore: close_sinks
     final loginBloc = BlocProvider.of<LoginBloc>(context);
-    loginBloc.add(FetchLogout(idHistory));
+    loginBloc.add(FetchLogout(idHistory, deviceInfo, imei, _latitude, _longitude));
+
+    await SharedPreferencesHelper.setListCustomer(null);
+    await SharedPreferencesHelper.setListLead(null);
 
     Navigator.of(context).pushAndRemoveUntil(
         PageRouteBuilder(
@@ -185,6 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     // TODO: implement initState
     _getPreferences();
+    _onCheckLocation();
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
     super.initState();
