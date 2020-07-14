@@ -28,6 +28,7 @@ import 'package:salles_tools/src/views/book_service_page/list_book_service.dart'
 import 'package:salles_tools/src/views/book_test_drive_page/list_book_test_drive.dart';
 import 'package:salles_tools/src/views/calculator_basic_page/calculator_basic_screen.dart';
 import 'package:salles_tools/src/views/calculator_page/calculator_stepper.dart';
+import 'package:salles_tools/src/views/calendar_event_page/calendar_event.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_screen.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/customer_page/list_customer.dart';
@@ -70,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "Booking\nTest Drive",
     "Sales\nProgram",
     "Laporan\nAktifitas",
+    "Kalender",
     "Harga\nKendaraan",
     "Informasi",
   ];
@@ -91,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "assets/icons/book_service_icon.png",
     "assets/icons/book_test_drive_icon.png",
     "assets/icons/promotion_icon_2.png",
+    "assets/icons/activity_report_icon.png",
     "assets/icons/activity_report_icon.png",
     "assets/icons/price_list_icon.png",
     "assets/icons/knowledge_base_icon.png",
@@ -137,6 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => ActivityReportBloc(ActivityReportService()),
       child: ActivityReportListView(),
     ),
+    CalendarEventScreen(),
     BlocProvider(
       create: (context) => DmsBloc(DmsService()),
       child: PriceListView(),

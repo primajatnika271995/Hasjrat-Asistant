@@ -15,7 +15,6 @@ abstract class KeyController {
   static void fire(KeyEvent event) => _controller.add(event);
 
   static dispose() {
-    _stream.drain();
     _controller.close();
   }
 }

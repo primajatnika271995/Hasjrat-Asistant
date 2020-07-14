@@ -19,7 +19,6 @@ class _CalculatorBasicScreenState extends State<CalculatorBasicScreen> {
 
   @override
   void initState() {
-    log.info("Init State");
 
     KeyController.listen((event) => Processor.process(event));
     Processor.listen((data) => setState(() { _output = data; }));

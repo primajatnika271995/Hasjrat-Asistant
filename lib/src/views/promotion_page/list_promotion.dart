@@ -79,6 +79,7 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
           }
         },
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: BlocBuilder<DmsBloc, DmsState>(
             builder: (context, state) {
               if (state is ListProgramPenjualanError) {
@@ -102,6 +103,7 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
 
               if (state is ListProgramPenjualanSuccess) {
                 return ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     var data = state.value.data[index];

@@ -77,6 +77,9 @@ dependencies:
   # Syncfusion Flutter Charts is a data visualization library written natively in Dart
   syncfusion_flutter_charts: ^18.1.52
 
+  # The Syncfusion Flutter Calendar widget
+  syncfusion_flutter_calendar: ^18.2.44
+
   # Lets you place headers on scrollable content that will stick to the top of the
   # container whilst the content is scrolled.
   sticky_headers: ^0.1.8+1

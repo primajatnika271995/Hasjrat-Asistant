@@ -25,7 +25,6 @@ abstract class Processor {
       + (_valB != '0' ? ' ' + _valB : '');
 
   static dispose() {
-    _stream.drain();
     _controller.close();
   }
 
