@@ -128,4 +128,6 @@ class UriApi {
   static const String listExpiredStnkUri = "/hasjrat-resource-server/hcare-api/api/sales/vehicle-customer/list/expired";
 
   static const String listAllStnkUri = "/hasjrat-resource-server/hcare-api/api/sales/vehicle-customer/list/expired";
+
+  static const String cekStoc_Ho_Uri = "/sales-tools-employees-service/api/v2/stock/datatables";
 }

@@ -39,6 +39,9 @@ import 'package:salles_tools/src/views/price_list_page/price_list_screen.dart';
 import 'package:salles_tools/src/views/promotion_page/list_promotion.dart';
 import 'package:salles_tools/src/views/prospect_customer_page/sales_input.dart';
 import 'package:salles_tools/src/views/reminder_page/list_reminder.dart';
+import 'package:salles_tools/src/views/check_stock_page/check_stock_screen.dart';
+import 'package:salles_tools/src/bloc/check_stock_bloc/check_stock_bloc.dart';
+import 'package:salles_tools/src/services/check_stock_service.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../bloc/booking_bloc/booking_drive_bloc.dart';
@@ -62,18 +65,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<String> _menuName = [
     "Pelanggan",
-    "Prospek Pelanggan",
+    "Prospek",
     "Katalog",
     "Kalkulator Simulasi",
     "Kalkulator",
-    "Pengingat\nJadwal",
+    "Pengingat",
     "Booking\nService",
     "Booking\nTest Drive",
-    "Sales\nProgram",
+    "Promo",
     "Laporan\nAktifitas",
     "Kalender",
-    "Harga\nKendaraan",
-    "Informasi",
+    "Harga\ndan Stok",
+    "Stok HO",
+    "E-Learning",
   ];
 
   List<String> _moreMenuName = [
@@ -95,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "assets/icons/promotion_icon_2.png",
     "assets/icons/activity_report_icon.png",
     "assets/icons/activity_report_icon.png",
+    "assets/icons/price_list_icon.png",
     "assets/icons/price_list_icon.png",
     "assets/icons/knowledge_base_icon.png",
   ];
@@ -146,6 +151,10 @@ class _HomeScreenState extends State<HomeScreen> {
     BlocProvider(
       create: (context) => DmsBloc(DmsService()),
       child: PriceListView(),
+    ),
+    BlocProvider(
+      create: (context) => CheckStockBloc(CheckStockService()),
+      child: CheckStockScreen(),
     ),
     BlocProvider(
       create: (context) => KnowledgeBaseBloc(KnowledgeBaseService()),
@@ -395,7 +404,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Promosi",
+                      "Informasi",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
@@ -615,7 +624,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           },
-          childCount: 11,
+          childCount: 13,
         ),
       ),
     );
