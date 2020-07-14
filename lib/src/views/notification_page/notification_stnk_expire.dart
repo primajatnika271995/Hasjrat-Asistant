@@ -19,8 +19,7 @@ class NotificationStnkExpireView extends StatefulWidget {
       _NotificationStnkExpireViewState();
 }
 
-class _NotificationStnkExpireViewState
-    extends State<NotificationStnkExpireView> {
+class _NotificationStnkExpireViewState extends State<NotificationStnkExpireView> {
   var formatDob = DateFormat("yyyy-MM-dd");
   var searchByNameCtrl = new TextEditingController();
 

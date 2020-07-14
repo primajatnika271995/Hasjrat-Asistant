@@ -28,7 +28,7 @@ import 'package:salles_tools/src/views/book_service_page/list_book_service.dart'
 import 'package:salles_tools/src/views/book_test_drive_page/list_book_test_drive.dart';
 import 'package:salles_tools/src/views/calculator_basic_page/calculator_basic_screen.dart';
 import 'package:salles_tools/src/views/calculator_page/calculator_stepper.dart';
-import 'package:salles_tools/src/views/calendar_event_page/calendar_event.dart';
+import 'package:salles_tools/src/views/calendar_event_page/calendar_event_screen.dart';
 import 'package:salles_tools/src/views/catalog_page/catalog_screen.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/customer_page/list_customer.dart';
@@ -135,12 +135,14 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => DmsBloc(DmsService()),
       child: PromotionListScreen(),
     ),
-
     BlocProvider(
       create: (context) => ActivityReportBloc(ActivityReportService()),
       child: ActivityReportListView(),
     ),
-    CalendarEventScreen(),
+    BlocProvider(
+      create: (context) => CustomerBloc(CustomerService()),
+      child: CalendarEventScreen(),
+    ),
     BlocProvider(
       create: (context) => DmsBloc(DmsService()),
       child: PriceListView(),

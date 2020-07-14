@@ -101,8 +101,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var imei = await SharedPreferencesHelper.getImeiDevice();
     var deviceInfo = await SharedPreferencesHelper.getDeviceInfo();
 
-    log.info(imei);
-    log.info(deviceInfo);
     // ignore: close_sinks
     final loginBloc = BlocProvider.of<LoginBloc>(context);
     loginBloc.add(FetchLogout(idHistory, deviceInfo, imei, _latitude, _longitude));
@@ -111,21 +109,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await SharedPreferencesHelper.setListLead(null);
 
     Navigator.of(context).pushAndRemoveUntil(
-        PageRouteBuilder(
-          pageBuilder: (_, __, ___) => BlocProvider<LoginBloc>(
-            create: (context) => LoginBloc(LoginService()),
-            child: LoginScreen(),
-          ),
-          transitionDuration: Duration(milliseconds: 750),
-          transitionsBuilder:
-              (_, Animation<double> animation, __, Widget child) {
-            return Opacity(
-              opacity: animation.value,
-              child: child,
-            );
-          },
+      MaterialPageRoute(
+        builder: (context) => BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(LoginService()),
+          child: LoginScreen(),
         ),
-        (Route<dynamic> route) => false);
+      ), (Route<dynamic> route) => false);
   }
 
   void _getPreferences() async {
