@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "Pelanggan",
     "Prospek",
     "Katalog",
-    "Kalkulator Simulasi",
+    "Simulasi Kredit",
     "Kalkulator",
     "Pengingat",
     "Booking\nService",
