@@ -96,11 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
     "assets/icons/reminder_icon.png",
     "assets/icons/book_service_icon.png",
     "assets/icons/book_test_drive_icon.png",
-    "assets/icons/promotion_icon_2.png",
+    "assets/icons/promosi_icon.png",
     "assets/icons/activity_report_icon.png",
     "assets/icons/calendar_icon.png",
     "assets/icons/price_list_icon.png",
-    "assets/icons/price_list_icon.png",
+    "assets/icons/stock_ho_icon.png",
     "assets/icons/knowledge_base_icon.png",
   ];
 
@@ -624,7 +624,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           },
-          childCount: 13,
+          childCount: 14,
         ),
       ),
     );
