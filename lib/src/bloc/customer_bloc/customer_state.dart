@@ -5,6 +5,7 @@ import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
+import 'package:salles_tools/src/models/national_holiday_model.dart';
 import 'package:salles_tools/src/models/province_model.dart';
 import 'package:salles_tools/src/models/stnk_expired_model.dart';
 import 'package:salles_tools/src/models/sub_district_model.dart';
@@ -117,6 +118,17 @@ class StnkExpiredSuccess extends CustomerState {
 
   StnkExpiredSuccess(this._data);
   List<StnkExpiredModel> get value => _data;
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [_data];
+}
+
+class NationalHolidaySuccess extends CustomerState {
+  final _data;
+
+  NationalHolidaySuccess(this._data);
+  List<NationalHolidayModel> get value => _data;
 
   @override
   // TODO: implement props

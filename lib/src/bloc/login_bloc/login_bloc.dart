@@ -34,6 +34,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           await SharedPreferencesHelper.setPassword(event.password);
 
           EmployeeModel employee = await loginService.checkNIK(event.username);
+          log.info(employee.id);
           await SharedPreferencesHelper.setSalesName(employee.name);
           await SharedPreferencesHelper.setSalesNIK(employee.id);
           await SharedPreferencesHelper.setSalesBirthday(employee.birthDate.toString());
@@ -58,19 +59,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
           log.info(latitudeLogin);
 
-          HistoriLoginModel histori = await loginService.historyLogin(
-            employee.branch.id,
-            employee.branch.name,
-            deviceInfo,
-            employee.id,
-            imei,
-            latitudeLogin,
-            longitudeLogin,
-            employee.outlet.id,
-            employee.outlet.name,
-          );
-
-          await SharedPreferencesHelper.setHistoryLoginId(histori.id);
+//          HistoriLoginModel histori = await loginService.historyLogin(
+//            employee.branch.id,
+//            employee.branch.name,
+//            deviceInfo,
+//            employee.id,
+//            imei,
+//            latitudeLogin,
+//            longitudeLogin,
+//            employee.outlet.id,
+//            employee.outlet.name,
+//          );
+//
+//          await SharedPreferencesHelper.setHistoryLoginId(histori.id);
 
           yield LoginSuccess(value);
         } else {

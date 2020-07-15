@@ -10,7 +10,7 @@ abstract class Processor {
   static String _valB = '0';
   static String _result;
 
-  static StreamController _controller = BehaviorSubject();
+  static StreamController _controller = StreamController();
   static Stream get _stream => _controller.stream;
 
   static StreamSubscription listen(Function handler) => _stream.listen(handler);
@@ -24,7 +24,7 @@ abstract class Processor {
       + (_operator != null ? ' ' + _operator.value : '')
       + (_valB != '0' ? ' ' + _valB : '');
 
-  static dispose() {
+  static dispose() async {
     _controller.close();
   }
 

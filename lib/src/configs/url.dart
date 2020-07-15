@@ -128,4 +128,7 @@ class UriApi {
   static const String listExpiredStnkUri = "/hasjrat-resource-server/hcare-api/api/sales/vehicle-customer/list/expired";
 
   static const String listAllStnkUri = "/hasjrat-resource-server/hcare-api/api/sales/vehicle-customer/list/expired";
+
+  // Github Json API
+  static const String nationalHolidayUri = "https://cdn.jsdelivr.net/gh/niyoko/libur-nasional/data/2020.json";
 }
