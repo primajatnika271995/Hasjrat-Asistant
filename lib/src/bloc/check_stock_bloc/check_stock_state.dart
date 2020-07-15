@@ -4,6 +4,7 @@ import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
 import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/check_stock_model.dart';
+import 'package:salles_tools/src/models/branch_stock_model.dart';
 
 class CheckStockState extends Equatable {
   @override
@@ -31,7 +32,7 @@ class FetchKodeBranchSukses extends CheckStockState {
   final _data;
 
   FetchKodeBranchSukses(this._data);
-  BranchModel get value => _data;
+  List<BranchStockModel> get value => _data;
 
   @override
   List<Object> get props => _data;

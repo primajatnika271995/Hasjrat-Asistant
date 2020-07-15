@@ -223,9 +223,9 @@ class _CheckStockScreenState extends State<CheckStockScreen> {
               Navigator.of(context, rootNavigator: false).pop();
             }
             if (state is FetchKodeBranchSukses) {
-              state.value.result.forEach((element) {
+              state.value.forEach((element) {
                 branchList.add(SelectorBranchModel(
-                  branchName: element.text,
+                  branchName: element.name,
                   id: element.id,
                 ));
               });

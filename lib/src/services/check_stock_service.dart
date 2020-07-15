@@ -10,6 +10,7 @@ import 'package:salles_tools/src/models/branch_model.dart';
 import 'package:salles_tools/src/models/check_stock_model.dart';
 import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
+import'package:salles_tools/src/models/branch_stock_model.dart';
 
 class CheckStockService {
   final Dio _dio = new Dio();
@@ -45,12 +46,12 @@ class CheckStockService {
   //get branchCode List
   Future getBranchCode() async {
     final response = await _dio.get(
-      UriApi.branchCodeUri,
+      UriApi.branchCodeStock,
       options: Options(headers: {'Content-type': 'application/json'}),
     );
     log.info(response.statusCode);
     if (response.statusCode == 200) {
-      return compute(branchModelFromJson, json.encode(response.data));
+      return compute(branchStockModelFromJson, json.encode(response.data));
     }
   }
 

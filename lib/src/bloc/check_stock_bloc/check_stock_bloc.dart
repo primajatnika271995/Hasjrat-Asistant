@@ -8,6 +8,7 @@ import 'package:salles_tools/src/models/item_model.dart';
 import 'package:salles_tools/src/models/price_list_model.dart';
 import 'package:salles_tools/src/services/check_stock_service.dart';
 import 'package:salles_tools/src/views/components/log.dart';
+import'package:salles_tools/src/models/branch_stock_model.dart';
 
 class CheckStockBloc extends Bloc<CheckStockEvent, CheckStockState> {
   CheckStockService _checkStockService;
@@ -40,8 +41,8 @@ class CheckStockBloc extends Bloc<CheckStockEvent, CheckStockState> {
     if (event is FetchKodeBranch) {
       yield CheckStockLoading();
       try {
-        BranchModel value = await _checkStockService.getBranchCode();
-        if (value.result.isEmpty || value.result == null) {
+        List<BranchStockModel> value = await _checkStockService.getBranchCode();
+        if (value.isEmpty || value == null) {
           yield FetchKodeBranchFailed();
         } else {
           yield CheckStockDisposeLoading();

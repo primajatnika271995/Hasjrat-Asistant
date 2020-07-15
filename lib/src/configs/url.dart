@@ -133,4 +133,6 @@ class UriApi {
 
   // Github Json API
   static const String nationalHolidayUri = "https://cdn.jsdelivr.net/gh/niyoko/libur-nasional/data/2020.json";
+
+  static const String branchCodeStock = "/sales-tools-auth-service/api/v2/public/branch/list";
 }
