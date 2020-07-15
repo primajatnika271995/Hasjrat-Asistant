@@ -11,6 +11,7 @@ import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/lead_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
+import 'package:salles_tools/src/models/national_holiday_model.dart';
 import 'package:salles_tools/src/models/province_model.dart';
 import 'package:salles_tools/src/models/stnk_expired_model.dart';
 import 'package:salles_tools/src/models/sub_district_model.dart';
@@ -305,6 +306,23 @@ class CustomerService {
       return compute(errorTokenExpireFromJson, json.encode(response.data));
     } else {
       return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
+  Future nationalHoliday() async {
+    final response = await _dio.get(UriApi.nationalHolidayUri,
+      options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      ),
+    );
+
+    print(response.statusCode);
+    print(response.data);
+    log.info(response.statusCode);
+    if (response.statusCode == 200) {
+      return compute(nationalHolidayModelFromJson, json.encode(response.data));
     }
   }
 }

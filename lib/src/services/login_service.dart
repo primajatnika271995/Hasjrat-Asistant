@@ -21,7 +21,6 @@ class LoginService {
 
   LoginService() {
     _dio.options.baseUrl = UriApi.baseApi;
-    _dio.interceptors.add(DioLoggingInterceptors(_dio));
   }
 
   Future login(String username, String password) async {
@@ -60,8 +59,15 @@ class LoginService {
   }
 
   Future<EmployeeModel> checkNIK(String nik) async {
+    var token = await SharedPreferencesHelper.getAccessToken();
+
     try {
       final response = await _dio.get(UriApi.checkEmployeeUri + '/$nik/findEmployeeMutationById',
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token"
+          }
+        ),
         queryParameters: {
         'isMutation': false,
         },
@@ -122,10 +128,13 @@ class LoginService {
   }
 
   Future historyLogin(String branchCode, String branchName, String deviceInfo, String employeeId, String imei, dynamic latitudeLogin, dynamic longitudeLogin, String outletCode, String outletName) async {
+    var token = await SharedPreferencesHelper.getAccessToken();
+
     try {
       final response = await _dio.post(UriApi.historyLoginUri,
         options: Options(
             headers: {
+              'Authorization': 'Bearer $token',
               'Content-Type': 'application/json',
             }
         ),
@@ -151,10 +160,13 @@ class LoginService {
   }
 
   Future historyLogout(String idHistory, String deviceInfo, String imei, dynamic latitudeLogout, dynamic longitudeLogout) async {
+    var token = await SharedPreferencesHelper.getAccessToken();
+
     try {
       final response = await _dio.put(UriApi.historyLogoutUri + '/$idHistory/setLogout',
         options: Options(
             headers: {
+              'Authorization': 'Bearer $token',
               'Content-Type': 'application/json',
             },
         ),

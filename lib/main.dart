@@ -18,12 +18,9 @@ final timeFormat = DateFormat("HH:mm:ss");
 void checkTime() {
   Future<List<ReminderSqlite>> today = _dbHelper.getReminderToday();
   final DateTime now = DateTime.now();
-  log.info("Time Now : ${timeFormat.format(now).toString()}");
     today.then((val) {
       val.forEach((f) {
-        log.info("Waktu Pemberitahuan : ${f.timeReminder}");
         if (f.timeReminder == timeFormat.format(now).toString()) {
-          log.info("Judul Pemberitahuan : ${f.timeReminder}");
           _showReminderNotification(f.taskType, f.taskDescription);
         }
       });

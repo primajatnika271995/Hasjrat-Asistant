@@ -9,6 +9,7 @@ import 'package:salles_tools/src/models/error_model.dart';
 import 'package:salles_tools/src/models/gender_model.dart';
 import 'package:salles_tools/src/models/job_model.dart';
 import 'package:salles_tools/src/models/location_model.dart';
+import 'package:salles_tools/src/models/national_holiday_model.dart';
 import 'package:salles_tools/src/models/province_model.dart';
 import 'package:salles_tools/src/models/stnk_expired_model.dart';
 import 'package:salles_tools/src/models/sub_district_model.dart';
@@ -37,6 +38,21 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         } else {
           yield CustomerDisposeLoading();
           yield StnkExpiredSuccess(value);
+        }
+      } catch(error) {
+        log.warning("Error : ${error.toString()}");
+        yield CustomerError();
+      }
+    }
+
+    if (event is FetchNationalHoliday) {
+      try {
+        List<NationalHolidayModel> value = await _customerService.nationalHoliday();
+
+        if (value.isEmpty || value == null) {
+          yield CustomerFailed();
+        } else {
+          yield NationalHolidaySuccess(value);
         }
       } catch(error) {
         log.warning("Error : ${error.toString()}");

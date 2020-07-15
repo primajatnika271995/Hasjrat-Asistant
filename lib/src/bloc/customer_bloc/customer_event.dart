@@ -83,6 +83,10 @@ class FetchStnkExpired extends CustomerEvent {
 
 }
 
+class FetchNationalHoliday extends CustomerEvent {
+
+}
+
 class SearchStnkExpired extends CustomerEvent {
   final String query;
   SearchStnkExpired(this.query);

@@ -13,6 +13,7 @@ import 'package:salles_tools/src/views/bottom_navigation.dart';
 import 'package:salles_tools/src/views/components/loading_content.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 import 'package:salles_tools/src/views/login_page/verification_contact.dart';
+import 'package:salles_tools/src/views/profile_page/change_password_screen.dart';
 import 'package:salles_tools/src/views/register_page/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -108,6 +109,27 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  void _onChangePassword() async {
+    await SharedPreferencesHelper.setUsername(usernameCtrl.text);
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(LoginService()),
+          child: ChangePasswordView(),
+        ),
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
   void _onSubmit() {
     if (_formKey.currentState.validate()) {
       // ignore: close_sinks
@@ -139,6 +161,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
           if (state is LoginError) {
             Navigator.of(context).pop();
+
+            if (state.error.errorDescription == "Password Expired") {
+              _onChangePassword();
+            }
+
             Scaffold.of(context).showSnackBar(
               SnackBar(
                 content: Text("${state.error.errorDescription}"),

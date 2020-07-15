@@ -33,6 +33,10 @@ class _CalendarEventScreenState extends State<CalendarEventScreen> {
       cardName: "",
       custgroup: "",
     )));
+
+    // ignore: close_sinks
+    final nationalHolidayBloc = BlocProvider.of<CustomerBloc>(context);
+    nationalHolidayBloc.add(FetchNationalHoliday());
     super.initState();
   }
 
@@ -91,6 +95,18 @@ class _CalendarEventScreenState extends State<CalendarEventScreen> {
               final DateTime endTime = startTime.add(const Duration(hours: 9));
 
               birthdays.add(Birthday(data.customerName, startTime, endTime, HexColor("#C61818"), false));
+              setState(() {});
+            });
+          }
+
+          if  (state is NationalHolidaySuccess) {
+            state.value.forEach((data) {
+              final DateTime today = data.date;
+              final DateTime now = DateTime.now();
+              final DateTime startTime = DateTime(now.year, today.month, today.day, 7, 0, 0);
+              final DateTime endTime = startTime.add(const Duration(hours: 9));
+
+              birthdays.add(Birthday(data.description, startTime, endTime, Colors.blue, false));
               setState(() {});
             });
           }
