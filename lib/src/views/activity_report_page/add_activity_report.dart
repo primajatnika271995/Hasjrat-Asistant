@@ -121,6 +121,44 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
     }
   }
 
+  Future selectFromVideo() async {
+    var video = await ImagePicker.pickVideo(source: ImageSource.camera);
+
+    if (image1 == null) {
+      image1 = video;
+      uploadImgList
+          .add(SourceImg(title: image1.path.split("/").last, size: "0MB"));
+      setState(() {});
+    } else if (image2 == null) {
+      image2 = video;
+      String dir = path.dirname(video.path);
+      String rename = path.join(dir, 'file-upload-2.jpg');
+
+      image2.renameSync(rename);
+      uploadImgList
+          .add(SourceImg(title: image2.path.split("/").last, size: "0MB"));
+      setState(() {});
+    } else if (image3 == null) {
+      image3 = video;
+      String dir = path.dirname(video.path);
+      String rename = path.join(dir, 'file-upload-3.jpg');
+
+      image3.renameSync(rename);
+      uploadImgList
+          .add(SourceImg(title: image3.path.split("/").last, size: "0MB"));
+      setState(() {});
+    } else if (image4 == null) {
+      image4 = video;
+      String dir = path.dirname(video.path);
+      String rename = path.join(dir, 'file-upload-5.jpg');
+
+      image4.renameSync(rename);
+      uploadImgList
+          .add(SourceImg(title: image4.path.split("/").last, size: "0MB"));
+      setState(() {});
+    }
+  }
+
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -1127,7 +1165,7 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
                     ],
                   ),
                   RaisedButton(
-                    onPressed: selectFromCamera,
+                    onPressed: _uploadImage,
                     child: Text(
                       'BROWSE IMG',
                       style: TextStyle(
@@ -1199,6 +1237,34 @@ class _AddActivityReportViewState extends State<AddActivityReportView> {
           },
         ),
       ),
+    );
+  }
+
+  Future<ImageSource> _uploadImage() {
+    return showDialog<ImageSource>(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return SimpleDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+          ),
+          title: const Text('Pilih File '),
+          children: <Widget>[
+            
+            SimpleDialogOption(
+              onPressed: selectFromCamera,
+              child: const Text('Kamera', style: TextStyle(fontSize: 18)),
+            ),
+            SimpleDialogOption(
+              onPressed: selectFromVideo,
+              child: const Text('Video', style: TextStyle(fontSize: 18)),
+            ),
+          ],
+        );
+      },
     );
   }
 }
