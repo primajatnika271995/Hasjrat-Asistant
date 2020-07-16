@@ -492,7 +492,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: Text(
-                  "Selamat Datang",
+                  "Tetap Semangat!",
                   style: AppTheme.selamatDatangStyle,
                 ),
               ),
