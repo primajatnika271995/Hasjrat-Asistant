@@ -124,6 +124,8 @@ class StnkExpiredSuccess extends CustomerState {
   List<Object> get props => [_data];
 }
 
+class StnkExpiredFailed extends CustomerState {}
+
 class NationalHolidaySuccess extends CustomerState {
   final _data;
 

@@ -84,7 +84,9 @@ class _NotificationStnkExpireViewState extends State<NotificationStnkExpireView>
           }
 
           if (state is CustomerDisposeLoading) {
-            Navigator.of(context, rootNavigator: false).pop();
+           Future.delayed(Duration(seconds: 3), () {
+              Navigator.of(context, rootNavigator: false).pop();
+            });
           }
         },
         child: BlocBuilder<CustomerBloc, CustomerState>(

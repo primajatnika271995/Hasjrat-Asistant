@@ -33,6 +33,7 @@ class _CalendarEventScreenState extends State<CalendarEventScreen> {
       cardName: "",
       custgroup: "",
     )));
+    customerBloc.add(FetchStnkExpired());
 
     // ignore: close_sinks
     final nationalHolidayBloc = BlocProvider.of<CustomerBloc>(context);
@@ -66,7 +67,6 @@ class _CalendarEventScreenState extends State<CalendarEventScreen> {
 
           if (state is CustomerDisposeLoading) {
             Future.delayed(Duration(seconds: 3), () {
-              Navigator.of(context, rootNavigator: false).pop();
               Navigator.of(context, rootNavigator: false).pop();
             });
           }

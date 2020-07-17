@@ -33,8 +33,8 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       try {
         List<StnkExpiredModel> value = await _customerService.allSTNK();
 
-        if (value.isEmpty || value == null) {
-          yield CustomerFailed();
+        if (value == null) {
+          yield StnkExpiredFailed();
         } else {
           yield CustomerDisposeLoading();
           yield StnkExpiredSuccess(value);
