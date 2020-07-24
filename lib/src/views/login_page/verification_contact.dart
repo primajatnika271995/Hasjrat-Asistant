@@ -14,6 +14,8 @@ import 'package:salles_tools/src/views/bottom_navigation.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
 class VerificationContactView extends StatefulWidget {
+  final String token;
+  VerificationContactView({this.token});
   @override
   _VerificationContactViewState createState() =>
       _VerificationContactViewState();
@@ -48,6 +50,7 @@ class _VerificationContactViewState extends State<VerificationContactView> {
     var contact = await SharedPreferencesHelper.getSalesContact();
 
     if (contactCtrl.text == contact) {
+      await SharedPreferencesHelper.setAccessToken(widget.token);
       await SharedPreferencesHelper.setFirstInstall("no");
       _onNavDashboard();
       return;

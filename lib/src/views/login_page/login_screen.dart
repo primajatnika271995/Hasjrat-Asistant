@@ -35,12 +35,14 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void _onNavVerification() {
+  void _onNavVerification(String token) {
     Navigator.of(context).push(
         PageRouteBuilder(
           pageBuilder: (_, __, ___) => BlocProvider<FollowupBloc>(
             create: (context) => FollowupBloc(FollowupService()),
-            child: VerificationContactView(),
+            child: VerificationContactView(
+              token: token,
+            ),
           ),
           transitionDuration: Duration(milliseconds: 300),
           transitionsBuilder:
@@ -76,15 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void onNavigator() async {
+  void onNavigator(String token) async {
     var firstInstall = await SharedPreferencesHelper.getFirstInstall();
 
     if (firstInstall != null) {
       Navigator.of(context).pop();
-      _onNavVerification();
+      _onNavVerification(token);
     }
 
     if (firstInstall == "no") {
+      await SharedPreferencesHelper.setAccessToken(token);
       Navigator.of(context).pop();
       _onNavDashboard();
     }
@@ -146,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is LoginSuccess) {
             Navigator.of(context).pop();
-            _onNavVerification();
+            _onNavVerification(state.authenticated.accessToken);
           }
 
           if (state is LoginFailed) {

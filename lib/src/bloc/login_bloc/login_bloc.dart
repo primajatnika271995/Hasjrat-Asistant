@@ -72,7 +72,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           );
 
           await SharedPreferencesHelper.setHistoryLoginId(histori.id);
-
           yield LoginSuccess(value);
         } else {
           log.warning(value.errorDescription);

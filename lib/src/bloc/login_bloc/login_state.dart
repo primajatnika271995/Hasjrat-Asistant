@@ -37,7 +37,7 @@ class LoginSuccess extends LoginState {
   final _data;
 
   LoginSuccess(this._data);
-  AuthenticationModel get _authenticated => _data;
+  AuthenticationModel get authenticated => _data;
 
   @override
   // TODO: implement props

@@ -6,6 +6,7 @@ import 'package:salles_tools/src/models/followup_methode_model.dart';
 import 'package:salles_tools/src/models/followup_reminder_model.dart';
 import 'package:salles_tools/src/models/follow_plan_today_model.dart';
 import 'package:salles_tools/src/services/followup_service.dart';
+import 'package:salles_tools/src/utils/shared_preferences_helper.dart';
 import 'package:salles_tools/src/views/components/log.dart';
 
 class FollowupBloc extends Bloc<FollowupEvent, FollowupState> {
@@ -25,6 +26,7 @@ class FollowupBloc extends Bloc<FollowupEvent, FollowupState> {
         if (value.data.isEmpty || value.data == null) {
           yield FollowupFailed();
         } else {
+          await SharedPreferencesHelper.setAccessToken(null);
           yield FollowupReminderSuccess(value);
           log.info(value);
         }
