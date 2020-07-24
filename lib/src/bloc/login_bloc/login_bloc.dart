@@ -59,19 +59,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
           log.info(latitudeLogin);
 
-//          HistoriLoginModel histori = await loginService.historyLogin(
-//            employee.branch.id,
-//            employee.branch.name,
-//            deviceInfo,
-//            employee.id,
-//            imei,
-//            latitudeLogin,
-//            longitudeLogin,
-//            employee.outlet.id,
-//            employee.outlet.name,
-//          );
+          HistoriLoginModel histori = await loginService.historyLogin(
+            employee.branch.id,
+            employee.branch.name,
+            deviceInfo,
+            employee.id,
+            imei,
+            latitudeLogin,
+            longitudeLogin,
+            employee.outlet.id,
+            employee.outlet.name,
+          );
 
-//          await SharedPreferencesHelper.setHistoryLoginId(histori.id);
+          await SharedPreferencesHelper.setHistoryLoginId(histori.id);
 
           yield LoginSuccess(value);
         } else {
