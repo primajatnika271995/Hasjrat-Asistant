@@ -97,6 +97,32 @@ class BookingDriveService {
     }
   }
 
+  Future addBookingService(BookingServicePost value) async {
+    final response = await _dio.post(UriApi.bookingServiceSaveUri,
+      options: Options(
+        headers: {'Content-Type': 'application/json'},
+      ),
+      data: {
+        "bookingDate": value.bookingDate,
+        "bookingTime": value.bookingTime,
+        "customerEmail": value.customerEmail,
+        "customerName": value.customerName,
+        "customerPhone": value.customerPhone,
+        "salesEmail": value.salesEmail,
+        "salesName": value.salesName,
+        "vehicleNumber": value.vehicleNumber
+      }
+    );
+    log.info(response.statusCode);
+    if (response.statusCode == 201) {
+      log.info("Booking Service Success");
+    } else if (response.statusCode == 401) {
+      return compute(errorTokenExpireFromJson, json.encode(response.data));
+    } else {
+      return compute(errorModelFromJson, json.encode(response.data));
+    }
+  }
+
   Future addBookingServiceViaEmail(BookingServicePost value) async {
     final response = await _dio.post(UriApi.bookingServiceUri,
       options: Options(

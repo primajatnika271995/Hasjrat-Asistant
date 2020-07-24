@@ -58,6 +58,7 @@ class BookingDriveBloc extends Bloc<BookingDriveEvent, BookingDriveState> {
 
       try {
         await _bookingDriveService.addBookingServiceViaEmail(event.value);
+        await _bookingDriveService.addBookingService(event.value);
 
         yield BookingDriveDisposeLoading();
         yield AddBookingServiceVieEmailSuccess();
